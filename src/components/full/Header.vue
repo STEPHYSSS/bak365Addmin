@@ -1,0 +1,247 @@
+<template>
+  <navbar class="navBar">
+    <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;
+    </button>
+    <!--    class="valueCity"-->
+    <div class="navbar-brand">
+      <el-select v-model="valueCity" placeholder="请选择地区" class="navbar-brandBtn">
+        <el-option
+          v-for="item in optionsCity"
+          :key="item.AreaName"
+          :label="item.AreaName"
+          :value="item.AreaNo">
+        </el-option>
+      </el-select>
+      <!--      <el-button icon="el-icon-search" type="text" @click="searchNav">搜索</el-button>-->
+      <el-dropdown>
+        <div class="el-icon-star-on navbar-brandNav">导航</div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+            <router-link tag="div" to='/' class="nav-link">
+              <span> 微信管理 </span>
+            </router-link>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <router-link tag="div" to='/wechatCard' class="nav-link">
+              <span> 微信卡券 </span>
+            </router-link>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+
+    <!--    <el-button type="primary" icon="el-icon-search" class="navbar-brand">搜索</el-button>-->
+    <ul class="nav navbar-nav d-md-down-none">
+      <li class="nav-item">
+        <a class="nav-link navbar-toggler sidebar-toggler" @click="sidebarMinimize">&#9776;</a>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav d-md-down-none navTop">
+      <li class="nav-item header-item">
+        <router-link tag="div" to='/' class="nav-link">
+          <p style="color:white"> 微信管理 </p>
+        </router-link>
+      </li>
+      <li class="nav-item header-item">
+        <router-link tag="div" to='/wechatCard' class="nav-link">
+          <p style="color:white"> 微信卡券 </p>
+        </router-link>
+      </li>
+      <!--      <li class="nav-item header-item">-->
+      <!--        <router-link tag="div" to='/home1' class="nav-link">-->
+      <!--          <p style="color:white"> 浏览排行 </p>-->
+      <!--        </router-link>-->
+      <!--      </li>-->
+      <!--      <li class="nav-item header-item">-->
+      <!--        <router-link tag="div" to='/home1' class="nav-link">-->
+      <!--          <p style="color:white"> 销量排行 </p>-->
+      <!--        </router-link>-->
+      <!--      </li>-->
+    </ul>
+
+
+    <ul class="nav navbar-nav ml-auto">
+      <el-autocomplete
+        class="navbarInputCenter"
+        style="margin-right:30px"
+        prefix-icon="el-icon-search"
+        v-model="inputSearch"
+        :fetch-suggestions="querySearch"
+        placeholder="搜索"
+        :trigger-on-focus="false"
+        @select="handleSelect"
+      >
+        <template slot-scope="{ item }">
+          <div style="text-overflow: ellipsis;overflow: hidden;">{{ item.value }}</div>
+          <!--          <span style="font-size:12px;color:#b4b4b4">{{ item.address }}</span>-->
+        </template>
+      </el-autocomplete>
+
+      <!--      <li class="nav-item d-md-down-none">-->
+      <!--        <a class="nav-link" ><Icon type="android-notifications" size="20"></Icon><span class="badge badge-pill badge-danger">5</span></a>-->
+      <!--      </li>-->
+      <el-dropdown>
+        <a href="javascript:void(0)">
+          <!--           <span slot="button">-->
+          <!--          <img src="../../assets/img/avatars/6.jpg" class="img-avatar" alt="o">-->
+          <span>{{userName}}</span>
+          <!--          </span>-->
+        </a>
+        <el-dropdown-menu slot="dropdown">
+          <!--          <el-dropdown-item><p class="dropdown-itemp">狮子头</p></el-dropdown-item>-->
+          <!--          <el-dropdown-item><p class="dropdown-itemp">狮子头</p></el-dropdown-item>-->
+          <el-dropdown-item>
+            <span href="" @click="Logouts"><p class="dropdown-itemp">退出登录</p></span>
+            <span href="" @click="VersionInfo"><p>版本信息</p></span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+
+      <li class="nav-item d-md-down-none">
+        <!--        <a class="nav-link navbar-toggler aside-menu-toggler"  @click="asideToggle">&#9776;</a>-->
+      </li>
+    </ul>
+  </navbar>
+</template>
+<script>
+
+import navbar from './Navbar'
+import {navSearch} from '../../config/navASearch'
+import {mapGetters} from 'vuex';
+
+export default {
+  components: {
+    navbar,
+  },
+  data() {
+    return {
+      optionsCity: [],
+      valueCity: '',
+      inputSearch: '',
+      restaurants: []
+    }
+  },
+  computed: {
+    ...mapGetters(['AreaNo', 'AreaList', 'AppNo', 'userName'])
+  },
+  mounted() {
+    this.restaurants = navSearch;
+
+    this.optionsCity = this.AreaList
+    this.valueCity = this.AreaNo.AreaNo
+  },
+  methods: {
+    Logouts(e) {
+      this.$store.dispatch('LogOut').then(() => {
+        this.$router.push({path: '/login?' + this.AppNo});
+      }).catch(err => {
+        this.$message.error(err);
+      });
+    },
+    VersionInfo(){
+
+    },
+    click() {
+      // do nothing
+    },
+    sidebarToggle(e) {
+      document.body.classList.toggle('sidebar-hidden')
+      e.preventDefault()
+    },
+    sidebarMinimize(e) {
+      e.preventDefault()
+
+      document.body.classList.toggle('sidebar-minimized')
+    },
+    mobileSidebarToggle(e) {
+      e.preventDefault()
+
+      document.body.classList.toggle('sidebar-mobile-show')
+    },
+    asideToggle(e) {
+      e.preventDefault()
+      document.body.classList.toggle('aside-menu-hidden')
+    },
+    querySearch(queryString, cb) {
+      // 所有的导航信息
+      let restaurants = this.restaurants
+      let results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+      results = results.splice(0, 10)
+
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (restaurant) => {
+        return (restaurant.address.toLowerCase().indexOf(queryString.toLowerCase()) >= 0 || restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) >= 0);
+      }
+    },
+    handleSelect(item) {
+      console.log(item);
+      this.$router.push(item.url)
+    }
+  },
+  watch: {
+    $route() {
+    }
+  }
+}
+</script>
+
+<style type="text/css" lang="less">
+  .el-autocomplete-suggestion {
+    width: auto !important;
+    max-width: 30% !important;
+  }
+
+  .navBar {
+    .dropdown-itemp {
+      text-align: left;
+      font-size: 15px;
+      padding: 10px;
+    }
+
+    .navbar-brandNav {
+      margin-left: 20px;
+      font-size: 28px;
+      vertical-align: middle;
+      color: #2d8cf0;
+      display: none;
+    }
+
+    .navbar-brandBtn {
+      margin-left: 20px;
+      color: #fff;
+
+      .el-input {
+        width: 130px;
+      }
+    }
+
+    .header-item .ivu-dropdown-item {
+      padding: 15px;
+    }
+
+    .header-item {
+      width: 130px;
+    }
+
+    .header-item a {
+      color: white !important;
+    }
+
+    .valueCity {
+      width: 150px;
+      margin-right: 50px;
+    }
+
+    .navbarInputCenter {
+      .el-input {
+        width: 220px !important;
+      }
+    }
+  }
+
+</style>

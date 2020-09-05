@@ -1,0 +1,15 @@
+/* 改变主题色变量 */
+$--color-primary: #3062A5 !default;
+$--color-green: #019791 !default;
+$--color-red: #F4A542 !default;
+
+.el-button--blue{
+  color: #FFF;
+  background-color: $--color-primary;
+  border-color: $--color-primary;
+  &:hover,&:focus{
+    color: #FFF;
+    background-color: #3D6AA5;
+    border-color: #3D6AA5;
+  }
+}

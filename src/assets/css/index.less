@@ -1,0 +1,52 @@
+//.el-header{
+//  background: #eee;
+//  line-height: 50px;
+//  height: 50px !important;
+//  text-align: center;
+//}
+.marginBottom {
+  margin-bottom: 20px !important;
+}
+.el-range-separator{
+  width: 7% !important;
+}
+.smallRoutine {
+  width: 200px;
+  min-height: 220px;
+  text-align: center;
+  margin: 0 15px;
+
+  .smallRoutineTop {
+    font-size: 16px;
+    margin-bottom: 10px;
+
+    .close {
+      position: absolute;
+      top: 4px;
+      right: 15px;
+      font-size: 25px;
+      cursor: pointer;
+    }
+  }
+
+  .smallRoutineUpDown {
+    margin-top: 8px;
+    display: inline-block;
+  }
+}
+
+// 滚动
+&::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+}
+&::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+&::-webkit-scrollbar-track {
+  //-webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}

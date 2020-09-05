@@ -1,0 +1,16 @@
+/*设置数字输入框*/
+.el-input-number.is-controls-right .el-input__inner {
+  padding-right: 0;
+  padding-left: 15px;
+}
+.el-input-number .el-input__inner {
+  text-align: left;
+}
+.el-input-number__increase,
+.el-input-number__decrease {
+  display: none;
+}
+.el-input-number {
+  width: 100px;
+}
+/*# sourceMappingURL=numberInput.css.map */

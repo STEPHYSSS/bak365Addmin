@@ -1,0 +1,120 @@
+.newlyBuildR {
+  margin-left: 340px;
+}
+.newlyBuildLeft{
+  max-width: 320px;
+  position: fixed;
+  .bottomBorder {
+    border-bottom: 1px solid #e7e7eb;
+  }
+  .phoneBottomEntry {
+    li {
+      &:nth-child(1) {
+        border-bottom: 1px solid #e7e7eb;
+      }
+    }
+  }
+  .phoneBottom {
+    background: #fff;
+    padding: 0 10px;
+
+    li {
+      height: 45px;
+      line-height: 45px;
+
+      .ic {
+        display: inline-block;
+        margin-top: 15px;
+        float: right;
+        width: 16px;
+        height: 15px;
+        background: url('../../assets/img/member_card_control_z331295.png') 0 -210px no-repeat;
+      }
+    }
+    .phoneBottomRight {
+      float: right;
+      margin-right: 10px;
+    }
+  }
+
+  .phoneTopImg {
+    margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+}
+.newlyBuildRight {
+  position: relative;
+  background: #f6f6f8;
+  padding: 20px;
+  border: 1px solid #e7e7eb;
+  .pickerC {
+    .pickerColorClick {
+      width: 140px;
+      height: 64px;
+      background: #fff;
+      padding-top: 5px;
+      z-index: 20;
+      position: absolute;
+      display: flex;
+      flex-wrap: wrap;
+
+      li {
+        width: 22px;
+        height: 22px;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+    }
+
+    .pickerColor {
+      position: relative;
+      border: 1px solid #e7e7eb;
+      background: #fff;
+      width: 116px;
+      height: 32px;
+
+      &:hover {
+        background: #eee;
+      }
+
+      .iconBottom {
+        color: #c6c6c6;
+        position: absolute;
+        top: 9px;
+        right: 9px;
+      }
+
+      .pickerColorChange {
+        width: 22px;
+        height: 22px;
+        margin: 5px;
+      }
+    }
+  }
+
+
+  .el-textarea {
+    width: 40%;
+  }
+  .el-input {
+    width: 300px;
+  }
+  .el-input-number {
+    .el-input {
+      width: auto;
+    }
+  }
+  .tipNews {
+    color: #8d8d8d;
+    font-size: 12px;
+  }
+}

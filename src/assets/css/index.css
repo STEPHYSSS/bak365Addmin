@@ -1,0 +1,47 @@
+.marginBottom {
+  margin-bottom: 20px;
+}
+.el-range-separator {
+  width: 7% !important;
+}
+.smallRoutine {
+  width: 200px;
+  min-height: 220px;
+  text-align: center;
+  margin: 0 15px;
+}
+.smallRoutine .smallRoutineTop {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.smallRoutine .smallRoutineTop .close {
+  position: absolute;
+  top: 4px;
+  right: 15px;
+  font-size: 25px;
+  cursor: pointer;
+}
+.smallRoutine .smallRoutineUpDown {
+  margin-top: 8px;
+  display: inline-block;
+}
+::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.lineBack {
+  width: 100%;
+  height: 1px;
+  background: #d6d0d0;
+}
+/*# sourceMappingURL=index.css.map */
