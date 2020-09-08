@@ -720,7 +720,6 @@ export default {
           return;
         }
         this.ruleForm = res[1].Data.ProdInfo;
-        console.log(this.ruleForm,'获取的商品星系')
         this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
 
         if (this.ruleForm.Weeks) {
@@ -836,6 +835,7 @@ export default {
         this.ruleForm.SpecList = this.ruleForm.SpecList
           ? this.ruleForm.SpecList
           : [];
+        console.log(this.ruleForm.SpecList, "what");
         if (this.ruleForm.SpecList && this.ruleForm.SpecList.length > 0) {
           this.ruleForm.SpecList.forEach(D => {
             D.Img = D.Img ? ImgList(D.Img) : [];
@@ -916,7 +916,7 @@ export default {
       // 取消
       this.$router.push("/weChat/manager/goodSetting");
     },
-      // 保存
+    // 保存
     preserveFun() {
       // console.log(this.$refs.Features.getUEContent(), 5555)
       // console.log(this.$refs.ImportantNotes.getUEContent(), 5555)
@@ -965,7 +965,7 @@ export default {
             }
 
             let obj = _.cloneDeep(this.ruleForm);
-            console.log(obj,'obj')
+            console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
             // itar+tab
             if (
@@ -1094,8 +1094,10 @@ export default {
               this.$message.info("请添加商品图片");
               return;
             } else {
+              debugger;
               obj.ImgList = replacePre(obj, "ImgList");
-              console.log(obj.ImgList,'提交按钮的操作')
+
+              console.log(obj.ImgList, "提交按钮的操作");
             }
             if (obj.FinHour > 0) {
               obj.FinHour =
@@ -1108,7 +1110,7 @@ export default {
             this.$router.push("/weChat/manager/goodSetting");
             this.$message.success("操作成功");
           } catch (e) {
-            console.log(e,'99')
+            console.log(e, "99");
             this.$message.error(e);
           }
         }
@@ -1142,7 +1144,7 @@ export default {
       done();
     },
     selectGoods(index) {
-      console.log(index)
+      console.log(index);
       this.goodsShow = true;
       this.goodsNormsIndex = index;
     },
@@ -1237,13 +1239,13 @@ export default {
       addScroll(".el-dialog__body");
     },
     upLoadImgsList(imgs) {
-      console.log(imgs,'11111')
+      // console.log(imgs,'11111')
       // 图片集
-      // let arr = [];
-      // imgs.forEach(D => {
-      //   arr.push(D.url);
-      // });
-      // this.ruleForm.ImgList = arr.join(",");
+      let arr = [];
+      imgs.forEach(D => {
+        arr.push(D.url);
+      });
+      this.ruleForm.ImgList = arr.join(",");
       // console.log(this.ruleForm.ImgList,'切割后的')
     },
     upLoadImgsMain(arr) {
