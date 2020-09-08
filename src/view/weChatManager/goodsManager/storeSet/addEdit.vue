@@ -16,15 +16,6 @@
       <el-form-item label="门店名称：" prop="Name">
         <el-input v-model="form.Name" placeholder="请输入内容"></el-input>
       </el-form-item>
-      <el-form-item label="门店图片：">
-        <imgLoad
-          style="margin-top:10px"
-          @upLoadImgs="upLoadImg"
-          :fileListUp="fileListUp"
-          folder="storeImg"
-          ref="imgLoad"
-        ></imgLoad>
-      </el-form-item>
       <el-form-item label="门店地址：" prop="Address">
         <el-input v-model="form.Address" placeholder="请输入内容"></el-input>
       </el-form-item>
@@ -34,8 +25,17 @@
       <el-form-item label="门店区域：" prop="AreaSID">
         <storeAreaList @changeType="changeType"></storeAreaList>
       </el-form-item>
-      <el-form-item label="支持配送：" prop="Type">
+      <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
+      </el-form-item>-->
+      <el-form-item label="门店图片：">
+        <imgLoad
+          style="margin-top:10px"
+          @upLoadImgs="upLoadImg"
+          :fileListUp="fileListUp"
+          folder="storeImg"
+          ref="imgLoad"
+        ></imgLoad>
       </el-form-item>
       <el-form-item label="经度：" prop="Longitude">
         <el-input v-model="form.Longitude" placeholder="请输入内容"></el-input>
@@ -49,11 +49,25 @@
       </el-form-item>
     </el-form>
     <el-dialog title="门店列表" :visible.sync="dialogTableVisible">
-      <el-table :data="gridData">
+      <div style="margin-bottom: 20px;text-align: center;">
+        <span>名称搜索</span>
+        <el-input
+          v-model="Name"
+          placeholder="请输入"
+          @keyup.enter="searchName"
+          style="margin-right:10px;width:180px"
+        ></el-input>
+        <el-button type="primary" @click="searchName">搜索</el-button>
+      </div>
+      <el-table :data="gridData" highlight-current-row @current-change="handleCurrentChange">
         <el-table-column prop="ShopName" label="名称" width="150"></el-table-column>
         <el-table-column prop="ShopNo" label="门店编号" width="200"></el-table-column>
         <el-table-column prop="Mobile" label="电话"></el-table-column>
       </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sure">确 定</el-button>
+      </div>
     </el-dialog>
     <div class="preserveStyle">
       <el-button
@@ -81,9 +95,10 @@ export default {
       form: {
         Img: []
       },
-      dialogTableVisible:false,
-      gridData:[],//门店列表
-      Name:'',//搜索门店
+      dialogTableVisible: false,
+      gridData: [], //门店列表
+      Name: "", //搜索门店
+      currentRow: null,
       rules: {
         Name: [{ required: true, message: "请填写门店名称", trigger: "blur" }],
         Address: [
@@ -119,15 +134,15 @@ export default {
     }
   },
   methods: {
-    async getMendian(){
-      try{
+    async getMendian() {
+      try {
         let { Data } = await getLists(
-          { Action: "GetEntShopList", Name:this.Name },
+          { Action: "GetEntShopList", Name: this.Name },
           "MShopOpera"
         );
         this.gridData = Data.ShopInfoList;
-      }catch(e){
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
     },
     async getInfo() {
@@ -165,7 +180,7 @@ export default {
           if (this.form.Img) {
             this.form.Img = replacePre(this.form, "Img");
           }
-          this.form.Type = this.checkedType ? "1,2" : "1";
+          // this.form.Type = this.checkedType ? "1,2" : "1";
           let obj = {
             Action: "SetShop"
           };
@@ -197,12 +212,28 @@ export default {
       this.$refs.dialogAreaRef.dialogVisible = true;
     },
     changeType(val) {
+      console.log(val);
       this.form.AreaSID = val;
     },
     // 点击选择门店
-    selecStore(){
+    selecStore() {
       this.dialogTableVisible = true;
       this.getMendian();
+    },
+    //搜索
+    searchName() {
+      this.getMendian();
+    },
+    handleCurrentChange(val) {
+      this.currentRow = val;
+    },
+    sure() {
+      this.form.ShopNo = this.currentRow.ShopNo;
+      this.form.Name = this.currentRow.ShopName;
+      this.form.Tel = this.currentRow.Mobile;
+      this.form.Longitude = this.currentRow.Location.split(",")[1];
+      this.form.Latitude = this.currentRow.Location.split(",")[0];
+      this.dialogTableVisible = false;
     }
   }
 };
