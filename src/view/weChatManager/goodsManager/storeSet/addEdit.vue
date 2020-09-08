@@ -2,7 +2,7 @@
   <div class="storeSet">
     <!-- 新增门店，门店编辑 -->
     <el-form ref="form" :model="form" label-width="150px" :rules="rules">
-      <!-- <el-form-item label="门店编号" prop="ShopNo">
+      <el-form-item label="门店编号" prop="ShopNo">
         <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店编号"></el-input>
         <el-button
           type="primary"
@@ -11,7 +11,7 @@
           @click="selecStore(null)"
           v-if="!$route.query.SID"
         >...</el-button>
-      </el-form-item> -->
+      </el-form-item>
 
       <el-form-item label="门店名称：" prop="Name">
         <el-input v-model="form.Name" placeholder="请输入内容"></el-input>
@@ -48,7 +48,13 @@
         <areaMy :isStore="true" @dragendArea="dragendArea"></areaMy>
       </el-form-item>
     </el-form>
-
+    <el-dialog title="门店列表" :visible.sync="dialogTableVisible">
+      <el-table :data="gridData">
+        <el-table-column prop="ShopName" label="名称" width="150"></el-table-column>
+        <el-table-column prop="ShopNo" label="门店编号" width="200"></el-table-column>
+        <el-table-column prop="Mobile" label="电话"></el-table-column>
+      </el-table>
+    </el-dialog>
     <div class="preserveStyle">
       <el-button
         type="primary"
@@ -75,6 +81,9 @@ export default {
       form: {
         Img: []
       },
+      dialogTableVisible:false,
+      gridData:[],//门店列表
+      Name:'',//搜索门店
       rules: {
         Name: [{ required: true, message: "请填写门店名称", trigger: "blur" }],
         Address: [
@@ -110,6 +119,17 @@ export default {
     }
   },
   methods: {
+    async getMendian(){
+      try{
+        let { Data } = await getLists(
+          { Action: "GetEntShopList", Name:this.Name },
+          "MShopOpera"
+        );
+        this.gridData = Data.ShopInfoList;
+      }catch(e){
+        console.log(e)
+      }
+    },
     async getInfo() {
       try {
         let { Data } = await getLists(
@@ -179,7 +199,11 @@ export default {
     changeType(val) {
       this.form.AreaSID = val;
     },
-    selecStore(){}
+    // 点击选择门店
+    selecStore(){
+      this.dialogTableVisible = true;
+      this.getMendian();
+    }
   }
 };
 </script>
