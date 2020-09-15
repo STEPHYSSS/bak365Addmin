@@ -8,6 +8,7 @@
           :isAutoFixed="true"
           @upLoadImgs="upLoadImgsList"
           :fileListUp="fileListUpList"
+          :limit="6"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
     </el-form>
@@ -29,7 +30,7 @@ export default {
       loading: false,
       // 显示在页面的商品图片
       fileListUpList: [],
-      ruleForm: {}
+      ruleForm: {},
     };
   },
   mounted() {
@@ -50,13 +51,14 @@ export default {
           },
           "MBaseOpera"
         );
-        this.ruleForm.ImgList = Data.Imgs;
-
-        this.fileListUpList = this.ruleForm.ImgList;
-        // console.log(JSON.stringify(this.fileListUpList))
-        console.log(this.fileListUpList, "map后的数据");
-        // this.fileListUpList = this.ruleForm.ImgList ? ImgList(this.ruleForm.ImgList) : [];
-
+        let lunbo = Data.Imgs;
+        let obj = [];
+        let obj2 = {}
+        lunbo.forEach((item,index) => {
+          obj2 = item.Img ? { url: process.env.Prefix + item.Img }: {};
+          obj.push(obj2)
+        });
+        this.fileListUpList = obj
         this.loading = false;
       } catch (e) {
         this.$message.error(e);
@@ -65,15 +67,13 @@ export default {
     },
     // 更新图片列表
     upLoadImgsList(ImgList) {
-      console.log(ImgList);
       // 图片集
       var b = ImgList.map((item, index) => {
         return {
           Img: item.Img || item.url.substring(3),
           Sort: index
         };
-      });
-      // console.log(JSON.stringify(ImgList),'json字符串')
+      });      
       this.ruleForm.ImgList = JSON.stringify(b);
     },
     cancelFun() {

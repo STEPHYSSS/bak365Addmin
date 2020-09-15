@@ -7,7 +7,7 @@ const Statistic = r => require.ensure([], () => r(require('../view/statistic/lis
 const Page404 = r => require.ensure([], () => r(require('../view/errorPages/Page404')), 'Page404')
 const Page500 = r => require.ensure([], () => r(require('../view/errorPages/Page500')), 'Page500')
 
-//商城管理
+//商城管理、// 商品管理
 const goodsManager = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager')), 'goodsManager')
 const goodsManagerAdd = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addEdit')), 'addEdit')
 const couponManagerAdd = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addEditCoupon')), 'addEditCoupon')
@@ -20,9 +20,7 @@ const logisticsSet = r => require.ensure([], () => r(require('../view/weChatMana
 
 // 轮播图设置
 const lunboManager = r => require.ensure([], () => r(require('../view/weChatManager/lunboManager/lunboList')), 'lunboList')
-// 商品管理
-
-
+const mainStyle = r => require.ensure([], () => r(require('../view/weChatManager/mainStyle/index')), 'index')
 // 门店管理
 const storeSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/storeSet')), 'storeSet')
 const storeInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/storeSet/addEdit')), 'storeInfo')
@@ -138,6 +136,19 @@ export const asyncRouterMap = [
               label: '运费设置'
             },
             component: logisticsSet
+          },
+          {
+            path:'lunboList',
+            meta:{
+              label:'轮播图设置'
+            },
+            component:lunboManager
+          },{//主题颜色设置 
+            path:'mainStyle',
+            meta:{
+              label:'主题颜色设置'
+            },
+            component:mainStyle
           }
         ]
       },
@@ -173,13 +184,6 @@ export const asyncRouterMap = [
               label: '商品编辑'
             },
             component: goodsManagerAdd
-          },
-          {
-            path:'lunboList',
-            meta:{
-              label:'轮播图设置'
-            },
-            component:lunboManager
           },
           {
             path: 'tasteList',

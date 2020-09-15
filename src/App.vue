@@ -179,4 +179,14 @@ div::-webkit-scrollbar {
 .preserveStyle button {
   transform: translateX(-80px);
 }
+.m-colorPicker .box{
+  width: 214px !important;
+}
+.m-colorPicker .hd .colorView{
+  width: 30px !important;
+}
+.m-colorPicker .colorBtn{
+  width: 30px !important;
+  height: 30px !important;
+}
 </style>

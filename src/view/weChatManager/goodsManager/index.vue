@@ -211,7 +211,6 @@ export default {
         this.data = this.currentGoods
           ? data.Data.Prod_InfoList
           : data.Data.TicketList;
-          console.log(this.data)
         let setImg = this.currentGoods ? "Img" : "ImgList";
         this.data.forEach(D => {
           D.ImgList = D[setImg] ? D[setImg].split(",") : [];

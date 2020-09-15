@@ -2,17 +2,19 @@
   <div class="storeSet">
     <!-- 新增门店，门店编辑 -->
     <el-form ref="form" :model="form" label-width="150px" :rules="rules">
-      <el-form-item label="门店编号" prop="ShopNo">
-        <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店编号"></el-input>
+      <el-form-item label="门店" prop="ShopNo">
+        <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店"></el-input>
         <el-button
           type="primary"
           style="margin-left:10px"
           size="medium"
           @click="selecStore(null)"
-          v-if="!$route.query.SID"
-        >...</el-button>
+          v-if="!$route.query.sid"
+        >选择门店</el-button>
       </el-form-item>
-
+      <el-form-item label="门店区域：" prop="AreaSID">
+        <storeAreaList @changeType="changeType"></storeAreaList>
+      </el-form-item>
       <el-form-item label="门店名称：" prop="Name">
         <el-input v-model="form.Name" placeholder="请输入内容"></el-input>
       </el-form-item>
@@ -22,9 +24,7 @@
       <el-form-item label="门店电话：" prop="Tel">
         <el-input v-model="form.Tel" placeholder="请输入内容"></el-input>
       </el-form-item>
-      <el-form-item label="门店区域：" prop="AreaSID">
-        <storeAreaList @changeType="changeType"></storeAreaList>
-      </el-form-item>
+      
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
@@ -33,15 +33,15 @@
           style="margin-top:10px"
           @upLoadImgs="upLoadImg"
           :fileListUp="fileListUp"
-          folder="storeImg"
+          folder="ShopImg"
           ref="imgLoad"
         ></imgLoad>
       </el-form-item>
       <el-form-item label="经度：" prop="Longitude">
-        <el-input v-model="form.Longitude" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Longitude" :readonly="true" placeholder="请输入内容"></el-input>
       </el-form-item>
       <el-form-item label="纬度：" prop="Latitude">
-        <el-input v-model="form.Latitude" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Latitude" :readonly="true" placeholder="请输入内容"></el-input>
       </el-form-item>
       <el-form-item>
         <div>可移动选择经纬度</div>
@@ -63,6 +63,7 @@
         <el-table-column prop="ShopName" label="名称" width="150"></el-table-column>
         <el-table-column prop="ShopNo" label="门店编号" width="200"></el-table-column>
         <el-table-column prop="Mobile" label="电话"></el-table-column>
+        <el-table-column prop="Address" label="地址"></el-table-column>
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -151,10 +152,10 @@ export default {
           { Action: "GetShop", SID: this.$route.query.sid },
           "MShopOpera"
         );
-        this.form = Data.ShopInfo;
-        if (this.form.Type) {
-          this.checkedType = this.form.Type.indexOf("2") > -1 ? true : false;
-        }
+        this.form = Data.ShopInfo;        
+        // if (this.form.Type) {
+        //   this.checkedType = this.form.Type.indexOf("2") > -1 ? true : false;
+        // }
         this.fileListUp = this.form.Img
           ? [{ url: process.env.Prefix + this.form.Img }]
           : [];
@@ -176,17 +177,19 @@ export default {
       //   return;
       // }
       this.$refs.form.validate(async valid => {
+        // SID与Shop值不共存，确保数据准确；新增传值Shop，SID为空；编辑传值SID，ShopNo为空
         if (valid) {
           if (this.form.Img) {
             this.form.Img = replacePre(this.form, "Img");
+          }
+          if(this.$route.query.sid){
+            this.form.ShopNo = ''
           }
           // this.form.Type = this.checkedType ? "1,2" : "1";
           let obj = {
             Action: "SetShop"
           };
           Object.assign(obj, this.form);
-
-          // console.log(obj, "obj");
           this.btnLoading = true;
           try {
             await getLists(obj, "MShopOpera");
@@ -194,7 +197,6 @@ export default {
             this.$router.push("/weChat/manager/storeSet/index");
             this.btnLoading = false;
           } catch (e) {
-            console.log(44, e);
             this.btnLoading = false;
             this.$message.error(e);
           }
@@ -204,7 +206,6 @@ export default {
       });
     },
     dragendArea(val) {
-      console.log(val, "dragendArea");
       this.$set(this.form, "Longitude", val.longitude);
       this.$set(this.form, "Latitude", val.latitude);
     },
@@ -212,7 +213,6 @@ export default {
       this.$refs.dialogAreaRef.dialogVisible = true;
     },
     changeType(val) {
-      console.log(val);
       this.form.AreaSID = val;
     },
     // 点击选择门店
@@ -231,8 +231,9 @@ export default {
       this.form.ShopNo = this.currentRow.ShopNo;
       this.form.Name = this.currentRow.ShopName;
       this.form.Tel = this.currentRow.Mobile;
-      this.form.Longitude = this.currentRow.Location.split(",")[1];
-      this.form.Latitude = this.currentRow.Location.split(",")[0];
+      this.form.Address = this.currentRow.Address;
+      this.form.Longitude = this.currentRow.Location.split(",")[0];
+      this.form.Latitude = this.currentRow.Location.split(",")[1];
       this.dialogTableVisible = false;
     }
   }

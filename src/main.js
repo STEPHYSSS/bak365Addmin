@@ -9,7 +9,8 @@ import './config/vueFilter'
 import {route, TOKEN} from './config/index'
 import store from './store'
 import storejs from 'storejs'
-
+import vcolorpicker from 'vcolorpicker'
+Vue.use(vcolorpicker)
 // import './mock/index.js';
 import * as filters from '@/config/filters'
 Object.keys(filters).forEach(key => {

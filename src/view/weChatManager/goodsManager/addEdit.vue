@@ -712,7 +712,6 @@ export default {
           info,
           getLists({ Action: "GetShopList" }, "MShopOpera")
         ]);
-
         this.TicketList = res[0].Data.TicketList;
         this.storeList = res[2].Data.ShopInfoList;
         if (!this.$route.query.SID) {
@@ -721,7 +720,7 @@ export default {
         }
         this.ruleForm = res[1].Data.ProdInfo;
         this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
-
+        
         if (this.ruleForm.Weeks) {
           this.pickDateValue = "1";
           this.Weeks = this.ruleForm.Weeks.split(",");
@@ -835,7 +834,6 @@ export default {
         this.ruleForm.SpecList = this.ruleForm.SpecList
           ? this.ruleForm.SpecList
           : [];
-        console.log(this.ruleForm.SpecList, "what");
         if (this.ruleForm.SpecList && this.ruleForm.SpecList.length > 0) {
           this.ruleForm.SpecList.forEach(D => {
             D.Img = D.Img ? ImgList(D.Img) : [];
@@ -1094,7 +1092,6 @@ export default {
               this.$message.info("请添加商品图片");
               return;
             } else {
-              debugger;
               obj.ImgList = replacePre(obj, "ImgList");
 
               console.log(obj.ImgList, "提交按钮的操作");
@@ -1246,7 +1243,6 @@ export default {
         arr.push(D.url);
       });
       this.ruleForm.ImgList = arr.join(",");
-      // console.log(this.ruleForm.ImgList,'切割后的')
     },
     upLoadImgsMain(arr) {
       // 主图片

@@ -228,7 +228,6 @@ export default {
         return this.currentImgs;
       } else if (this.fileListUpProp) {
         // 是否传过来数组
-        console.log(this.fileListUpProp, 'fileListUpProp')
         return this.fileListUpProp;
       } else {
         return [];
@@ -251,7 +250,6 @@ export default {
       this.showImgs.pop();
     },
     onRemove(file, fileList) {
-      console.log('fileList','onRemove事件')
       this.propstrue = true;
       this.currentImgs = fileList;
       this.$emit("upLoadImgs", fileList);
@@ -289,7 +287,6 @@ export default {
           this.currentImgs.push({
             url: process.env.Prefix + D.Message
           });
-          // console.log(this.currentImgs, "this.currentImgs");
           this.$emit("upLoadImgs", this.fileList);
         })
         .catch(e => {

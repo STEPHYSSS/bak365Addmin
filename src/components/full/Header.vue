@@ -93,7 +93,10 @@
           <!--          <el-dropdown-item><p class="dropdown-itemp">狮子头</p></el-dropdown-item>-->
           <el-dropdown-item>
             <span href="" @click="Logouts"><p class="dropdown-itemp">退出登录</p></span>
-            <span href="" @click="VersionInfo"><p>版本信息</p></span>
+            
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <div href="" @click="VersionInfo"><p>版本信息</p></div>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
