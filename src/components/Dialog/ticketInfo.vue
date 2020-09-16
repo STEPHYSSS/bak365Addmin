@@ -57,6 +57,7 @@ export default {
           "MProdOpera"
         );
         this.tiketList = Data.TicketList;
+        console.log(this.tiketList)
       } catch (error) {
         this.$message.error(error);
       }
