@@ -8,10 +8,10 @@
       class="marginBottom"
       :disabled="loading"
     >新建会员领导者模块</el-button> -->
-    <el-input v-model="search.Name" placeholder="搜索" style="width: auto" @keyup.enter.native="searchName" class="marginBottom">
+    姓名：<el-input v-model="search.Name" placeholder="搜索" style="width: auto" @keyup.enter.native="searchName" class="marginBottom">
       <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>
     </el-input>
-    <el-select v-model="search.status" clearable placeholder="请选择" @keyup.enter.native="searchName" class="marginBottom">
+    状态：<el-select v-model="search.status" clearable placeholder="请选择" @keyup.enter.native="searchName" class="marginBottom">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
     </el-select>
     <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>

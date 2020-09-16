@@ -17,7 +17,8 @@ const tasteList = r => require.ensure([], () => r(require('../view/weChatManager
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
-
+// 电子券设置
+const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
 // 轮播图设置
 const lunboManager = r => require.ensure([], () => r(require('../view/weChatManager/lunboManager/lunboList')), 'lunboList')
 const mainStyle = r => require.ensure([], () => r(require('../view/weChatManager/mainStyle/index')), 'index')
@@ -184,6 +185,13 @@ export const asyncRouterMap = [
               label: '商品编辑'
             },
             component: goodsManagerAdd
+          },{//新增、编辑 电子券
+            path: 'addTiket',
+            isHidden: true,
+            meta: {
+              label: '电子券'
+            },
+            component: addTiket
           },
           {
             path: 'tasteList',
@@ -309,35 +317,35 @@ export const asyncRouterMap = [
           }
         ]
       },
-      {//积分商城管理
-        path: '/weChat/manager/integral',
-        meta: {
-          label: '积分商城管理'
-        },
-        component: {
-          render(c) {
-            return c('router-view')
-          }
-        },
-        redirect: '/weChat/manager/integral/goodSetting',
-        children: [
-          {
-            path: 'goodSetting',
-            meta: {
-              label: '积分商品设置'
-            },
-            component: integralGoods
-          },
-          {
-            path: 'goodAdd',
-            isHidden: true,
-            meta: {
-              label: '积分商品添加'
-            },
-            component: integralGoodsAdd
-          },
-        ]
-      },
+      // {//积分商城管理
+      //   path: '/weChat/manager/integral',
+      //   meta: {
+      //     label: '积分商城管理'
+      //   },
+      //   component: {
+      //     render(c) {
+      //       return c('router-view')
+      //     }
+      //   },
+      //   redirect: '/weChat/manager/integral/goodSetting',
+      //   children: [
+      //     {
+      //       path: 'goodSetting',
+      //       meta: {
+      //         label: '积分商品设置'
+      //       },
+      //       component: integralGoods
+      //     },
+      //     {
+      //       path: 'goodAdd',
+      //       isHidden: true,
+      //       meta: {
+      //         label: '积分商品添加'
+      //       },
+      //       component: integralGoodsAdd
+      //     },
+      //   ]
+      // },
       {//商品活动管理
         path: '/weChat/manager/activity',
         meta: {

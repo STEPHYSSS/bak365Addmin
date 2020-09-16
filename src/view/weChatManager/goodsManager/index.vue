@@ -2,14 +2,17 @@
   <div class="goodManager">
     <!-- 商品列表 -->
     <el-row class="showStopGood" v-if="currentGoods">
-      <el-col :span="11">
+      <el-col :span="11" style="line-height: 50px;">
         <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button>
         <el-button type="primary" size="small" @click="addGood">添加商品</el-button>
+        <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
         <!-- <el-checkbox v-model="search.Status" style="margin-left:15px">显示停用商品</el-checkbox> -->
         <!--        <span>当前共上传{{this.data.length}}个商品</span>-->
       </el-col>
       <el-col :span="13">
+        
         <div style="float: right">
+          类别：
           <goodType
             style="display: inline-block"
             @changeGoodType="changeGoodType"
@@ -246,8 +249,7 @@ export default {
         this.$message.error(e);
       }
     },
-    searchName() {
-      // 名称搜索
+    searchName() {// 名称搜索
       this.page.current_page = 1;
       this.getList();
     },
@@ -310,20 +312,18 @@ export default {
     cateFunction(bool) {
       this.cateShow = bool;
     },
-    get_list(page) {
-      // 切换page
+    get_list(page) {// 切换page
       this.page.current_page = page;
       this.getList();
     },
-    addGood() {
+    addGood() {//添加商品按钮和添加优惠券按钮
       if (this.currentGoods) {
         this.$router.push({ path: "/weChat/manager/goodAdd" });
       } else {
         this.$router.push({ path: "/weChat/manager/couponAdd" });
       }
     },
-    addCoupon() {
-      // 添加优惠券
+    addCoupon() {// 添加优惠券
       this.$router.push("/weChat/manager/couponAdd");
     },
     modifyCateFun() {
@@ -331,7 +331,11 @@ export default {
     },
     clickTest() {
       // this.getList();
+    },
+    AddTiket(){//添加电子券
+      this.$router.push("/weChat/manager/addTiket");
     }
+
   },
   mounted() {},
   watch: {

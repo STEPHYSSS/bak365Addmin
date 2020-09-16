@@ -1,7 +1,7 @@
 <template>
   <div class="addEditGoods">
      <!-- 编辑，新增优惠券 -->
-    基本信息122
+    基本信息
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px">
       <el-form-item label="券类型">
         <couponList @changeValue="changeValue" ref="couponList" :defaultId="defaultId"></couponList>

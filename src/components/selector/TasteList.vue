@@ -90,7 +90,6 @@ export default {
         this.options.forEach(D => {
           D.SID = D.ProdNo;
         });
-        console.log(this.options, " this.options");
       } else {
         if (Data.ParamInfoList.length > 0) {
           Data.ParamInfoList.forEach((D, i) => {

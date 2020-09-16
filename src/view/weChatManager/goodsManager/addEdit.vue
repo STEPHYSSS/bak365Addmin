@@ -1141,7 +1141,6 @@ export default {
       done();
     },
     selectGoods(index) {
-      console.log(index);
       this.goodsShow = true;
       this.goodsNormsIndex = index;
     },
@@ -1236,7 +1235,6 @@ export default {
       addScroll(".el-dialog__body");
     },
     upLoadImgsList(imgs) {
-      // console.log(imgs,'11111')
       // 图片集
       let arr = [];
       imgs.forEach(D => {
