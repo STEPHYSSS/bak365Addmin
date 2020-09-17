@@ -13,7 +13,7 @@
         </el-table-column>
         <el-table-column label="是否默认" align="center">
           <template slot-scope="scope">
-            <span>{{scope.row.IsDefault}}</span>
+            <span>{{scope.row.IsDefault | isDef}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
@@ -48,12 +48,7 @@
               <el-input v-model="ruleForm.Name" :rules="rules.Name" style="width:150px"></el-input>
             </el-form-item>
             <el-form-item label="是否默认">
-              <el-switch
-               v-model="defColor"
-               @change = "changeDef"
-               active-color="#13ce66"
-               inactive-color="#dcdfe6">
-               </el-switch>
+              <el-switch @change="test" on-value="1" off-value="0" v-model="ruleForm.value1"></el-switch>
             </el-form-item>
           </div>
         </el-form>
@@ -76,9 +71,9 @@ export default {
       ruleForm: {
         Colour: "#CAEACC", //默认颜色
         Name: "", //配色方案
-        SID:''
+        SID:'',
+        value1:'1'
       },
-      defColor:'1',
       dialogFormVisible: false,
       rules: {
         Name: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -109,7 +104,7 @@ export default {
             Action: "SetStyle",
             Name: this.ruleForm.Name,
             Colour: this.ruleForm.Colour,
-            IsDefault: "1",
+            IsDefault: this.ruleForm.value1 === true ? '1':'0',
             SID:this.ruleForm.SID ? this.ruleForm.SID:''
           },
           "MShopOpera"
@@ -121,10 +116,9 @@ export default {
            this.$message.error(error);
       }
     },
-    changeDef(val){
-         let abc= val === true ? 1 : 0;
-          this.defColor =  abc
-         console.log(this.IsDefault)
+    test (val) {
+      console.log(val)
+      this.ruleForm.value1 = val;
     },
     // 编辑
     editColor(row){
@@ -157,6 +151,11 @@ export default {
       }
     },
   },
+  filters:{
+    isDef(val){
+      return val == '1' ? '是':'否'
+    }
+  }
 };
 </script>
 

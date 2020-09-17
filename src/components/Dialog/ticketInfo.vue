@@ -47,7 +47,6 @@ export default {
     };
   },
   created() {
-    this.getTicket();
   },
   methods: {
     async getTicket() {

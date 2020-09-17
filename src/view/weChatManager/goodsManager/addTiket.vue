@@ -144,7 +144,34 @@
     <!-- 选择商品弹窗 -->
     <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods>
     <!-- 选择电子券弹窗 -->
-    <TicketInfo :showTicket="showTicket" @changeDigTicket="changeDigTicket" ref="TicketInfoList"></TicketInfo>
+    <el-dialog class="dialogTicketFa" title="选择电子劵" :visible.sync="dialogVisible" width="600px">
+    <span>名称搜索</span>
+    <el-input
+      v-model="tiketName"
+      placeholder="请输入"
+      @keyup.enter="searchName"
+      style="margin-right:10px;width:180px"
+    ></el-input>
+    <el-table
+      ref="multipleTable"
+      :data="tiketList"
+      tooltip-effect="dark"
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column prop="TypeNo" label="编号" align="center"></el-table-column>
+      <el-table-column prop="TypeName" label="名称" align="center"></el-table-column>
+      <el-table-column prop="Price" label="售价" align="center"></el-table-column>
+      <el-table-column prop="TakeMoney" label="面额" align="center"></el-table-column>
+      <el-table-column prop="TakeDisc" label="折扣" align="center"></el-table-column>
+    </el-table>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="confirmEnd">确 定</el-button>
+    </span>
+  </el-dialog>
+    <!-- <TicketInfo :showTicket="showTicket" @changeDigTicket="changeDigTicket" ref="TicketInfoList"></TicketInfo> -->
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left:20px" @click="preserveFun">保存</el-button>
@@ -176,7 +203,7 @@ export default {
       fileListUpList: [], // 显示在页面的商品图片(多张)
       fileListUpMain: [], // 显示在页面的商品图片（单张）
       goodsShow: false, // 控制商品弹框显示
-      showTicket: false, //控制电子劵信息弹框显示
+      dialogVisible: false, //控制电子劵信息弹框显示
       stockTypeList: [
         // 库存类型
         { label: "不使用库存", value: "0" },
@@ -201,7 +228,9 @@ export default {
         SalePrice: [
           { required: true, message: "请输入商品售价", trigger: "blur" }
         ]
-      }
+      },
+      tiketList:[],//电子券列表
+      tiketName:''
     };
   },
   created() {},
@@ -232,8 +261,29 @@ export default {
     },
     // 选择电子券
     clickTicket() {
-      this.showTicket = true;
+      this.dialogVisible = true;
+      this.getTicket();
     },
+    async getTicket() {
+      try {
+        let {Data} = await getLists(
+          { Action: "GetTicketList", TypeName: this.tiketName },
+          "MProdOpera"
+        );
+        this.tiketList = Data.TicketList
+        console.log(Data.TicketList)
+      } catch (error) {
+        this.$message.error(error);
+      }
+    },
+    handleSelectionChange(val){
+      
+    },
+    confirmEnd(){
+      this.dialogVisible = false;
+      console.log(val)
+    },
+    // 电子券弹窗结束
     changeDigTicket(bool) {
       this.showTicket = bool;
     },
