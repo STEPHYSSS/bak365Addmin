@@ -26,7 +26,6 @@
             @keyup.enter.native="searchName"
           >
             <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>
-            <!--            suffix-icon="el-icon-search"-->
           </el-input>
           <el-button
             size="small"
@@ -46,7 +45,7 @@
       :disabled="loading"
     >添加优惠券</el-button>
 
-    <el-table :data="data" v-loading="loading" style="width: 100%;margin-bottom:25px">
+    <el-table :data="data" v-loading="loading" style="width: 100%;">
       <el-table-column label="商品名称" width="300">
         <template slot-scope="scoped">
           <el-row>
@@ -123,8 +122,19 @@
             >小程序码</el-button>
           </el-popover>
         </template>
-      </el-table-column>
+      </el-table-column>      
     </el-table>
+    <div class="block" v-if="TotalList">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="TotalList">
+      </el-pagination>
+    </div>
     <!-- <QRCode :newWidth="newWidth" :newText="code"></QRCode> -->
 
     <!--    <Pagination :page="page" @change_page="get_list" style="float: right;margin-top:30px"></Pagination>-->
@@ -149,6 +159,9 @@ export default {
   components: { Pagination, Del, ModifyCate, CodeImg, goodType, QRCode },
   data() {
     return {
+      TotalList:0,//分页总数
+      currentPage: 1,
+      pageSize:10,
       defaultImg: 'this.src="' + require("../../../assets/img/logo.png") + '"',
       loading: true,
       search: {
@@ -165,7 +178,7 @@ export default {
       // 点击当前行的index
       current_index: "",
       current_SID: "",
-      page: { total: 100, current_page: 1 },
+      
       data: [],
       // 商品类别
       potionList: [],
@@ -192,6 +205,14 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getList(val);
+        console.log(`当前页: ${val}`);
+      },
     clicCode(index) {
       this.currentIndexCode = index;
     },
@@ -204,7 +225,7 @@ export default {
       this.loading = true;
       try {
         let obj = {};
-        Object.assign(obj, { Page: this.page.current_page });
+        Object.assign(obj, { Page: this.currentPage });
         Object.assign(obj, this.search);
         let api = this.currentGoods ? "GetProdInfoList" : "GetTicketList";
         let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
@@ -215,6 +236,7 @@ export default {
           ? data.Data.Prod_InfoList
           : data.Data.TicketList;
         let setImg = this.currentGoods ? "Img" : "ImgList";
+        this.TotalList = data.Data.DataCount;
         this.data.forEach(D => {
           D.ImgList = D[setImg] ? D[setImg].split(",") : [];
           D.ImgList.forEach((data, index) => {
@@ -352,7 +374,13 @@ export default {
 .container-fluid {
   min-width: 1035px;
 }
-
+.block{
+  background: #fff;
+  text-align: right;
+  height: 50px;
+  box-sizing: border-box;
+  padding: 10px;
+}
 .goodManager {
   .marginBottom {
     margin-bottom: 20px;

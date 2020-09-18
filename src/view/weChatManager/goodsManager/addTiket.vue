@@ -13,11 +13,14 @@
         <goodType @changeGoodType="changeGoodType" ref="goodType"></goodType>
       </el-form-item>
       <el-form-item label="电子劵">
-        <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
+        <el-input readonly v-model="ruleForm.ProdNo" placeholder="请选择电子劵"></el-input>
         <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket">...</el-button>
         <div style="color:#999">只可用此设置的电子劵购买此商品</div>
       </el-form-item>
-      <el-form-item label="商品编号" prop="ProdNo">
+      <el-form-item label="商品名称" prop="Name">
+        <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
+      </el-form-item>
+      <!-- <el-form-item label="商品编号" prop="ProdNo">
         <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请填写商品编号"></el-input>
         <el-button
           type="primary"
@@ -26,10 +29,10 @@
           @click="selectGoods(null)"
           v-if="!$route.query.SID"
         >...</el-button>
-      </el-form-item>
-      <el-form-item label="商品名称" prop="Name">
+      </el-form-item> -->
+      <!-- <el-form-item label="商品名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="商品售价" prop="SalePrice">
         <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>¥
       </el-form-item>
@@ -142,7 +145,7 @@
       </el-form-item>
     </el-form>
     <!-- 选择商品弹窗 -->
-    <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods>
+    <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
     <!-- 选择电子券弹窗 -->
     <el-dialog class="dialogTicketFa" title="选择电子劵" :visible.sync="dialogVisible" width="600px">
     <span>名称搜索</span>
@@ -155,11 +158,10 @@
     <el-table
       ref="multipleTable"
       :data="tiketList"
-      tooltip-effect="dark"
+      highlight-current-row
       style="width: 100%"
-      @selection-change="handleSelectionChange"
+      @current-change="handleCurrentChange"
     >
-      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column prop="TypeNo" label="编号" align="center"></el-table-column>
       <el-table-column prop="TypeName" label="名称" align="center"></el-table-column>
       <el-table-column prop="Price" label="售价" align="center"></el-table-column>
@@ -170,7 +172,7 @@
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="confirmEnd">确 定</el-button>
     </span>
-  </el-dialog>
+    </el-dialog>
     <!-- <TicketInfo :showTicket="showTicket" @changeDigTicket="changeDigTicket" ref="TicketInfoList"></TicketInfo> -->
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
@@ -233,36 +235,37 @@ export default {
       tiketName:''
     };
   },
-  created() {},
+  created() {
+    this.getTicket();
+  },
   methods: {
     changeGoodType(arr) {
       //类别
       this.ruleForm.CateSID = arr;
     },
     // 选择商品
-    sureGood(val) {// 获取的商品的名字和编号
-      this.goodsShow = false;
-      if (this.goodsNormsIndex === null) {
-        this.ruleForm.ProdNo = val.ProdNo;
-        this.ruleForm.Name = val.ProdName;
-      } else {
-        // 给当前的 商品规格编号加 禁止
-        // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})
-        this.ruleForm.SpecList[this.goodsNormsIndex].ProdNo = val.ProdNo;
-        // this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
-      }
-    },
-    changeDig(bool) {
-      this.goodsShow = bool;
-    },
-    selectGoods(index) {
-      this.goodsShow = true;
-      this.goodsNormsIndex = index;
-    },
+    // sureGood(val) {// 获取的商品的名字和编号
+    //   this.goodsShow = false;
+    //   if (this.goodsNormsIndex === null) {
+    //     this.ruleForm.ProdNo = val.ProdNo;
+    //     this.ruleForm.Name = val.ProdName;
+    //   } else {
+    //     // 给当前的 商品规格编号加 禁止
+    //     // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})
+    //     this.ruleForm.SpecList[this.goodsNormsIndex].ProdNo = val.ProdNo;
+    //     // this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
+    //   }
+    // },
+    // changeDig(bool) {
+    //   this.goodsShow = bool;
+    // },
+    // selectGoods(index) {
+    //   this.goodsShow = true;
+    //   this.goodsNormsIndex = index;
+    // },
     // 选择电子券
     clickTicket() {
       this.dialogVisible = true;
-      this.getTicket();
     },
     async getTicket() {
       try {
@@ -271,21 +274,30 @@ export default {
           "MProdOpera"
         );
         this.tiketList = Data.TicketList
-        console.log(Data.TicketList)
       } catch (error) {
         this.$message.error(error);
       }
     },
-    handleSelectionChange(val){
-      
+    handleCurrentChange(val) {
+      this.ruleForm.ProdNo = val.TypeNo;
+      this.ruleForm.Name = val.TypeName;
     },
     confirmEnd(){
       this.dialogVisible = false;
-      console.log(val)
     },
     // 电子券弹窗结束
     changeDigTicket(bool) {
       this.showTicket = bool;
+    },
+    changeTasteList(id, index) {
+      // 商品标签id
+      if (index === 0) {
+        // 商品标签id
+        this.ruleForm.Tag = id;
+      } else if (index === 3) {
+        // console.log(id)
+        this.ruleForm.AccessoriesInfo = id;
+      }
     },
     // 图片
     upLoadImgsList(imgs) {
@@ -314,7 +326,7 @@ export default {
           try {
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
-            // Object.assign(obj, { Action: "SetProdInfo" });
+            Object.assign(obj, { Action: "SetProdInfo" });
             obj.CateSID =
               typeof obj.CateSID !== "string" && obj.CateSID
                 ? obj.CateSID.join(",")
@@ -363,7 +375,7 @@ export default {
               obj.FinHour =
                 this.isAdvanceTime === "1" ? obj.FinHour * 24 : obj.FinHour;
             }
-            // await getLists(obj, "MProdOpera");
+            await getLists(obj, "MProdOpera");
             this.$router.push("/weChat/manager/goodSetting");
             this.$message.success("操作成功");
           } catch (e) {
