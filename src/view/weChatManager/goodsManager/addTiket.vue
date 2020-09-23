@@ -20,19 +20,6 @@
       <el-form-item label="商品名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="商品编号" prop="ProdNo">
-        <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请填写商品编号"></el-input>
-        <el-button
-          type="primary"
-          style="margin-left:10px"
-          size="medium"
-          @click="selectGoods(null)"
-          v-if="!$route.query.SID"
-        >...</el-button>
-      </el-form-item> -->
-      <!-- <el-form-item label="商品名称" prop="Name">
-        <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
-      </el-form-item> -->
       <el-form-item label="商品售价" prop="SalePrice">
         <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>¥
       </el-form-item>
@@ -144,9 +131,6 @@
         <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
       </el-form-item>
     </el-form>
-    <!-- 选择商品弹窗 -->
-    <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
-    <!-- 选择电子券弹窗 -->
     <el-dialog class="dialogTicketFa" title="选择电子劵" :visible.sync="dialogVisible" width="600px">
     <span>名称搜索</span>
     <el-input
@@ -173,7 +157,6 @@
       <el-button type="primary" @click="confirmEnd">确 定</el-button>
     </span>
     </el-dialog>
-    <!-- <TicketInfo :showTicket="showTicket" @changeDigTicket="changeDigTicket" ref="TicketInfoList"></TicketInfo> -->
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left:20px" @click="preserveFun">保存</el-button>
@@ -215,7 +198,8 @@ export default {
         BuyTimeBool: false // 购买时间
       },
       ruleForm: {
-        PayType: ["1", "2"]
+        PayType: ["1", "2"],
+        ProdType:'1',//电子券类型
       },
       rules: {
         ProdNo: [ruleText.ProdNo(this)],
@@ -243,26 +227,6 @@ export default {
       //类别
       this.ruleForm.CateSID = arr;
     },
-    // 选择商品
-    // sureGood(val) {// 获取的商品的名字和编号
-    //   this.goodsShow = false;
-    //   if (this.goodsNormsIndex === null) {
-    //     this.ruleForm.ProdNo = val.ProdNo;
-    //     this.ruleForm.Name = val.ProdName;
-    //   } else {
-    //     // 给当前的 商品规格编号加 禁止
-    //     // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})
-    //     this.ruleForm.SpecList[this.goodsNormsIndex].ProdNo = val.ProdNo;
-    //     // this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
-    //   }
-    // },
-    // changeDig(bool) {
-    //   this.goodsShow = bool;
-    // },
-    // selectGoods(index) {
-    //   this.goodsShow = true;
-    //   this.goodsNormsIndex = index;
-    // },
     // 选择电子券
     clickTicket() {
       this.dialogVisible = true;
@@ -325,7 +289,6 @@ export default {
         } else {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
             obj.CateSID =
               typeof obj.CateSID !== "string" && obj.CateSID

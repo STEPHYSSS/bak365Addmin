@@ -55,7 +55,10 @@
             <el-col :span="12" class="goodInfoRight">
               <!--              <div>{{scoped.row.SID}}</div>-->
               <div>{{currentGoods?scoped.row.Name:scoped.row.Name}}</div>
-              <div style="color:red;margin-top:10px">¥{{scoped.row.SalePrice}}</div>
+              <div style="color:red;margin-top:10px">
+                <span>¥{{scoped.row.SalePrice}}</span>
+                <span>{{scoped.row.ProdType | typeTip}}</span>
+              </div>
             </el-col>
           </el-row>
         </template>
@@ -160,7 +163,7 @@ export default {
   data() {
     return {
       TotalList:0,//分页总数
-      currentPage: 1,
+      currentPage: 0,
       pageSize:10,
       defaultImg: 'this.src="' + require("../../../assets/img/logo.png") + '"',
       loading: true,
@@ -209,6 +212,7 @@ export default {
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
+        console.log(typeof(val))
         this.currentPage = val;
         this.getList(val);
         console.log(`当前页: ${val}`);
@@ -225,7 +229,7 @@ export default {
       this.loading = true;
       try {
         let obj = {};
-        Object.assign(obj, { Page: this.currentPage });
+        Object.assign(obj, { Page: this.currentPage - 1 });
         Object.assign(obj, this.search);
         let api = this.currentGoods ? "GetProdInfoList" : "GetTicketList";
         let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
@@ -250,6 +254,7 @@ export default {
         });
         this.loading = false;
       } catch (e) {
+        this.$message.error(e)
         this.loading = false;
       }
     },
@@ -358,6 +363,15 @@ export default {
       this.$router.push("/weChat/manager/addTiket");
     }
 
+  },
+  filters:{
+    typeTip(val){
+      if(val == 0){
+        return '普通商品'
+      }else{
+        return '电子券'
+      }
+    }
   },
   mounted() {},
   watch: {
