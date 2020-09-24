@@ -12,16 +12,15 @@
       <el-form-item label="类别" prop="CateSID">
         <goodType @changeGoodType="changeGoodType" ref="goodType"></goodType>
       </el-form-item>
-      <el-form-item label="电子劵">
+      <el-form-item label="电子劵编号">
         <el-input readonly v-model="ruleForm.ProdNo" placeholder="请选择电子劵"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket">...</el-button>
-        <div style="color:#999">只可用此设置的电子劵购买此商品</div>
+        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket" v-if="!$route.query.SID">...</el-button>
       </el-form-item>
-      <el-form-item label="商品名称" prop="Name">
+      <el-form-item label="电子券名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
       </el-form-item>
-      <el-form-item label="商品售价" prop="SalePrice">
-        <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>¥
+      <el-form-item label="面值" prop="SalePrice">
+        <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
       </el-form-item>
       <el-form-item label="商品描述" prop="Describe">
         <el-input
@@ -220,9 +219,59 @@ export default {
     };
   },
   created() {
-    this.getTicket();
+    this.tiketInfo();
+    if(this.$route.query.SID){
+      
+    }else{
+      this.getTicket();
+    }
   },
   methods: {
+    async tiketInfo(){//获取详情
+      if(this.$route.query.SID){
+        try {
+          let {Data} = await getLists(
+            { Action: "GetProdInfo", SID: this.$route.query.SID,ProdType: '1' },
+            "MProdOpera"
+          );
+          this.ruleForm = Data.ProdInfo;
+          // 类别
+          this.ruleForm.CateSID = this.ruleForm.CateSID ? this.ruleForm.CateSID.split(",") : this.ruleForm.CateSID;
+          this.$refs.goodType.value = this.ruleForm.CateSID;
+          // 支付方式
+          this.ruleForm.PayType = this.ruleForm.PayType ? this.ruleForm.PayType.split(",") : [];
+          // 购买时间
+          if (this.ruleForm.BuyTime) {
+            this.assistRuleForm.BuyTimeBool = true;
+            this.ruleForm.BuyTime = this.ruleForm.BuyTime ? this.ruleForm.BuyTime.split(",") : [];
+          }
+          // 主图片和商品图片
+          this.fileListUpList = this.ruleForm.ImgList ? ImgList(this.ruleForm.ImgList) : [];
+          this.fileListUpMain = this.ruleForm.Img ? ImgList(this.ruleForm.Img) : [];
+          // 富文本
+          let Features = $.base64.atob(this.ruleForm.Features, "utf8");
+          let ImportantNotes = $.base64.atob(
+            this.ruleForm.ImportantNotes,
+            "utf8"
+          );
+
+          Features = Features.replace(
+            /src="Files/g,
+            `src="${process.env.Prefix}Files`
+          );
+          ImportantNotes = ImportantNotes.replace(
+            /src="Files/g,
+            `src="${process.env.Prefix}Files`
+          );
+
+          this.$refs.Features.setUEContent(Features);
+          this.$refs.ImportantNotes.setUEContent(ImportantNotes);
+          } catch (error) {
+            this.$message.error(error);
+          }
+        }      
+    },
+
     changeGoodType(arr) {
       //类别
       this.ruleForm.CateSID = arr;
@@ -365,6 +414,6 @@ export default {
 .addEditGoods .el-input,
 .el-input-number,
 .el-textarea {
-  width: 217px;
+  width: 300px;
 }
 </style>

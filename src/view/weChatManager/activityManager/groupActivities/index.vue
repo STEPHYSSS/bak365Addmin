@@ -163,30 +163,30 @@
           <el-option label="关闭" value="0">关闭</el-option>
         </el-select>
       </el-form-item> -->
-      <el-form-item label="团上线" prop="MaxGroupCnt">
-        最多可开
+      <el-form-item label="团上限" prop="MaxGroupCnt">
+        <em class="elText">最多可开</em>
         <p class="Inpwidth">
           <el-input v-model="ruleForm.MaxGroupCnt"></el-input>
-        </p>个团
+        </p><em class="elText">个团</em>
       </el-form-item>
       <el-form-item label="拼团条件" prop="GroupNum">
-        凑齐
+        <em class="elText">凑齐</em>
         <p class="Inpwidth">
           <el-input v-model="ruleForm.GroupNum"></el-input>
-        </p>人可成团
+        </p><em class="elText">人可成团</em>
         <span class="fontColor">成团人数只可设置一次，请谨慎填写</span>
       </el-form-item>
       <el-form-item label="每人限购" prop="MaxBuyCnt">
-        每人可购买
+        <em class="elText">每人可购买</em>
         <p class="Inpwidth">
           <el-input v-model="ruleForm.MaxBuyCnt"></el-input>
-        </p>件
+        </p><em class="elText">件</em>
       </el-form-item>
       <el-form-item label="有效期" prop="ValidTime">
-        个人拼团有效期
+        <em class="elText">个人拼团有效期</em>
         <p class="Inpwidth">
           <el-input v-model="ruleForm.ValidTime"></el-input>
-        </p>小时
+        </p><em class="elText">小时</em>
       </el-form-item>
       <el-form-item label="虚拟成团" prop="Virtual">
         <el-radio v-model="ruleForm.Virtual" label="0">未开启</el-radio>

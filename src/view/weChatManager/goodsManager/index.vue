@@ -6,11 +6,8 @@
         <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button>
         <el-button type="primary" size="small" @click="addGood">添加商品</el-button>
         <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
-        <!-- <el-checkbox v-model="search.Status" style="margin-left:15px">显示停用商品</el-checkbox> -->
-        <!--        <span>当前共上传{{this.data.length}}个商品</span>-->
       </el-col>
-      <el-col :span="13">
-        
+      <el-col :span="13">        
         <div style="float: right">
           类别：
           <goodType
@@ -36,17 +33,9 @@
         </div>
       </el-col>
     </el-row>
-    <el-button
-      v-if="!currentGoods"
-      type="primary"
-      size="small"
-      @click="addGood"
-      class="marginBottom"
-      :disabled="loading"
-    >添加优惠券</el-button>
 
     <el-table :data="data" v-loading="loading" style="width: 100%;">
-      <el-table-column label="商品名称" width="300">
+      <el-table-column label="商品名称" width="300" align="center">
         <template slot-scope="scoped">
           <el-row>
             <el-col :span="12" class="goodsInfo">
@@ -57,13 +46,13 @@
               <div>{{currentGoods?scoped.row.Name:scoped.row.Name}}</div>
               <div style="color:red;margin-top:10px">
                 <span>¥{{scoped.row.SalePrice}}</span>
-                <span>{{scoped.row.ProdType | typeTip}}</span>
+                <span v-if="currentGoods">{{scoped.row.ProdType | typeTip}}</span>
               </div>
             </el-col>
           </el-row>
         </template>
       </el-table-column>
-      <el-table-column prop="ProdNo" label="商品编号"></el-table-column>
+      <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
       <!--      <el-table-column-->
       <!--        label="商品类型">-->
       <!--        <template slot-scope="scoped">-->
@@ -71,22 +60,23 @@
       <!--          <span v-else>&#45;&#45;</span>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="库存">
+      <el-table-column label="库存" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.StoreQty>0">{{scoped.row.StoreQty}}</span>
           <span v-else>不限</span>
         </template>
       </el-table-column>
-      <el-table-column label="下架">
+      <el-table-column label="下架" align="center">
         <template slot-scope="scoped">
-          <el-checkbox v-model="scoped.row.State" @change="changeEnable($event,scoped.row)"></el-checkbox>
+          <el-switch v-model="scoped.row.State" active-text="上架" inactive-text="下架" @change="changeEnable($event,scoped.row)"></el-switch>
+          <!-- <el-checkbox v-model="scoped.row.State" @change="changeEnable($event,scoped.row)"></el-checkbox> -->
         </template>
       </el-table-column>
       <!--      <el-table-column-->
       <!--        prop="StoreQty"-->
       <!--        label="商品类别">-->
       <!--      </el-table-column>-->
-      <el-table-column width="300" label="操作">
+      <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">
           <el-popover placement="left" v-model="scoped.row.visibleUrl">
             <el-input
@@ -228,17 +218,15 @@ export default {
     async getList() {
       this.loading = true;
       try {
-        let obj = {};
-        Object.assign(obj, { Page: this.currentPage - 1 });
-        Object.assign(obj, this.search);
-        let api = this.currentGoods ? "GetProdInfoList" : "GetTicketList";
-        let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
-        Object.assign(obj, { Action: api });
-        let data = await getLists(obj, Opera);
-
-        this.data = this.currentGoods
-          ? data.Data.Prod_InfoList
-          : data.Data.TicketList;
+        let data = await getLists(
+          {
+            Action: "GetProdInfoList",
+            Status:this.search.Status,
+            CateNo:this.search.CateNo,
+            Name:this.search.Name,
+            Page: this.currentPage - 1           
+          }, "MProdOpera")
+        this.data = data.Data.Prod_InfoList;
         let setImg = this.currentGoods ? "Img" : "ImgList";
         this.TotalList = data.Data.DataCount;
         this.data.forEach(D => {
@@ -248,7 +236,6 @@ export default {
           });
           this.$set(D, "State", D.State === "0" ? true : false);
         });
-        // console.log(this.data, 777);
         this.data.forEach(D => {
           D.codeUrl = this.phoneUrlGood + D.SID + "?AppNo=" + this.AppNoMy;
         });
@@ -260,7 +247,7 @@ export default {
     },
     async changeEnable(bool, row) {
       // 是否启用 bool = true 为下架
-      let State = bool === true ? 0 : 1;
+      let State = bool === true ? 1 : 0;
       try {
         let httpApi = this.currentGoods ? "SetProdState" : "SetSaleState";
         let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
@@ -293,27 +280,24 @@ export default {
       val.visibleUrl = false;
     },
     editRowGoods(row) {
-      // 编辑
-      // 商品编号
-      if (this.currentGoods) {
-        this.$router.push({
-          path: "/weChat/manager/goodEdit",
-          query: { SID: row.SID }
-        });
-      } else {
-        this.$router.push({
-          path: "/weChat/manager/couponEdit",
-          query: { SID: row.SID }
-        });
-      }
+      // 编辑 0普通商品 1电子券
+        if(row.ProdType == '0'){
+          this.$router.push({
+            path: "/weChat/manager/goodEdit",
+            query: { SID: row.SID }
+          });
+        }else{
+          this.$router.push({
+            path: "/weChat/manager/addTiket",
+            query: { SID: row.SID }
+          });
+        }
     },
     viewEvaluate(row) {
       this.$router.push({
         path: "/weChat/manager/userEvaluate",
         query: { SID: row.SID }
       });
-      // let routeData = this.$router.resolve({path: '/weChat/manager/userEvaluate', query: {SID: row.SID}})
-      // window.open(routeData.href, '_blank');
     },
     delRow(row, index) {
       this.show = true;
@@ -344,11 +328,7 @@ export default {
       this.getList();
     },
     addGood() {//添加商品按钮和添加优惠券按钮
-      if (this.currentGoods) {
-        this.$router.push({ path: "/weChat/manager/goodAdd" });
-      } else {
-        this.$router.push({ path: "/weChat/manager/couponAdd" });
-      }
+      this.$router.push({ path: "/weChat/manager/goodAdd" });
     },
     addCoupon() {// 添加优惠券
       this.$router.push("/weChat/manager/couponAdd");

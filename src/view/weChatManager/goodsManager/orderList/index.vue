@@ -1,7 +1,8 @@
 <template>
   <!-- 订单列表 -->
   <div class="orderList-style">
-    <div style="margin-bottom:20px;">
+    <!-- <div style="margin-bottom:20px;">
+      <span>订单状态：</span>
       <el-select
         v-model="search.State"
         placeholder="请选择订单状态"
@@ -16,6 +17,7 @@
           :value="item.value"
         ></el-option>
       </el-select>
+      <span>支付类型：</span>
       <el-select
         v-model="search.PayType"
         placeholder="请选择支付类型"
@@ -30,7 +32,7 @@
           :value="item.value"
         ></el-option>
       </el-select>
-
+      <span>配送方式：</span>
       <el-select
         v-model="search.DeliveryType"
         placeholder="请选择配送方式"
@@ -45,7 +47,7 @@
           :value="item.value"
         ></el-option>
       </el-select>
-
+      <span>开始时间：</span>
       <el-date-picker
         style="margin-left:5px"
         v-model="search.searchTime"
@@ -56,13 +58,75 @@
         @change="changePicker"
         value-format="yyyy-MM-dd HH:mm:ss"
       ></el-date-picker>
-
+      <span>订单编号：</span>
       <el-input placeholder="查询订单编号" v-model="search.SID" class="input-with-select">
         <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
       </el-input>
+      <span>手机号：</span>
       <el-input placeholder="查询手机手机号" v-model="search.Mobile" class="input-with-select">
         <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
       </el-input>
+    </div>-->
+    <div style="margin-bottom:20px;">
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <span>订单编号：</span>
+          <el-input placeholder="查询订单编号" v-model="search.SID" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="6">
+          <span>订单状态：</span>
+          <el-select
+            v-model="search.State"
+            placeholder="请选择订单状态"
+            clearable
+            @change="changeState"
+            class="selectSearch"
+          >
+            <el-option
+              v-for="item in StateList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <span>支付类型：</span>
+          <el-select
+            v-model="search.PayType"
+            placeholder="请选择支付类型"
+            clearable
+            @change="changeState"
+            style="margin-left:5px"
+          >
+            <el-option
+              v-for="item in PayTypeList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="6">
+          <span>配送方式：</span>
+          <el-select
+            v-model="search.DeliveryType"
+            placeholder="请选择配送方式"
+            clearable
+            @change="changeState"
+            style="margin-left:5px"
+          >
+            <el-option
+              v-for="item in DeliveryTypeList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column prop="SID" label="单号"></el-table-column>
@@ -102,13 +166,13 @@ export default {
   data() {
     return {
       search: {
-        searchTime: ""
+        searchTime: "",
       },
       dataList: [],
       StateList: stateLists,
       loading: true,
       PayTypeList: payTypeLists,
-      DeliveryTypeList: deliveryTypeLists
+      DeliveryTypeList: deliveryTypeLists,
     };
   },
   components: {},
@@ -147,8 +211,8 @@ export default {
     viewRow(val) {
       // console.log(val,'val')
       this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID);
-    }
-  }
+    },
+  },
 };
 </script>
 

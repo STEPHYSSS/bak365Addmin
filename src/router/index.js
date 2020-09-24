@@ -103,15 +103,16 @@ export const asyncRouterMap = [
             return c('router-view')
           }
         },
-        redirect: '/weChat/manager/couponSetting',
+        redirect: '/weChat/manager/systemSet',
         children: [
-          {//券销售设置
-            path: 'couponSetting',
-            meta: {
-              label: '券销售设置'
-            },
-            component: goodsManager
-          },{//优惠券添加
+          // {//券销售设置
+          //   path: 'couponSetting',
+          //   meta: {
+          //     label: '券销售设置'
+          //   },
+          //   component: goodsManager
+          // },
+          {//优惠券添加
             path: 'couponAdd',
             isHidden: true,
             meta: {
