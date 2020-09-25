@@ -535,7 +535,7 @@ export default {
       loading: false,
       optionsNorms: [
         { label: "单规格商品", value: "1" },
-        { label: "单规格商品-不同种类", value: "3" },
+        { label: "多尺寸商品", value: "3" },
         { label: "多规格商品", value: "2" }
       ],
       ruleForm: {

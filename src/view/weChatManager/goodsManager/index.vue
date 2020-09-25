@@ -205,7 +205,6 @@ export default {
         console.log(typeof(val))
         this.currentPage = val;
         this.getList(val);
-        console.log(`当前页: ${val}`);
       },
     clicCode(index) {
       this.currentIndexCode = index;

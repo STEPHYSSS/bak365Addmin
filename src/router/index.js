@@ -197,7 +197,7 @@ export const asyncRouterMap = [
           {
             path: 'tasteList',
             meta: {
-              label: '商品口味设置'
+              label: '商品属性设置'
             },
             component: tasteList
           },{
