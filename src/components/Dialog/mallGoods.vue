@@ -102,7 +102,7 @@
     <!-- 多选商品 -->
     <el-dialog
       class="mallGoodsDialog"
-      title="选择商品1111"
+      title="选择商品"
       :visible.sync="dialogVisible"
       width="800px"
       :before-close="handleClose"

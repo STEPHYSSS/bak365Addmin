@@ -54,7 +54,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="setColor">确 定</el-button>
+          <el-button type="primary" @click="colorBtn">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -97,7 +97,13 @@ export default {
       } catch (error) {}
     },
     // 设置主题颜色
-    async setColor() {
+    addColor(){
+      this.dialogFormVisible = true;
+      this.ruleForm.Colour="#CAEACC"; //默认颜色
+      this.ruleForm.Name= ""; //配色方案
+    },
+    // 新增，编辑的提交
+    async colorBtn() {
       try {
         let { Data } = await getLists(
           {
@@ -128,11 +134,6 @@ export default {
     // 选择颜色
     handleChangeColor(val) {
          console.log(val)
-    },
-    addColor(){
-         this.dialogFormVisible = true;
-         this.ruleForm.Colour="#CAEACC"; //默认颜色
-         this.ruleForm.Name= ""; //配色方案
     },
      // 删除     
     async delColor(val) {
