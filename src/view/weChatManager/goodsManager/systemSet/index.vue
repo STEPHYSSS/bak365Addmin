@@ -1,9 +1,9 @@
 <template>
   <div class="systemSet">
     <!-- 系统设置 -->
-    <el-form ref="form" :model="form" :rules="rules" label-width="200px">
-      <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-        <el-tab-pane label="商城设置" name="first">
+    <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+      <el-tab-pane label="商城设置" name="1">
+        <el-form ref="form" :model="form" :rules="rules" label-width="200px">
           <el-form-item label="送货日期(用户取货)">
             <el-input-number
               v-model="form.ScopeDay"
@@ -17,14 +17,15 @@
           </el-form-item>
           <el-form-item label="营业时间段(取货,送货)">
             <el-time-picker
-              is-range
-              v-model="form.businessTime"
-              :clearable="false"
+              v-model="form.StartTime"
               value-format="HH:mm:ss"
-              range-separator="至"
-              start-placeholder="开始时间"
-              end-placeholder="结束时间"
-              placeholder="选择时间范围"
+              placeholder="开始时间"
+            ></el-time-picker>
+            <span style="padding: 0 10px">至</span>
+            <el-time-picker
+              v-model="form.EndTime"
+              value-format="HH:mm:ss"
+              placeholder="结束时间"
             ></el-time-picker>
           </el-form-item>
           <el-form-item label="送货时间间隔(用户取货)">
@@ -47,15 +48,27 @@
               ></el-option>
             </el-select>
           </el-form-item>
-        </el-tab-pane>
-        <el-tab-pane label="分销设置" name="second">
-          <!-- 推广基础设置开始  提现比例（推广订单金额 * 提现比例 =实际返佣金额） 有效期  提现备注-->
+          <el-form-item>
+            <el-button
+              type="primary"
+              size="small"
+              @click="submitSystem"
+              style="margin-bottom: 20px"
+              :loading="btnLoading"
+              >提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <!-- 推广基础设置开始  提现比例（推广订单金额 * 提现比例 =实际返佣金额） 有效期  提现备注-->
+      <el-tab-pane label="分销设置" name="2">
+        <el-form ref="form2" :model="form2" :rules="rules" label-width="200px">
           <el-form-item label="提现日期" prop="DrawingsDate">
             <el-date-picker
               is-range
               @change="change"
               :clearable="false"
-              v-model="form.DrawingsDate"
+              v-model="DrawingsDate"
               value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="至"
@@ -64,12 +77,12 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item label="提现方式" prop="DrawingsType">
-            <el-radio v-model="DrawingsType" label="1">微卡</el-radio>
-            <el-radio v-model="DrawingsType" label="2">支付宝</el-radio>
+            <el-radio v-model="form2.DrawingsType" label="1">微卡</el-radio>
+            <el-radio v-model="form2.DrawingsType" label="2">支付宝</el-radio>
           </el-form-item>
           <el-form-item label="佣金比例">
             <el-input
-              v-model="form.Ratio"
+              v-model="form2.Ratio"
               placeholder="推广订单金额 * 提现比例 =实际返佣金额"
             ></el-input>
             <span style="color: #999"
@@ -78,25 +91,26 @@
           </el-form-item>
           <el-form-item label="返佣核算有效期">
             <!-- 有效期（0表示永久粉丝） -->
-            <el-input v-model="form.ValidDay"></el-input>&nbsp;天
+            <el-input v-model="form2.ValidDay"></el-input>&nbsp;天
           </el-form-item>
           <el-form-item label="返佣核算方式" prop="RatioWay">
             <!-- RatioWay 返佣核算方式  1订单金额核算  2支付金额核算  -->
-            <el-radio v-model="RatioWay" label="1">订单金额</el-radio>
-            <el-radio v-model="RatioWay" label="2">支付金额</el-radio>
+            <el-radio v-model="form2.RatioWay" label="1">订单金额</el-radio>
+            <el-radio v-model="form2.RatioWay" label="2">支付金额</el-radio>
           </el-form-item>
-        </el-tab-pane>
-      </el-tabs>
-      <el-form-item>
-        <el-button
-          type="primary"
-          size="small"
-          @click="submitSystem"
-          style="margin-bottom:20px"
-          :loading="btnLoading"
-        >提交</el-button>
-      </el-form-item>
-    </el-form>
+          <el-form-item>
+            <el-button
+              type="primary"
+              size="small"
+              @click="submitSystem"
+              style="margin-bottom: 20px"
+              :loading="btnLoading"
+              >提交</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -109,18 +123,21 @@ export default {
   name: "systemSetIndex",
   data() {
     return {
-      activeName2: "first",
-      form: {
-        businessTime: [],
-      },
-      DrawingsType: "1", //提现方式
-      RatioWay: "1", //返佣核算方式
-      ValidDay: "", //有效期
+      activeName: "1",
       rules: {},
-      options: [15, 20, 30, 60],
+      form: {}, //商城设置
       btnLoading: false,
+      options: [15, 20, 30, 60],
       optionsRetreat: optionsRetreat,
-      // validity:[15, 20, 30, 60],
+      DrawingsDate:[],
+      form2: {
+        DrawingsStartDate:'',
+        DrawingsEndDate:'',
+        DrawingsType: "1", //提现方式
+        RatioWay: "1", //返佣核算方式
+        ValidDay: "", //有效期
+      }, //分销设置
+      
     };
   },
   created() {
@@ -128,43 +145,58 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(tab, event);
+      console.log(this.activeName)
+     this.getInfo();
     },
     change(val) {
-      let abc = val.toString();
-      this.form.DrawingsDate = abc;
+      this.form2.DrawingsStartDate = val[0];
+      this.form2.DrawingsEndDate = val[1];
     },
     async getInfo() {
       try {
-        let { Data } = await getLists({ Action: "GetBase" }, "MShopOpera");
-        this.form = Data.ShopBase;
-        if (this.form.StartTime !== "" && this.form.EndTime !== "") {
-          this.form.businessTime = [this.form.StartTime, this.form.EndTime];
-        }
-        if (this.form.DrawingsDate) {
-          this.form.DrawingsDate = this.form.DrawingsDate
-            ? this.form.DrawingsDate.split(",")
-            : [];
+        if(this.activeName == '1'){
+          let { Data } = await getLists(
+          { Action: "GetBase", Type: 1 },
+          "MShopOpera"
+          );
+          this.form = Data.ShopBase.SetInfo;
+        }else{
+        let { Data } = await getLists(
+          { Action: "GetBase", Type: 2 },
+          "MShopOpera"
+          );
+          this.form2 = Data.ShopBase.SetInfo;
+          this.DrawingsDate.push(this.form2.DrawingsStartDate,this.form2.DrawingsEndDate)
         }
       } catch (e) {
         this.$message.error(e);
       }
     },
     async submitSystem() {
-      this.form.StartTime = this.form.businessTime[0];
-      this.form.EndTime = this.form.businessTime[1];
-      console.log(JSON.stringify(this.form))
-      // this.btnLoading = true;
-      // try {
-      //   let obj = { Action: "SetBase" };
-      //   Object.assign(obj, this.form);
-      //   await getLists(obj, "MShopOpera");
-      //   this.$message.success("操作成功");
-      //   this.btnLoading = false;
-      // } catch (e) {
-      //   this.$message.error(typeof e == "string" ? e : "请求失败，请重试");
-      //   this.btnLoading = false;
-      // }
+      this.btnLoading = true;
+      try {
+        let obj = {};
+        if (this.activeName == "1") {
+          obj = {
+            Action: "SetBase",
+            SetInfo: JSON.stringify(this.form),
+            Type: this.activeName,
+          };
+          console.log(obj);
+        } else if (this.activeName == "2") {
+          obj = {
+            Action: "SetBase",
+            SetInfo: JSON.stringify(this.form2),
+            Type: this.activeName,
+          };
+        }
+        await getLists(obj, "MShopOpera");
+        this.$message.success("操作成功");
+        this.btnLoading = false;
+      } catch (error) {
+        this.$message.error(typeof e == "string" ? e : "请求失败，请重试");
+        this.btnLoading = false;
+      }
     },
     handleChange() {},
   },

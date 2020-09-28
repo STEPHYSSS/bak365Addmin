@@ -233,7 +233,7 @@ export default {
           D.ImgList.forEach((data, index) => {
             D.ImgList[index] = process.env.Prefix + data;
           });
-          this.$set(D, "State", D.State === "0" ? true : false);
+          this.$set(D, "State", D.State === "1" ? true : false);
         });
         this.data.forEach(D => {
           D.codeUrl = this.phoneUrlGood + D.SID + "?AppNo=" + this.AppNoMy;

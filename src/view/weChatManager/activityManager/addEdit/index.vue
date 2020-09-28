@@ -41,7 +41,7 @@
           <el-table-column prop="OldPrice" label="商品原价¥" align="center"></el-table-column>
           <el-table-column prop="SalePrice" label="活动价格" align="center">
             <!-- prop="Price" -->
-            <template scope="{ row }">
+            <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
@@ -53,7 +53,7 @@
           </el-table-column>
           <el-table-column prop="StoreQty" label="活动商品数量" align="center">
             <!-- prop="Stock" -->
-            <template scope="{ row }">
+            <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
@@ -65,7 +65,7 @@
           </el-table-column>
           <el-table-column prop="SurplusQty" label="活动剩余商品个数" align="center">
             <!-- prop="SurplusQty" -->
-            <template scope="{ row }">
+            <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
