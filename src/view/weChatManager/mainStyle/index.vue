@@ -34,18 +34,16 @@
       <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
         <el-form
           :model="ruleForm"
-          :rules="rules"
           ref="ruleForm"
           style="margin-top:10px"
           :inline="true"
         >
           <div>
             <el-form-item label="颜色标记">
-              <!-- <colorPicker v-model="ruleForm.color" @change="handleChangeColor" /> -->
               <input type="color" v-model="ruleForm.Colour" @change="handleChangeColor" />
             </el-form-item>
             <el-form-item label="配色方案">
-              <el-input v-model="ruleForm.Name" :rules="rules.Name" style="width:150px"></el-input>
+              <el-input v-model="ruleForm.Name" style="width:150px"></el-input>
             </el-form-item>
             <el-form-item label="是否默认">
               <el-switch @change="test" on-value="1" off-value="0" v-model="ruleForm.value1"></el-switch>
@@ -74,10 +72,7 @@ export default {
         SID:'',
         value1:'1'
       },
-      dialogFormVisible: false,
-      rules: {
-        Name: [{ required: true, message: "请输入", trigger: "blur" }],
-      },
+      dialogFormVisible: false
     };
   },
   mounted() {
@@ -101,9 +96,13 @@ export default {
       this.dialogFormVisible = true;
       this.ruleForm.Colour="#CAEACC"; //默认颜色
       this.ruleForm.Name= ""; //配色方案
+      this.ruleForm.SID = "";
     },
     // 新增，编辑的提交
     async colorBtn() {
+      if(this.ruleForm.Name == undefined){
+        return this.$message.error('请输入主题名称')
+      }
       try {
         let { Data } = await getLists(
           {
@@ -116,7 +115,7 @@ export default {
           "MShopOpera"
         );
         this.getColorList();
-        this.$message.success('新增成功');
+        this.$message.success('操作成功')
         this.dialogFormVisible = false;
       } catch (error) {
            this.$message.error(error);

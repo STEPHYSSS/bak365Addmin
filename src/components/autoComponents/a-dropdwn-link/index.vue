@@ -47,8 +47,9 @@ export default {
       currentItemObj: this.currentItem,
       //链接列表
       list: [
-        { url: "", name: "自定义链接", id: 1 },
-        // { url: "https://www.baidu.com", name: "8888888" }
+        // { url: "", name: "自定义链接", id: 1 },
+        { url: "https://www.baidu.com", name: "8888888" },
+        { url:"http://localhost:9000/#/pages/shoppingMall/menu_naixue/menu/menu",name:'点餐页'}
       ]
     };
   },

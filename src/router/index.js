@@ -13,7 +13,9 @@ const goodsManagerAdd = r => require.ensure([], () => r(require('../view/weChatM
 const couponManagerAdd = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addEditCoupon')), 'addEditCoupon')
 const userEvaluate = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/evaluate/userEvaluate')), 'userEvaluate')
 const userEvaluateInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/evaluate/evaluateInfo')), 'userEvaluateInfo')
-const tasteList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/index')), 'tasteList')
+const tasteList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/index')), 'tasteList')//标签、配件
+const newTaste = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/tasteList')), 'newTaste')
+const addTaste = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/addTaste')), 'addTaste')
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
@@ -195,11 +197,18 @@ export const asyncRouterMap = [
             component: addTiket
           },
           {
-            path: 'tasteList',
+            path: 'newTaste',
             meta: {
               label: '商品属性设置'
             },
-            component: tasteList
+            component: newTaste
+          },{
+            path:'addTaste',
+            isHidden: true,
+            meta:{
+              label:'商品属性设置'
+            },
+            component:addTaste
           },{
             path: 'labelList',
             meta: {
