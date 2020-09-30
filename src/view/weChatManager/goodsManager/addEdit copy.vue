@@ -27,6 +27,12 @@
           ></el-option>
         </el-select>
       </el-form-item>
+      <!--      <el-form-item label="商品类型" prop="ProdType">-->
+      <!--        <el-radio-group v-model="ruleForm.ProdType">-->
+      <!--          <el-radio :label="3"  v-if="currentGoods">普通商品</el-radio>-->
+      <!--          <el-radio :label="6"  v-if="!currentGoods">电子券</el-radio>-->
+      <!--        </el-radio-group>-->
+      <!--      </el-form-item>-->
       <el-form-item label="商品编号" v-if="ruleForm.SpecType!=='2'" prop="ProdNo" :key="1">
         <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请填写商品编号"></el-input>
         <el-button
@@ -40,6 +46,10 @@
       <el-form-item label="商品名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
       </el-form-item>
+      <!--      <el-form-item label="商品原价" prop="OldPrice">-->
+      <!--        ¥-->
+      <!--        <el-input-number v-model="ruleForm.OldPrice" controls-position="right" :min="1"></el-input-number>-->
+      <!--      </el-form-item>-->
       <el-form-item label="商品售价" prop="SalePrice" v-if="ruleForm.SpecType==='1'">
         ¥
         <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
@@ -86,9 +96,15 @@
           :fileListUp="fileListUpList"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性" prop="TastName">
-        <el-input v-model="TastName" @focus="onFocus"></el-input>
+      <el-form-item label="商品口味" prop="TastName" v-if="ruleForm.SpecType==='1'" :key="2">
+        <tasteList
+          :Type="2"
+          @changeTaste="changeTasteListFa"
+          ref="tasteListFa"
+          :valueCurrent="ruleForm.TastName"
+        ></tasteList>
       </el-form-item>
+
       <el-form-item label="商品排序" prop="Sort">
         <el-input-number
           v-model="ruleForm.Sort"
@@ -154,6 +170,11 @@
         <el-button type="primary" style="margin-left:10px" size="medium" @click="PickShopFun">...</el-button>
         <div style="color:#999">不填为全选</div>
       </el-form-item>
+      <!--      <el-form-item label="送货区域" prop="AreaInfoName">-->
+      <!--        &lt;!&ndash;        {{AreaInfo}}&ndash;&gt;-->
+      <!--        <el-input readonly v-model="ruleForm.AreaInfoName" placeholder="请选择区域"></el-input>-->
+      <!--        <el-button type="primary" style="margin-left:10px" size="medium" @click="AreaInfoFun">...</el-button>-->
+      <!--      </el-form-item>-->
       <el-form-item label="预定提示" prop="Tip">
         <el-input
           v-model="ruleForm.Tip"
@@ -215,6 +236,19 @@
           placeholder="选择时间范围"
         ></el-time-picker>
       </el-form-item>
+      <!--      <el-form-item label="提货时间限制" prop="DeliverTime">-->
+      <!--        <el-checkbox v-model="assistRuleForm.DeliverTimeBool">启用</el-checkbox>&nbsp;&nbsp;-->
+      <!--        <el-time-picker-->
+      <!--          v-if="assistRuleForm.DeliverTimeBool"-->
+      <!--          is-range-->
+      <!--          v-model="ruleForm.DeliverTime"-->
+      <!--          value-format="HH:mm:ss"-->
+      <!--          range-separator="至"-->
+      <!--          start-placeholder="开始时间"-->
+      <!--          end-placeholder="结束时间"-->
+      <!--          placeholder="选择时间范围">-->
+      <!--        </el-time-picker>-->
+      <!--      </el-form-item>-->
       <el-form-item label="可购买时间" prop="BuyTime">
         <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
         <el-time-picker
@@ -237,6 +271,9 @@
           :allowCreate="false"
           @changeTaste="changeTasteList($event,0)"
         ></tasteList>
+
+        <!--        <tasteList placeholder="请选择口味" :Type="2" ref="tasteList"-->
+        <!--                   @changeTaste="changeTaste($event,index)" :valueCurrent="item.TastName"></tasteList>-->
       </el-form-item>
       <el-form-item label="商品配件" prop="AccessoriesInfo" :key="7">
         <tasteList
@@ -247,11 +284,26 @@
         ></tasteList>
         <div style="color:#999">仅支持普通商品，仅实现于自定义模板</div>
       </el-form-item>
+      <!--      <el-form-item label="配件备注" prop="AccessoriesRemark">-->
+      <!--        <el-input v-model="ruleForm.AccessoriesRemark" placeholder="配件备注"></el-input>-->
+      <!--        <div style="color:#999">用户选择配件时的温馨提示</div>-->
+      <!--      </el-form-item>-->
       <el-form-item label="可用电子劵" prop="TicketInfo">
         <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
         <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket">...</el-button>
         <div style="color:#999">只可用此设置的电子劵购买此商品</div>
       </el-form-item>
+      <!--      <el-form-item label="适用区域" prop="CityInfo">-->
+      <!--        <el-input readonly v-model="ruleForm.CityInfo" placeholder="请选择适用区域"></el-input>-->
+      <!--        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickCityNo">...</el-button>-->
+      <!--      </el-form-item>-->
+      <!--      <el-form-item label="电子券" prop="TicketInfo" v-if="ruleForm.ProdType===6">-->
+      <!--        <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择电子券"></el-input>-->
+      <!--        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicketInfo">...-->
+      <!--        </el-button>-->
+      <!--        <br>-->
+      <!--        该商品包含的电子劵信息（可设置一张或多张）-->
+      <!--      </el-form-item>-->
       <el-form-item label="每人限购" prop="MaxBuyCnt">
         <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
       </el-form-item>
@@ -311,6 +363,17 @@
                 <template slot="prepend">¥</template>
               </el-input>
             </el-form-item>
+
+            <el-form-item class="tasteInputNorms">
+              <tasteList
+                placeholder="请选择口味"
+                :Type="2"
+                ref="tasteList"
+                @changeTaste="changeTaste($event,index)"
+                :valueCurrent="item.TastName"
+              ></tasteList>
+            </el-form-item>
+
             <imgLoad
               :isCoverCurrentImgs="isCoverCurrentImgs"
               :fileListUp="item.Img"
@@ -337,7 +400,19 @@
         </vuedraggable>
 
         <el-button type="info" @click="addGoodsNorms">添加规格项目</el-button>
+        <!--        <el-button type="info" @click="GoodsNorms">查看</el-button>-->
       </fieldset>
+
+      <!--      </el-form-item>-->
+      <!--      <el-form-item label="推荐理由" prop="Recommend">-->
+      <!--        <el-input-->
+      <!--          type="textarea"-->
+      <!--          :rows="3"-->
+      <!--          placeholder="最长支持200个字符"-->
+      <!--          maxlength="200"-->
+      <!--          v-model="ruleForm.Recommend">-->
+      <!--        </el-input>-->
+      <!--      </el-form-item>-->
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
         <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
         <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
@@ -377,6 +452,7 @@
         <el-button type="primary" @click="areaTreeFun">确 定</el-button>
       </div>
     </el-dialog>
+    <!--    :before-close="beforeCloseTicket"-->
     <el-dialog
       class="areaTree TicketDialog"
       :title="currentTicket?'选择电子劵':'选择门店'"
@@ -605,10 +681,9 @@ export default {
       arr.push(i.toString());
     }
     this.datesList = arr;
-    this.getInfo();
   },
   methods: {
-    changeCheckbox(val) {//配送方式
+    changeCheckbox(val) {
       if (val.indexOf("3") > -1) {
         //选择了物流
         this.disabledTakeout = true;
@@ -793,6 +868,11 @@ export default {
       }
     },
     upLoadImgs(imgs, val, index) {
+      // console.log(667676)
+      // let arr = []
+      // imgs.forEach(D => {
+      //   arr.push(D.url)
+      // })
       this.isCoverCurrentImgs = false;
       this.ruleForm.SpecList[index].showImg = imgs;
       this.ruleForm.SpecList[index].Img = [];
@@ -824,6 +904,8 @@ export default {
     },
     changeNorms() {
       this.$refs.ruleForm.clearValidate();
+      // this.$refs.ruleForm.resetFields()
+      // this.$refs.goodType.value = ''
     },
     changeStockType(id) {
       // 库存类型id
@@ -834,6 +916,8 @@ export default {
     },
     // 保存
     preserveFun() {
+      // console.log(this.$refs.Features.getUEContent(), 5555)
+      // console.log(this.$refs.ImportantNotes.getUEContent(), 5555)
       this.$refs["ruleForm"].validate(async valid => {
         if (!valid) {
           return false;
@@ -1204,6 +1288,7 @@ export default {
       this.showDelIcon = false;
     },
     CheckTicketFun() {
+      // console.log(this.currentTicket, 99999);
       let newArr = [];
       if (this.currentTicket) {
         //可用电子券
@@ -1285,19 +1370,6 @@ export default {
       this.checkAllDay = checkedCount === this.datesList.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.datesList.length;
-    },
-    // 获取商品属性设置列表
-    async getInfo() {
-      let { Data } = await getLists(
-        {
-          Action: "GetParamList",
-          Type: "2",
-        },
-        "MBaseOpera"
-      );
-    },
-    onFocus(){//获取到焦点
-    
     }
   },
   watch: {

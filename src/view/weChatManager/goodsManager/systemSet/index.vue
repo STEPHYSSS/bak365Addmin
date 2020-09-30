@@ -48,6 +48,10 @@
               ></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="商城模式">
+            <el-radio v-model="form.radio" label="1">点餐模式</el-radio>
+            <el-radio v-model="form.radio" label="2">自定义模式</el-radio>
+          </el-form-item>
           <el-form-item>
             <el-button
               type="primary"
@@ -125,7 +129,9 @@ export default {
     return {
       activeName: "1",
       rules: {},
-      form: {}, //商城设置
+      form: {
+        radio:"1"
+      }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],
       optionsRetreat: optionsRetreat,

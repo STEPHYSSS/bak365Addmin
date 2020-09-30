@@ -2,27 +2,58 @@
   <div class="tasteList">
     <el-button type="primary" @click="add">新增</el-button>
     <el-table :data="tableData" style="width: 90%; margin-top: 30px">
-      <el-table-column label="商品属性名称" align="center">
+      <el-table-column prop="Name" label="商品属性名称" align="center">
       </el-table-column>
       <el-table-column label="商品属性值" align="center">
+        <template slot-scope="scope">
+          <span v-for="(item,index) in scope.row.AttributeList" :key="index">
+            {{item.Name + ` /`}}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
           <el-button
             v-if="scoped.row.SID"
             type="text"
-            @click="delColor(scoped.row, scoped.$index)"
+            @click="del(scoped.row, scoped.$index)"
             >删除</el-button
           >
           <el-button
             v-if="scoped.row.SID"
             type="text"
-            @click="editColor(scoped.row, scoped.$index)"
+            @click="edit(scoped.row, scoped.$index)"
             >编辑</el-button
           >
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="商品属性信息" :visible.sync="dialogFormVisible">
+      <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+        <el-form-item prop="Name" label="商品属性名"
+          :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
+            <el-input v-model="dynamicValidateForm.Name" style="width:200px"></el-input>
+          </el-form-item>
+        <el-form-item
+          v-for="(domain, index) in dynamicValidateForm.domains"
+          label="商品属性值"
+          :key="index" 
+          :prop="'domains.' + index + '.Name'"
+          :rules="{
+            required: true, message: '域名不能为空', trigger: 'blur'
+          }"
+        >
+          <el-input v-model="domain.Name" style="width:200px"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="addDomain">新增属性值</el-button>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sure">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -31,14 +62,107 @@ export default {
   name: "tasteList",
   data() {
     return {
-         tableData:[]
+      tableData: [],
+      dynamicValidateForm: {
+        domains: [{
+          Name: ''
+        }],
+        Name: ''
+      },
+      eidtSID:'',
+      dialogFormVisible: false,
     };
   },
-  created() {},
+  created() {
+    this.getInfo();
+  },
   methods: {
-     add(){
-          this.$router.push('/weChat/manager/addTaste')
-     }
+    addDomain() {
+        this.dynamicValidateForm.domains.push({
+          Name: '',
+          key: Date.now()
+        });
+      },
+      removeDomain(item) {
+        var index = this.dynamicValidateForm.domains.indexOf(item)
+        if (index !== -1) {
+          this.dynamicValidateForm.domains.splice(index, 1)
+        }
+      },
+    // 列表
+    async getInfo() {
+      let { Data } = await getLists(
+        {
+          Action: "GetParamList",
+          Type: "2",
+        },
+        "MBaseOpera"
+      );
+      this.tableData = Data.ParamInfoList;
+    },
+    add() {//新增
+      this.dialogFormVisible = true;
+    },
+    edit(row){//编辑
+      this.dialogFormVisible = true;
+      this.eidtSID = row.SID;
+      this.detail();
+    },
+    // 详情
+    async detail(){
+      let { Data } = await getLists(
+        {
+          Action: "GetParamInfo",
+          SID:this.eidtSID,
+          Type: "2",
+        },
+        "MBaseOpera"
+      );
+      this.dynamicValidateForm = Data.ParamInfo;
+      this.dynamicValidateForm.domains = Data.ParamList;
+    },
+    // 确定按钮
+    async sure() {
+      this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
+        return {
+          Name: item.Name
+        };
+      });
+      let { Data } = await getLists(
+        {
+          Action: "SetParamInfo",
+          Name: this.dynamicValidateForm.Name,
+          AttributeList: JSON.stringify(this.dynamicValidateForm.domains),
+          Type: "2",
+          SID:this.eidtSID?this.eidtSID:''
+        },
+        "MBaseOpera"
+      );
+      this.getInfo();
+      this.dialogFormVisible = false;
+    },
+    del(row){//删除列表
+    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let { Data } =  getLists(
+            {
+              Action: "RemoveParamInfo",
+              SID:row.SID,
+              Type: "2",
+            },
+            "MBaseOpera"
+          );
+          this.getInfo();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    }
   },
 };
 </script>
