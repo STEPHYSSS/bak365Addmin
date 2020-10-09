@@ -24,7 +24,7 @@
       <el-form-item label="门店电话：" prop="Tel">
         <el-input v-model="form.Tel" placeholder="请输入内容"></el-input>
       </el-form-item>
-      
+
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
@@ -152,7 +152,7 @@ export default {
           { Action: "GetShop", SID: this.$route.query.sid },
           "MShopOpera"
         );
-        this.form = Data.ShopInfo;        
+        this.form = Data.ShopInfo;
         // if (this.form.Type) {
         //   this.checkedType = this.form.Type.indexOf("2") > -1 ? true : false;
         // }
@@ -182,8 +182,8 @@ export default {
           if (this.form.Img) {
             this.form.Img = replacePre(this.form, "Img");
           }
-          if(this.$route.query.sid){
-            this.form.ShopNo = ''
+          if (this.$route.query.sid) {
+            this.form.ShopNo = "";
           }
           // this.form.Type = this.checkedType ? "1,2" : "1";
           let obj = {

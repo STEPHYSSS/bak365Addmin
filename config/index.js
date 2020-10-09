@@ -12,7 +12,7 @@ module.exports = {
         staticPath: '/static/',
         proxyTable: {
             '/api': {
-                target: "http://192.168.0.105:8001",//设置你调用的接口域名和端口号 别忘了加http
+                target: "http://192.168.0.105:8001", //设置你调用的接口域名和端口号 别忘了加http
                 // target: "http://dingtalk.bak365.cn/WeixinNew/",
                 changeOrigin: true,
                 secure: false,

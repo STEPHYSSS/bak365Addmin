@@ -86,12 +86,9 @@
           :fileListUp="fileListUpList"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性">
+      <el-form-item label="商品属性" prop="ParamInfo">
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
-        <el-input
-          type="textarea"
-          v-model="ruleForm.ParamInfo"
-        ></el-input>
+        <el-input type="textarea" v-model="ruleForm.ParamInfo"></el-input>
         <el-button type="primary" style="margin-left:10px" size="medium" @click="chooseTast">...</el-button>
       </el-form-item>
       <el-form-item label="商品排序" prop="Sort">
@@ -408,7 +405,7 @@
         <el-button type="primary" @click="CheckTicketFun">确 定</el-button>
       </div>
     </el-dialog>
-  
+
     <el-dialog title="选择天数（单位/天）" :visible.sync="dialogFormVisible">
       <el-checkbox
         :indeterminate="isIndeterminateDay"
@@ -427,25 +424,38 @@
     <!-- 选择口味弹窗 -->
     <el-dialog title="选择商品属性" :visible.sync="dialogTasteVisible">
       <div class="addScroll">
+        <el-checkbox
+          :indeterminate="isIndeterminate2"
+          v-model="checkAllTast"
+          @change="ChangeTast"
+        >全选</el-checkbox>
+        <el-checkbox-group v-model="checkClickTast" @change="handChange">
+          <el-checkbox
+            :label="item"
+            v-for="item in gridDataTaste"
+            :key="item.SID"
+            style="display:block"
+          >
+            {{item.Name}}&nbsp;:
+            <span
+              v-for="(item2,index) in item.AttributeList"
+              :key="index"
+            >&nbsp;{{item2.Name}}</span>
+          </el-checkbox>
+        </el-checkbox-group>
       </div>
-      <div>
-        <p v-for="(item,index) in gridDataTaste" :key="index" @click="abc(item)">
+      <div slot="footer" class="dialog-footer" style="text-align: center">
+        <el-button @click="showCheckTicket = false">取 消</el-button>
+        <el-button type="primary" @click="sureTaste">确 定</el-button>
+      </div>
+      <!-- <div -->
+      <!-- <p v-for="(item,index) in gridDataTaste" :key="index" @click="abc(item)">
           <span>{{item.Name}}</span>
           <span v-for="(item2,index) in item.AttributeList" :key="index">
             {{item2.Name}}
           </span>
-        </p>
-      </div>
-      <!-- <div>
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="ChangeAll">全选</el-checkbox>
-        <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="ChangeOne">
-          <el-checkbox v-for="(item,index) in gridDataTaste" :label="item.Name" :key="index">{{item.Name}}
-            <el-checkbox v-for="(item2,index) in item.AttributeList" :label="item2.Name" :key="index">{{item2.Name}}</el-checkbox>
-          </el-checkbox>
-          
-        </el-checkbox-group>
-      </div> -->
+      </p>-->
+      <!-- </div> -->
     </el-dialog>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
@@ -484,14 +494,12 @@ export default {
   data() {
     return {
       loading: false,
-      checkAll: false,
-      checkedCities: [],
-      isIndeterminate: true,
-
-
-      dialogTasteVisible:false,//设置商品属性弹窗显示
-      gridDataTaste:[],//设置商品属性table
-      tastArr:[],//设置商品属性选中的数组
+      checkAllTast: false,
+      isIndeterminate2: true,
+      checkClickTast: [], //多选框中选中的属性
+      dialogTasteVisible: false, //设置商品属性弹窗显示
+      gridDataTaste: [], //设置商品属性table
+      tastArr: [], //设置商品属性选中的数组
       optionsNorms: [
         { label: "单规格商品", value: "1" },
         { label: "多尺寸商品", value: "3" },
@@ -595,7 +603,7 @@ export default {
         }
       ],
       isIndeterminate: false,
-      checkAll: false,//门店
+      checkAll: false, //门店
       allCheckList: [],
       pickDateValue: "0",
       pickDateOptions: [
@@ -643,9 +651,10 @@ export default {
     this.getInfo();
   },
   methods: {
-    ChangeAll(){},
-    ChangeOne(){},
-    changeCheckbox(val) {//配送方式
+    ChangeAll() {},
+    ChangeOne() {},
+    changeCheckbox(val) {
+      //配送方式
       if (val.indexOf("3") > -1) {
         //选择了物流
         this.disabledTakeout = true;
@@ -682,7 +691,7 @@ export default {
         }
         this.ruleForm = res[1].Data.ProdInfo;
         this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
-        
+
         if (this.ruleForm.Weeks) {
           this.pickDateValue = "1";
           this.Weeks = this.ruleForm.Weeks.split(",");
@@ -692,9 +701,9 @@ export default {
           this.Dates = this.ruleForm.Dates.split(",");
           this.handleCheckedCitiesChangeDay(this.Dates);
         }
-        this.ruleForm.ParamInfo.forEach(item=>{
-          this.ruleForm.ParamInfo = item.Name+`(`+item.Attribute+`)`
-        })
+        this.ruleForm.ParamInfo.forEach(item => {
+          this.ruleForm.ParamInfo = item.Name + `(` + item.Attribute + `)`;
+        });
         this.ruleForm.CateSID = this.ruleForm.CateSID
           ? this.ruleForm.CateSID.split(",")
           : this.ruleForm.CateSID;
@@ -918,8 +927,8 @@ export default {
             }
             // this.ruleForm.ParamInfo = this.tastArr;
             let tast = [];
-            tast.push(this.tastArr)
-            this.ruleForm.ParamInfo=JSON.stringify(tast)
+            tast.push(this.tastArr);
+            this.ruleForm.ParamInfo = JSON.stringify(tast);
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
@@ -1281,7 +1290,7 @@ export default {
           Name: "",
           SalePrice: "",
           CardPrice: "",
-          Img: [],
+          Img: []
           // TastName: []
         });
       });
@@ -1310,6 +1319,18 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.allCheckList.length;
     },
+    // 商品属性
+    ChangeTast(val) {
+      this.checkClickTast = val;
+      this.isIndeterminate2 = false;
+    },
+    handChange(val) {
+      this.checkAllTast = val;
+    },
+    // 确定
+    sureTaste() {
+      console.log(this.checkClickTast, "-----");
+    },
     changePickDateValue() {
       if (this.pickDateValue === "2") {
         this.dialogFormVisible = true;
@@ -1328,7 +1349,7 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.datesList.length;
     },
-    chooseTast(){
+    chooseTast() {
       this.dialogTasteVisible = true;
     },
     // 获取商品属性设置列表
@@ -1336,25 +1357,34 @@ export default {
       let { Data } = await getLists(
         {
           Action: "GetParamList",
-          Type: "2",
+          Type: "2"
         },
         "MBaseOpera"
       );
       this.gridDataTaste = Data.ParamInfoList;
+      // this.gridDataTaste.forEach(item=>{
+      //   let str = '';
+      //   item.AttributeList.forEach(item2=>{
+      //     str += item2.Name+',';
+      //   })
+      // })
     },
-    abc(val){
+    abc(val) {
       let name = val.Name;
       this.dialogTasteVisible = false;
-      var b = val.AttributeList.map((obj)=>{return ''+obj.Name+''}).join(",")
+      var b = val.AttributeList.map(obj => {
+        return "" + obj.Name + "";
+      }).join(",");
       this.tastArr = {
-        Name:val.Name,
-        Attribute:b
-      }
-      this.ruleForm.ParamInfo = this.tastArr.Name + `(`+ this.tastArr.Attribute + `)`;
+        Name: val.Name,
+        Attribute: b
+      };
+      this.ruleForm.ParamInfo =
+        this.tastArr.Name + `(` + this.tastArr.Attribute + `)`;
       // ParamInfo = [{"Name":"口味","Attribute":"甜,辣","Price":"0"},{"Name":"口味","Attribute":"甜,辣","Price":"0"}]
     },
-    onFocus(){//获取到焦点
-      
+    onFocus() {
+      //获取到焦点
     }
   },
   watch: {
