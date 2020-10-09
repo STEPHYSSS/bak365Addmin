@@ -86,8 +86,13 @@
           :fileListUp="fileListUpList"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性" prop="TastName">
-        <el-input v-model="TastName" @focus="onFocus"></el-input>
+      <el-form-item label="商品属性">
+        <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
+        <el-input
+          type="textarea"
+          v-model="ruleForm.ParamInfo"
+        ></el-input>
+        <el-button type="primary" style="margin-left:10px" size="medium" @click="chooseTast">...</el-button>
       </el-form-item>
       <el-form-item label="商品排序" prop="Sort">
         <el-input-number
@@ -403,7 +408,7 @@
         <el-button type="primary" @click="CheckTicketFun">确 定</el-button>
       </div>
     </el-dialog>
-
+  
     <el-dialog title="选择天数（单位/天）" :visible.sync="dialogFormVisible">
       <el-checkbox
         :indeterminate="isIndeterminateDay"
@@ -419,7 +424,29 @@
         <el-button type="primary" @click="selectDays">确 定</el-button>
       </div>
     </el-dialog>
-
+    <!-- 选择口味弹窗 -->
+    <el-dialog title="选择商品属性" :visible.sync="dialogTasteVisible">
+      <div class="addScroll">
+      </div>
+      <div>
+        <p v-for="(item,index) in gridDataTaste" :key="index" @click="abc(item)">
+          <span>{{item.Name}}</span>
+          <span v-for="(item2,index) in item.AttributeList" :key="index">
+            {{item2.Name}}
+          </span>
+        </p>
+      </div>
+      <!-- <div>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="ChangeAll">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedCities" @change="ChangeOne">
+          <el-checkbox v-for="(item,index) in gridDataTaste" :label="item.Name" :key="index">{{item.Name}}
+            <el-checkbox v-for="(item2,index) in item.AttributeList" :label="item2.Name" :key="index">{{item2.Name}}</el-checkbox>
+          </el-checkbox>
+          
+        </el-checkbox-group>
+      </div> -->
+    </el-dialog>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left:20px" @click="preserveFun">保存</el-button>
@@ -457,6 +484,14 @@ export default {
   data() {
     return {
       loading: false,
+      checkAll: false,
+      checkedCities: [],
+      isIndeterminate: true,
+
+
+      dialogTasteVisible:false,//设置商品属性弹窗显示
+      gridDataTaste:[],//设置商品属性table
+      tastArr:[],//设置商品属性选中的数组
       optionsNorms: [
         { label: "单规格商品", value: "1" },
         { label: "多尺寸商品", value: "3" },
@@ -560,7 +595,7 @@ export default {
         }
       ],
       isIndeterminate: false,
-      checkAll: false,
+      checkAll: false,//门店
       allCheckList: [],
       pickDateValue: "0",
       pickDateOptions: [
@@ -608,6 +643,8 @@ export default {
     this.getInfo();
   },
   methods: {
+    ChangeAll(){},
+    ChangeOne(){},
     changeCheckbox(val) {//配送方式
       if (val.indexOf("3") > -1) {
         //选择了物流
@@ -655,7 +692,9 @@ export default {
           this.Dates = this.ruleForm.Dates.split(",");
           this.handleCheckedCitiesChangeDay(this.Dates);
         }
-
+        this.ruleForm.ParamInfo.forEach(item=>{
+          this.ruleForm.ParamInfo = item.Name+`(`+item.Attribute+`)`
+        })
         this.ruleForm.CateSID = this.ruleForm.CateSID
           ? this.ruleForm.CateSID.split(",")
           : this.ruleForm.CateSID;
@@ -664,9 +703,9 @@ export default {
         this.ruleForm.PayType = this.ruleForm.PayType
           ? this.ruleForm.PayType.split(",")
           : [];
-        this.ruleForm.TastName = this.ruleForm.TastName
-          ? this.ruleForm.TastName.split(",")
-          : [];
+        // this.ruleForm.TastName = this.ruleForm.TastName
+        //   ? this.ruleForm.TastName.split(",")
+        //   : [];
 
         this.ruleForm.DeliveryType = this.ruleForm.DeliveryType
           ? this.ruleForm.DeliveryType.split(",")
@@ -764,7 +803,7 @@ export default {
             D.Img = D.Img ? ImgList(D.Img) : [];
             D.showImg = D.Img ? D.Img : [];
 
-            D.TastName = D.TastName ? D.TastName.split(",") : [];
+            // D.TastName = D.TastName ? D.TastName.split(",") : [];
           });
         }
 
@@ -809,12 +848,12 @@ export default {
         e.moved.newIndex
       ].showImg;
 
-      this.$refs.tasteList.forEach((D, index) => {
-        this.$refs.tasteList[index].value = this.ruleForm.SpecList[index]
-          .TastName
-          ? this.ruleForm.SpecList[index].TastName
-          : [];
-      });
+      // this.$refs.tasteList.forEach((D, index) => {
+      //   this.$refs.tasteList[index].value = this.ruleForm.SpecList[index]
+      //     .TastName
+      //     ? this.ruleForm.SpecList[index].TastName
+      //     : [];
+      // });
 
       this.$refs.ruleForm.clearValidate();
     },
@@ -877,7 +916,10 @@ export default {
             } else {
               this.ruleForm.Dates = "";
             }
-
+            // this.ruleForm.ParamInfo = this.tastArr;
+            let tast = [];
+            tast.push(this.tastArr)
+            this.ruleForm.ParamInfo=JSON.stringify(tast)
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
@@ -917,10 +959,10 @@ export default {
                     ? D.Img.replace(process.env.Prefix, "")
                     : D.Img;
 
-                if (D.TastName && typeof D.TastName !== "string") {
-                  // 变成json
-                  D.TastName = D.TastName.join(",");
-                }
+                // if (D.TastName && typeof D.TastName !== "string") {
+                //   // 变成json
+                //   D.TastName = D.TastName.join(",");
+                // }
               });
             }
 
@@ -933,10 +975,10 @@ export default {
             //   return;
             // }
 
-            obj.TastName =
-              typeof obj.TastName !== "string" && obj.TastName
-                ? obj.TastName.join(",")
-                : obj.TastName;
+            // obj.TastName =
+            //   typeof obj.TastName !== "string" && obj.TastName
+            //     ? obj.TastName.join(",")
+            //     : obj.TastName;
             obj.CateSID =
               typeof obj.CateSID !== "string" && obj.CateSID
                 ? obj.CateSID.join(",")
@@ -1240,7 +1282,7 @@ export default {
           SalePrice: "",
           CardPrice: "",
           Img: [],
-          TastName: []
+          // TastName: []
         });
       });
     },
@@ -1249,7 +1291,7 @@ export default {
     },
     // 点击口味（多规格）
     changeTaste(arr, index) {
-      this.ruleForm.SpecList[index].TastName = arr;
+      // this.ruleForm.SpecList[index].TastName = arr;
     },
     setInputDec(FinHour) {
       //不让填写小数
@@ -1286,6 +1328,9 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.datesList.length;
     },
+    chooseTast(){
+      this.dialogTasteVisible = true;
+    },
     // 获取商品属性设置列表
     async getInfo() {
       let { Data } = await getLists(
@@ -1295,9 +1340,21 @@ export default {
         },
         "MBaseOpera"
       );
+      this.gridDataTaste = Data.ParamInfoList;
+    },
+    abc(val){
+      let name = val.Name;
+      this.dialogTasteVisible = false;
+      var b = val.AttributeList.map((obj)=>{return ''+obj.Name+''}).join(",")
+      this.tastArr = {
+        Name:val.Name,
+        Attribute:b
+      }
+      this.ruleForm.ParamInfo = this.tastArr.Name + `(`+ this.tastArr.Attribute + `)`;
+      // ParamInfo = [{"Name":"口味","Attribute":"甜,辣","Price":"0"},{"Name":"口味","Attribute":"甜,辣","Price":"0"}]
     },
     onFocus(){//获取到焦点
-    
+      
     }
   },
   watch: {
