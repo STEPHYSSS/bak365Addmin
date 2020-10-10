@@ -41,9 +41,9 @@ export const optionsLabelType = [
 
 export const stockTypeList = [
   { label: '不使用库存', value: '0' },
-  { label: '使用微信库存', value: '1' },
+  { label: '使用商城库存', value: '1' },
   { label: '使用门店库存', value: '2' },
-  { label: '使用门店指定库存', value: '3' }
+  // { label: '使用门店指定库存', value: '3' }
 ]
 
 export const optionsRetreat = [

@@ -17,7 +17,7 @@
           v-model="ruleForm.SpecType"
           placeholder="请选择"
           @change="changeNorms"
-          :disabled="$route.query.SID?true:false"
+          :disabled="$route.query.SID ? true : false"
         >
           <el-option
             v-for="item in optionsNorms"
@@ -27,30 +27,58 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品编号" v-if="ruleForm.SpecType!=='2'" prop="ProdNo" :key="1">
-        <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请填写商品编号"></el-input>
+      <el-form-item
+        label="商品编号"
+        v-if="ruleForm.SpecType !== '2'"
+        prop="ProdNo"
+        :key="1"
+      >
+        <el-input
+          v-model="ruleForm.ProdNo"
+          :readonly="true"
+          placeholder="请填写商品编号"
+        ></el-input>
         <el-button
           type="primary"
-          style="margin-left:10px"
+          style="margin-left: 10px"
           size="medium"
           @click="selectGoods(null)"
           v-if="!$route.query.SID"
-        >...</el-button>
+          >...</el-button
+        >
       </el-form-item>
       <el-form-item label="商品名称" prop="Name">
-        <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
+        <el-input
+          v-model="ruleForm.Name"
+          placeholder="请填写商品名称"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="商品售价" prop="SalePrice" v-if="ruleForm.SpecType==='1'">
+      <el-form-item
+        label="商品售价"
+        prop="SalePrice"
+        v-if="ruleForm.SpecType === '1'"
+      >
         ¥
-        <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
+        <el-input-number
+          v-model="ruleForm.SalePrice"
+          controls-position="right"
+          :min="0"
+        ></el-input-number>
       </el-form-item>
       <el-form-item label="配送方式" prop="DeliveryType">
-        <el-checkbox-group v-model="ruleForm.DeliveryType" @change="changeCheckbox">
-          <el-checkbox label="3" :disabled="disabledLogistics">物流配送</el-checkbox>
-          <el-checkbox label="2" :disabled="disabledTakeout">外卖配送</el-checkbox>
+        <el-checkbox-group
+          v-model="ruleForm.DeliveryType"
+          @change="changeCheckbox"
+        >
+          <el-checkbox label="3" :disabled="disabledLogistics"
+            >物流配送</el-checkbox
+          >
+          <el-checkbox label="2" :disabled="disabledTakeout"
+            >外卖配送</el-checkbox
+          >
           <el-checkbox label="1">门店自取</el-checkbox>
         </el-checkbox-group>
-        <div style="color:#999">物流与配送冲突</div>
+        <div style="color: #999">物流与配送冲突</div>
       </el-form-item>
 
       <el-form-item label="支付方式" prop="PayType">
@@ -76,7 +104,8 @@
           @upLoadImgs="upLoadImgsMain"
           :fileListUp="fileListUpMain"
           :limit="1"
-        ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
+        ></imgLoad
+        >(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
       <el-form-item label="商品图片" prop="ImgList">
         <imgLoad
@@ -84,12 +113,19 @@
           :isAutoFixed="true"
           @upLoadImgs="upLoadImgsList"
           :fileListUp="fileListUpList"
-        ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
+        ></imgLoad
+        >(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性" prop="ParamInfo">
+      <el-form-item label="商品属性" >
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
-        <el-input type="textarea" v-model="ruleForm.ParamInfo"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="chooseTast">...</el-button>
+        <el-input type="textarea" v-model="ParamInfo2"></el-input>
+        <el-button
+          type="primary"
+          style="margin-left: 10px"
+          size="medium"
+          @click="chooseTast"
+          >...</el-button
+        >
       </el-form-item>
       <el-form-item label="商品排序" prop="Sort">
         <el-input-number
@@ -110,7 +146,8 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="商品库存" v-if="ruleForm.SpecType==='1'" :key="3">
+       <!-- v-if="ruleForm.SpecType === '1'" -->
+      <el-form-item label="商品库存" v-if="ruleForm.StockType != '0'">
         <el-input-number
           v-model="ruleForm.StoreQty"
           controls-position="right"
@@ -130,9 +167,13 @@
       </el-form-item>
       <el-form-item label="商品提前" prop="FinHour">
         <div class="FinHourInput">
-          <el-select v-model="isAdvanceTime" placeholder="请选择" @change="ruleForm.FinHour = ''">
+          <el-select
+            v-model="isAdvanceTime"
+            placeholder="请选择"
+            @change="ruleForm.FinHour = ''"
+          >
             <el-option
-              v-for="(item,index) in optionsAdvanceTime"
+              v-for="(item, index) in optionsAdvanceTime"
               :key="index"
               :label="item.label"
               :value="item.value"
@@ -147,29 +188,42 @@
           :max="23"
           @change="setInputDec(ruleForm.FinHour)"
         ></el-input-number>
-        {{isAdvanceTime=='1'?'天':'小时'}}预定
+        {{ isAdvanceTime == "1" ? "天" : "小时" }}预定
         <!-- <el-input-number style="margin-left:20px" v-model="ruleForm.FinHour" controls-position="right" :min="0"></el-input-number>天预定 -->
-        <div style="color:#999">小时与天数冲突</div>
+        <div style="color: #999">小时与天数冲突</div>
       </el-form-item>
       <el-form-item label="供货门店" prop="ShopInfo">
-        <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择门店"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="PickShopFun">...</el-button>
-        <div style="color:#999">不填为全选</div>
+        <el-input
+          readonly
+          v-model="ruleForm.PickShopName"
+          placeholder="请选择门店"
+        ></el-input>
+        <el-button
+          type="primary"
+          style="margin-left: 10px"
+          size="medium"
+          @click="PickShopFun"
+          >...</el-button
+        >
+        <div style="color: #999">不填为全选</div>
       </el-form-item>
       <el-form-item label="预定提示" prop="Tip">
         <el-input
           v-model="ruleForm.Tip"
           type="textarea"
-          :autosize="{ minRows: 2, maxRows: 3}"
+          :autosize="{ minRows: 2, maxRows: 3 }"
           placeholder="最长可输入500个字符"
           maxlength="500"
         ></el-input>
       </el-form-item>
       <el-form-item label="赠送积分" prop="SendScore">
-        <el-checkbox v-model="ruleForm.SendScore" label="1">不支持购买赠送积分(仅限普通商品)</el-checkbox>
+        <el-checkbox v-model="ruleForm.SendScore" label="1"
+          >不支持购买赠送积分(仅限普通商品)</el-checkbox
+        >
       </el-form-item>
       <el-form-item label="可提货日期(配送)" prop="PickDate">
-        <el-checkbox v-model="assistRuleForm.TakeDateBool">启用</el-checkbox>&nbsp;&nbsp;
+        <el-checkbox v-model="assistRuleForm.TakeDateBool">启用</el-checkbox
+        >&nbsp;&nbsp;
         <el-date-picker
           v-if="assistRuleForm.TakeDateBool"
           v-model="ruleForm.PickDate"
@@ -185,7 +239,7 @@
           v-if="assistRuleForm.TakeDateBool"
           v-model="pickDateValue"
           placeholder="请选择方式"
-          style="margin-top:10px;width:150px"
+          style="margin-top: 10px; width: 150px"
         >
           <el-option
             @click.native="changePickDateValue"
@@ -195,7 +249,12 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-select v-if="pickDateValue === '1'" v-model="Weeks" multiple placeholder="请选择星期">
+        <el-select
+          v-if="pickDateValue === '1'"
+          v-model="Weeks"
+          multiple
+          placeholder="请选择星期"
+        >
           <el-option
             v-for="item in optionsWeek"
             :key="item.value"
@@ -205,7 +264,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="可提货时间(配送)" prop="PickTime">
-        <el-checkbox v-model="assistRuleForm.TakeDateTimeBool">启用</el-checkbox>&nbsp;&nbsp;
+        <el-checkbox v-model="assistRuleForm.TakeDateTimeBool">启用</el-checkbox
+        >&nbsp;&nbsp;
         <el-time-picker
           v-if="assistRuleForm.TakeDateTimeBool"
           is-range
@@ -218,7 +278,8 @@
         ></el-time-picker>
       </el-form-item>
       <el-form-item label="可购买时间" prop="BuyTime">
-        <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
+        <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox
+        >&nbsp;&nbsp;
         <el-time-picker
           v-if="assistRuleForm.BuyTimeBool"
           is-range
@@ -237,7 +298,7 @@
           :multiple="false"
           :Type="0"
           :allowCreate="false"
-          @changeTaste="changeTasteList($event,0)"
+          @changeTaste="changeTasteList($event, 0)"
         ></tasteList>
       </el-form-item>
       <el-form-item label="商品配件" prop="AccessoriesInfo" :key="7">
@@ -245,56 +306,76 @@
           ref="AccessoriesList"
           :Type="3"
           :allowCreate="false"
-          @changeTaste="changeTasteList($event,3)"
+          @changeTaste="changeTasteList($event, 3)"
         ></tasteList>
-        <div style="color:#999">仅支持普通商品，仅实现于自定义模板</div>
+        <div style="color: #999">仅支持普通商品，仅实现于自定义模板</div>
       </el-form-item>
       <el-form-item label="可用电子劵" prop="TicketInfo">
-        <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket">...</el-button>
-        <div style="color:#999">只可用此设置的电子劵购买此商品</div>
+        <el-input
+          readonly
+          v-model="ruleForm.TicketInfoName"
+          placeholder="请选择电子劵"
+        ></el-input>
+        <el-button
+          type="primary"
+          style="margin-left: 10px"
+          size="medium"
+          @click="clickTicket"
+          >...</el-button
+        >
+        <div style="color: #999">只可用此设置的电子劵购买此商品</div>
       </el-form-item>
       <el-form-item label="每人限购" prop="MaxBuyCnt">
-        <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
+        <el-input-number
+          v-model="ruleForm.MaxBuyCnt"
+          controls-position="right"
+          :min="0"
+        ></el-input-number>
       </el-form-item>
 
-      <span class="goods_normsLabel" v-if="ruleForm.SpecType!=='1'">商品规格</span>
-      <fieldset class="goods_norms" v-if="ruleForm.SpecType!=='1'" :key="5">
-        <legend style="margin-left:20px;">规格项目</legend>
+      <span class="goods_normsLabel" v-if="ruleForm.SpecType !== '1'"
+        >商品规格</span
+      >
+      <fieldset class="goods_norms" v-if="ruleForm.SpecType !== '1'" :key="5">
+        <legend style="margin-left: 20px">规格项目</legend>
         <span>可拖动移动位置</span>
         <vuedraggable v-model="ruleForm.SpecList" @change="changeDrag">
           <div
-            v-for="(item,index) in ruleForm.SpecList"
+            v-for="(item, index) in ruleForm.SpecList"
             class="goods_norms_row"
             @mouseover="mouseover(index)"
             @mouseout="mouseout(index)"
             :key="index"
           >
             <el-form-item
-              v-if="ruleForm.SpecType!=='3'"
-              :key="index+1"
-              :prop="'SpecList.'+index+'.ProdNo'"
+              v-if="ruleForm.SpecType !== '3'"
+              :key="index + 1"
+              :prop="'SpecList.' + index + '.ProdNo'"
               :rules="rules.ProdNoChildren"
               label="商品编号"
             >
-              <el-input v-model="item.ProdNo" placeholder="编号" :readonly="true"></el-input>
+              <el-input
+                v-model="item.ProdNo"
+                placeholder="编号"
+                :readonly="true"
+              ></el-input>
             </el-form-item>
             <el-form-item
-              :key="index+2"
-              :prop="'SpecList.'+index+'.Name'"
+              :key="index + 2"
+              :prop="'SpecList.' + index + '.Name'"
               :rules="rules.NameChildren"
               label="规格名称"
             >
               <el-input v-model="item.Name" placeholder="规格名称"></el-input>
             </el-form-item>
             <el-form-item
-              :key="index+3"
-              :prop="'SpecList.'+index+'.StoreQty'"
+              :key="index + 3"
+              :prop="'SpecList.' + index + '.StoreQty'"
               :rules="rules.StoreQty"
               label="库存"
             >
               <el-input-number
-                style="width:auto;text-align: left;"
+                style="width: auto; text-align: left"
                 v-model="item.StoreQty"
                 controls-position="right"
                 :min="0"
@@ -304,8 +385,8 @@
               ></el-input-number>
             </el-form-item>
             <el-form-item
-              :key="index+4"
-              :prop="'SpecList.'+index+'.SalePrice'"
+              :key="index + 4"
+              :prop="'SpecList.' + index + '.SalePrice'"
               :rules="rules.SalePrice"
               label="售价"
             >
@@ -321,18 +402,19 @@
               :limit="1"
               ref="imgLoad"
               @cloneIsCoverImgs="cloneIsCoverImgs"
-              @upLoadImgs="upLoadImgs($event,item,index)"
+              @upLoadImgs="upLoadImgs($event, item, index)"
             ></imgLoad>
             <el-button
-              v-if="ruleForm.SpecType!=='3'"
+              v-if="ruleForm.SpecType !== '3'"
               type="primary"
-              style="margin-left:10px"
+              style="margin-left: 10px"
               size="medium"
               @click="selectGoods(index)"
-            >...</el-button>
+              >...</el-button
+            >
             <span
               class="el-icon-error iconError"
-              v-show="DelIconIndex === index&&showDelIcon === true"
+              v-show="DelIconIndex === index && showDelIcon === true"
               @click="delGoodsNorms(index)"
             ></span>
           </div>
@@ -341,26 +423,54 @@
         <el-button type="info" @click="addGoodsNorms">添加规格项目</el-button>
       </fieldset>
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
-        <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
-        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
-        <el-button type="text" @click="FeaturesShow=false" v-if="FeaturesShow===true">隐藏</el-button>
-      </el-form-item>
-      <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
         <el-button
           type="text"
-          @click="ImportantNotesShow=true"
-          v-if="ImportantNotesShow===false"
-        >+编辑</el-button>
+          @click="FeaturesShow = true"
+          v-if="FeaturesShow === false"
+          >+编辑</el-button
+        >
+        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
+        <el-button
+          type="text"
+          @click="FeaturesShow = false"
+          v-if="FeaturesShow === true"
+          >隐藏</el-button
+        >
+      </el-form-item>
+      <el-form-item
+        label="重要提示"
+        prop="ImportantNotes"
+        class="FeaturesStyle"
+      >
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = true"
+          v-if="ImportantNotesShow === false"
+          >+编辑</el-button
+        >
         <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
-        <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = false"
+          v-if="ImportantNotesShow === true"
+          >隐藏</el-button
+        >
       </el-form-item>
     </el-form>
 
-    <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods>
-    <TicketInfo :showTicket="showTicket" @changeDigTicket="changeDigTicket" ref="TicketInfoList"></TicketInfo>
+    <Goods
+      :goodsShow="goodsShow"
+      @changeDig="changeDig"
+      @sureGood="sureGood"
+    ></Goods>
+    <TicketInfo
+      :showTicket="showTicket"
+      @changeDigTicket="changeDigTicket"
+      ref="TicketInfoList"
+    ></TicketInfo>
     <el-dialog
       class="areaTree TreeShop"
-      :title="this.clickPickShop?'选择门店':'选择区域'"
+      :title="this.clickPickShop ? '选择门店' : '选择区域'"
       width="600px"
       :before-close="beforeClose"
       :visible.sync="showAreaTree"
@@ -381,7 +491,7 @@
     </el-dialog>
     <el-dialog
       class="areaTree TicketDialog"
-      :title="currentTicket?'选择电子劵':'选择门店'"
+      :title="currentTicket ? '选择电子劵' : '选择门店'"
       width="600px"
       :before-close="beforeClose"
       :visible.sync="showCheckTicket"
@@ -392,11 +502,19 @@
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
-        >全选</el-checkbox>
-        <el-checkbox-group v-model="checkClick" @change="handleCheckedCitiesChange">
-          <el-checkbox :label="item.SID" v-for="item in checkList" :key="item.SID">
-            {{item.Name}}
-            <span v-if="item.Address">&nbsp;{{item.Address}}</span>
+          >全选</el-checkbox
+        >
+        <el-checkbox-group
+          v-model="checkClick"
+          @change="handleCheckedCitiesChange"
+        >
+          <el-checkbox
+            :label="item.SID"
+            v-for="item in checkList"
+            :key="item.SID"
+          >
+            {{ item.Name }}
+            <span v-if="item.Address">&nbsp;{{ item.Address }}</span>
           </el-checkbox>
         </el-checkbox-group>
       </div>
@@ -411,10 +529,16 @@
         :indeterminate="isIndeterminateDay"
         v-model="checkAllDay"
         @change="handleCheckAllChangeDay"
-      >全选</el-checkbox>
-      <div style="margin: 15px 0;"></div>
+        >全选</el-checkbox
+      >
+      <div style="margin: 15px 0"></div>
       <el-checkbox-group v-model="Dates" @change="handleCheckedCitiesChangeDay">
-        <el-checkbox v-for="(item,index) in datesList" :label="item" :key="index">{{item}}</el-checkbox>
+        <el-checkbox
+          v-for="(item, index) in datesList"
+          :label="item"
+          :key="index"
+          >{{ item }}</el-checkbox
+        >
       </el-checkbox-group>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -427,25 +551,25 @@
         <el-checkbox
           :indeterminate="isIndeterminate2"
           v-model="checkAllTast"
-          @change="ChangeTast"
-        >全选</el-checkbox>
+          @change="ChangeSys"
+          >全选</el-checkbox
+        >
         <el-checkbox-group v-model="checkClickTast" @change="handChange">
           <el-checkbox
-            :label="item"
+            :label="item.SID"
             v-for="item in gridDataTaste"
             :key="item.SID"
-            style="display:block"
+            style="display: block"
           >
-            {{item.Name}}&nbsp;:
-            <span
-              v-for="(item2,index) in item.AttributeList"
-              :key="index"
-            >&nbsp;{{item2.Name}}</span>
+            {{ item.Name }}&nbsp;:
+            <span v-for="(item2, index) in item.AttributeList" :key="index"
+              >&nbsp;{{ item2.Name }}</span
+            >
           </el-checkbox>
         </el-checkbox-group>
       </div>
       <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button @click="showCheckTicket = false">取 消</el-button>
+        <el-button @click="dialogTasteVisible = false">取 消</el-button>
         <el-button type="primary" @click="sureTaste">确 定</el-button>
       </div>
       <!-- <div -->
@@ -459,7 +583,9 @@
     </el-dialog>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
-      <el-button type="primary" style="margin-left:20px" @click="preserveFun">保存</el-button>
+      <el-button type="primary" style="margin-left: 20px" @click="preserveFun"
+        >保存</el-button
+      >
     </div>
   </div>
 </template>
@@ -489,7 +615,7 @@ export default {
     ueditor1,
     TicketInfo,
     vuedraggable,
-    tasteList
+    tasteList,
   },
   data() {
     return {
@@ -500,10 +626,11 @@ export default {
       dialogTasteVisible: false, //设置商品属性弹窗显示
       gridDataTaste: [], //设置商品属性table
       tastArr: [], //设置商品属性选中的数组
+      ParamInfo2:'',
       optionsNorms: [
         { label: "单规格商品", value: "1" },
         { label: "多尺寸商品", value: "3" },
-        { label: "多规格商品", value: "2" }
+        { label: "多规格商品", value: "2" },
       ],
       ruleForm: {
         // 支付方式
@@ -517,7 +644,7 @@ export default {
         SpecList: [],
         // 记录规格类型
         SpecType: "2",
-        StockType: "0"
+        StockType: "0",
         // MaxBuyCnt: 0,
         // StoreQty: 0
       },
@@ -527,7 +654,7 @@ export default {
         // 是否有提货时间
         TakeDateTimeBool: false,
         // 购买时间
-        BuyTimeBool: false
+        BuyTimeBool: false,
       },
       rules: {
         ProdNo: [ruleText.ProdNo(this)],
@@ -537,20 +664,20 @@ export default {
         StoreQty: [ruleText.StoreQty(this)],
         CateSID: [ruleText.CateSID(this)],
         DeliveryType: [
-          { required: true, message: "请选择配送方式", trigger: "change" }
+          { required: true, message: "请选择配送方式", trigger: "change" },
         ],
         PayType: [
-          { required: true, message: "请选择支付方式", trigger: "change" }
+          { required: true, message: "请选择支付方式", trigger: "change" },
         ],
         OldPrice: [
-          { required: true, message: "请输入商品原价", trigger: "blur" }
+          { required: true, message: "请输入商品原价", trigger: "blur" },
         ],
         Describe: [
-          { required: true, message: "请输入商品描述", trigger: "blur" }
+          { required: true, message: "请输入商品描述", trigger: "blur" },
         ],
         SalePrice: [
-          { required: true, message: "请输入商品售价", trigger: "blur" }
-        ]
+          { required: true, message: "请输入商品售价", trigger: "blur" },
+        ],
       },
       // 控制商品弹框显示
       goodsShow: false,
@@ -595,12 +722,12 @@ export default {
       optionsAdvanceTime: [
         {
           value: "1",
-          label: "按天数"
+          label: "按天数",
         },
         {
           value: "2",
-          label: "按小时"
-        }
+          label: "按小时",
+        },
       ],
       isIndeterminate: false,
       checkAll: false, //门店
@@ -609,7 +736,7 @@ export default {
       pickDateOptions: [
         { value: "0", label: "不限制" },
         { value: "1", label: "按星期" },
-        { value: "2", label: "按几号" }
+        { value: "2", label: "按几号" },
       ],
       valueWeek: [],
       optionsWeek: [
@@ -619,14 +746,14 @@ export default {
         { value: "4", label: "星期四" },
         { value: "5", label: "星期五" },
         { value: "6", label: "星期六" },
-        { value: "7", label: "星期天" }
+        { value: "7", label: "星期天" },
       ],
       dialogFormVisible: false,
       isIndeterminateDay: false,
       checkAllDay: false,
       Dates: [],
       datesList: [],
-      Weeks: []
+      Weeks: [],
     };
   },
   updated() {
@@ -673,7 +800,7 @@ export default {
           ? getLists(
               {
                 Action: "GetProdInfo",
-                SID: this.$route.query.SID
+                SID: this.$route.query.SID,
               },
               "MProdOpera"
             )
@@ -681,7 +808,7 @@ export default {
         let res = await Promise.all([
           getLists({ Action: "GetTicketList" }, "MTicketOpera"),
           info,
-          getLists({ Action: "GetShopList" }, "MShopOpera")
+          getLists({ Action: "GetShopList" }, "MShopOpera"),
         ]);
         this.TicketList = res[0].Data.TicketList;
         this.storeList = res[2].Data.ShopInfoList;
@@ -701,9 +828,8 @@ export default {
           this.Dates = this.ruleForm.Dates.split(",");
           this.handleCheckedCitiesChangeDay(this.Dates);
         }
-        this.ruleForm.ParamInfo.forEach(item => {
-          this.ruleForm.ParamInfo = item.Name + `(` + item.Attribute + `)`;
-        });
+        this.ParamInfo2 = this.ruleForm.ParamInfo;
+        // console.log(this.ruleForm.ParamInfo, "----------");
         this.ruleForm.CateSID = this.ruleForm.CateSID
           ? this.ruleForm.CateSID.split(",")
           : this.ruleForm.CateSID;
@@ -752,7 +878,7 @@ export default {
           ? this.ruleForm.TicketInfo.split(",")
           : [];
         let newArr = [];
-        arr.forEach(D => {
+        arr.forEach((D) => {
           newArr.push(_.find(this.TicketList, { SID: D }));
         });
         let { nameArr, idArr } = setData(newArr, "Name", "SID");
@@ -763,13 +889,13 @@ export default {
           : [];
         let newArr1 = [];
 
-        this.checkClick1.forEach(D => {
+        this.checkClick1.forEach((D) => {
           newArr1.push(_.find(this.storeList, { SID: D }));
         });
         if (newArr1.length === 0) {
           //全选
           let arrstore = [];
-          this.storeList.forEach(D => {
+          this.storeList.forEach((D) => {
             arrstore.push(D.SID);
           });
           this.checkClick = arrstore;
@@ -808,7 +934,7 @@ export default {
           ? this.ruleForm.SpecList
           : [];
         if (this.ruleForm.SpecList && this.ruleForm.SpecList.length > 0) {
-          this.ruleForm.SpecList.forEach(D => {
+          this.ruleForm.SpecList.forEach((D) => {
             D.Img = D.Img ? ImgList(D.Img) : [];
             D.showImg = D.Img ? D.Img : [];
 
@@ -882,7 +1008,7 @@ export default {
     },
     // 保存
     preserveFun() {
-      this.$refs["ruleForm"].validate(async valid => {
+      this.$refs["ruleForm"].validate(async (valid) => {
         if (!valid) {
           return false;
         } else {
@@ -925,10 +1051,6 @@ export default {
             } else {
               this.ruleForm.Dates = "";
             }
-            // this.ruleForm.ParamInfo = this.tastArr;
-            let tast = [];
-            tast.push(this.tastArr);
-            this.ruleForm.ParamInfo = JSON.stringify(tast);
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
@@ -955,10 +1077,10 @@ export default {
               }
             }
             if (obj.SpecList && obj.SpecList.length > 0) {
-              obj.SpecList.forEach(D => {
+              obj.SpecList.forEach((D) => {
                 if (D.showImg && typeof D.showImg !== "string") {
                   let arr = [];
-                  D.showImg.forEach(data => {
+                  D.showImg.forEach((data) => {
                     arr.push(data.url);
                   });
                   D.Img = arr.join(",");
@@ -1124,7 +1246,7 @@ export default {
       // this.getStoreList();
       this.checkList = this.storeList;
       this.allCheckList = [];
-      this.checkList.forEach(D => {
+      this.checkList.forEach((D) => {
         this.allCheckList.push(D.SID);
       });
 
@@ -1145,7 +1267,7 @@ export default {
           children: [
             {
               id: 7,
-              label: "二级 3-1"
+              label: "二级 3-1",
             },
             {
               id: 8,
@@ -1153,20 +1275,20 @@ export default {
               children: [
                 {
                   id: 11,
-                  label: "三级 3-2-1"
+                  label: "三级 3-2-1",
                 },
                 {
                   id: 12,
-                  label: "三级 3-2-2"
+                  label: "三级 3-2-2",
                 },
                 {
                   id: 13,
-                  label: "三级 3-2-3"
-                }
-              ]
-            }
-          ]
-        }
+                  label: "三级 3-2-3",
+                },
+              ],
+            },
+          ],
+        },
       ];
       this.clickPickShop = false;
       this.showAreaTree = true;
@@ -1204,7 +1326,7 @@ export default {
     upLoadImgsList(imgs) {
       // 图片集
       let arr = [];
-      imgs.forEach(D => {
+      imgs.forEach((D) => {
         arr.push(D.url);
       });
       this.ruleForm.ImgList = arr.join(",");
@@ -1258,7 +1380,7 @@ export default {
       let newArr = [];
       if (this.currentTicket) {
         //可用电子券
-        this.checkClick.forEach(D => {
+        this.checkClick.forEach((D) => {
           newArr.push(_.find(this.checkList, { SID: D }));
         });
         let { nameArr, idArr } = setData(newArr, "Name", "SID");
@@ -1267,7 +1389,7 @@ export default {
         // this.ruleForm.TicketCurrent = this.checkClick
       } else {
         //供货门店
-        this.checkClick.forEach(D => {
+        this.checkClick.forEach((D) => {
           newArr.push(_.find(this.checkList, { SID: D }));
         });
         let { nameArr, idArr } = setData(newArr, "Name", "SID");
@@ -1290,7 +1412,7 @@ export default {
           Name: "",
           SalePrice: "",
           CardPrice: "",
-          Img: []
+          Img: [],
           // TastName: []
         });
       });
@@ -1320,16 +1442,30 @@ export default {
         checkedCount > 0 && checkedCount < this.allCheckList.length;
     },
     // 商品属性
-    ChangeTast(val) {
-      this.checkClickTast = val;
+    ChangeSys(val) {
+      this.checkClickTast = val ? this.gridDataTaste : [];
       this.isIndeterminate2 = false;
     },
     handChange(val) {
-      this.checkAllTast = val;
+      let count = val.length;
+      this.checkAllTast = count === this.gridDataTaste.length;
+      this.isIndeterminate2 = count > 0 && count < this.gridDataTaste.length;
     },
     // 确定
     sureTaste() {
-      console.log(this.checkClickTast, "-----");
+      let newArr = [];
+      this.checkClickTast.forEach((D) => {
+        newArr.push(_.find(this.gridDataTaste, { SID: D }));
+      });
+      let { nameArr, idArr } = setData(newArr, "Name", "SID");
+      // 排序
+      let arr = idArr.sort((a, b) => {
+        return a.localeCompare(b, "zh-CN");
+      });
+      
+      this.ruleForm.ParamInfo = arr.join(",");
+      this.ParamInfo2 = nameArr.join(",");
+      this.dialogTasteVisible = false;
     },
     changePickDateValue() {
       if (this.pickDateValue === "2") {
@@ -1357,7 +1493,7 @@ export default {
       let { Data } = await getLists(
         {
           Action: "GetParamList",
-          Type: "2"
+          Type: "2",
         },
         "MBaseOpera"
       );
@@ -1372,12 +1508,12 @@ export default {
     abc(val) {
       let name = val.Name;
       this.dialogTasteVisible = false;
-      var b = val.AttributeList.map(obj => {
+      var b = val.AttributeList.map((obj) => {
         return "" + obj.Name + "";
       }).join(",");
       this.tastArr = {
         Name: val.Name,
-        Attribute: b
+        Attribute: b,
       };
       this.ruleForm.ParamInfo =
         this.tastArr.Name + `(` + this.tastArr.Attribute + `)`;
@@ -1385,13 +1521,13 @@ export default {
     },
     onFocus() {
       //获取到焦点
-    }
+    },
   },
   watch: {
     // currentTicket(val) {
     //   console.log(this.currentTicket, "val");  //
     // }
-  }
+  },
 };
 
 function setData(data, label, id) {
@@ -1399,14 +1535,14 @@ function setData(data, label, id) {
   let nameArr = [];
   let idArr = [];
   if (arr.length > 0) {
-    arr.forEach(D => {
+    arr.forEach((D) => {
       nameArr.push(D[label]);
       idArr.push(D[id]);
     });
   }
   return {
     nameArr,
-    idArr
+    idArr,
   };
 }
 </script>

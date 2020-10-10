@@ -40,10 +40,12 @@
           :key="index" 
           :prop="'domains.' + index + '.Name'"
           :rules="{
-            required: true, message: '域名不能为空', trigger: 'blur'
+            required: true, message: '属性值不能为空', trigger: 'blur'
           }"
         >
-          <el-input v-model="domain.Name" style="width:200px"></el-input><el-button @click.prevent="removeDomain(domain)">删除</el-button>
+          <el-input v-model="domain.Name" style="width:200px"></el-input>
+          <!-- ￥<el-input v-model="domain.Price" style="width:50px"></el-input> -->
+          <el-button @click.prevent="removeDomain(domain)">删除</el-button>
         </el-form-item>
         <el-form-item>
           <el-button @click="addDomain">新增属性值</el-button>
@@ -65,7 +67,8 @@ export default {
       tableData: [],
       dynamicValidateForm: {
         domains: [{
-          Name: ''
+          Name: '',
+          Price:0
         }],
         Name: ''
       },
@@ -126,6 +129,7 @@ export default {
       this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
         return {
           Name: item.Name
+          // Price:item.Price
         };
       });
       let { Data } = await getLists(
