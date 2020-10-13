@@ -7,16 +7,41 @@
       @click="addGood"
       class="marginBottom"
       :disabled="loading"
-    >新建自定义模块</el-button>
+      >新建自定义模块</el-button
+    >
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
-      <el-table-column prop="Name" label="名称"></el-table-column>
-      <el-table-column prop="Name" label="最近应用在"></el-table-column>
-      <el-table-column prop="Name" label="共应用次数"></el-table-column>
-      <el-table-column prop="Name" label="操作" width="200">
+      <el-table-column
+        prop="Name"
+        label="名称"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="Name"
+        label="最近应用在"
+        align="center"
+      ></el-table-column>
+      <el-table-column
+        prop="Name"
+        label="共应用次数"
+        align="center"
+      ></el-table-column>
+      <el-table-column prop="IsDefault" label="是否默认" align="center">
+        <template slot-scope="scope">
+          <a v-if="scope.row.IsDefault === '0'" @click="changeDef(1, scope.row)"
+            >否</a
+          >
+          <a v-else @click="changeDef(0, scope.row)">是</a>
+        </template>
+      </el-table-column>
+      <el-table-column prop="Name" label="操作" width="200" align="center">
         <template slot-scope="scoped">
-          <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
+          <el-button type="text" @click="editRowGoods(scoped.row)"
+            >编辑</el-button
+          >
           <!-- <el-button type="text" @click="setName(scoped.row)">改名</el-button> -->
-          <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
+          <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -36,7 +61,7 @@ export default {
       current_index: "",
       current_SID: "",
       // 控制删除弹框
-      show: false
+      show: false,
     };
   },
   components: { Del },
@@ -48,10 +73,9 @@ export default {
       this.loading = true;
       try {
         let { Data } = await getLists(
-          { Action: "GetDecorateList" },
+          { Action: "GetDecorateList", Type: "0" },
           "MShopOpera"
         );
-        // console.log(Data,8888)
         this.tableData = Data.DecorateList;
         this.loading = false;
       } catch (e) {
@@ -66,7 +90,7 @@ export default {
       try {
         this.$router.push({
           path: "/weChat/manager/custom/addEdit",
-          query: { SID: val.SID }
+          query: { SID: val.SID },
         });
       } catch (e) {
         this.$message.error(e);
@@ -94,8 +118,38 @@ export default {
         this.show = false;
         this.$message.error(e);
       }
-    }
-  }
+    },
+    changeDef(val, row) {
+      //是否默认
+      this.$confirm("是否更改默认?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          try {
+            let { Data } = getLists(
+              { Action: "SetDefault", SID: row.SID, IsDefault: val, Type: "0" },
+              "MShopOpera"
+            );
+            this.$message.success('操作成功')
+            setTimeout(() => {
+              this.getList();
+            }, 500);
+            this.$message.success("操作成功");
+            
+          } catch (error) {
+            this.$message.error(error);
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
+    },
+  },
 };
 </script>
 

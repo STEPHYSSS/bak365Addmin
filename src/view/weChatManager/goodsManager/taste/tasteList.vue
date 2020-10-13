@@ -7,7 +7,7 @@
       <el-table-column label="商品属性值" align="center">
         <template slot-scope="scope">
           <span v-for="(item,index) in scope.row.AttributeList" :key="index">
-            {{item.Name + ` /`}}
+            {{item.Name +`(￥` + item.Price +`) ,`}}
           </span>
         </template>
       </el-table-column>
@@ -44,7 +44,7 @@
           }"
         >
           <el-input v-model="domain.Name" style="width:200px"></el-input>
-          <!-- ￥<el-input v-model="domain.Price" style="width:50px"></el-input> -->
+          ￥<el-input v-model="domain.Price" style="width:50px"></el-input>
           <el-button @click.prevent="removeDomain(domain)">删除</el-button>
         </el-form-item>
         <el-form-item>
@@ -128,8 +128,8 @@ export default {
     async sure() {
       this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
         return {
-          Name: item.Name
-          // Price:item.Price
+          Name: item.Name,
+          Price:item.Price
         };
       });
       let { Data } = await getLists(

@@ -325,13 +325,13 @@
         >
         <div style="color: #999">只可用此设置的电子劵购买此商品</div>
       </el-form-item>
-      <el-form-item label="每人限购" prop="MaxBuyCnt">
+      <!-- <el-form-item label="每人限购" prop="MaxBuyCnt">
         <el-input-number
           v-model="ruleForm.MaxBuyCnt"
           controls-position="right"
           :min="0"
         ></el-input-number>
-      </el-form-item>
+      </el-form-item> -->
 
       <span class="goods_normsLabel" v-if="ruleForm.SpecType !== '1'"
         >商品规格</span

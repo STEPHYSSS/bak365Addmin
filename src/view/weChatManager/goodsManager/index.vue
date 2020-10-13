@@ -62,7 +62,8 @@
       <!--      </el-table-column>-->
       <el-table-column label="库存" align="center">
         <template slot-scope="scoped">
-          <span v-if="scoped.row.StoreQty>0">{{scoped.row.StoreQty}}</span>
+          <!-- v-if="good.StockType != '0'&& good.StoreQty <= '0'" -->
+          <span v-if="scoped.row.StockType != '0'&& scoped.row.StoreQty>=0">{{scoped.row.StoreQty}}</span>
           <span v-else>不限</span>
         </template>
       </el-table-column>

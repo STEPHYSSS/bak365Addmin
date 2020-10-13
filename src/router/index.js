@@ -396,7 +396,7 @@ export const asyncRouterMap = [
       {//自定义页面管理
         path: '/weChat/manager/custom',
         meta: {
-          label: '自定义页面管理'
+          label: '页面管理'
         },
         component: {
           render(c) {
@@ -408,7 +408,7 @@ export const asyncRouterMap = [
           {
             path: 'customList',
             meta: {
-              label: '自定义页面列表'
+              label: '首页'
             },
             component: customPage
           },
