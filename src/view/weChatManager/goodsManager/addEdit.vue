@@ -118,7 +118,7 @@
       </el-form-item>
       <el-form-item label="商品属性" >
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
-        <el-input type="textarea" v-model="ParamInfo2"></el-input>
+        <el-input type="textarea" v-model="ParamInfo2" :readonly="true"></el-input>
         <el-button
           type="primary"
           style="margin-left: 10px"
@@ -563,7 +563,7 @@
           >
             {{ item.Name }}&nbsp;:
             <span v-for="(item2, index) in item.AttributeList" :key="index"
-              >&nbsp;{{ item2.Name }}</span
+              >&nbsp;{{ item2.Name }}00</span
             >
           </el-checkbox>
         </el-checkbox-group>
@@ -754,6 +754,7 @@ export default {
       Dates: [],
       datesList: [],
       Weeks: [],
+      Attribute2:[]
     };
   },
   updated() {
@@ -828,7 +829,8 @@ export default {
           this.Dates = this.ruleForm.Dates.split(",");
           this.handleCheckedCitiesChangeDay(this.Dates);
         }
-        this.ParamInfo2 = this.ruleForm.ParamInfo;
+        this.ParamInfo2 = this.ruleForm.ParamInfoName;
+
         // console.log(this.ruleForm.ParamInfo, "----------");
         this.ruleForm.CateSID = this.ruleForm.CateSID
           ? this.ruleForm.CateSID.split(",")
@@ -1451,22 +1453,7 @@ export default {
       this.checkAllTast = count === this.gridDataTaste.length;
       this.isIndeterminate2 = count > 0 && count < this.gridDataTaste.length;
     },
-    // 确定
-    sureTaste() {
-      let newArr = [];
-      this.checkClickTast.forEach((D) => {
-        newArr.push(_.find(this.gridDataTaste, { SID: D }));
-      });
-      let { nameArr, idArr } = setData(newArr, "Name", "SID");
-      // 排序
-      let arr = idArr.sort((a, b) => {
-        return a.localeCompare(b, "zh-CN");
-      });
-      
-      this.ruleForm.ParamInfo = arr.join(",");
-      this.ParamInfo2 = nameArr.join(",");
-      this.dialogTasteVisible = false;
-    },
+   
     changePickDateValue() {
       if (this.pickDateValue === "2") {
         this.dialogFormVisible = true;
@@ -1498,12 +1485,6 @@ export default {
         "MBaseOpera"
       );
       this.gridDataTaste = Data.ParamInfoList;
-      // this.gridDataTaste.forEach(item=>{
-      //   let str = '';
-      //   item.AttributeList.forEach(item2=>{
-      //     str += item2.Name+',';
-      //   })
-      // })
     },
     abc(val) {
       let name = val.Name;
@@ -1522,6 +1503,26 @@ export default {
     onFocus() {
       //获取到焦点
     },
+     // 确定
+    sureTaste() {
+      let newArr = [];
+      this.checkClickTast.forEach((D) => {
+        newArr.push(_.find(this.gridDataTaste, { SID: D }));
+      });
+      let abc = [];
+      newArr.forEach(item=>{
+        abc = item.AttributeList
+      })
+      let { nameArr, idArr } = setData2(newArr, abc, "SID");
+      // 排序
+      let arr = idArr.sort((a, b) => {
+        return a.localeCompare(b, "zh-CN");
+      });
+      this.ruleForm.ParamInfo = arr.join(",");
+      // this.ParamInfo2 = nameArr.join(",");
+          
+      this.dialogTasteVisible = false;
+    },
   },
   watch: {
     // currentTicket(val) {
@@ -1529,7 +1530,22 @@ export default {
     // }
   },
 };
-
+function setData2(data, label, id) {
+  console.log(data,label,id)
+  let arr = data;
+  let nameArr = [];
+  let idArr = [];
+  if (arr.length > 0) {
+    arr.forEach((D) => {
+      nameArr.push(D[label]);
+      idArr.push(D[id]);
+    });
+  }
+  return {
+    nameArr,
+    idArr,
+  };
+}
 function setData(data, label, id) {
   let arr = data;
   let nameArr = [];
@@ -1545,6 +1561,7 @@ function setData(data, label, id) {
     idArr,
   };
 }
+
 </script>
 
 <style lang="less">

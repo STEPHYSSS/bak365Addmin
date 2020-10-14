@@ -155,7 +155,7 @@ export default {
     return {
       TotalList:0,//分页总数
       currentPage: 0,
-      pageSize:10,
+      pageSize:0,
       defaultImg: 'this.src="' + require("../../../assets/img/logo.png") + '"',
       loading: true,
       search: {
@@ -229,6 +229,7 @@ export default {
         this.data = data.Data.Prod_InfoList;
         let setImg = this.currentGoods ? "Img" : "ImgList";
         this.TotalList = data.Data.DataCount;
+        this.pageSize = data.Data.PageSize;
         this.data.forEach(D => {
           D.ImgList = D[setImg] ? D[setImg].split(",") : [];
           D.ImgList.forEach((data, index) => {
