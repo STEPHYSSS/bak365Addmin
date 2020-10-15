@@ -111,7 +111,7 @@
         </el-select>
       </el-form-item>
       <!-- v-if="ruleForm.SpecType === '1'" -->
-      <el-form-item label="商品库存" v-if="ruleForm.StockType != '0'">
+      <el-form-item label="商品库存" v-if="ruleForm.StockType === '1' || (ruleForm.SpecType == '3'&& ruleForm.StockType !='2')">
         <el-input-number
           v-model="ruleForm.StoreQty"
           controls-position="right"
@@ -297,6 +297,7 @@
               :prop="'SpecList.' + index + '.StoreQty'"
               :rules="rules.StoreQty"
               label="库存"
+              v-if="ruleForm.SpecType == '3'&& ruleForm.StockType !='2'"
             >
               <el-input-number
                 style="width: auto; text-align: left"
@@ -1391,7 +1392,7 @@ export default {
       });
       this.ParamInfo2 = abc;
       this.dialogTasteVisible = false;
-      console.log("传给后台的SID", this.checkClickTast);
+      // console.log("传给后台的SID", this.checkClickTast);
     }
   },
   watch: {
@@ -1400,22 +1401,6 @@ export default {
     // }
   }
 };
-function setData2(data, label, id) {
-  console.log(data, label, id);
-  let arr = data;
-  let nameArr = [];
-  let idArr = [];
-  if (arr.length > 0) {
-    arr.forEach(D => {
-      nameArr.push(D[label]);
-      idArr.push(D[id]);
-    });
-  }
-  return {
-    nameArr,
-    idArr
-  };
-}
 function setData(data, label, id) {
   let arr = data;
   let nameArr = [];

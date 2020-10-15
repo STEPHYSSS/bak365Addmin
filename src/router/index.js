@@ -15,7 +15,7 @@ const userEvaluate = r => require.ensure([], () => r(require('../view/weChatMana
 const userEvaluateInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/evaluate/evaluateInfo')), 'userEvaluateInfo')
 const tasteList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/index')), 'tasteList')//标签、配件
 const newTaste = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/taste/tasteList')), 'newTaste')
-
+const menuBar = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/menuBar')), 'menuBar')//自定义菜单设置
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
@@ -54,7 +54,7 @@ const applicationWithdrawal= r => require.ensure([], () => r(require('../view/we
 const footPrintList= r => require.ensure([], () => r(require('../view/weChatManager/markingManager/memberFootPrint')), 'footPrintList')
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
-const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
+// const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
 const vipGrant = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipGrant')), 'vipGrant')
 const vipPayment = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipPayment')), 'vipPayment')
 const vipPaymentRule = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/editPaymentRule')), 'vipPaymentRule')
@@ -153,7 +153,13 @@ export const asyncRouterMap = [
               label:'主题颜色设置'
             },
             component:mainStyle
-          }
+          },{
+            path: 'menuBar',
+            meta: {
+              label: '自定义菜单栏'
+            },
+            component: menuBar
+          },
         ]
       },
       {//商品管理
@@ -522,13 +528,13 @@ export const asyncRouterMap = [
             },
             component: vipList
           },
-          {
-            path: 'menuBar',
-            meta: {
-              label: '自定义菜单栏'
-            },
-            component: menuBar
-          },
+          // {
+          //   path: 'menuBar',
+          //   meta: {
+          //     label: '自定义菜单栏'
+          //   },
+          //   component: menuBar
+          // },
           {
             path: 'grant',
             meta: {

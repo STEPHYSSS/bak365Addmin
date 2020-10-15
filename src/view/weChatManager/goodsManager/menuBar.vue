@@ -42,7 +42,7 @@
       <div class="menuBarRight">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px">
           <div class="menuBarOne"
-               v-for="(item,index) in ruleForm.arr"
+               v-for="(item,index) in ruleForm.arr" :key="index"
                v-if="ruleForm.arr.length>0"
                @mouseover="mouseoverPa(index)"
                @mouseout="currentMouse = false"
@@ -85,7 +85,7 @@
             <div class="menuBarRightTwo">
               <h2 class="menuBarRightH2">二级导航</h2>
               <div class="menuBarRightOne" v-if="item.sub_button.length>0"
-                   v-for="(itemChild,indexChild) in item.sub_button"
+                   v-for="(itemChild,indexChild) in item.sub_button" :key="index"
                    @mouseover="mouseoverChild(indexChild)"
                    @mouseout="currentMouseChild = false"
               >
