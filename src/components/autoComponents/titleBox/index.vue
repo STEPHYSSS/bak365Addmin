@@ -24,7 +24,13 @@
         <span class="cap-title__set">
           <span class="cap-title__date" v-if="currentObj.dataTitle">{{currentObj.dataTitle}}</span>
           <span class="cap-title__author" v-if="currentObj.authorTitle">{{currentObj.authorTitle}}</span>
-          <span><a href="javascript:;" :style="{'margin-left':currentObj.dataTitle||currentObj.authorTitl?'10px':'0'}" class="cap-title__link js-open-follow">{{currentObj.titleUrlName}}</a></span>
+          <span>
+            <a
+              href="javascript:;"
+              :style="{'margin-left':currentObj.dataTitle||currentObj.authorTitl?'10px':'0'}"
+              class="cap-title__link js-open-follow"
+            >{{currentObj.titleUrlName}}</a>
+          </span>
         </span>
       </p>
     </div>
@@ -84,11 +90,15 @@ export default {
     // this.changeStyle();
   },
   methods: {
-     reportErrorsFun() {
+    reportErrorsFun() {
       if (!this.currentObj.title) {
         return "请填写标题内容";
       }
-      if(this.currentObj.traditionStyle === '1' && this.currentObj.titleUrlName && !this.currentObj.titleUrl){
+      if (
+        this.currentObj.traditionStyle === "1" &&
+        this.currentObj.titleUrlName &&
+        !this.currentObj.titleUrl
+      ) {
         return "请填写标题的链接";
       }
     }
@@ -131,7 +141,7 @@ export default {
 .cap-title__author {
   margin-left: 10px;
 }
-.cap-title__set span:nth-child(1){
+.cap-title__set span:nth-child(1) {
   margin-left: 0;
 }
 .cap-title__link {

@@ -12,41 +12,53 @@
               <div class="customBoxHeadTitle">模板名称</div>
             </div>
             <div>
-              <div
-                class="preview-item clearfix"
-                v-for="(item,index) in currentModeArr"
-                :key="index"
+              <draggable
+                v-model="ModeValArr"
+                chosenClass="chosen"
+                forceFallback="true"
+                group="people"
+                animation="100"
+                @start="onStart"
+                @end="onEnd"
               >
-                <div
-                  @click="clickCurrentCot(index)"
-                  @mouseenter="clickCurrentFun(index)"
-                  @mouseleave="clickCurrentoutFun(index)"
-                  class="modeBox"
-                >
-                  <component
-                    :is="item.viewComponets"
-                    ref="setModeRef"
-                    :propsObj="ModeValArr[index]"
-                  ></component>
-                  <i
-                    @click.stop="delMode(index)"
-                    v-if="currentIndexDel===index"
-                    class="el-icon-error error-icon-style"
-                  ></i>
-                </div>
-                <!-- 点击基础组件中的内容，显示每个模块下的setIndex页面 -->
-                <div
-                  class="zent-design-editor-item"
-                  ref="setModeRefFun"
-                  v-if="currentIndexCot === index&&item.viewComponets"
-                >
-                  <component
-                    :is="item.viewComponets + 'Fun'"
-                    @setModeVal="setModeVal($event,index)"
-                    :defaultMode="ModeValArr[index]"
-                  ></component>
-                </div>
-              </div>
+                <transition-group>
+                  <div
+                    class="preview-item clearfix"
+                    v-for="(item,index) in currentModeArr"
+                    :key="index"
+                  >
+                    <div
+                      @click="clickCurrentCot(index)"
+                      @mouseenter="clickCurrentFun(index)"
+                      @mouseleave="clickCurrentoutFun(index)"
+                      class="modeBox"
+                    >
+                      <component
+                        :is="item.viewComponets"
+                        ref="setModeRef"
+                        :propsObj="ModeValArr[index]"
+                      ></component>
+                      <i
+                        @click.stop="delMode(index)"
+                        v-if="currentIndexDel===index"
+                        class="el-icon-error error-icon-style"
+                      ></i>
+                    </div>
+                    <!-- 点击基础组件中的内容，显示每个模块下的setIndex页面 -->
+                    <div
+                      class="zent-design-editor-item"
+                      ref="setModeRefFun"
+                      v-if="currentIndexCot === index&&item.viewComponets"
+                    >
+                      <component
+                        :is="item.viewComponets + 'Fun'"
+                        @setModeVal="setModeVal($event,index)"
+                        :defaultMode="ModeValArr[index]"
+                      ></component>
+                    </div>
+                  </div>
+                </transition-group>
+              </draggable>
             </div>
           </div>
           <!-- 基础组件开始 -->
@@ -145,6 +157,7 @@ import richText from "@/components/autoComponents/richText";
 import richTextFun from "@/components/autoComponents/richText/setIndex";
 import goodGroup from "@/components/autoComponents/goodsGroup/";
 import goodGroupFun from "@/components/autoComponents/goodsGroup/setIndex";
+import draggable from "vuedraggable";
 export default {
   name: "HelloWorld",
   components: {
@@ -181,7 +194,8 @@ export default {
     richText,
     richTextFun,
     goodGroup,
-    goodGroupFun
+    goodGroupFun,
+    draggable
   },
   data() {
     return {
@@ -250,6 +264,7 @@ export default {
       ModeValArr: [],
       setBottom: 0,
       loadingBtn: false,
+      drag: false,
       modeSID: ""
     };
   },
@@ -262,6 +277,14 @@ export default {
   },
   updated() {},
   methods: {
+    //开始拖拽事件
+    onStart() {
+      this.drag = true;
+    },
+    //拖拽结束事件
+    onEnd(e) {
+      this.drag = false;
+    },
     async getInfo() {
       try {
         let { Data } = await getLists(
