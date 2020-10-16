@@ -13,51 +13,48 @@
             </div>
             <div>
               <draggable
-                v-model="ModeValArr"
+                v-model="currentModeArr"
                 chosenClass="chosen"
                 forceFallback="true"
-                group="people"
-                animation="100"
+                :options="optionDrag"
                 @start="onStart"
                 @end="onEnd"
               >
-                <transition-group>
+                <div
+                  class="preview-item clearfix drag"
+                  v-for="(item,index) in currentModeArr"
+                  :key="index"
+                >
                   <div
-                    class="preview-item clearfix"
-                    v-for="(item,index) in currentModeArr"
-                    :key="index"
+                    @click="clickCurrentCot(index)"
+                    @mouseenter="clickCurrentFun(index)"
+                    @mouseleave="clickCurrentoutFun(index)"
+                    class="modeBox"
                   >
-                    <div
-                      @click="clickCurrentCot(index)"
-                      @mouseenter="clickCurrentFun(index)"
-                      @mouseleave="clickCurrentoutFun(index)"
-                      class="modeBox"
-                    >
-                      <component
-                        :is="item.viewComponets"
-                        ref="setModeRef"
-                        :propsObj="ModeValArr[index]"
-                      ></component>
-                      <i
-                        @click.stop="delMode(index)"
-                        v-if="currentIndexDel===index"
-                        class="el-icon-error error-icon-style"
-                      ></i>
-                    </div>
-                    <!-- 点击基础组件中的内容，显示每个模块下的setIndex页面 -->
-                    <div
-                      class="zent-design-editor-item"
-                      ref="setModeRefFun"
-                      v-if="currentIndexCot === index&&item.viewComponets"
-                    >
-                      <component
-                        :is="item.viewComponets + 'Fun'"
-                        @setModeVal="setModeVal($event,index)"
-                        :defaultMode="ModeValArr[index]"
-                      ></component>
-                    </div>
+                    <component
+                      :is="item.viewComponets"
+                      ref="setModeRef"
+                      :propsObj="ModeValArr[index]"
+                    ></component>
+                    <i
+                      @click.stop="delMode(index)"
+                      v-if="currentIndexDel===index"
+                      class="el-icon-error error-icon-style"
+                    ></i>
                   </div>
-                </transition-group>
+                  <!-- 点击基础组件中的内容，显示每个模块下的setIndex页面 -->
+                  <div
+                    class="zent-design-editor-item"
+                    ref="setModeRefFun"
+                    v-if="currentIndexCot === index&&item.viewComponets"
+                  >
+                    <component class="drag"
+                      :is="item.viewComponets + 'Fun'"
+                      @setModeVal="setModeVal($event,index)"
+                      :defaultMode="ModeValArr[index]"
+                    ></component>
+                  </div>
+                </div>
               </draggable>
             </div>
           </div>
@@ -199,6 +196,11 @@ export default {
   },
   data() {
     return {
+        optionDrag: {
+          group:'people',
+          animation: 300,
+          draggable: '.drag'
+        },
       preserveButton: true,
       ruleForm: {
         name: ""
@@ -278,12 +280,22 @@ export default {
   updated() {},
   methods: {
     //开始拖拽事件
-    onStart() {
+    update(oldIndex, newIndex) {
+      if (newIndex === oldIndex) return false
+      let oldObj = {...this.ModeValArr[oldIndex]}
+      let newObj = {...this.ModeValArr[newIndex]}
+      this.$set(this.ModeValArr, oldIndex, newObj)
+      this.$set(this.ModeValArr, newIndex, oldObj)
+      console.log(this.ModeValArr)
+    },
+    onStart () {
       this.drag = true;
+      this.currentIndexCot = null;
     },
     //拖拽结束事件
     onEnd(e) {
       this.drag = false;
+      this.update(e.oldIndex, e.newIndex)
     },
     async getInfo() {
       try {

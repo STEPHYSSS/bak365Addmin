@@ -5,7 +5,7 @@
       style="background-color: rgb(249, 249, 249);"
     >
       <div class="rc-design-react-preview">
-        <div v-if="currentObj.imgList.length===0" class="rc-design-component-default-preview">
+        <div v-if="currentObj.imgList.length===0 && currentObj.imgList.length ===0" class="rc-design-component-default-preview">
           <div class="rc-design-component-default-preview__title">点击编辑图片广告</div>
           <div>建议宽度750像素</div>
         </div>

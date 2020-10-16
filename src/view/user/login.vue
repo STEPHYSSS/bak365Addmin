@@ -118,6 +118,7 @@ export default {
     .el-input__inner {
       border-radius: 22px;
       background: transparent;
+      color: #fff;
     }
   }
 }

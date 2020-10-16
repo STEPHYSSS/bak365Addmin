@@ -86,7 +86,7 @@
           :fileListUp="fileListUpList"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性">
+      <el-form-item label="商品属性" v-if="ruleForm.SpecType !='1'">
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
         <el-input type="textarea" v-model="ParamInfo2" :readonly="true"></el-input>
         <el-button type="primary" style="margin-left: 10px" size="medium" @click="chooseTast">...</el-button>
@@ -446,7 +446,7 @@
             <span
               v-for="(item2, index) in item.AttributeList"
               :key="index"
-            >&nbsp;{{ item2.Name }}00</span>
+            >&nbsp;{{ item2.Name }}</span>
           </el-checkbox>
         </el-checkbox-group>
       </div>
@@ -935,6 +935,7 @@ export default {
               this.ruleForm.Dates = "";
             }
             this.ruleForm.ParamInfo = this.checkClickTast.toString();
+                        
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
             Object.assign(obj, { Action: "SetProdInfo" });
@@ -1081,7 +1082,6 @@ export default {
             this.$message.success("操作成功");
           } catch (e) {
             console.log(e, "99");
-            this.$message.error(e);
           }
         }
       });

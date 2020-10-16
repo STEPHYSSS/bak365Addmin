@@ -2,34 +2,38 @@
   <div class="goodManager">
     <!-- 商品列表 -->
     <el-row class="showStopGood" v-if="currentGoods">
-      <el-col :span="11" style="line-height: 50px;">
+      <el-col :span="7" style="line-height: 50px;">
         <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button>
         <el-button type="primary" size="small" @click="addGood">添加商品</el-button>
         <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
+        <el-button size="small" type="primary" style="margin-left:10px;margin-top:10px" @click="modifyCateFun">添加/修改 类别</el-button>
       </el-col>
-      <el-col :span="13">        
-        <div style="float: right">
-          类别：
+      <el-col :span="17">        
+        <div style="float: right;margin-top:5px">
+          <!-- 类别：
           <goodType
             style="display: inline-block"
             @changeGoodType="changeGoodType"
             :multiple="false"
             placeholderProp="请选择类别"
           ></goodType>
-          <el-input
+          名称搜索：<el-input
             v-model="search.Name"
             placeholder="搜索"
             style="width: auto"
             @keyup.enter.native="searchName"
           >
             <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>
-          </el-input>
-          <el-button
-            size="small"
-            type="primary"
-            style="margin-left:10px;margin-top:10px"
-            @click="modifyCateFun"
-          >添加/修改 类别</el-button>
+          </el-input> -->
+          名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" style="width: auto"></el-input>
+          类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别"></goodType>
+          类型：<el-select v-model="search.ProdType" placeholder="请选择商品类型">
+                  <el-option v-for="item in ProdTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+          规格：<el-select v-model="search.SpecType" placeholder="请选择商品规格">
+                  <el-option v-for="item in SpecTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+          <el-button slot="append" @click="searchName">查询</el-button>
         </div>
       </el-col>
     </el-row>
@@ -163,7 +167,9 @@ export default {
         Status: "",
         // 分类
         CateNo: "",
-        Name: ""
+        Name: "",
+        ProdType:"",
+        SpecType:""
       },
       // 控制删除弹框
       show: false,
@@ -174,8 +180,27 @@ export default {
       current_SID: "",
       
       data: [],
-      // 商品类别
-      potionList: [],
+      ProdTypeList: [
+        {
+          value: '0',
+          label: '商品'
+        },{
+          value: '1',
+          label: '电子券'
+        }
+      ],//商品类型
+      SpecTypeList: [
+        {
+          value: '1',
+          label: '单规格'
+        },{
+          value: '2',
+          label: '多规格'
+        },{
+          value: '3',
+          label: '多尺寸'
+        }
+      ],//商品规格
       phoneUrlGood: PhoneUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       newWidth: "100",
@@ -210,9 +235,12 @@ export default {
     clicCode(index) {
       this.currentIndexCode = index;
     },
-    changeGoodType(arr) {
+    changeGoodType(arr) {//商品列表搜索
       // 商品列席id
       this.search.CateSID = arr;
+      this.getList();
+    },
+    clearName(){
       this.getList();
     },
     async getList() {
@@ -224,6 +252,8 @@ export default {
             Status:this.search.Status,
             CateNo:this.search.CateNo,
             Name:this.search.Name,
+            ProdType:this.search.ProdType,
+            SpecType:this.search.SpecType,
             Page: this.currentPage - 1           
           }, "MProdOpera")
         this.data = data.Data.Prod_InfoList;
@@ -265,7 +295,7 @@ export default {
       }
     },
     searchName() {// 名称搜索
-      this.page.current_page = 1;
+      // this.page.current_page = 1;
       this.getList();
     },
     upDownUrl(Name) {
