@@ -62,7 +62,7 @@
             folder="customImg"
             :isAutoFixed="true"
             @upLoadImgs="upLoadImgsMain($event,item)"
-            :fileListUrl="item.img |setImgPrex"
+            :fileListUrl="item.url |setImgPrex"
             :limit="1"
             :enlarge="1"
             :showFileList="true"
@@ -131,10 +131,10 @@ export default {
         fontColor: "rgb(0,0,0)", //rgb(0,0,0)
         // { img: "", name: "", urlObj: { name: "", url: "" } }
         listNav: [
-          {name:'导航一'},
-          {name:'导航二'},
-          {name:'导航三'},
-          {name:'导航四'}
+          {name:'导航一', url: ''},
+          {name:'导航二', url: ''},
+          {name:'导航三', url: ''},
+          {name:'导航四', url: ''}
         ],
         pageShowNum: 1
       },

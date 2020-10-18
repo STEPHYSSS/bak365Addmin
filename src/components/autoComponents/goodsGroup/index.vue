@@ -22,9 +22,9 @@
               <span class="van-ellipsis">全部</span>
             </div>
             <div
-              @click="clickMenu(index)"
+              @click="clickMenu(index + 1)"
               class="van-tab"
-              :class="['van-tab',currentMenuIndex === index?'van-tab--active':'']"
+              :class="['van-tab',currentMenuIndex === index + 1?'van-tab--active':'']"
               :style="{'flex-basis': basisWidth}"
               v-for="(item,index) in groupList?groupList:currentObj.groupList"
               :key="index"

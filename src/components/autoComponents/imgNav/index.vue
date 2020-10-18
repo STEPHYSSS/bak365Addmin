@@ -25,9 +25,12 @@
                   <div
                     class="cap-image-ad__image"
                     :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px',
-                    'width':currentObj.isScroll==1?widthBox+'px':'100%',
-                    'background-image':`url(${item.img?(item.img |setImgPrex):'https://img.yzcdn.cn//public_files/2018/03/08/837f3d12e14b299778ae5fea5c05a3a3.png'})`}"
-                  ></div>
+                    'width':currentObj.isScroll==1?widthBox+'px':'100%'}"
+                  >
+                  <!-- 'https://img.yzcdn.cn//public_files/2018/03/08/837f3d12e14b299778ae5fea5c05a3a3.png' -->
+                    <img v-if="item.url" class="cap-image-ad__image" :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px', 'width':currentObj.isScroll==1?widthBox+'px':'100%'}" :src="item.url |setImgPrex" />
+                    <img v-else class="cap-image-ad__image" :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px', 'width':currentObj.isScroll==1?widthBox+'px':'100%'}" src="https://img.yzcdn.cn//public_files/2018/03/08/837f3d12e14b299778ae5fea5c05a3a3.png" />
+                  </div>
                   <h3 class="cap-image-ad__nav-title">{{item.name}}</h3>
                 </a>
               </div>

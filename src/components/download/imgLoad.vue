@@ -17,7 +17,7 @@
       v-if="showFileList"
       :show-file-list="showFileList"
     >
-      <img v-if="imageUrl||fileListUrl" :src="fileListUrl?fileListUrl:imageUrl" class="avatar" />
+      <img style="width: 100%; height: 100%;" v-if="imageUrl||fileListUrl" :src="fileListUrl?fileListUrl:imageUrl" class="avatar" />
       <i
         v-else
         class="el-icon-plus avatar-uploader-icon"

@@ -20,7 +20,7 @@
                 @mouseleave="currentIEel=null"
                 @mouseenter="currentIEel=index"
               >
-                <img :src="item.Img |setImgPrex" />
+                <img style="width: 100%; height: 100%" :src="item.Img |setImgPrex" />
 
                 <i
                   v-if="currentIEel === index"

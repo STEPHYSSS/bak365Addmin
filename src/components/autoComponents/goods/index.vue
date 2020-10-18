@@ -231,9 +231,9 @@ export default {
         this.currentObj._Prod_Data.length > 0 &&
         this.currentObj.goodSource === "0"
       ) {
-        return process.env.Prefix + val;
+        return process.env.BASE_URL + val; /* process.env.Prefix */
       } else {
-        return val;
+        return process.env.BASE_URL + val;
       }
     },
     reportErrorsFun() {
