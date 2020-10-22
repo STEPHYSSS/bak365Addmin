@@ -18,10 +18,10 @@
             class="cap-cube__item"
             :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.Dheight+'px','width': item.Dwidth+'px',
               'margin': (currentObj.imgGap/2).toFixed(2)+'px'
-            ,'background-image':`url(${item.img})`}"
+            ,'background-image':`url(${SetImage(item.img)})`}"
             @click="clickLink(item.url)"
           >
-            <img class="cap-cube__table-image--invisible" :src="item.img |setImgPrex" />
+            <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" />
           </div>
         </div>
       </div>
@@ -89,6 +89,17 @@ export default {
       //   this.currentObj = obj;
       //   this.changeBox();
       // });
+    },
+    SetImage(val){
+      if (
+					val &&
+					this.propsObj.imgList &&
+					this.propsObj.imgList.length > 0
+				) {
+					return 'http://192.168.0.105:8001/' + val;
+				} else {
+					return val;
+				}
     },
     changeBox() {
       this.listBox = this.currentObj.imgList || this.propsObj.imgList;

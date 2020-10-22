@@ -160,7 +160,6 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-      console.log(this.activeName)
      this.getInfo();
     },
     change(val) {
@@ -174,7 +173,7 @@ export default {
           { Action: "GetBase", Type: 1 },
           "MShopOpera"
           ); 
-          if(Data.ShopBase){
+          if(Data.ShopBase.SetInfo){
             this.form = Data.ShopBase.SetInfo;
           }
         }else{

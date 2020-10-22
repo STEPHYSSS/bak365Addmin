@@ -88,8 +88,13 @@
       </el-form-item>
       <el-form-item label="商品属性">
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
-        <el-input type="textarea" v-model="ParamInfo2" :readonly="true"></el-input>
-        <el-button type="primary" style="margin-left: 10px" size="medium" @click="chooseTast">...</el-button>
+        <!-- <el-input type="textarea" v-model="ParamInfo2" :readonly="true"></el-input> -->
+        <div style="display: flex;">
+          <div style="width: 300px; min-height: 40px; padding: 10px 15px; display: inline-block; border: 1px solid #DCDFE6; background: #fff; border-radius: 3px;">
+            <p v-for="(item, index) in comfirmSelectTast" :key="index + 'a'">{{item.Name}}</p>
+          </div>
+          <el-button type="primary" style="margin-left: 10px; height: 40px;" size="medium" @click="chooseTast">...</el-button>
+        </div>
       </el-form-item>
       <el-form-item label="商品排序" prop="Sort">
         <el-input-number
@@ -432,37 +437,14 @@
       </div>
     </el-dialog>
     <!-- 选择口味弹窗 -->
-    <el-dialog title="选择商品属性" :visible.sync="dialogTasteVisible">
-      <div class="addScroll">
-        <el-checkbox :indeterminate="isIndeterminate2" v-model="checkAllTast" @change="ChangeSys">全选</el-checkbox>
-        <el-checkbox-group v-model="checkClickTast" @change="handChange">
-          <el-checkbox
-            :label="item.SID"
-            v-for="item in gridDataTaste"
-            :key="item.SID"
-            style="display: block"
-          >
-            {{ item.Name }}&nbsp;:
-            <span
-              v-for="(item2, index) in item.AttributeList"
-              :key="index"
-            >&nbsp;{{ item2.Name }}</span>
-          </el-checkbox>
-        </el-checkbox-group>
-      </div>
-      <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button @click="dialogTasteVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureTaste">确 定</el-button>
-      </div>
-      <!-- <div -->
-      <!-- <p v-for="(item,index) in gridDataTaste" :key="index" @click="abc(item)">
-          <span>{{item.Name}}</span>
-          <span v-for="(item2,index) in item.AttributeList" :key="index">
-            {{item2.Name}}
-          </span>
-      </p>-->
-      <!-- </div> -->
-    </el-dialog>
+    <select-sys
+    :gridDataTaste="gridDataTaste"
+    :comfirmSelectTast="comfirmSelectTast"
+    :dialogTasteVisible="dialogTasteVisible"
+    @close="dialogTasteVisible=false"
+    @confirm="confirmSys"
+    :ParamInfoName="ruleForm" />
+    
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
@@ -482,6 +464,7 @@ import { addScroll, ImgList, replacePre } from "@/config/publicFunction";
 import { stockTypeList } from "@/config/utils";
 import vuedraggable from "vuedraggable";
 import { getLists } from "@/api/vipCard";
+import selectSys from './selectSys'
 import _ from "lodash";
 import "@/config/jquery.base64.js";
 import * as ruleText from "@/view/wechatManager/rulesFrom";
@@ -495,16 +478,15 @@ export default {
     ueditor1,
     TicketInfo,
     vuedraggable,
-    tasteList
+    tasteList,
+    selectSys
   },
   data() {
     return {
+      gridDataTaste: [], // 商品属性列表
+      comfirmSelectTast: [], // 确认选中的商品属性
       loading: false,
-      checkAllTast: false,
-      isIndeterminate2: true,
-      checkClickTast: [], //多选框中选中的属性
       dialogTasteVisible: false, //设置商品属性弹窗显示
-      gridDataTaste: [], //设置商品属性table
       tastArr: [], //设置商品属性选中的数组
       ParamInfo2: "",
       optionsNorms: [
@@ -656,9 +638,36 @@ export default {
       arr.push(i.toString());
     }
     this.datesList = arr;
-    this.getInfo();
   },
   methods: {
+    // 获取商品属性设置列表
+    async getInfo(params) {
+      console.log(params)
+      let { Data } = await getLists(
+        {
+          Action: "GetParamList",
+          Type: "2"
+        },
+        "MBaseOpera"
+      );
+      this.gridDataTaste = Data.ParamInfoList;
+      if (params) {
+        this.comfirmSelectTast = []
+        let arr = params.ParamInfo.split(',')
+        for (const i of arr) {
+          for (const y of this.gridDataTaste) {
+            console.log(i, y.SID, i == y.SID)
+            if (i == y.SID) {
+              this.comfirmSelectTast.push(y)
+            }
+          }
+        }
+      }
+    },
+    // 确认选中商品
+    confirmSys (data) {
+      this.comfirmSelectTast = data
+    },
     ChangeAll() {},
     ChangeOne() {},
     changeCheckbox(val) {
@@ -677,7 +686,7 @@ export default {
       try {
         this.loading = true;
         // 获取电子券列表
-        let info = this.$route.query.SID
+        let info = this.$route.query.SID || ''
           ? getLists(
               {
                 Action: "GetProdInfo",
@@ -691,6 +700,11 @@ export default {
           info,
           getLists({ Action: "GetShopList" }, "MShopOpera")
         ]);
+        if (res[1].Data && res[1].Data.ProdInfo) {
+          this.getInfo(res[1].Data.ProdInfo)
+        }else {
+          this.getInfo()
+        }
         this.TicketList = res[0].Data.TicketList;
         this.storeList = res[2].Data.ShopInfoList;
         if (!this.$route.query.SID) {
@@ -709,10 +723,7 @@ export default {
           this.Dates = this.ruleForm.Dates.split(",");
           this.handleCheckedCitiesChangeDay(this.Dates);
         }
-        this.ParamInfo2 = this.ruleForm.ParamInfoName;
-        this.checkClickTast = this.ruleForm.ParamInfo.split(",");
 
-        // console.log(this.ruleForm.ParamInfo, "----------");
         this.ruleForm.CateSID = this.ruleForm.CateSID
           ? this.ruleForm.CateSID.split(",")
           : this.ruleForm.CateSID;
@@ -896,6 +907,17 @@ export default {
           return false;
         } else {
           try {
+            // 接口所需格式
+            this.ParamInfo2 = '' // 先清空
+            this.comfirmSelectTast.forEach((item, index) => {
+              if (index === 0) {
+                this.ParamInfo2 += item.SID
+              }else {
+                this.ParamInfo2 += `,${item.SID}`
+              }
+            })
+            this.ruleForm.ParamInfo = this.ParamInfo2;//属性
+            console.log(this.ruleForm.ParamInfo)
             if (
               this.ruleForm.SpecList &&
               this.ruleForm.SpecList.length === 0 &&
@@ -934,7 +956,6 @@ export default {
             } else {
               this.ruleForm.Dates = "";
             }
-            this.ruleForm.ParamInfo = this.checkClickTast.toString();
                         
             let obj = _.cloneDeep(this.ruleForm);
             console.log(obj, "obj");
@@ -1325,16 +1346,6 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.allCheckList.length;
     },
-    // 商品属性
-    ChangeSys(val) {
-      this.checkClickTast = val ? this.gridDataTaste : [];
-      this.isIndeterminate2 = false;
-    },
-    handChange(val) {
-      let count = val.length;
-      this.checkAllTast = count === this.gridDataTaste.length;
-      this.isIndeterminate2 = count > 0 && count < this.gridDataTaste.length;
-    },
 
     changePickDateValue() {
       if (this.pickDateValue === "2") {
@@ -1357,47 +1368,10 @@ export default {
     chooseTast() {
       this.dialogTasteVisible = true;
     },
-    // 获取商品属性设置列表
-    async getInfo() {
-      let { Data } = await getLists(
-        {
-          Action: "GetParamList",
-          Type: "2"
-        },
-        "MBaseOpera"
-      );
-      this.gridDataTaste = Data.ParamInfoList;
-    },
 
     onFocus() {
       //获取到焦点
     },
-    // 确定
-    sureTaste() {
-      let newArr = [];
-      this.checkClickTast.forEach(D => {
-        console.log(D,'----------')
-        console.log(this.gridDataTaste)
-        console.log(newArr,'000000')
-        // newArr.push(_.find(this.gridDataTaste, { SID: D }));
-      });
-      let abc = "";
-      let title = "";
-      // newArr.forEach(item => {
-      //   console.log(item)
-      //   title = item.Name;
-      //   let text = "";
-      //   item.AttributeList.forEach(j => {
-      //     text += j.Name + ",";
-      //   });
-      //   text = text.substring(0, text.length - 1);
-      //   let dis = title + ":" + text + "\n";
-      //   abc += dis;
-      // });
-      // this.ParamInfo2 = abc;
-      // this.dialogTasteVisible = false;
-      // console.log("传给后台的SID", this.checkClickTast);
-    }
   },
   watch: {
     // currentTicket(val) {

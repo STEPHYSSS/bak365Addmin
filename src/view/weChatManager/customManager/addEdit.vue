@@ -307,6 +307,7 @@ export default {
         this.currentModeArr = Data.Decorate.HtmlInfo;
         this.ruleForm.name = Data.Decorate.Name;
         this.ruleForm.SID = Data.Decorate.SID;
+        this.ruleForm.IsDefault = Data.Decorate.IsDefault;
         this.currentModeArr.forEach(D => {
           if (D.props && D.props.contentRich) {
             // 解密富文本框
@@ -373,7 +374,8 @@ export default {
                 Action: "SetDecorate",
                 HtmlInfo: arr,
                 Name: this.ruleForm.name,
-                SID: this.ruleForm.SID
+                SID: this.ruleForm.SID,
+                IsDefault:this.ruleForm.IsDefault
               },
               "MShopOpera"
             );

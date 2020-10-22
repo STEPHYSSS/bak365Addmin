@@ -72,3 +72,10 @@ Vue.filter('setImgPrex', (val) => {
        return ''
   } */
 })
+Vue.filter('SetImage',(val) => {
+     if (val) {
+          return process.env.setImage + val; 
+     } else {
+          return process.env.setImage + val;
+     }
+})
