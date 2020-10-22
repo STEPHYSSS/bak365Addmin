@@ -203,7 +203,7 @@
     </el-dialog>
 
     <el-dialog
-      class="customImgStyle"
+      class="CustomImgStyle"
       title="自定义标签图片"
       :visible.sync="visibleMaterial"
       width="600px"
@@ -627,7 +627,7 @@ export default {
   .tableLabelImgStyle {
     border: 1px solid #eee;
   }
-  .customImgStyle {
+  .CustomImgStyle {
     .el-upload--picture-card,
     .el-upload-list__item {
       width: 80px;

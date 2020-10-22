@@ -86,7 +86,7 @@
           :fileListUp="fileListUpList"
         ></imgLoad>(建议尺寸:800*800;大小:小于2M;格式:JPG,PNG,JPEG)
       </el-form-item>
-      <el-form-item label="商品属性" v-if="ruleForm.SpecType !='1'">
+      <el-form-item label="商品属性">
         <!-- <el-input v-model="ruleForm.ParamInfo" @focus="onFocus"></el-input> -->
         <el-input type="textarea" v-model="ParamInfo2" :readonly="true"></el-input>
         <el-button type="primary" style="margin-left: 10px" size="medium" @click="chooseTast">...</el-button>
@@ -687,7 +687,7 @@ export default {
             )
           : [];
         let res = await Promise.all([
-          getLists({ Action: "GetTicketList" }, "MTicketOpera"),
+          getLists({ Action: "GetTicketList" }, "MProdOpera"),
           info,
           getLists({ Action: "GetShopList" }, "MShopOpera")
         ]);
@@ -1376,22 +1376,26 @@ export default {
     sureTaste() {
       let newArr = [];
       this.checkClickTast.forEach(D => {
-        newArr.push(_.find(this.gridDataTaste, { SID: D }));
+        console.log(D,'----------')
+        console.log(this.gridDataTaste)
+        console.log(newArr,'000000')
+        // newArr.push(_.find(this.gridDataTaste, { SID: D }));
       });
       let abc = "";
       let title = "";
-      newArr.forEach(item => {
-        title = item.Name;
-        let text = "";
-        item.AttributeList.forEach(j => {
-          text += j.Name + ",";
-        });
-        text = text.substring(0, text.length - 1);
-        let dis = title + ":" + text + "\n";
-        abc += dis;
-      });
-      this.ParamInfo2 = abc;
-      this.dialogTasteVisible = false;
+      // newArr.forEach(item => {
+      //   console.log(item)
+      //   title = item.Name;
+      //   let text = "";
+      //   item.AttributeList.forEach(j => {
+      //     text += j.Name + ",";
+      //   });
+      //   text = text.substring(0, text.length - 1);
+      //   let dis = title + ":" + text + "\n";
+      //   abc += dis;
+      // });
+      // this.ParamInfo2 = abc;
+      // this.dialogTasteVisible = false;
       // console.log("传给后台的SID", this.checkClickTast);
     }
   },

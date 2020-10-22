@@ -212,7 +212,7 @@
 
                 <div class="imgLoad-style" v-if="form.typeSign === '4'">
                   <imgLoad
-                    folder="customImg"
+                    folder="CustomImg"
                     :isAutoFixed="true"
                     @upLoadImgs="upLoadImgsMain"
                     :fileListUrl="form.typeSignImg |setImgPrex"

@@ -30,7 +30,7 @@
         <div class="imgLoad-style">
           <imgLoad
             id="imgLoad"
-            folder="customImg"
+            folder="CustomImg"
             :isAutoFixed="false"
             @upLoadImgs="upLoadImgsMain($event,item)"
             :fileListUrl="item.img |setImgPrex"

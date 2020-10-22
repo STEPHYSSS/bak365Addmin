@@ -103,7 +103,7 @@
         <div class="imgLoad-style">
           <imgLoad
             id="imgLoad"
-            folder="customImg"
+            folder="CustomImg"
             :isAutoFixed="false"
             @upLoadImgs="upLoadImgsMain"
             :fileListUrl="currentImg.img |setImgPrex"

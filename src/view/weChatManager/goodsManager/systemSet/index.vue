@@ -49,9 +49,15 @@
             </el-select>
           </el-form-item>
           <el-form-item label="商城模式">
-            <el-radio v-model="form.radio" label="1">点餐模式</el-radio>
-            <el-radio v-model="form.radio" label="2">自定义模式</el-radio>
+            <el-radio v-model="form.ShopRadio" label="1">点餐模式</el-radio>
+            <el-radio v-model="form.ShopRadio" label="2">自定义模式</el-radio>
           </el-form-item>
+          <el-form-item label="积分抵扣">
+            <el-input v-model="form.ScoreDeduction" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" class="inputWidth"></el-input>元，每单抵扣比例
+            <el-input v-model="form.ScoreRatio" class="inputWidth" placeholder="请输入折扣比例"></el-input>%
+          </el-form-item>
+          <!-- <el-form-item label="商城模式">
+          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"
@@ -130,7 +136,10 @@ export default {
       activeName: "1",
       rules: {},
       form: {
-        radio:"1"
+        ShopRadio:"1",
+        ScopeDay:'',
+        StartTime:'',
+        EndTime:'',
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],
@@ -164,8 +173,10 @@ export default {
           let { Data } = await getLists(
           { Action: "GetBase", Type: 1 },
           "MShopOpera"
-          );
-          this.form = Data.ShopBase.SetInfo;
+          ); 
+          if(Data.ShopBase){
+            this.form = Data.ShopBase.SetInfo;
+          }
         }else{
         let { Data } = await getLists(
           { Action: "GetBase", Type: 2 },
@@ -214,6 +225,10 @@ export default {
 .el-select,
 .el-input {
   width: 300px;
+}
+.inputWidth{
+  width: 80px;
+  margin: 0 5px;
 }
 fieldset {
   border: 2px solid #cadcf7;

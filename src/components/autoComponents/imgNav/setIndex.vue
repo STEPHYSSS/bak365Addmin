@@ -59,7 +59,7 @@
         <div class="imgLoad-style" v-if="form.navStyle==='image'">
           <imgLoad
             id="imgLoad"
-            folder="customImg"
+            folder="CustomImg"
             :isAutoFixed="true"
             @upLoadImgs="upLoadImgsMain($event,item)"
             :fileListUrl="item.url |setImgPrex"

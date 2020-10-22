@@ -55,15 +55,15 @@
         <div v-if="freightType==='1'">
           <span style="margin:0 10px">运费规则{{index+1}}：</span>
           <div class="province_fa">
-            <div>
+            <div class="inputWitdh">
               <el-input-number v-model="item.StartingKM" controls-position="right" :min="0"></el-input-number>公里以内
               <el-input-number v-model="item.StartingPrice" controls-position="right" :min="0"></el-input-number>元， 超出起送公里后每
               <el-input-number v-model="item.BeyondKM" controls-position="right" :min="0"></el-input-number>公里加收
-              <br />
               <el-input-number v-model="item.BeyondPrice" controls-position="right" :min="0"></el-input-number>元，
               运费上限
               <el-input-number v-model="item.UpPrice" controls-position="right" :min="0"></el-input-number>元， 超出
-              <el-input-number v-model="item.NodeliveryKM" controls-position="right" :min="0"></el-input-number>公里不配送
+              <el-input-number v-model="item.NodeliveryKM" controls-position="right" :min="0"></el-input-number>公里不配送,
+              订单满<el-input-number v-model="item.SatisfyMoney" controls-position="right" :min="0"></el-input-number>元免运费
             </div>
             <el-button
               style="margin-left:40px"
@@ -236,7 +236,7 @@ export default {
       }
 
       let obj = {
-        ProList: JSON.stringify(newList),
+        RuleList: JSON.stringify(newList),
         Action: "SetRdcRule",
         RdcScope: RdcScope,
         DefFreight: this.DefFreight,
@@ -264,6 +264,7 @@ export default {
           BeyondPrice: "",
           UpPrice: "",
           NodeliveryKM: "",
+          SatisfyMoney:"",
           Defaults: false
         });
       }
@@ -367,6 +368,7 @@ export default {
   }
   .el-input-number {
     margin: 5px 6px;
+    width: 120px;
   }
   .lineBack {
     width: 100%;

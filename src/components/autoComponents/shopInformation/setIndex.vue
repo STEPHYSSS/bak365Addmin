@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="背景图片:">
         <imgLoad
-          folder="customImg"
+          folder="CustomImg"
           :isAutoFixed="false"
           @upLoadImgs="upLoadImgsMain"
           :fileListUrl="form.currentImg |setImgPrex"
