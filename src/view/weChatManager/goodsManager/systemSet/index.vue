@@ -53,7 +53,7 @@
             <el-radio v-model="form.ShopRadio" label="2">自定义模式</el-radio>
           </el-form-item>
           <el-form-item label="积分抵扣">
-            <el-input v-model="form.ScoreDeduction" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" class="inputWidth"></el-input>元，每单抵扣比例
+            <el-input v-model="form.ScoreDeduction" placeholder="例：100" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" placeholder="例：1" class="inputWidth"></el-input>元，每单抵扣比例
             <el-input v-model="form.ScoreRatio" class="inputWidth" placeholder="请输入折扣比例"></el-input>%
           </el-form-item>
           <!-- <el-form-item label="商城模式">
@@ -226,7 +226,7 @@ export default {
   width: 300px;
 }
 .inputWidth{
-  width: 80px;
+  width: 85px;
   margin: 0 5px;
 }
 fieldset {

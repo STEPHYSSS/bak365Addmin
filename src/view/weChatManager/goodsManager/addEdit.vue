@@ -255,11 +255,11 @@
         ></tasteList>
         <div style="color: #999">仅支持普通商品，仅实现于自定义模板</div>
       </el-form-item>
-      <el-form-item label="可用电子劵" prop="TicketInfo">
+      <!-- <el-form-item label="可用电子劵" prop="TicketInfo">
         <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
         <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket">...</el-button>
         <div style="color: #999">只可用此设置的电子劵购买此商品</div>
-      </el-form-item>
+      </el-form-item> 暂不需要此功能-->
       <!-- <el-form-item label="每人限购" prop="MaxBuyCnt">
         <el-input-number
           v-model="ruleForm.MaxBuyCnt"

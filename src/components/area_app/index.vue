@@ -1,7 +1,7 @@
 <template>
   <div class="area_app_style">
     <div style="margin-bottom:30px">
-      <el-button v-if="!isStore" type="primary" @click="addDelivery">新增配送范围</el-button>
+      <!-- <el-button v-if="!isStore" type="primary" @click="addDelivery">新增配送范围</el-button> -->
 
       <el-form
         ref="formArea"
@@ -10,7 +10,7 @@
         style="margin-top:10px"
         :inline="true"
       >
-        <div v-for="(item,index) in objParams.paramsFormList" :key="index">
+        <!-- <div v-for="(item,index) in objParams.paramsFormList" :key="index">
           <el-form-item label="标记颜色">
             <div
               class="marking-color"
@@ -21,12 +21,12 @@
             <el-input v-model="item.name"></el-input>
             <i class="el-icon-delete delete-icon-style" @click="delIcon(index)"></i>
           </el-form-item>
-        </div>
+        </div> -->
       </el-form>
-      <div style="margin:10px" v-if="!isStore">移动红点选择画图中心点(蓝点为门店位置):</div>
-      <div class="lineBack"></div>
+      <!-- <div style="margin:10px" v-if="!isStore">移动红点选择画图中心点(蓝点为门店位置):</div>
+      <div class="lineBack"></div> -->
     </div>
-    <div id="container" style="width:1000px;height:600px"></div>
+    <!-- <div id="container" style="width:1000px;height:600px"></div> -->
 
     <div style="text-align:center;margin-top:20px" v-if="!isStore">
       <el-button
@@ -310,6 +310,7 @@ export default {
       }
 
       this.$refs["formArea"].validate(valid => {
+        
         if (valid) {
           let obj = JSON.parse(JSON.stringify(this.objParams.paramsFormList));
           obj.forEach(D => {

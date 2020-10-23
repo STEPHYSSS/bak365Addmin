@@ -83,6 +83,7 @@ export default {
     addDomain() {
         this.dynamicValidateForm.domains.push({
           Name: '',
+          Price:0,
           key: Date.now()
         });
       },
@@ -105,6 +106,13 @@ export default {
     },
     add() {//新增
       this.dialogFormVisible = true;
+      this.dynamicValidateForm = {
+        domains: [{
+          Name: '',
+          Price:0
+        }],
+        Name: ''
+      }
     },
     edit(row){//编辑
       this.dialogFormVisible = true;

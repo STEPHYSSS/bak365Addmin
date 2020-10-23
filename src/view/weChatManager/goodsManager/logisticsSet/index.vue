@@ -81,7 +81,7 @@
       </div>
       <div v-if="freightType==='1'">
         <div class="lineBack"></div>
-        <div style="margin:10px 10px">配送范围：</div>
+        <!-- <div style="margin:10px 10px">配送范围：</div> -->
         <areaMy v-if="!loading" @CheckTicketFun="CheckTicketFun" :rangeList="rangeList"></areaMy>
       </div>
 

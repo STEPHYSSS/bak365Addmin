@@ -62,9 +62,11 @@ Vue.filter('payType', (val) => {
 
 Vue.filter('setImgPrex', (val) => {
      if (val) {
-          return process.env.BASE_URL + val; /* process.env.Prefix */
+          // return process.env.BASE_URL + val; /* process.env.Prefix */
+          return process.env.Prefix + val
      } else {
-          return process.env.BASE_URL + val;
+          return ''
+          // return process.env.BASE_URL + val;
      }
      /* {
        return process.env.Prefix + val
@@ -74,8 +76,8 @@ Vue.filter('setImgPrex', (val) => {
 })
 Vue.filter('SetImage',(val) => {
      if (val) {
-          return process.env.setImage + val; 
+          return process.env.BASE_URL + val; 
      } else {
-          return process.env.setImage + val;
+          return process.env.BASE_URL + val;
      }
 })

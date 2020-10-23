@@ -25,7 +25,7 @@
             >
               <h3 class="cap-image-ad__title" v-if="item.name&&item.name!==' '">{{item.name}}</h3>
               <div class="cap-image-ad__image-wrapper">
-                <img class="cap-image-ad__image" :src="item.img |setImgPrex" alt="loaded" />
+                <img class="cap-image-ad__image" :src="item.img |SetImage" alt="loaded" />
               </div>
             </li>
           </ul>
@@ -37,7 +37,7 @@
             @change="onChange"
           >
             <van-swipe-item v-for="(image, index) in currentObj.imgList" :key="index">
-              <img :src="image.img|setImgPrex" style="width:100%" />
+              <img :src="image.img|SetImage" style="width:100%" />
               <h3 class="cap-image-ad__title" v-if="image.name&&image.name!==''">{{image.name}}</h3>
             </van-swipe-item>
             <template #indicator v-if="currentObj.indicator!=1&&currentObj.imgList.length>1">
@@ -70,7 +70,7 @@
               'margin-right': currentObj.imgGap+'px'}"
             >
               <!-- {{image.urlObj.url}} 商品链接-->
-              <img :src="image.img|setImgPrex" style="width:100%;height:100%" />
+              <img :src="image.img|SetImage" style="width:100%;height:100%" />
               <h3 class="cap-image-ad__title" v-if="image.name&&image.name!==''">{{image.name}}</h3>
             </div>
           </div>
