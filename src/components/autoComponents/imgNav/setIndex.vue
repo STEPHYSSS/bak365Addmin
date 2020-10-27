@@ -173,6 +173,7 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val, index) {
+      console.log(val,index)
       this.form.listNav[index].urlObj = val;
       this.$emit("setModeVal", this.form);
     },

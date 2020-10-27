@@ -46,7 +46,6 @@
               <img :src="scoped.row.ImgList.length>0?scoped.row.ImgList[0]:''" alt />
             </el-col>
             <el-col :span="12" class="goodInfoRight">
-              <!--              <div>{{scoped.row.SID}}</div>-->
               <div>{{currentGoods?scoped.row.Name:scoped.row.Name}}</div>
               <div style="color:red;margin-top:10px">
                 <span>¥{{scoped.row.SalePrice}}</span>
@@ -206,7 +205,8 @@ export default {
       newWidth: "100",
       code:
         "http://dingtalk.bak365.cn/WeixinNew/Dist/#/shoppingMall/goodsPage/5718436288937326446?AppNo=1",
-      currentIndexCode: ""
+      currentIndexCode: "",    
+      
     };
   },
   async created() {
@@ -267,8 +267,13 @@ export default {
           });
           this.$set(D, "State", D.State === "1" ? true : false);
         });
+        let query={ SID:""}
+        // http://dingtalk.bak365.cn/WeixinNew/Dist/#/pages/shoppingMall/list/infoGoodSID
         this.data.forEach(D => {
-          D.codeUrl = this.phoneUrlGood + D.SID + "?AppNo=" + this.AppNoMy;
+          query.SID = D.SID;
+          // D.codeUrl = this.phoneUrlGood + D.SID + "?AppNo=" + this.AppNoMy;//暂时注释
+          D.codeUrl = this.phoneUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
+          // console.log(D.codeUrl)
         });
         this.loading = false;
       } catch (e) {

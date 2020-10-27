@@ -26,7 +26,11 @@
             :value="item.value"
           ></el-option>
         </el-select>
+          <!-- <span style="color:red">《单规格》商品代表单一属性商品《多规划》代表基础属性相同，（质量、口味、配料、含量等）不同组合商品</span><br/>
+        <span>《多尺寸》代表一码多品（无需添加门店商品就可实现一种蛋糕分6寸、8寸等售卖</span> -->
+
       </el-form-item>
+      
       <el-form-item label="商品编号" v-if="ruleForm.SpecType !== '2'" prop="ProdNo" :key="1">
         <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请填写商品编号"></el-input>
         <el-button

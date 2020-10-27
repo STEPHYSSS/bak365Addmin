@@ -45,7 +45,7 @@ const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChat
 // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/index')), 'customPage')
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')
-
+const autoHomeUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoHomeUrl')), 'autoHomeUrl')
 // 营销管理
 const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/index')), 'markingPage')
 const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/orderSharingList')), 'orderSharingList')
@@ -425,7 +425,13 @@ export const asyncRouterMap = [
               label: '添加自定义页面'
             },
             component: customPageAdd
-          },
+          },{
+            path:'autoHomeUrl',
+            meta: {
+              label: '商城网址'
+            },
+            component: autoHomeUrl
+          }
         ]
       },
       {//营销管理 --会员领导者
