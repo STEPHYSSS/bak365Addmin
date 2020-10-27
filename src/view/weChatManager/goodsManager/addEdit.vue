@@ -646,7 +646,7 @@ export default {
   methods: {
     // 获取商品属性设置列表
     async getInfo(params) {
-      console.log(params)
+      // console.log(params)
       let { Data } = await getLists(
         {
           Action: "GetParamList",
@@ -1117,6 +1117,7 @@ export default {
       if (this.goodsNormsIndex === null) {
         this.ruleForm.ProdNo = val.ProdNo;
         this.ruleForm.Name = val.ProdName;
+        this.ruleForm.SalePrice = val.SalePrice;
       } else {
         // 给当前的 商品规格编号加 禁止
         // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})

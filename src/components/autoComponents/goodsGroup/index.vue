@@ -22,7 +22,7 @@
               <span class="van-ellipsis">全部</span>
             </div>
             <div
-              @click="clickMenu(index + 1)"
+              @click="clickMenu(index + 1,item)"
               class="van-tab"
               :class="['van-tab',currentMenuIndex === index + 1?'van-tab--active':'']"
               :style="{'flex-basis': basisWidth}"
@@ -40,7 +40,7 @@
         v-if="currentObj.followBoard === '2'"
       >
         <a
-          @click="clickMenu(index)"
+          @click="clickMenu(index,item)"
           :class="['van-badge','van-hairline',
           currentMenuIndex === index?'van-badge--select':'']"
           v-for="(item,index) in groupList?groupList:currentObj.groupList"
@@ -298,7 +298,8 @@ export default {
         );
       }
     },
-    clickMenu(index) {
+    clickMenu(index, item) {
+      // console.log(item, "90909090");
       this.currentMenuIndex = index;
       if (index === "0") {
         //全部

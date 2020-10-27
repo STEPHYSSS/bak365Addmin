@@ -90,16 +90,13 @@ export default {
       //   this.changeBox();
       // });
     },
-    SetImage(val){
-      if (
-					val &&
-					this.propsObj.imgList &&
-					this.propsObj.imgList.length > 0
-				) {
-					return 'http://192.168.0.105:8001/' + val;
-				} else {
-					return val;
-				}
+    SetImage(val) {
+      if (val && this.propsObj.imgList && this.propsObj.imgList.length > 0) {
+        // return 'http://192.168.0.105:8001/' + val;
+        return process.env.BASE_URL + val;
+      } else {
+        return val;
+      }
     },
     changeBox() {
       this.listBox = this.currentObj.imgList || this.propsObj.imgList;
