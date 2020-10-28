@@ -136,19 +136,39 @@ export default {
     },
      // 删除     
     async delColor(val) {
-      try {
-        let { Data } = await getLists(
-          {
-            Action: "RemoveStyle",
-            SID: val.SID,
-          },
-          "MShopOpera"
-        );
-        this.$message.success("删除成功");
-        this.getColorList();
-      } catch (error) {
-        this.$message.error(error);
-      }
+      this.$confirm('是否删除此条数据?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let { Data } =  getLists(
+            {
+              Action: "RemoveStyle",
+              SID: val.SID
+            },
+            "MShopOpera"
+          );
+          this.getColorList();
+          this.$message.success("删除成功");
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      // try {
+      //   let { Data } = await getLists(
+      //     {
+      //       Action: "RemoveStyle",
+      //       SID: val.SID,
+      //     },
+      //     "MShopOpera"
+      //   );
+      //   this.$message.success("删除成功");
+      //   this.getColorList();
+      // } catch (error) {
+      //   this.$message.error(error);
+      // }
     },
   },
   filters:{

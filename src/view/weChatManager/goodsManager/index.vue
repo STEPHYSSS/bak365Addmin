@@ -165,7 +165,7 @@ export default {
         // 显示停用商品 返回true 和false
         Status: "",
         // 分类
-        CateNo: "",
+        CateSID: "",
         Name: "",
         ProdType:"",
         SpecType:""
@@ -250,7 +250,7 @@ export default {
           {
             Action: "GetProdInfoList",
             Status:this.search.Status,
-            CateNo:this.search.CateNo,
+            CateSID:this.search.CateSID,
             Name:this.search.Name,
             ProdType:this.search.ProdType,
             SpecType:this.search.SpecType,

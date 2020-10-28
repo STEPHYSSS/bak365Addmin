@@ -120,7 +120,8 @@
         </el-select>
       </el-form-item>
       <!-- v-if="ruleForm.SpecType === '1'" -->
-      <el-form-item label="商品库存" v-if="ruleForm.StockType === '1' || (ruleForm.SpecType == '3'&& ruleForm.StockType !='2')">
+      <!--  || (ruleForm.SpecType == '3'&& ruleForm.StockType !='2') -->
+      <el-form-item label="商品库存" v-if="ruleForm.SpecType === '1' && ruleForm.StockType !='0'">
         <el-input-number
           v-model="ruleForm.StoreQty"
           controls-position="right"
@@ -306,7 +307,7 @@
               :prop="'SpecList.' + index + '.StoreQty'"
               :rules="rules.StoreQty"
               label="库存"
-              v-if="ruleForm.SpecType == '3'&& ruleForm.StockType !='2'"
+              v-if="ruleForm.StockType !='0'"
             >
               <el-input-number
                 style="width: auto; text-align: left"

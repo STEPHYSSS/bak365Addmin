@@ -74,7 +74,7 @@ export default {
         // { url: "", name: "自定义链接", id: 1 },
         {
           name: "商城首页",
-          url: url + "pages/homePage/homePage",
+          url: url,
         },
         {
           name: "商品列表",

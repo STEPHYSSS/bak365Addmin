@@ -51,7 +51,7 @@ export default {
       tableData: [
         {
           Name: "商城首页",
-          url: url + "pages/homePage/homePage",
+          url: url + "index.html",
         },
         {
           Name: "商品列表",

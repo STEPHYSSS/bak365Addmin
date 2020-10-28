@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="Name" label="网址名称" align="center" width="300">
+      <el-table-column prop="Name" label="网址名称" width="300">
       </el-table-column>
-      <el-table-column prop="url" label="网址链接" align="center">
+      <el-table-column prop="url" label="网址链接" >
       </el-table-column>
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
@@ -28,7 +28,7 @@ export default {
       tableData: [
         {
           Name: "商城首页",
-          url: url + "pages/homePage/homePage",
+          url: url,
         },
         {
           Name: "商品列表",

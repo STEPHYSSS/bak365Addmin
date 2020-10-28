@@ -43,10 +43,10 @@
       <el-form-item label="纬度：" prop="Latitude">
         <el-input v-model="form.Latitude" :readonly="true" placeholder="请输入内容"></el-input>
       </el-form-item>
-      <el-form-item>
+      <!-- <el-form-item>
         <div>可移动选择经纬度</div>
         <areaMy :isStore="true" @dragendArea="dragendArea"></areaMy>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <el-dialog title="门店列表" :visible.sync="dialogTableVisible">
       <div style="margin-bottom: 20px;text-align: center;">
