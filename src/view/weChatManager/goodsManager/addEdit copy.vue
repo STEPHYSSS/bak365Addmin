@@ -288,10 +288,10 @@
       <!--        <el-input v-model="ruleForm.AccessoriesRemark" placeholder="配件备注"></el-input>-->
       <!--        <div style="color:#999">用户选择配件时的温馨提示</div>-->
       <!--      </el-form-item>-->
-      <el-form-item label="可用电子劵" prop="TicketInfo">
-        <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
+      <el-form-item label="可用电子券" prop="TicketInfo">
+        <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子券"></el-input>
         <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket">...</el-button>
-        <div style="color:#999">只可用此设置的电子劵购买此商品</div>
+        <div style="color:#999">只可用此设置的电子券购买此商品</div>
       </el-form-item>
       <!--      <el-form-item label="适用区域" prop="CityInfo">-->
       <!--        <el-input readonly v-model="ruleForm.CityInfo" placeholder="请选择适用区域"></el-input>-->
@@ -302,7 +302,7 @@
       <!--        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicketInfo">...-->
       <!--        </el-button>-->
       <!--        <br>-->
-      <!--        该商品包含的电子劵信息（可设置一张或多张）-->
+      <!--        该商品包含的电子券信息（可设置一张或多张）-->
       <!--      </el-form-item>-->
       <el-form-item label="每人限购" prop="MaxBuyCnt">
         <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
@@ -455,7 +455,7 @@
     <!--    :before-close="beforeCloseTicket"-->
     <el-dialog
       class="areaTree TicketDialog"
-      :title="currentTicket?'选择电子劵':'选择门店'"
+      :title="currentTicket?'选择电子券':'选择门店'"
       width="600px"
       :before-close="beforeClose"
       :visible.sync="showCheckTicket"

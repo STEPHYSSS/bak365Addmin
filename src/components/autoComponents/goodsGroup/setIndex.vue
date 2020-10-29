@@ -452,7 +452,8 @@ export default {
         _data.push(D.groupId);
       });
       this.form._data = _data;
-      console.log(this.form);
+      console.log(this.form._data,'/////')
+      console.log(this.form,'5555');
       this.$emit("setModeVal", this.form);
     },
     changeGoodsNum(val) {

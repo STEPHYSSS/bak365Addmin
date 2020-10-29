@@ -1,6 +1,6 @@
 <template>
-  <!-- 选择电子劵 -->
-  <el-dialog class="dialogTicketFa" title="选择电子劵" :visible.sync="dialogVisible" width="600px">
+  <!-- 选择电子券 -->
+  <el-dialog class="dialogTicketFa" title="选择电子券" :visible.sync="dialogVisible" width="600px">
     <span>名称搜索</span>
     <el-input
       v-model="tiketName"

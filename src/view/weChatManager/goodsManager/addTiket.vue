@@ -12,8 +12,8 @@
       <el-form-item label="类别" prop="CateSID">
         <goodType @changeGoodType="changeGoodType" ref="goodType"></goodType>
       </el-form-item>
-      <el-form-item label="电子劵编号">
-        <el-input readonly v-model="ruleForm.ProdNo" placeholder="请选择电子劵"></el-input>
+      <el-form-item label="电子券类型编号">
+        <el-input readonly v-model="ruleForm.ProdNo" placeholder="请选择电子券"></el-input>
         <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket" v-if="!$route.query.SID">...</el-button>
       </el-form-item>
       <el-form-item label="电子券名称" prop="Name">
@@ -130,7 +130,7 @@
         <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog class="dialogTicketFa" title="选择电子劵" :visible.sync="dialogVisible" width="600px">
+    <el-dialog class="dialogTicketFa" title="选择电子券" :visible.sync="dialogVisible" width="600px">
     <span>名称搜索</span>
     <el-input
       v-model="tiketName"

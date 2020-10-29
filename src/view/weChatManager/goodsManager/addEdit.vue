@@ -12,7 +12,7 @@
       <el-form-item label="类别" prop="CateSID">
         <goodType @changeGoodType="changeGoodType" ref="goodType"></goodType>
       </el-form-item>
-      <el-form-item label="商品规格选择" :key="6">
+      <el-form-item label="商品规格选择" >
         <el-select
           v-model="ruleForm.SpecType"
           placeholder="请选择"
@@ -121,7 +121,7 @@
       </el-form-item>
       <!-- v-if="ruleForm.SpecType === '1'" -->
       <!--  || (ruleForm.SpecType == '3'&& ruleForm.StockType !='2') -->
-      <el-form-item label="商品库存" v-if="ruleForm.SpecType === '1' && ruleForm.StockType !='0'">
+      <el-form-item label="商品库存" v-if="ruleForm.SpecType === '1' && ruleForm.StockType =='1'">
         <el-input-number
           v-model="ruleForm.StoreQty"
           controls-position="right"
@@ -307,7 +307,7 @@
               :prop="'SpecList.' + index + '.StoreQty'"
               :rules="rules.StoreQty"
               label="库存"
-              v-if="ruleForm.StockType !='0'"
+              v-if="ruleForm.StockType =='1'"
             >
               <el-input-number
                 style="width: auto; text-align: left"
@@ -401,7 +401,7 @@
     </el-dialog>
     <el-dialog
       class="areaTree TicketDialog"
-      :title="currentTicket ? '选择电子劵' : '选择门店'"
+      :title="currentTicket ? '选择电子券' : '选择门店'"
       width="600px"
       :before-close="beforeClose"
       :visible.sync="showCheckTicket"
@@ -495,9 +495,9 @@ export default {
       tastArr: [], //设置商品属性选中的数组
       ParamInfo2: "",
       optionsNorms: [
-        { label: "单规格商品", value: "1" },
-        { label: "多尺寸商品", value: "3" },
-        { label: "多规格商品", value: "2" }
+        { label: "单规格商品", value: "1" },        
+        { label: "多规格商品", value: "2" },
+        { label: "多尺寸商品", value: "3" }
       ],
       ruleForm: {
         // 支付方式
@@ -510,7 +510,7 @@ export default {
         // 商品规格
         SpecList: [],
         // 记录规格类型
-        SpecType: "2",
+        SpecType: "1",
         StockType: "0"
         // MaxBuyCnt: 0,
         // StoreQty: 0
@@ -527,8 +527,8 @@ export default {
         ProdNo: [ruleText.ProdNo(this)],
         ProdNoChildren: [ruleText.ProdNoChildren(this)],
         NameChildren: [ruleText.NameChildren(this)],
-        Name: [ruleText.Name(this)],
-        StoreQty: [ruleText.StoreQty(this)],
+        Name: [ruleText.Name(this)],        
+        StoreQty: { required: true, message: '库存不能为空'},
         CateSID: [ruleText.CateSID(this)],
         DeliveryType: [
           { required: true, message: "请选择配送方式", trigger: "change" }
@@ -922,7 +922,6 @@ export default {
               }
             })
             this.ruleForm.ParamInfo = this.ParamInfo2;//属性
-            console.log(this.ruleForm.ParamInfo)
             if (
               this.ruleForm.SpecList &&
               this.ruleForm.SpecList.length === 0 &&

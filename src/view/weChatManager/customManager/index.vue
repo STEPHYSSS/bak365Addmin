@@ -25,16 +25,16 @@
         label="共应用次数"
         align="center"
       ></el-table-column>
-      <el-table-column prop="IsDefault" label="是否默认" align="center">
+      <el-table-column prop="IsDefault" label="默认" align="center">
         <template slot-scope="scope">
-          <a v-if="scope.row.IsDefault === '0'" @click="changeDef(1, scope.row)"
-            >否</a
-          >
-          <a v-else @click="changeDef(0, scope.row)">是</a>
+          <span v-if="scope.row.IsDefault === '0'">否</span>
+          <span v-else style="color:#2d8cf0">是</span>
         </template>
       </el-table-column>
       <el-table-column prop="Name" label="操作" width="200" align="center">
         <template slot-scope="scoped">
+          <el-button type="text" v-if="scoped.row.IsDefault === '0'" @click="changeDef(1, scoped.row)">开启</el-button>
+          <el-button type="text" v-else @click="changeDef(0, scoped.row)">关闭</el-button>
           <el-button type="text" @click="editRowGoods(scoped.row)"
             >编辑</el-button
           >

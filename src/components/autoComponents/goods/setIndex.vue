@@ -6,7 +6,7 @@
       <el-form-item label="商品来源:" style="margin-top:20px;">
         <el-radio-group v-model="form.goodSource" @change="changeSource">
           <el-radio label="0">商品</el-radio>
-          <el-radio label="1">商品分组</el-radio>
+          <!-- <el-radio label="1">商品分组</el-radio> -->
         </el-radio-group>
       </el-form-item>
       <div class="controls-card add-good">
