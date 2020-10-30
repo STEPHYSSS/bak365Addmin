@@ -496,8 +496,8 @@ export default {
       ParamInfo2: "",
       optionsNorms: [
         { label: "单规格商品", value: "1" },        
-        { label: "多规格商品", value: "2" },
-        { label: "多尺寸商品", value: "3" }
+        { label: "多规格商品", value: "2" }
+        // { label: "多尺寸商品", value: "3" }
       ],
       ruleForm: {
         // 支付方式
@@ -1321,7 +1321,6 @@ export default {
           ProdNo: "",
           Name: "",
           SalePrice: "",
-          CardPrice: "",
           Img: []
           // TastName: []
         });

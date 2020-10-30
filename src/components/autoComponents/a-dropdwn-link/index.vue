@@ -77,8 +77,12 @@ export default {
           url: url,
         },
         {
-          name: "商品列表",
+          name: "商品列表-自定义",
           url: url + "pages/shoppingMall/list/goodsList",
+        },
+        {
+          Name:'商品列表-点餐',
+          url:url+"pages/shoppingMall/menu_naixue/menu/menu"
         },
         {
           name: "积分商城",

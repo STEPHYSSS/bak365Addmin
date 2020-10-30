@@ -251,16 +251,19 @@ export default {
       this.currentObj.showContent = this.currentObj.showContent
         ? this.currentObj.showContent
         : [];
+      console.log(this.currentObj.showContent,'watch监听内容')
     },
     "currentObj._Prod_Data"(val) {
       if (this.currentObj.goodSource === "0" && val.length > 0) {
         this.currentGoodList = val;
       }
+      console.log(val,'watch监听内容2')
     },
-    "currentObj.goodSource"() {
-      this.currentObj._Prod_Data = [];
-      this.currentGoodList = this.fakeData;
-    }
+    // "currentObj.goodSource"() {
+    //   console.log(currentObj.goodSource,'watch监听内容3')
+    //   this.currentObj._Prod_Data = [];
+    //   this.currentGoodList = this.fakeData;
+    // }
   }
 };
 </script>

@@ -21,7 +21,7 @@ export default {
     }
   },
   created(){
-    console.log("这是父传子数据"+this.currentObj)
+    // console.log("这是父传子数据"+this.currentObj)
   }
 };
 </script>

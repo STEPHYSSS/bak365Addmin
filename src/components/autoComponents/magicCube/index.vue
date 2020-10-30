@@ -278,7 +278,7 @@ export default {
 }
 .cap-cube__item {
   box-sizing: border-box;
-  border: 1px solid rgb(209, 207, 207);
+  /* border: 1px solid rgb(209, 207, 207); */
   position: absolute;
   background-repeat: no-repeat;
   background-size: cover;

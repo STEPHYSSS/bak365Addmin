@@ -309,6 +309,7 @@ export default {
         this.ruleForm.SID = Data.Decorate.SID;
         this.ruleForm.IsDefault = Data.Decorate.IsDefault;
         this.currentModeArr.forEach(D => {
+          console.log(D,'获取信息')
           if (D.props && D.props.contentRich) {
             // 解密富文本框
             D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");
@@ -454,8 +455,7 @@ export default {
     },
     setModeVal(obj, index) {
       this.$set(this.ModeValArr, index, obj);
-      console.log(this.ModeValArr);
-      // ModeValArr代表这自定义列表中选择了几个组件，obj代表的是右边的对象
+      //obj代表的是右边的对象
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {
         this.$refs.setModeRef[index].changeBox();
       }

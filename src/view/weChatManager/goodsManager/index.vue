@@ -286,7 +286,7 @@ export default {
       let State = bool === true ? 1 : 0;
       try {
         let httpApi = this.currentGoods ? "SetProdState" : "SetSaleState";
-        let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
+        let Opera = "MProdOpera";
         let data = await getLists(
           { Action: httpApi, SID: row.SID, State: State },
           Opera
@@ -346,7 +346,8 @@ export default {
     async confirmEnd() {
       try {
         let api = this.currentGoods ? "RemoveProdInfo" : "RemoveTicket";
-        let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
+        // let Opera = this.currentGoods ? "MProdOpera" : "MTicketOpera";
+        let Opera = "MProdOpera"
         await getLists({ Action: api, SID: this.current_SID }, Opera);
         this.data.splice(this.current_index, 1);
         this.$message.success("删除成功");

@@ -708,17 +708,17 @@ export default {
             )
           : [];
         let res = await Promise.all([
-          getLists({ Action: "GetTicketList" }, "MTicketOpera"),
+          // getLists({ Action: "GetTicketList" }, "MTicketOpera"),
           info,
           getLists({ Action: "GetShopList" }, "MShopOpera")
         ]);
-        this.TicketList = res[0].Data.TicketList;
-        this.storeList = res[2].Data.ShopInfoList;
+        // this.TicketList = res[0].Data.TicketList;
+        this.storeList = res[1].Data.ShopInfoList;
         if (!this.$route.query.SID) {
           this.loading = false;
           return;
         }
-        this.ruleForm = res[1].Data.ProdInfo;
+        this.ruleForm = res[0].Data.ProdInfo;
         this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
         
         if (this.ruleForm.Weeks) {

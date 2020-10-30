@@ -156,19 +156,6 @@ export default {
             message: '已取消删除'
           });          
         });
-      // try {
-      //   let { Data } = await getLists(
-      //     {
-      //       Action: "RemoveStyle",
-      //       SID: val.SID,
-      //     },
-      //     "MShopOpera"
-      //   );
-      //   this.$message.success("删除成功");
-      //   this.getColorList();
-      // } catch (error) {
-      //   this.$message.error(error);
-      // }
     },
   },
   filters:{
