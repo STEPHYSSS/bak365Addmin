@@ -78,6 +78,6 @@ Vue.filter('SetImage',(val) => {
      if (val) {
           return process.env.BASE_URL + val; 
      } else {
-          return process.env.BASE_URL + val;
+          return '';
      }
 })

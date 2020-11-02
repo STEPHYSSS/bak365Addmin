@@ -54,7 +54,6 @@ export default {
   updated() {},
   mounted() {
     this.editor = window.UE.getEditor(this.randomId, this.config);
-
     let _this = this;
     this.editor.addListener("simpleupload_customcomplete", function(
       //图片上传成功
@@ -80,6 +79,7 @@ export default {
     },
     setUEContent(val) {
       return this.editor.setContent(val);
+       
     }
   },
   watch: {}

@@ -155,6 +155,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="block" v-if="TotalList">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="TotalList">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -173,6 +184,9 @@ export default {
       loading: true,
       PayTypeList: payTypeLists,
       DeliveryTypeList: deliveryTypeLists,
+      TotalList:0,//分页总数
+      currentPage: 0,
+      pageSize:0,
     };
   },
   components: {},
@@ -185,7 +199,7 @@ export default {
       try {
         // 获取商品列表
         // , OrderType: 2
-        let obj = { Action: "GetOrderList" };
+        let obj = { Action: "GetOrderList",Page: this.currentPage - 1};
         this.search.StartAddTime = this.search.searchTime
           ? this.search.searchTime[0]
           : "";
@@ -195,11 +209,20 @@ export default {
         obj = Object.assign(obj, this.search);
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
+        this.TotalList = Data.DataCount;
+        this.pageSize = Data.PageSize;
         this.loading = false;
       } catch (e) {
         this.$message.error(e);
         this.loading = false;
       }
+    },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getList(val);
     },
     changePicker() {
       // console.log(this.search.searchTime, 8888);

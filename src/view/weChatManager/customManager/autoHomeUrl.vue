@@ -3,28 +3,58 @@
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="Name" label="网址名称" width="300">
       </el-table-column>
-      <el-table-column prop="url" label="网址链接" >
+      <el-table-column label="网址链接">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.id" @click="showCate">
+            {{scoped.row.url}}
+          </span>
+          <span v-else>{{scoped.row.url}}</span>          
+        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="300">
         <template slot-scope="scope">
+          <el-button type="text" slot="reference" style="margin-right:10px;" v-if="scope.row.id" @click="showCate">商品类别</el-button> 
           <el-popover placement="left" v-model="scope.row.visibleUrl">
             <el-input v-model="scope.row.url" readonly placeholder="商品链接" style="width:500px">
               <el-button slot="append" @click="copyUrl(scope.row)">复制</el-button>
-            </el-input>
+            </el-input>            
             <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
           </el-popover>
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="商品类别" :visible.sync="dialogTableVisible">
+      <el-table :data="CateData">
+        <el-table-column property="Name" label="网址名称"></el-table-column>
+        <el-table-column label="网址链接">
+          <template slot-scope="scoped">
+            <el-input v-model="scoped.row.codeUrl" readonly></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-popover placement="left" v-model="scope.row.visibleUrl">
+              <el-input v-model="scope.row.codeUrl" readonly placeholder="商品链接" style="width:500px">
+                <el-button slot="append" @click="copyUrl(scope.row)">复制</el-button>
+              </el-input>
+              <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
+            </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+
   </div>
 </template>
 <script>
+import { getLists } from "@/api/vipCard";
 let url = window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/";
 export default {
   name: "autoHomeUrl",
   data() {
     return {
       copyData: null,
+      cateUrl:window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/",
       tableData: [
         {
           Name: "商城首页",
@@ -33,10 +63,12 @@ export default {
         {
           Name: "商品列表-自定义",
           url: url + "pages/shoppingMall/list/goodsList",
+          id:'1'
         },
         {
           Name:'商品列表-点餐',
-          url:url+"pages/shoppingMall/menu_naixue/menu/menu"
+          url:url+"pages/shoppingMall/menu_naixue/menu/menu",
+          // id:'2'
         },
         {
           Name: "积分商城",
@@ -91,9 +123,30 @@ export default {
           url: url + "pages/myAddress/myAddress",
         },
       ],
+      CateData:[],
+      dialogTableVisible:false
     };
   },
+  mounted(){
+    this.getCateList();
+  },
   methods: {
+    async getCateList() {//获取分类列表
+      try {
+        let { Data } = await getLists({ Action: "GetCateList" }, "MProdOpera");
+        this.CateData = Data.ProdCateList || [];
+        let query={ SID:""};
+        this.CateData.forEach(item=>{
+          query.SID = item.SID;
+          item.codeUrl = this.cateUrl+ "pages/shoppingMall/list/goodsList"+"?query="+encodeURIComponent(JSON.stringify(query))
+        })
+      } catch (e) {
+        this.$message.error(e)
+      }
+    },
+    showCate(){
+      this.dialogTableVisible = true;
+    },
     copyUrl(val) {
      let index = $(".el-popover").length - 1;
       let input = $($(".el-popover")[index]).find("input");

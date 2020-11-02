@@ -15,7 +15,7 @@ axios.interceptors.request.use(config => {
   let url = config.url + '?AppNo=' + AppNo + '&ViewKay=' + ViewKay + '&UserMAC=' + UserMAC
   config.url = url
   // config
-  // console.log(config, 'config')
+  console.log(config, 'config')
   return config;
 }, error => {
   // Do something with request error

@@ -19,3 +19,5 @@ export const PhoneUrlGood = PhoneUrl + 'pages/shoppingMall/list/infoGood'
 export const integralUrlGood = PhoneUrl + 'pages/shoppingMall/list/infoGood'
 
 export const activeUrlGood = PhoneUrl + 'pages/shoppingMall/list/infoGood'
+
+export const autoHome = PhoneUrl + 'pages/shoppingMall/index' //自定义首页

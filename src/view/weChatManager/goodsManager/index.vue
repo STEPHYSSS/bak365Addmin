@@ -268,12 +268,9 @@ export default {
           this.$set(D, "State", D.State === "1" ? true : false);
         });
         let query={ SID:""}
-        // http://dingtalk.bak365.cn/WeixinNew/Dist/#/pages/shoppingMall/list/infoGoodSID
         this.data.forEach(D => {
           query.SID = D.SID;
-          // D.codeUrl = this.phoneUrlGood + D.SID + "?AppNo=" + this.AppNoMy;//暂时注释
           D.codeUrl = this.phoneUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
-          // console.log(D.codeUrl)
         });
         this.loading = false;
       } catch (e) {

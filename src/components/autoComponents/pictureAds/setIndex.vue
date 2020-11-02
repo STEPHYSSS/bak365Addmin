@@ -33,7 +33,7 @@
             folder="CustomImg"
             :isAutoFixed="false"
             @upLoadImgs="upLoadImgsMain($event,item)"
-            :fileListUrl="item.img |setImgPrex"
+            :fileListUrl="item.img |SetImage"
             :limit="1"
             :enlarge="1"
             :showFileList="true"

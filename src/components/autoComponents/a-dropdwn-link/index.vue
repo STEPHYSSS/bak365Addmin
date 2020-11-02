@@ -81,7 +81,7 @@ export default {
           url: url + "pages/shoppingMall/list/goodsList",
         },
         {
-          Name:'商品列表-点餐',
+          name:'商品列表-点餐',
           url:url+"pages/shoppingMall/menu_naixue/menu/menu"
         },
         {

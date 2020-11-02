@@ -233,7 +233,7 @@ export default {
       ) {
         return process.env.BASE_URL + val; /* process.env.Prefix */
       } else {
-        return process.env.BASE_URL + val;
+        return '';
       }
     },
     reportErrorsFun() {

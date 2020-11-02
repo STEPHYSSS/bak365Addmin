@@ -99,7 +99,7 @@ export default {
         this.currentObj.titleUrlName &&
         !this.currentObj.titleUrl
       ) {
-        return "请填写标题的链接";
+        // return "请填写标题的链接";
       }
     }
   }

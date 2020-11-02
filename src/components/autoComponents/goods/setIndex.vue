@@ -20,7 +20,7 @@
                 @mouseleave="currentIEel=null"
                 @mouseenter="currentIEel=index"
               >
-                <img style="width: 100%; height: 100%" :src="item.Img |setImgPrex" />
+                <img style="width: 100%; height: 100%" :src="item.Img |SetImage" />
 
                 <i
                   v-if="currentIEel === index"
@@ -215,7 +215,7 @@
                     folder="CustomImg"
                     :isAutoFixed="true"
                     @upLoadImgs="upLoadImgsMain"
-                    :fileListUrl="form.typeSignImg |setImgPrex"
+                    :fileListUrl="form.typeSignImg |SetImage"
                     :limit="1"
                     :enlarge="1"
                     :showFileList="true"

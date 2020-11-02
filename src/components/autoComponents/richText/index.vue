@@ -86,7 +86,8 @@ export default {
     return {};
   },
   components: {},
-  mounted() {},
+  mounted() {
+  },
   methods: {
      reportErrorsFun(){
       if(!this.currentObj.contentRich){

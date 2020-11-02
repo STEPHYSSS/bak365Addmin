@@ -36,7 +36,7 @@
           >
             <img
               v-if="form.imgList[i]&&form.imgList[i].hasOwnProperty('img')"
-              :src="form.imgList[i].img  |setImgPrex"
+              :src="form.imgList[i].img  |SetImage"
               alt
             />
             <div v-else class="cube-selected-text">
@@ -106,7 +106,7 @@
             folder="CustomImg"
             :isAutoFixed="false"
             @upLoadImgs="upLoadImgsMain"
-            :fileListUrl="currentImg.img |setImgPrex"
+            :fileListUrl="currentImg.img | SetImage"
             :limit="1"
             :enlarge="1"
             :showFileList="true"

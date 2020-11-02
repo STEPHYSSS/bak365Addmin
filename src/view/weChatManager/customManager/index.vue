@@ -42,6 +42,27 @@
           <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
             >删除</el-button
           >
+          <el-popover placement="left" v-model="scoped.row.visible">
+            <div class="smallRoutine">
+              <div class="smallRoutineTop">
+                <span>小程序码</span>
+                <span class="close" @click="scoped.row.visible = false">×</span>
+              </div>
+              <div style="width:200px;height:200px;border: 1px solid #efefef;">
+                <QRCode
+                  :newWidth="200"
+                  :newText="scoped.row.codeUrl"
+                  v-if="currentIndexCode === scoped.$index"
+                ></QRCode>
+              </div>
+            </div>
+            <el-button
+              type="text"
+              slot="reference"
+              style="margin-left:8px;"
+              @click="clicCode(scoped.$index)"
+            >小程序码</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -50,7 +71,9 @@
 </template>
 
 <script>
+import QRCode from "@/components/qrcodejs/qrcodejs";
 import { getLists } from "@/api/vipCard";
+import { autoHome } from "@/config/index";
 import Del from "@/components/Dialog/del";
 export default {
   name: "",
@@ -62,9 +85,11 @@ export default {
       current_SID: "",
       // 控制删除弹框
       show: false,
+      autoHome: autoHome,
+      currentIndexCode: "", 
     };
   },
-  components: { Del },
+  components: { Del ,QRCode},
   mounted() {
     this.getList();
   },
@@ -77,6 +102,12 @@ export default {
           "MShopOpera"
         );
         this.tableData = Data.DecorateList;
+        let query={ SID:""}
+        this.tableData.forEach(D => {
+          query.SID = D.SID;
+          D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
+          console.log(D.codeUrl)
+        });
         this.loading = false;
       } catch (e) {
         this.$message.error(e);
@@ -85,6 +116,9 @@ export default {
     },
     addGood() {
       this.$router.push({ path: "/weChat/manager/custom/addEdit" });
+    },
+    clicCode(index) {
+      this.currentIndexCode = index;
     },
     async editRowGoods(val) {
       try {
