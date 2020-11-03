@@ -205,18 +205,21 @@ export default {
           SalePrice: "99",
           Describe: "这里显示商品描述，最多显示1行"
         }
-      ]
+      ],
       // reportErrorsFun:true
     };
   },
   components: {},
+  created(){
+    console.log(this.propsObj,'propsObj')
+  },
   mounted() {
     this.currentObj.showContent = this.currentObj.showContent
       ? this.currentObj.showContent
       : [];
     if (
-      this.currentObj._Prod_Data &&
-      this.currentObj._Prod_Data.length > 0&&this.currentObj.goodSource!=='1'
+      this.currentObj._Prod_Data &&this.currentObj._Prod_Data.length > 0
+      // this.currentObj._Prod_Data.length > 0&&this.currentObj.goodSource!=='1'
     ) {
       this.currentGoodList = this.currentObj._Prod_Data;
     } else {
@@ -228,8 +231,7 @@ export default {
       if (
         val &&
         this.currentObj._Prod_Data &&
-        this.currentObj._Prod_Data.length > 0 &&
-        this.currentObj.goodSource === "0"
+        this.currentObj._Prod_Data.length > 0 
       ) {
         return process.env.BASE_URL + val; /* process.env.Prefix */
       } else {
@@ -251,19 +253,19 @@ export default {
       this.currentObj.showContent = this.currentObj.showContent
         ? this.currentObj.showContent
         : [];
-      console.log(this.currentObj.showContent,'watch监听内容')
     },
     "currentObj._Prod_Data"(val) {
       if (this.currentObj.goodSource === "0" && val.length > 0) {
         this.currentGoodList = val;
       }
-      console.log(val,'watch监听内容2')
+      if (this.currentObj.goodSource === "1" && val.length > 0) {
+        this.currentGoodList = val;
+      }
     },
-    // "currentObj.goodSource"() {
-    //   console.log(currentObj.goodSource,'watch监听内容3')
-    //   this.currentObj._Prod_Data = [];
-    //   this.currentGoodList = this.fakeData;
-    // }
+    "currentObj.goodSource"(val) {
+      this.currentObj._Prod_Data = [];
+      this.currentGoodList = this.fakeData;
+    }
   }
 };
 </script>

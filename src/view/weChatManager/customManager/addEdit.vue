@@ -297,19 +297,18 @@ export default {
       this.drag = false;
       this.update(e.oldIndex, e.newIndex)
     },
-    async getInfo() {
+    
+    async getInfo() {// 获取详情
       try {
         let { Data } = await getLists(
           { Action: "GetDecorate", SID: this.modeSID },
           "MShopOpera"
         );
-        // console.log(Data,8888)
         this.currentModeArr = Data.Decorate.HtmlInfo;
         this.ruleForm.name = Data.Decorate.Name;
         this.ruleForm.SID = Data.Decorate.SID;
         this.ruleForm.IsDefault = Data.Decorate.IsDefault;
         this.currentModeArr.forEach(D => {
-          console.log(D,'获取信息')
           if (D.props && D.props.contentRich) {
             // 解密富文本框
             D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");
@@ -321,8 +320,9 @@ export default {
         this.$message.error(e);
       }
     },
-    submitForm(formName) {
+    submitForm(formName) {//保存按钮
       let errorTip = false;
+      console.log(this.$refs.setModeRef,'this.$refs.setModeRef')
       if (this.$refs.setModeRef) {
         this.$refs.setModeRef.forEach(D => {
           if (D.reportErrorsFun) {
@@ -335,7 +335,8 @@ export default {
           return;
         }
       }
-
+      console.log(JSON.parse(JSON.stringify(this.currentModeArr)),'外部数据')
+      console.log(JSON.parse(JSON.stringify(this.ModeValArr)),'自定义组件数据')
       let arr = JSON.parse(JSON.stringify(this.currentModeArr)); //外部数据 名称
       let autoArr = JSON.parse(JSON.stringify(this.ModeValArr)); //自定义组件数据
 
@@ -390,7 +391,7 @@ export default {
           this.$message.error("请填写模块名称！");
           return false;
         }
-      });
+      });//暂时注释
     },
     mouseoverFun(index) {
       this.currentIndex = index;
@@ -454,6 +455,7 @@ export default {
       }
     },
     setModeVal(obj, index) {
+      console.log(obj,index,'88----')
       this.$set(this.ModeValArr, index, obj);
       //obj代表的是右边的对象
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {

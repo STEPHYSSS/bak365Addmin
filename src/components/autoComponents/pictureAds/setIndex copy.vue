@@ -16,12 +16,10 @@
         </div>
       </el-form-item>
       <!-- //添加图片 -->
-      
       <el-form-item label="添加图片:" style="margin-bottom:0 !important">
         <span style="margin-bottom: 5px;color: #999;">最多添加10个广告，鼠标拖拽调整广告顺序</span>
       </el-form-item>
-      <draggable v-model="form.imgList" :options="{animation:300,group:'people'}" @start = "drag=true" @end="drop">
-        <div
+      <div
         class="rc-design-editor-card-item editor-card-add"
         style="margin:0px 0 20px 0;height:118px;padding:"
         v-for="(item,index) in form.imgList"
@@ -60,46 +58,6 @@
           style="color: rgb(0, 0, 0, 0.3)"
         ></i>
       </div>
-      </draggable>
-      <!-- <div
-        class="rc-design-editor-card-item editor-card-add"
-        style="margin:0px 0 20px 0;height:118px;padding:"
-        v-for="(item,index) in form.imgList"
-        :key="index"
-        @mouseleave="currentIEel = null"
-        @mouseenter="currentIEel = index"
-      >
-        <div class="imgLoad-style">
-          <imgLoad
-            id="imgLoad"
-            folder="CustomImg"
-            :isAutoFixed="false"
-            @upLoadImgs="upLoadImgsMain($event,item)"
-            :fileListUrl="item.img |SetImage"
-            :limit="1"
-            :enlarge="1"
-            :showFileList="true"
-            imgWidth="80px"
-            imgHeight="80px"
-          ></imgLoad>
-        </div>
-        <div class="add-img-right">
-          <el-form ref="form" :model="item" label-width="80px">
-            <el-form-item label="图片标题：" style="margin-bottom: 5px !important;">
-              <el-input v-model="item.name" placeholder="建议10个字以内，可不填"></el-input>
-            </el-form-item>
-            <el-form-item label="跳转路径：">
-              <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
-            </el-form-item>
-          </el-form>
-        </div>
-        <i
-          v-if="currentIEel === index"
-          @click="clickEdlete(index)"
-          class="el-icon-error cardEelete"
-          style="color: rgb(0, 0, 0, 0.3)"
-        ></i>
-      </div> -->
       <div
         v-if="form.imgList.length<10"
         class="rc-design-editor-card-item editor-card-add"
@@ -192,10 +150,9 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
-import draggable from "vuedraggable";
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink, draggable},
+  components: { imgLoad, aDropdwnLink },
   data() {
     return {
       currentIndex: 0,
@@ -266,9 +223,6 @@ export default {
     this.form.imgNum = this.form.imgNum.toString();
   },
   methods: {
-    drop(e){
-      
-    },
     changeModeFun(index) {
       if (index !== this.currentIndex) {
         this.form.changeMode = Number(index) + 1;

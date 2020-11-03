@@ -250,6 +250,7 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import goodsAuto from "@/components/Dialog/goodsAuto/goodsAuto";
+
 export default {
   mixins: [Mixins],
   name: "",
@@ -293,6 +294,7 @@ export default {
       buttonArr1: ["3", "4", "7", "8"],
       // 是数组
       goodsList: [],
+      Prod_InfoList:[],//用来展示所选系列下的商品
       editGoodsName:'',
       //判断打开的是那个弹框
       isGroup: false,
@@ -423,8 +425,6 @@ export default {
         this.$refs.goodsAuto.dialogVisible = true;
       }
       this.form._dialogVisible = "1";
-      console.log(this.form);
-      console.log(index);
       this.$emit("setModeVal", this.form);
     },
     beforeClose() {
@@ -452,8 +452,6 @@ export default {
         _data.push(D.groupId);
       });
       this.form._data = _data;
-      console.log(this.form._data,'/////')
-      console.log(this.form,'5555');
       this.$emit("setModeVal", this.form);
     },
     changeGoodsNum(val) {
@@ -497,7 +495,7 @@ export default {
           }
         });
       }
-    }
+    }    
   },
   watch: {
     "form.followBoard"() {

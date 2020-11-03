@@ -261,7 +261,7 @@ export default {
         typeSign: "0",
         typeSignImg: "",
         goodsMaxNum: 6,
-        _data: []
+        _data: [],//商品弹窗数据
       },
       buttonArr: ["1", "2", "5", "6"],
       buttonArr1: ["3", "4", "7", "8"],
@@ -271,10 +271,11 @@ export default {
       isGroup: false,
       currentIEel: "",
       //弹框的时候隐藏底部的提交按钮 '1'显示 '2'隐藏
-      _dialogVisible: "1"
+      _dialogVisible: "1",
+      goodInfoList:[],//用来接收
     };
   },
-  created() {
+  created() {    
     this.form.pageSpace = Number(this.form.pageSpace);
     this.form.goodSpace = Number(this.form.goodSpace);
 
@@ -282,10 +283,14 @@ export default {
       this.goodsList
     }
     this.goodsList = this.form._Prod_Data || [];
+    this.goodInfoList = this.form._Prod_Data;
+    console.log(this.goodsList,'if外面的')
+
   },
   mounted() {},
   methods: {
     changeSource(val) {
+      //编辑页面的时候，点击切换判断是商品还是商品分组
       this.isGroup = val === "1" ? true : false;
       this.goodsList = [];
       this.form._data = ''
@@ -393,7 +398,7 @@ export default {
         this.isGroup = false;
       }
       if (this.$refs.goodsAuto) {
-        console.log(this.$refs.goodsAuto)
+        console.log(this.$refs.goodsAuto,'-----')
         this.$refs.goodsAuto.dialogVisible = true;
       }
       this.form._dialogVisible = "1";
