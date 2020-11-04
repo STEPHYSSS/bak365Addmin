@@ -2,11 +2,11 @@
   <div class="rc-design-component-line-preview">
     <div
       class="cap-line-wrap"
-      :style="{'color':currentObj.lineColor?currentObj.lineColor:'#e5e5e5','padding':currentObj.haspadding==='true'?0:'0px 15px'}"
+      :style="{'color':currentObj.lineColor?currentObj.lineColor:'#e5e5e5','padding':currentObj.haspadding==='true'? 0:'0px 15px'}"
     >
       <hr
         class="cap-line"
-        :style="{'border-top': '1px ' + currentObj.linetype +' '+ (currentObj.lineColor?currentObj.lineColor:'#e5e5e5')}"
+        :style="{'border-top': '2px ' + currentObj.linetype +' '+ (currentObj.lineColor?currentObj.lineColor:'#e5e5e5')}"
       />
     </div>
   </div>

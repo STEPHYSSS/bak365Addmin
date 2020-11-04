@@ -73,7 +73,16 @@ export default {
   mounted() {
   },
   methods: {
-    clickInputBox() {}
+    clickInputBox() {
+    }
+  },
+  watch: {
+    "currentObj.hotListSet"() {
+      this.currentObj.hotListSet = this.currentObj.hotListSet
+        ? this.currentObj.hotListSet
+        : [];
+      this.value = this.currentObj.hotListSet[0]
+    }
   }
 };
 </script>

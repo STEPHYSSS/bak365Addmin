@@ -391,13 +391,14 @@ export default {
   updated() {},
   mounted() {
     this.screenWidth = 320 || document.body.clientWidth;
-
     this.currentObj.showContent = this.currentObj.showContent
       ? this.currentObj.showContent
       : [];
 
     this.setMenuWidth();
     this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
+    this.fristIndex = this.currentObj.groupList[0].groupId;
+    this.getList(this.fristIndex)
   },
   methods: {
     setMenuWidth() {
@@ -542,7 +543,6 @@ export default {
 
 <style lang="less" scoped>
 @import "../../../assets/css/autoComponents/goods.css";
-
 .cap-goods-layout {
   .cap-tags-style-1 .van-tab--active span {
     height: initial;

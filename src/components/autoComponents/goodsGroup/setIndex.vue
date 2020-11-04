@@ -23,12 +23,12 @@
           <el-form-item label="菜单名称:" style="width:100%">
             <el-input v-model="item.Name" placeholder="请输入内容"></el-input>
           </el-form-item>
-          <el-form-item label="显示个数:" style="margin-top:10px !important;width:100%">
+          <!-- <el-form-item label="显示个数:" style="margin-top:10px !important;width:100%">
             <el-radio v-model="item.radio" label="1">
               <el-input style="width:80px;" v-model="item.showNum" placeholder></el-input>
             </el-radio>
             <el-radio v-model="item.radio" label="2">全部</el-radio>
-          </el-form-item>
+          </el-form-item> -->
           <!-- 删除已添加商品分组按钮 -->
           <i
             v-if="currentIndex === index"

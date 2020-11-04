@@ -142,7 +142,6 @@ export default {
   components: {},
   mounted() {
     this.currentItemObj = this.currentItem;
-    console.log(this.currentItemObj,'currentItemObj')
   },
   computed: {
     //     currentI(val) {

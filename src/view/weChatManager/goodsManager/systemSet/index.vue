@@ -38,6 +38,9 @@
               ></el-option> </el-select
             >&nbsp;分钟
           </el-form-item>
+          <el-form-item label="待支付订单过期时限">
+            <el-input onkeyup="this.value=this.value.replace(/\D/g,'')" v-model="form.AutoCancelOrder"></el-input>&nbsp;分钟
+          </el-form-item>
           <el-form-item label="是否可退款">
             <el-select v-model="form.IsRefund" placeholder="请选择">
               <el-option
@@ -140,6 +143,7 @@ export default {
         ScopeDay:'',
         StartTime:'',
         EndTime:'',
+        AutoCancelOrder:''
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],

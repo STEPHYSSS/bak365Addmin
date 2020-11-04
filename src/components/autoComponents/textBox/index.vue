@@ -92,6 +92,7 @@ export default {
   transform-origin: 0 0;
   pointer-events: none;
   box-sizing: border-box;
-  border-bottom: 1px solid #e5e5e5;
+  /* border-bottom: 1px solid #e5e5e5; */
+  border-bottom: 3px solid skyblue;
 }
 </style>

@@ -6,10 +6,10 @@
       title="商品类别编辑"
       :visible.sync="dialogVisible"
       :before-close="beforeClose"
-      width="800px"
+      width="850px"
     >
       <el-row :gutter="30" class="goodsSelectRow">
-        <el-col :span="11">
+        <el-col :span="13">
           <div class="leftGoods">
             <el-header class="leftGoodsHead">类别列表</el-header>
             <div class="modifyCateTable">
@@ -19,17 +19,18 @@
                 @row-click="rowClick"
                 style="width: 100%;"
               >
-                <el-table-column label="图片" v-if="!isIntegral">
+                <el-table-column label="图片" v-if="!isIntegral" width="70" align="center">
                   <template slot-scope="scoped">
                     <div class="imgStyle">
                       <img :src="scoped.row.Img |setImgPrex" alt />
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="Name" label="类别名称"></el-table-column>
-                <el-table-column label="操作">
+                <el-table-column prop="Name" label="类别名称" align="center"></el-table-column>
+                <el-table-column prop="Sort" label="排序" width="70" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
                   <template slot-scope="scoped">
-                    <el-popover placement="top" width="250" v-model="scoped.row.visible">
+                    <el-popover placement="top" width="200" v-model="scoped.row.visible">
                       <p>确定删除吗？</p>
                       <div style="text-align: right; margin: 0">
                         <el-button size="mini" type="text" @click="scoped.row.visible = false">取消</el-button>
@@ -47,7 +48,7 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="13">
+        <el-col :span="11">
           <div class="rightGoods">
             <el-header class="leftGoodsHead">类别编辑</el-header>
             <div :class="{'scrollTable':scrollTable}">
@@ -63,6 +64,9 @@
                 <!--                </el-form-item>-->
                 <el-form-item label="类别名称" prop="CateName">
                   <el-input v-model="ruleForm.Name"></el-input>
+                </el-form-item>
+                <el-form-item label="类别排序" prop="CateName">
+                  <el-input v-model="ruleForm.Sort"></el-input>
                 </el-form-item>
                 <el-form-item label="类别图片" prop="CateImg" v-if="!isIntegral">
                   <imgLoad
@@ -281,8 +285,8 @@ function clearData(_this) {
 
     .modifyCateTable {
       .imgStyle {
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         border: 1px solid #eee;
         img {
           width: 100%;

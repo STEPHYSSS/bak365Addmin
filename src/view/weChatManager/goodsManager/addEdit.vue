@@ -1106,7 +1106,7 @@ export default {
             this.$router.push("/weChat/manager/goodSetting");
             this.$message.success("操作成功");
           } catch (e) {
-            console.log(e, "99");
+            this.$message.error(e)
           }
         }
       });
@@ -1118,11 +1118,15 @@ export default {
         this.ruleForm.ProdNo = val.ProdNo;
         this.ruleForm.Name = val.ProdName;
         this.ruleForm.SalePrice = val.SalePrice;
-      } else {
+        // if(this.ruleForm.SpecType === '2'){
+        //   this.ruleForm.SpecList.Name= val.ProdName
+        //   console.log(this.ruleForm.SpecList)
+        // }
+      } else {//多规格商品
         // 给当前的 商品规格编号加 禁止
         // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})
         this.ruleForm.SpecList[this.goodsNormsIndex].ProdNo = val.ProdNo;
-        // this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
+        this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
       }
     },
     changeDig(bool) {

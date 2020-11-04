@@ -63,14 +63,13 @@
             >
               <h3
                 class="title"
-                :style="{'font-weight': currentObj.fontWeight,'margin-top':'10px'}"
+                :style="{'font-weight': currentObj.fontWeight,'margin-top':'10px','height':'30px'}"
                 v-if="currentObj.showContent.indexOf('1')>-1"
               >{{item.Name}}</h3>
-              <p
+              <!-- <p
                 v-if="currentObj.showContent.indexOf('2')>-1&&item.Describe"
                 class="sub-title"
-                style="margin-top:10px;"
-              >{{item.Describe}}</p>
+              >{{item.Describe}}</p> -->
             </div>
             <div
               v-if="currentObj.showContent&&currentObj.showContent.length!==0
@@ -211,7 +210,7 @@ export default {
   },
   components: {},
   created(){
-    console.log(this.propsObj,'propsObj')
+    console.log(this.propsObj,'测试编辑获取详情')
   },
   mounted() {
     this.currentObj.showContent = this.currentObj.showContent

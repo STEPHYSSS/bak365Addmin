@@ -288,7 +288,7 @@ export default {
   position: relative;
 }
 .cap-image-ad__content {
-  border: 1px solid #eee;
+  /* border: 1px solid #eee; */
 }
 .cap-image-ad__top2end .cap-image-ad__content {
   box-shadow: none;
