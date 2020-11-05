@@ -47,7 +47,7 @@
         </el-form-item>
       </div>
       <div class="editor-bottom-help-desc">最多添加10个导航，拖动选中的导航可对其排序</div>
-
+      <vuedraggable v-model="form.listNav" @change="changeDrag">
       <div
         class="rc-design-editor-card-item editor-card-add"
         style="margin:0px 0 20px 0;height:118px;padding:"
@@ -87,6 +87,7 @@
           style="color: rgb(0, 0, 0, 0.3)"
         ></i>
       </div>
+      </vuedraggable>
       <div
         v-if="form.listNav.length<10"
         class="rc-design-editor-card-item editor-card-add"
@@ -104,9 +105,10 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
+import vuedraggable from "vuedraggable";
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink },
+  components: { imgLoad, aDropdwnLink, vuedraggable},
   data() {
     return {
       currentIndex: 0,
@@ -153,6 +155,9 @@ export default {
     this.form.pageShowNum = Number(this.form.pageShowNum);
   },
   methods: {
+    changeDrag(e){
+      console.log(e,'图文导航里拖拽change事件')
+    },
     changeMode(index) {
       if (index !== this.currentIndex) {
         this.form.navStyle = index === 0 ? "image" : "text";

@@ -56,8 +56,13 @@
             <el-radio v-model="form.ShopRadio" label="2">自定义模式</el-radio>
           </el-form-item>
           <el-form-item label="积分抵扣">
-            <el-input v-model="form.ScoreDeduction" placeholder="例：100" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" placeholder="例：1" class="inputWidth"></el-input>元，每单抵扣比例
-            <el-input v-model="form.ScoreRatio" class="inputWidth" placeholder="请输入折扣比例"></el-input>%
+            <el-radio v-model="form.IsDeduction" label="1">开启</el-radio>
+            <el-radio v-model="form.IsDeduction" label="2">关闭</el-radio>
+            <em style="color:red;display:inline-block;margin-left:5px" v-if="form.IsDeduction=='1'">(例：积分最高抵扣订单金额：100(元) * 5%(抵扣比例) = 5(元) 积分单次最高抵扣5元)</em>
+            <p v-if="form.IsDeduction=='1'">
+              <el-input v-model="form.ScoreDeduction" placeholder="例：100" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" placeholder="例：1" class="inputWidth"></el-input>元，积分最高抵扣订单金额
+              <el-input v-model="form.ScoreRatio" class="inputWidth" placeholder="例：5"></el-input>%              
+            </p>
           </el-form-item>
           <!-- <el-form-item label="商城模式">
           </el-form-item> -->
@@ -137,13 +142,18 @@ export default {
   data() {
     return {
       activeName: "1",
-      rules: {},
+      rules: {       
+      },
       form: {
         ShopRadio:"1",
         ScopeDay:'',
         StartTime:'',
         EndTime:'',
-        AutoCancelOrder:''
+        AutoCancelOrder:'',
+        IsDeduction:'2',
+        ScoreDeduction:'',
+        MoneyDeduction:'',
+        ScoreRatio:''
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],
@@ -193,16 +203,19 @@ export default {
       }
     },
     async submitSystem() {
-      this.btnLoading = true;
+      this.btnLoading = true; 
+      if(this.form.ScoreDeduction==undefined||this.form.MoneyDeduction==undefined||this.form.ScoreRatio==undefined){
+        return this.$message.error("请输入积分抵扣规则")
+      }     
       try {
         let obj = {};
-        if (this.activeName == "1") {
+        if (this.activeName == "1") {          
           obj = {
             Action: "SetBase",
             SetInfo: JSON.stringify(this.form),
             Type: this.activeName,
           };
-          console.log(obj);
+          
         } else if (this.activeName == "2") {
           obj = {
             Action: "SetBase",

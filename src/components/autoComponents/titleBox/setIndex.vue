@@ -75,6 +75,7 @@ export default {
   data() {
     return {
       form: {
+        viewComponets:"titleBox",
         title: "",
         //0==>传统样式,1==>模仿微信图文页样式
         traditionStyle: "0",

@@ -20,11 +20,10 @@
       <el-form-item label="添加图片:" style="margin-bottom:0 !important">
         <span style="margin-bottom: 5px;color: #999;">最多添加10个广告，鼠标拖拽调整广告顺序</span>
       </el-form-item>
-      <!-- 这个地方就是我图片商城那一块的拖拽 -->
-      <!-- <draggable v-model="form.imgList" :options="{animation:100,group:'people'}" @start = "drag=true" @end="drop"> -->
+      <draggable v-model="form.imgList" @change="changeDrag">
         <div
         class="rc-design-editor-card-item editor-card-add"
-        style="margin:0px 0 20px 0;height:118px;padding:"
+        style="margin:0px 0 20px 0;height:118px;background-color:pink;border:1px solid #000"
         v-for="(item,index) in form.imgList"
         :key="index"
         @mouseleave="currentIEel = null"
@@ -61,7 +60,7 @@
           style="color: rgb(0, 0, 0, 0.3)"
         ></i>
       </div>
-      <!-- </draggable> -->
+      </draggable>
       <div
         v-if="form.imgList.length<10"
         class="rc-design-editor-card-item editor-card-add"
@@ -228,8 +227,8 @@ export default {
     this.form.imgNum = this.form.imgNum.toString();
   },
   methods: {
-    drop(e){
-      
+    changeDrag(e){
+      console.log(e,'拖拽change')
     },
     changeModeFun(index) {
       if (index !== this.currentIndex) {

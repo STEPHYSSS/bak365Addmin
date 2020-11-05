@@ -397,8 +397,8 @@ export default {
 
     this.setMenuWidth();
     this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
-    this.fristIndex = this.currentObj.groupList[0].groupId;
-    this.getList(this.fristIndex)
+    // this.fristIndex = this.currentObj.groupList[0].groupId;
+    // this.getList(this.fristIndex)
   },
   methods: {
     setMenuWidth() {

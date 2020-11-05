@@ -12,22 +12,36 @@
               <div class="customBoxHeadTitle">模板名称</div>
             </div>
             <div>
-              {{currentModeArr}}
-              <hr style="height:3px solid #blue">
-              {{ModeValArr}}
-              <draggable v-model="currentModeArr"  chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                <transition-group>
-                  <div
+              <!-- 这个也是是父组件 -->
+              <draggable
+                v-model="currentModeArr"
+                chosenClass="chosen"
+                forceFallback="true"
+                :options="optionDrag"
+                @start="onStart"
+                @end="onEnd"
+              >
+                <div
                   class="preview-item clearfix drag"
                   v-for="(item,index) in currentModeArr"
                   :key="index"
                 >
+                <!-- 
+                    @click.stop="clickCurrentCot(index)"
+                    @mouseenter.stop="clickCurrentFun(index)"
+                    @mouseleave.stop="clickCurrentoutFun(index)" -->
                   <div
-                    @click="clickCurrentCot(index)"
-                    @mouseenter="clickCurrentFun(index)"
-                    @mouseleave="clickCurrentoutFun(index)"
+                    @click.stop="clickCurrentCot(index)"
+                    @mouseenter.stop="clickCurrentFun(index)"
+                    @mouseleave.stop="clickCurrentoutFun(index)"
                     class="modeBox"
                   >
+                    <!-- <component
+                      :is="item.viewComponets"
+                      ref="setModeRef"
+                      :propsObj="ModeValArr[index]"
+                    ></component> -->
+                    <!--就是要保证 ModeValArr 和  currentModeArr 数据保持一致就行 明天能自己解决不？-->
                     <component
                       :is="item.viewComponets"
                       ref="setModeRef"
@@ -52,7 +66,6 @@
                     ></component>
                   </div>
                 </div>
-                </transition-group>
               </draggable>
             </div>
           </div>
@@ -194,11 +207,15 @@ export default {
   },
   data() {
     return {
+        optionDrag: {
+          group:'people',
+          animation: 300,
+          draggable: '.drag'
+        },
       preserveButton: true,
       ruleForm: {
         name: ""
       },
-      drag:false,
       stylenum: 1,
       show: false,
       rules: {
@@ -207,7 +224,7 @@ export default {
       groupedList: [
         {
           id: 1,
-          name: "基础组件",
+          name: "基础组件",      
           list: [
             { id: 11, name: "富文本", viewComponets: "richText" },
             { id: 12, name: "商品", viewComponets: "goods" },
@@ -261,8 +278,28 @@ export default {
       setBottom: 0,
       loadingBtn: false,
       drag: false,
-      modeSID: ""
+      modeSID: "",
+      key: 0
     };
+  },
+  watch: {
+    // currentModeArr: {
+    //   handler() {
+    //     let arr = this.currentModeArr.forEach(D => {
+    //       if (D.props && D.props.contentRich) {
+    //         // 解密富文本框
+    //         D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");
+    //       }
+    //       this.ModeValArr.push(D.props);
+    //       // return D.props
+    //       // console.log(this.ModeValArr,'获取详情并且给子组件')
+    //     });
+    //     console.log(arr, 'arr')
+    //     // this.ModeValArr = arr
+    //   },
+    //   deep: true,
+    //   immediate: true
+    // }
   },
   mounted() {
     this.modeSID = this.$route.query.SID || "";
@@ -273,12 +310,28 @@ export default {
   },
   updated() {},
   methods: {
-    // 开始拖拽事件
-    onStart(){
-      this.drag = true;
+    getKey() {
+      this.key += 1
+      return this.key
     },
-    onEnd(){
+    //开始拖拽事件
+    update(oldIndex, newIndex) {
+      if (newIndex === oldIndex) return false
+      let oldObj = {...this.ModeValArr[oldIndex]}
+      let newObj = {...this.ModeValArr[newIndex]}
+      this.$set(this.ModeValArr, oldIndex, newObj)
+      this.$set(this.ModeValArr, newIndex, oldObj)
+      // console.log(newIndex)
+      console.log(this.ModeValArr, 'ModeValArr')
+    },
+    onStart () {
+      this.drag = true;
+      this.currentIndexCot = null;
+    },
+    //拖拽结束事件
+    onEnd(e) {
       this.drag = false;
+      this.update(e.oldIndex, e.newIndex)
     },
     
     async getInfo() {// 获取详情
@@ -299,7 +352,6 @@ export default {
           this.ModeValArr.push(D.props);
         });
       } catch (e) {
-        console.log(e, "ee");
         this.$message.error(e);
       }
     },
@@ -434,12 +486,16 @@ export default {
     delMode(index) {
       if (this.currentModeArr.length > 0) {
         this.currentModeArr.splice(index, 1);
-        this.ModeValArr.splice(index, 1);
+        // this.ModeValArr.splice(index, 1);
       }
     },
     setModeVal(obj, index) {
       console.log(obj,index,'88----')
+      // this.$set(this.ModeValArr, index, obj);
+      // 这里为保持同步，因为this.currentModeArr 的改变未被监控到
+      this.currentModeArr[index].props = obj
       this.$set(this.ModeValArr, index, obj);
+      console.log(this.currentModeArr, 'currentModeArr')
       //obj代表的是右边的对象
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {
         this.$refs.setModeRef[index].changeBox();
@@ -460,7 +516,7 @@ export default {
       this.$router.push("/weChat/manager/custom/customList");
     }
   },
-  watch: {}
+  // watch: {}
 };
 
 function validateFun(_this, paramName) {

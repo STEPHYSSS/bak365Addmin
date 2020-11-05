@@ -16,7 +16,7 @@ export default {
   created() {
     if (JSON.stringify(this.defaultMode) !== "{}") {
       this.form = this.defaultMode;
-      // console.log('-----'+ JSON.stringify(this.defaultMode) +'-----')
+      console.log('-----'+ JSON.stringify(this.defaultMode) +'-----')
     }
   },
   mounted() {

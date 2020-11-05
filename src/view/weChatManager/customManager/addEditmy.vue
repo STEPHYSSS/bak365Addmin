@@ -13,50 +13,46 @@
             </div>
             <div>
               {{currentModeArr}}
-              <hr style="height:3px solid #blue">
-              {{ModeValArr}}
-              <draggable v-model="currentModeArr"  chosenClass="chosen" forceFallback="true" group="people" animation="1000" @start="onStart" @end="onEnd">
-                <transition-group>
-                  <div
-                  class="preview-item clearfix drag"
-                  v-for="(item,index) in currentModeArr"
-                  :key="index"
+              <vuedraggable v-model="currentModeArr" @change="changeDrag">
+                <div
+                class="preview-item clearfix"
+                v-for="(item,index) in currentModeArr"
+                :key="item.flag"
+              >
+                <div
+                  @click="clickCurrentCot(index)"
+                  @mouseenter="clickCurrentFun(index)"
+                  @mouseleave="clickCurrentoutFun(index)"
+                  class="modeBox"
                 >
-                  <div
-                    @click="clickCurrentCot(index)"
-                    @mouseenter="clickCurrentFun(index)"
-                    @mouseleave="clickCurrentoutFun(index)"
-                    class="modeBox"
-                  >
-                    <component
-                      :is="item.viewComponets"
-                      ref="setModeRef"
-                      :propsObj="ModeValArr[index]"
-                    ></component>
-                    <i
-                      @click.stop="delMode(index)"
-                      v-if="currentIndexDel===index"
-                      class="el-icon-error error-icon-style"
-                    ></i>
-                  </div>
-                  <!-- 点击基础组件中的内容，显示每个模块下的setIndex页面 -->
-                  <div
-                    class="zent-design-editor-item"
-                    ref="setModeRefFun"
-                    v-if="currentIndexCot === index&&item.viewComponets"
-                  >
-                    <component class="drag"
-                      :is="item.viewComponets + 'Fun'"
-                      @setModeVal="setModeVal($event,index)"
-                      :defaultMode="ModeValArr[index]"
-                    ></component>
-                  </div>
+                <!-- 这个component 拿到数据 propsObj 传给 setIndex 页面 -->
+                  <component
+                    :is="item.viewComponets"
+                    ref="setModeRef"
+                    :propsObj="ModeValArr[index]"
+                  ></component>
+                  <i
+                    @click.stop="delMode(index)"
+                    v-if="currentIndexDel===index"
+                    class="el-icon-error error-icon-style"
+                  ></i>
                 </div>
-                </transition-group>
-              </draggable>
+                <div
+                  class="zent-design-editor-item"
+                  ref="setModeRefFun"
+                  v-if="currentIndexCot === index&&item.viewComponets"
+                >
+                  <component
+                    :is="item.viewComponets + 'Fun'"
+                    @setModeVal="setModeVal($event,index)"
+                    :defaultMode="ModeValArr[index]"
+                  ></component>
+                </div>
+              </div>
+              </vuedraggable>
             </div>
           </div>
-          <!-- 基础组件开始 -->
+          <!-- 模块点击位置 基础组件（固定的）-->
           <div class="customBox_add--grouped">
             <div class="customBox_add-component">
               <div
@@ -152,7 +148,7 @@ import richText from "@/components/autoComponents/richText";
 import richTextFun from "@/components/autoComponents/richText/setIndex";
 import goodGroup from "@/components/autoComponents/goodsGroup/";
 import goodGroupFun from "@/components/autoComponents/goodsGroup/setIndex";
-import draggable from "vuedraggable";
+import vuedraggable from "vuedraggable";
 export default {
   name: "HelloWorld",
   components: {
@@ -190,7 +186,7 @@ export default {
     richTextFun,
     goodGroup,
     goodGroupFun,
-    draggable
+    vuedraggable
   },
   data() {
     return {
@@ -198,7 +194,6 @@ export default {
       ruleForm: {
         name: ""
       },
-      drag:false,
       stylenum: 1,
       show: false,
       rules: {
@@ -260,7 +255,6 @@ export default {
       ModeValArr: [],
       setBottom: 0,
       loadingBtn: false,
-      drag: false,
       modeSID: ""
     };
   },
@@ -273,24 +267,23 @@ export default {
   },
   updated() {},
   methods: {
-    // 开始拖拽事件
-    onStart(){
-      this.drag = true;
+    changeDrag(newIndex,oldIndex){
+      if (newIndex === oldIndex) return false
+      let oldObj = {...this.ModeValArr[oldIndex]}
+      let newObj = {...this.ModeValArr[newIndex]}
+      this.$set(this.ModeValArr, oldIndex, newObj)
+      this.$set(this.ModeValArr, newIndex, oldObj)
     },
-    onEnd(){
-      this.drag = false;
-    },
-    
-    async getInfo() {// 获取详情
+    async getInfo() {
       try {
         let { Data } = await getLists(
           { Action: "GetDecorate", SID: this.modeSID },
           "MShopOpera"
         );
+        // console.log(Data,8888)
         this.currentModeArr = Data.Decorate.HtmlInfo;
         this.ruleForm.name = Data.Decorate.Name;
         this.ruleForm.SID = Data.Decorate.SID;
-        this.ruleForm.IsDefault = Data.Decorate.IsDefault;
         this.currentModeArr.forEach(D => {
           if (D.props && D.props.contentRich) {
             // 解密富文本框
@@ -303,9 +296,8 @@ export default {
         this.$message.error(e);
       }
     },
-    submitForm(formName) {//保存按钮
+    submitForm(formName) {
       let errorTip = false;
-      console.log(this.$refs.setModeRef,'this.$refs.setModeRef')
       if (this.$refs.setModeRef) {
         this.$refs.setModeRef.forEach(D => {
           if (D.reportErrorsFun) {
@@ -318,8 +310,7 @@ export default {
           return;
         }
       }
-      console.log(JSON.parse(JSON.stringify(this.currentModeArr)),'外部数据')
-      console.log(JSON.parse(JSON.stringify(this.ModeValArr)),'自定义组件数据')
+
       let arr = JSON.parse(JSON.stringify(this.currentModeArr)); //外部数据 名称
       let autoArr = JSON.parse(JSON.stringify(this.ModeValArr)); //自定义组件数据
 
@@ -359,8 +350,7 @@ export default {
                 Action: "SetDecorate",
                 HtmlInfo: arr,
                 Name: this.ruleForm.name,
-                SID: this.ruleForm.SID,
-                IsDefault:this.ruleForm.IsDefault
+                SID: this.ruleForm.SID
               },
               "MShopOpera"
             );
@@ -374,7 +364,7 @@ export default {
           this.$message.error("请填写模块名称！");
           return false;
         }
-      });//暂时注释
+      });
     },
     mouseoverFun(index) {
       this.currentIndex = index;
@@ -382,11 +372,13 @@ export default {
     mouseoutFun(id) {
       this.currentIndex = null;
     },
-    // 点击添加groupedList数组对象中的对象（比如：商品分组）
     clickBox(itemChild, index) {
+      console.log(itemChild,'点击基础子组件')
       if (!itemChild.viewComponets) {
         return;
       }
+      let timestamp=new Date().getTime();
+      this.$set(itemChild,"flag",timestamp);
       if (this.currentModeArr.length > 0) {
         let bool = this.currentModeArr.some(D => {
           return (
@@ -437,10 +429,21 @@ export default {
         this.ModeValArr.splice(index, 1);
       }
     },
-    setModeVal(obj, index) {
-      console.log(obj,index,'88----')
+    setModeVal(obj, index) {//设置setIndex页面的值
+      console.log(obj,index,)
+      let timestamp=new Date().getTime();
+      let flag={
+        timestamp
+      }
+      Object.assign(obj,flag)
+      this.$set(this.ModeValArr,index,obj);   
+      // if(this.ModeValArr.timestamp === this.currentModeArr.flag){
+      //   this.currentModeArr.join(this.ModeValArr)
+      // }
+      console.log(this.currentModeArr,'8888888')  
+      console.log(this.ModeValArr,'9999999999')
+      // 拿到setIndex页面的值之后触发index页面
       this.$set(this.ModeValArr, index, obj);
-      //obj代表的是右边的对象
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {
         this.$refs.setModeRef[index].changeBox();
       }
@@ -450,11 +453,11 @@ export default {
 
       this.setHeight();
 
-      if (obj._dialogVisible === "1") {
-        this.preserveButton = false;
-      } else {
-        this.preserveButton = true;
-      }
+      // if (obj._dialogVisible === "1") {
+      //   this.preserveButton = false;
+      // } else {
+      //   this.preserveButton = true;
+      // }
     },
     cancelFun() {
       this.$router.push("/weChat/manager/custom/customList");
