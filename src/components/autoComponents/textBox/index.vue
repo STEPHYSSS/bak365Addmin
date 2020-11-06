@@ -1,8 +1,9 @@
 <template>
   <div>
+    <!-- :href="currentObj.urlClick" -->
     <a
       :class="['cap-text',currentObj.bottomLine?'cap-text--has-line':'']"
-      :href="currentObj.urlClick"
+      
       :style="{'text-align': currentObj.textAlign,'color': currentObj.fontColor,'font-size': currentObj.fontSize+'px',
       'background': currentObj.backGColor}"
     >
@@ -29,7 +30,7 @@ export default {
           backGColor: "rgb(255, 255, 255)",
           //left,center,right
           textAlign: "left",
-          //   跳转链接
+          //跳转链接
           urlClick: "",
           //底部分割线 false无true有
           bottomLine: false

@@ -48,7 +48,8 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="链接:" style="margin-top:20px;">
-        <a-dropdwn-link @clickDropdown="clickDropdown"></a-dropdwn-link>
+        <aDropdwnLink :currentItem="form" @clickDropdown="clickDropdown"></aDropdwnLink>
+        <!-- <a-dropdwn-link v-model="form.textContent" @clickDropdown="clickDropdown"></a-dropdwn-link> -->
       </el-form-item>
       <el-form-item label="更多设置:" class="setbottomLine" style>
         <el-checkbox-group v-model="form.bottomLine" @change="changeStyleSearch">
@@ -87,7 +88,11 @@ export default {
       }
     };
   },
-  mounted() {},
+  created(){
+    console.log(this.defaultMode,this.form)
+  },
+  mounted() {
+  },
   methods: {
     tipFun() {
       this.$refs.form.validate(valid => {
@@ -110,7 +115,10 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val) {
+      console.log(val)
       this.form.urlClick = val.url;
+      this.form.name = val.name;
+      // console.log(this.form)
       this.$emit("setModeVal", this.form);
     }
   }

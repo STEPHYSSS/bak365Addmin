@@ -47,47 +47,47 @@
         </el-form-item>
       </div>
       <div class="editor-bottom-help-desc">最多添加10个导航，拖动选中的导航可对其排序</div>
-      <vuedraggable v-model="form.listNav" @change="changeDrag">
-      <div
-        class="rc-design-editor-card-item editor-card-add"
-        style="margin:0px 0 20px 0;height:118px;padding:"
-        v-for="(item,index) in form.listNav"
-        :key="index"
-        @mouseleave="currentIEel = null"
-        @mouseenter="currentIEel = index"
-      >
-        <div class="imgLoad-style" v-if="form.navStyle==='image'">
-          <imgLoad
-            id="imgLoad"
-            folder="CustomImg"
-            :isAutoFixed="true"
-            @upLoadImgs="upLoadImgsMain($event,item)"
-            :fileListUrl="item.url | SetImage"
-            :limit="1"
-            :enlarge="1"
-            :showFileList="true"
-            imgWidth="80px"
-            imgHeight="80px"
-          ></imgLoad>
+      <!-- <draggable v-model="form.listNav" @start="onstart" @end="onEnd"> -->
+        <div
+          class="rc-design-editor-card-item editor-card-add"
+          style="margin:0px 0 20px 0;height:118px;padding:"
+          v-for="(item,index) in form.listNav"
+          :key="index"
+          @mouseleave="currentIEel = null"
+          @mouseenter="currentIEel = index"
+        >
+          <div class="imgLoad-style" v-if="form.navStyle==='image'">
+            <imgLoad
+              id="imgLoad"
+              folder="CustomImg"
+              :isAutoFixed="true"
+              @upLoadImgs="upLoadImgsMain($event,item)"
+              :fileListUrl="item.url | SetImage"
+              :limit="1"
+              :enlarge="1"
+              :showFileList="true"
+              imgWidth="80px"
+              imgHeight="80px"
+            ></imgLoad>
+          </div>
+          <div class="add-img-right">
+            <el-form ref="form" :model="item" label-width="80px">
+              <el-form-item label="标题：" style="margin-bottom: 5px !important;">
+                <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
+              </el-form-item>
+              <el-form-item label="链接：">
+                <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+              </el-form-item>
+            </el-form>
+          </div>
+          <i
+            v-if="currentIEel === index"
+            @click="clickEdlete(index)"
+            class="el-icon-error cardEelete"
+            style="color: rgb(0, 0, 0, 0.3)"
+          ></i>
         </div>
-        <div class="add-img-right">
-          <el-form ref="form" :model="item" label-width="80px">
-            <el-form-item label="标题：" style="margin-bottom: 5px !important;">
-              <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
-            </el-form-item>
-            <el-form-item label="链接：">
-              <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
-            </el-form-item>
-          </el-form>
-        </div>
-        <i
-          v-if="currentIEel === index"
-          @click="clickEdlete(index)"
-          class="el-icon-error cardEelete"
-          style="color: rgb(0, 0, 0, 0.3)"
-        ></i>
-      </div>
-      </vuedraggable>
+      <!-- </draggable> -->
       <div
         v-if="form.listNav.length<10"
         class="rc-design-editor-card-item editor-card-add"
@@ -105,12 +105,13 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
-import vuedraggable from "vuedraggable";
+import draggable from "vuedraggable";
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink, vuedraggable},
+  components: { imgLoad, aDropdwnLink,draggable},
   data() {
     return {
+      drag:false,
       currentIndex: 0,
       selectTemplates: [
         {
@@ -155,8 +156,12 @@ export default {
     this.form.pageShowNum = Number(this.form.pageShowNum);
   },
   methods: {
-    changeDrag(e){
-      console.log(e,'图文导航里拖拽change事件')
+    onstart(e){
+      this.drag = true
+    },
+    onEnd(e){
+      this.drag = false;
+      this.$emit("setModeVal", this.form);
     },
     changeMode(index) {
       if (index !== this.currentIndex) {

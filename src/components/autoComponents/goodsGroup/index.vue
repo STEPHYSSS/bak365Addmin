@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color:pink">
     <div :class="[currentObj.followBoard === '2'?'cap-tag-list':'cap-goods-layout']" v-if="true">
       <div
         v-if="currentObj.followBoard === '1'"
@@ -56,7 +56,7 @@
           style="margin: 0px 15px;"
         >商品组一555555</div> -->
         <div v-if="Prod_InfoList.length">
-          <div class="cap-goods-layout">
+          <div class="cap-goods-layout" style="margin-bottom: 48px;">
             <!-- list tag-left -->
             <ul
               :class="['cap-goods-layout__container',currentObj.listStyle,currentObj.goodStyle,
@@ -396,9 +396,11 @@ export default {
       : [];
 
     this.setMenuWidth();
-    this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
-    // this.fristIndex = this.currentObj.groupList[0].groupId;
-    // this.getList(this.fristIndex)
+    this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";  
+    if(this.currentObj.groupList.length>0){
+      this.fristIndex = this.currentObj.groupList[0].groupId;
+      this.getList(this.fristIndex);
+    }
   },
   methods: {
     setMenuWidth() {
@@ -432,12 +434,11 @@ export default {
       this.currentMenuIndex = index;
       if (index === "0") {
         //全部
-        this.translateXline = ((this.menuWidth - this.lineWidth) / 2).toFixed(
-          2
-        );
-        if(item === undefined){
-          this.getList(this.fristIndex)
-        }        
+        this.translateXline = ((this.menuWidth - this.lineWidth) / 2).toFixed(2);
+        if(this.currentObj.groupList.length>0){
+          this.fristIndex = this.currentObj.groupList[0].groupId;
+          this.getList(this.fristIndex);
+        }
       } else {
         // 其他
         this.translateXline = (
@@ -527,8 +528,10 @@ export default {
         // this.groupList = null;
         // 监听并选择第一个系列的商品sid，去调用系列商品接口并展示在'全部'一栏中
         if(this.currentMenuIndex === '0'){
-          this.fristIndex = this.currentObj.groupList[0].groupId;
-          this.getList(this.fristIndex)
+          if(this.currentObj.groupList.length>0){
+            this.fristIndex = this.currentObj.groupList[0].groupId;
+            this.getList(this.fristIndex)
+          }
         }
         this.groupList = this.currentObj.groupList
       }
@@ -536,7 +539,7 @@ export default {
     },
     "currentObj.followBoard"() {
       this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
-    }
+    },
   }
 };
 </script>

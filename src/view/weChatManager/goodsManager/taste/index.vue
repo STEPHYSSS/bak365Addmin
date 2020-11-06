@@ -8,7 +8,7 @@
       :data="tableData"
       :style="{width:ruleForm.Type!==3?'60%':'100%'}"
     >
-      <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type===3" width="200">
+      <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type===3" width="200" align="center">
         <template slot="header">
           图片
           <span
@@ -31,7 +31,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" prop="GoodId" v-if="ruleForm.Type===3" width="180">
+      <el-table-column label="商品编号" prop="GoodId" v-if="ruleForm.Type===3" width="180" align="center">
         <template slot-scope="scoped">
           <!--          <span v-if="scoped.row.SID">商品编号</span>-->
           <el-input
@@ -43,7 +43,7 @@
           ></el-input>
         </template>
       </el-table-column>
-      <el-table-column prop="Name" label="名称" :key="2">
+      <el-table-column prop="Name" label="名称" :key="2" align="center">
         <template slot-scope="scoped">
           <el-input
             v-model="scoped.row.Name"
@@ -59,23 +59,23 @@
           </el-select>
         </template>
       </el-table-column>-->
-      <el-table-column v-if="ruleForm.Type===3" width="150" label="显示">
+      <el-table-column v-if="ruleForm.Type===3" width="80" label="显示" align="center">
         <template slot-scope="scoped">
           <el-checkbox v-model="scoped.row.State"></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="价格" v-if="ruleForm.Type===3">
+      <el-table-column label="价格" v-if="ruleForm.Type===3" align="center">
         <template slot-scope="scoped">
           <el-input style="max-width:150px" v-model="scoped.row.SalePrice"></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="库存" v-if="ruleForm.Type===3">
+      <el-table-column label="库存" v-if="ruleForm.Type===3" align="center">
         <template slot-scope="scoped">
           <el-input style="max-width:150px" v-model="scoped.row.StoreQty"></el-input>
         </template>
       </el-table-column>
 
-      <el-table-column label="图标标签" v-if="ruleForm.Type===0" :key="1">
+      <el-table-column label="图标标签" v-if="ruleForm.Type===0" :key="1" align="center">
         <template slot-scope="scoped">
           <!-- v-if="scoped.row.SID" -->
           <div
@@ -89,7 +89,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
           <el-button
             v-if="scoped.row.SID&&ruleForm.Type===3"
@@ -584,17 +584,22 @@ export default {
     .imgLoadStyle {
       .el-upload--picture-card,
       .el-upload-list__item {
-        width: 120px;
-        height: 120px;
+        width: 70px;
+        height: 70px;
       }
       .el-upload--picture-card {
-        line-height: 120px;
+        line-height: 70px;
+      }
+      .avatar-uploader-icon{
+        line-height: 70px !important;
+        width: 70px !important;
+        height: 70px !important;
       }
     }
 
     .imgStyle {
-      width: 120px;
-      height: 120px;
+      width: 70px;
+      height: 70px;
       border: 1px solid #eee;
       img {
         width: 100%;

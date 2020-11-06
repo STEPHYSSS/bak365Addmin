@@ -23,7 +23,7 @@
       <draggable v-model="form.imgList" @change="changeDrag">
         <div
         class="rc-design-editor-card-item editor-card-add"
-        style="margin:0px 0 20px 0;height:118px;background-color:pink;border:1px solid #000"
+        style="margin:0px 0 20px 0;height:118px;"
         v-for="(item,index) in form.imgList"
         :key="index"
         @mouseleave="currentIEel = null"

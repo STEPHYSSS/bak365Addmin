@@ -106,7 +106,7 @@ export default {
         this.tableData.forEach(D => {
           query.SID = D.SID;
           D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
-        });
+        });               
         this.loading = false;
       } catch (e) {
         this.$message.error(e);
