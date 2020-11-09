@@ -78,6 +78,7 @@ export default {
     },
     blurUEContent(val) {
       let form = JSON.parse(JSON.stringify(this.form));
+      console.log(form)
       form.fullScreen = form.fullScreen ? "1" : "0";
      
       form.contentRich = val.replace(

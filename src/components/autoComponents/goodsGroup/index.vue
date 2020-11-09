@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color:pink">
+  <div>
     <div :class="[currentObj.followBoard === '2'?'cap-tag-list':'cap-goods-layout']" v-if="true">
       <div
         v-if="currentObj.followBoard === '1'"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div
-        class="van-badge-group van-hairline--top-bottom cap-tag-list-nav "
+        class="van-badge-group van-hairline--top-bottom cap-tag-list-nav"
         style="max-height: 969px;"
         v-if="currentObj.followBoard === '2'"
       >
@@ -54,7 +54,7 @@
           class="cap-tag-list__group-title"
           v-if="currentObj.followBoard === '2'"
           style="margin: 0px 15px;"
-        >商品组一555555</div> -->
+        >商品组一555555</div>-->
         <div v-if="Prod_InfoList.length">
           <div class="cap-goods-layout" style="margin-bottom: 48px;">
             <!-- list tag-left -->
@@ -66,7 +66,7 @@
             >
               <li
                 class="cap-goods-layout__wrapper cap-goods-layout__wrapper--0"
-                v-for="(item,index) in Prod_InfoList.slice(0, 4)" 
+                v-for="(item,index) in Prod_InfoList.slice(0, 4)"
                 :key="index"
               >
                 <a
@@ -78,10 +78,17 @@
                   :style="{'margin':(currentObj.goodSpace/2)+'px'}"
                 >
                   <div class="cap-goods__photo">
-                    <div class="cap-goods__image-wrap" :style="{'padding-top':currentObj.imgScale+ '%'}">
-                      <div data-lazy-log="1" :class="['cap-goods__img--'+currentObj.contain]" class="cap-goods__img" lazy="loaded"
-                        :style="{'background-image':`url(${setImgPrex(item.Img)})`}" >
-                      </div>
+                    <div
+                      class="cap-goods__image-wrap"
+                      :style="{'padding-top':currentObj.imgScale+ '%'}"
+                    >
+                      <div
+                        data-lazy-log="1"
+                        :class="['cap-goods__img--'+currentObj.contain]"
+                        class="cap-goods__img"
+                        lazy="loaded"
+                        :style="{'background-image':`url(${setImgPrex(item.Img)})`}"
+                      ></div>
                     </div>
                     <div v-if="currentObj.showContent.indexOf('5')>-1">
                       <i
@@ -144,7 +151,8 @@
                       >
                         <span class="sale-price" v-if="currentObj.showContent.indexOf('3')>-1">
                           <div class="cap-theme-view" style="color: rgb(255, 68, 68);">
-                            <span class="price-tag">¥</span>{{item.SalePrice}}
+                            <span class="price-tag">¥</span>
+                            {{item.SalePrice}}
                           </div>
                         </span>
                       </div>
@@ -339,7 +347,7 @@ export default {
       type: Object,
       default() {
         return {
-          groupList: [],          
+          groupList: [],
           menuStyle: "1",
           followBoard: "1",
           //small  big   three list hybrid swipe
@@ -383,8 +391,8 @@ export default {
       groupList: null,
       screenWidth: 0,
       currentMenuIndex: "0",
-      Prod_InfoList:[],
-      fristIndex:'',//用来接收第一列系列的sid
+      Prod_InfoList: [],
+      fristIndex: "" //用来接收第一列系列的sid
     };
   },
   components: {},
@@ -396,8 +404,8 @@ export default {
       : [];
 
     this.setMenuWidth();
-    this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";  
-    if(this.currentObj.groupList.length>0){
+    this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
+    if (this.currentObj.groupList.length > 0) {
       this.fristIndex = this.currentObj.groupList[0].groupId;
       this.getList(this.fristIndex);
     }
@@ -430,12 +438,14 @@ export default {
         );
       }
     },
-    clickMenu(index,item) {
+    clickMenu(index, item) {
       this.currentMenuIndex = index;
       if (index === "0") {
         //全部
-        this.translateXline = ((this.menuWidth - this.lineWidth) / 2).toFixed(2);
-        if(this.currentObj.groupList.length>0){
+        this.translateXline = ((this.menuWidth - this.lineWidth) / 2).toFixed(
+          2
+        );
+        if (this.currentObj.groupList.length > 0) {
           this.fristIndex = this.currentObj.groupList[0].groupId;
           this.getList(this.fristIndex);
         }
@@ -445,8 +455,8 @@ export default {
           Number(index) * Number(this.menuWidth) +
           this.lineWidth / 2
         ).toFixed(2);
-        if(item.groupId){
-          this.getList(item.groupId)
+        if (item.groupId) {
+          this.getList(item.groupId);
         }
       }
     },
@@ -466,14 +476,10 @@ export default {
       }
     },
     setImgPrex(val) {
-      if (
-        val &&
-        this.Prod_InfoList &&
-        this.Prod_InfoList.length > 0 
-      ) {
+      if (val && this.Prod_InfoList && this.Prod_InfoList.length > 0) {
         return process.env.BASE_URL + val; /* process.env.Prefix */
       } else {
-        return '';
+        return "";
       }
     },
     //根据系列SID查询商品并展示商品
@@ -484,16 +490,17 @@ export default {
         let data = await getLists(
           {
             Action: "GetProdInfoList",
-            CateSID:val          
-          }, "MProdOpera")
+            CateSID: val
+          },
+          "MProdOpera"
+        );
         this.loading = false;
         this.Prod_InfoList = data.Data.Prod_InfoList;
-        
       } catch (e) {
-        this.$message.error(e)
+        this.$message.error(e);
         this.loading = false;
       }
-    },
+    }
   },
   watch: {
     "currentObj.showContent"() {
@@ -527,19 +534,19 @@ export default {
       } else {
         // this.groupList = null;
         // 监听并选择第一个系列的商品sid，去调用系列商品接口并展示在'全部'一栏中
-        if(this.currentMenuIndex === '0'){
-          if(this.currentObj.groupList.length>0){
+        if (this.currentMenuIndex === "0") {
+          if (this.currentObj.groupList.length > 0) {
             this.fristIndex = this.currentObj.groupList[0].groupId;
-            this.getList(this.fristIndex)
+            this.getList(this.fristIndex);
           }
         }
-        this.groupList = this.currentObj.groupList
+        this.groupList = this.currentObj.groupList;
       }
       this.setMenuWidth();
     },
     "currentObj.followBoard"() {
       this.currentMenuIndex = this.currentObj.followBoard === "2" ? 0 : "0";
-    },
+    }
   }
 };
 </script>

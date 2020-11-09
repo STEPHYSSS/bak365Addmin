@@ -13,6 +13,11 @@
         <div class="imgLoad-style">
           <el-form-item label="商品:" style="margin-top:20px;" v-if="form.goodSource == '0'">
             <div v-if="goodsList&&goodsList.length>0">
+              <draggable
+                v-model="goodsList"
+                :move="getdata"
+                @update="datadragEnd"
+              >
               <div
                 class="rc-design-editor-card-add__inlinOther"
                 v-for="(item,index) in goodsList"
@@ -29,6 +34,7 @@
                   style="color: rgb(0, 0, 0, 0.3)"
                 ></i>
               </div>
+              </draggable>
             </div>
             <div class="rc-design-editor-card-add__inline" @click="cardAddFun(false)">
               <span>
@@ -238,10 +244,12 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import goodsAuto from "@/components/Dialog/goodsAuto/goodsAuto";
+import { getLists } from "@/api/vipCard";
+import draggable from "vuedraggable";
 export default {
   mixins: [Mixins],
   name: "",
-  components: { imgLoad, goodsAuto },
+  components: { imgLoad, goodsAuto,draggable },
   data() {
     return {
       form: {
@@ -261,7 +269,7 @@ export default {
         typeSign: "0",
         typeSignImg: "",
         goodsMaxNum: 6,
-        _data: [],//商品弹窗数据
+        _data: [] //商品弹窗数据
       },
       buttonArr: ["1", "2", "5", "6"],
       buttonArr1: ["3", "4", "7", "8"],
@@ -272,28 +280,37 @@ export default {
       currentIEel: "",
       //弹框的时候隐藏底部的提交按钮 '1'显示 '2'隐藏
       _dialogVisible: "1",
-      goodInfoList:[],//用来接收
+      goodInfoList: [] //用来接收
     };
   },
-  created() {    
+  created() {
     this.form.pageSpace = Number(this.form.pageSpace);
     this.form.goodSpace = Number(this.form.goodSpace);
 
-    if(this.form.goodSource==='1'){
-      this.goodsList
+    if (this.form.goodSource === "1") {
+      this.goodsList;
     }
     this.goodsList = this.form._Prod_Data || [];
     this.goodInfoList = this.form._Prod_Data;
-    console.log(this.goodsList,'if外面的')
-
+    // console.log(this.goodsList,'if外面的')
   },
   mounted() {},
   methods: {
+    getdata (evt) {
+      console.log(evt.draggedContext.element.props)
+      // this.ModeValArr = evt.draggedContext.element.props;
+      // console.log(this.ModeValArr,'555')
+    },
+    datadragEnd (evt) {
+      this.$emit("setModeVal", this.form);
+    },
     changeSource(val) {
+      // console.log(this.defaultMode, "测试一下按钮切换的问题");
       //编辑页面的时候，点击切换判断是商品还是商品分组
       this.isGroup = val === "1" ? true : false;
       this.goodsList = [];
-      this.form._data = ''
+      this.form._data = "";
+      this.$emit("setModeVal", this.form);
     },
     changeStyleSearch() {
       if (this.form.listStyle === "list") {
@@ -398,7 +415,7 @@ export default {
         this.isGroup = false;
       }
       if (this.$refs.goodsAuto) {
-        console.log(this.$refs.goodsAuto,'-----')
+        // console.log(this.$refs.goodsAuto,'-----')
         this.$refs.goodsAuto.dialogVisible = true;
       }
       this.form._dialogVisible = "1";
@@ -409,10 +426,11 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     sureGood(arr) {
-      if(arr.length===0){
-        return
+      if (arr.length === 0) {
+        return;
       }
       if (!this.isGroup) {
+        //true商品
         let arrNew = [];
         arr.forEach(D => {
           arrNew.push(D.SID);
@@ -429,9 +447,27 @@ export default {
       } else {
         this.form._data = [arr.SID];
         this.goodsList = [arr];
+        this.getList(this.goodsList[0].SID);
       }
-
       this.$emit("setModeVal", this.form);
+    },
+    async getList(val) {
+      this.loading = true;
+      try {
+        let data = await getLists(
+          {
+            Action: "GetProdInfoList",
+            CateSID: val
+          },
+          "MProdOpera"
+        );
+        this.loading = false;
+        this.currentGoodList = data.Data.Prod_InfoList;
+        this.$set(this.form, "_Prod_Data", this.currentGoodList);
+      } catch (e) {
+        this.$message.error(e);
+        this.loading = false;
+      }
     },
     changeGoodsNum(val) {
       if (val) {

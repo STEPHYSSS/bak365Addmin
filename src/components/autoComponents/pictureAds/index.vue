@@ -5,7 +5,10 @@
       style="background-color: rgb(249, 249, 249);"
     >
       <div class="rc-design-react-preview">
-        <div v-if="currentObj.imgList.length===0 && currentObj.imgList.length ===0" class="rc-design-component-default-preview">
+        <div
+          v-if="currentObj.imgList.length===0 && currentObj.imgList.length ===0"
+          class="rc-design-component-default-preview"
+        >
           <div class="rc-design-component-default-preview__title">点击编辑图片广告</div>
           <div>建议宽度750像素</div>
         </div>
@@ -50,7 +53,7 @@
                   :key="i+1"
                   :class="['cap-indicator__dot', i===current?'cap-indicator__dot--active':'']"
                 >{{current+1}}</span>
-                /{{currentObj.imgList.length}}
+                / {{currentObj.imgList.length}}
               </div>
             </template>
           </van-swipe>
@@ -160,7 +163,7 @@ export default {
       this.current = index;
     },
     reportErrorsFun() {
-      console.log(this.currentObj,'this.currentObj')
+      console.log(this.currentObj, "this.currentObj");
       // if (!this.currentObj.noticeText) {
       //   return "请填写公告";
       // }
@@ -168,6 +171,7 @@ export default {
   },
   watch: {
     "currentObj.pageGap"(n) {
+      console.log(n,'图文广告')
       n = Number(n);
       this.changeClientWidth = (this.clientWidth - n * 2).toFixed(2);
     }
@@ -301,9 +305,12 @@ export default {
 } */
 .cap-image-ad__content .cap-image-ad__image-wrapper {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 .cap-image-ad__top2end .cap-image-ad__image {
   width: 100%;
+  height: 100%;
 }
 .cap-image-ad--img-shadow .cap-image-ad__top2end .cap-image-ad__content,
 .cap-image-ad--img-shadow .cap-image-ad__image_swipe,

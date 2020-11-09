@@ -12,16 +12,21 @@
               <div class="customBoxHeadTitle">模板名称</div>
             </div>
             <div>
-              <draggable v-model="currentModeArr" chosenClass="chosen" forceFallback="true" :options="optionDrag" @start="onStart" @end="onEnd">
+              <draggable v-model="currentModeArr" :move="getdata" @update="datadragEnd">
                 <div class="preview-item clearfix drag" v-for="(item,index) in currentModeArr" :key="index">
                   <div @click.stop="clickCurrentCot(index)" @mouseenter.stop="clickCurrentFun(index)" @mouseleave.stop="clickCurrentoutFun(index)" 
                   class="modeBox">
                     <component :is="item.viewComponets" ref="setModeRef" :propsObj="ModeValArr[index]"></component>
                     <i @click.stop="delMode(index)" v-if="currentIndexDel===index" class="el-icon-error error-icon-style"></i>
                   </div>
-                  <!-- setIndex页面 -->
-                  <div class="zent-design-editor-item" ref="setModeRefFun" v-if="currentIndexCot === index&&item.viewComponets">
-                    <component class="drag" :is="item.viewComponets + 'Fun'" @setModeVal="setModeVal($event,index)" :defaultMode="ModeValArr[index]"></component>
+                  <div
+                    class="zent-design-editor-item"
+                    ref="setModeRefFun"
+                    v-if="currentIndexCot === index&&item.viewComponets"
+                  >
+                    <component class="drag" :is="item.viewComponets + 'Fun'" :defaultMode="ModeValArr[index]" 
+                    @setModeVal="setModeVal($event,index)"
+                    ></component>
                   </div>
                 </div>
               </draggable>
@@ -45,8 +50,7 @@
                     @mouseout="mouseoutFun(itemChild.id)"
                     @click="clickBox(itemChild,i)"
                   >
-                    <a
-                      :class="['add-component__grouped-btn',itemChild.id===currentIndex?'backgroundCurrent':'']"
+                    <a :class="['add-component__grouped-btn',itemChild.id===currentIndex?'backgroundCurrent':'']"
                     >{{itemChild.name}}</a>
                   </div>
                 </div>
@@ -165,11 +169,11 @@ export default {
   },
   data() {
     return {
-        optionDrag: {
-          group:'people',
-          animation: 300,
-          draggable: '.drag'
-        },
+      optionDrag: {
+        group: "people",
+        animation: 300,
+        draggable: ".drag"
+      },
       preserveButton: true,
       ruleForm: {
         name: ""
@@ -182,7 +186,7 @@ export default {
       groupedList: [
         {
           id: 1,
-          name: "基础组件",      
+          name: "基础组件",
           list: [
             { id: 11, name: "富文本", viewComponets: "richText" },
             { id: 12, name: "商品", viewComponets: "goods" },
@@ -232,7 +236,7 @@ export default {
       currentIndexDel: null,
       currentModeArr: [],
       dialogVisible: false,
-      ModeValArr: [],
+      ModeValArr: [], //
       setBottom: 0,
       loadingBtn: false,
       drag: false,
@@ -249,26 +253,23 @@ export default {
   },
   updated() {},
   methods: {
-    //开始拖拽事件
-    update(oldIndex, newIndex) {
-      if (newIndex === oldIndex) return false
-      let oldObj = {...this.ModeValArr[oldIndex]}
-      let newObj = {...this.ModeValArr[newIndex]}
-      this.$set(this.ModeValArr, oldIndex, newObj)
-      this.$set(this.ModeValArr, newIndex, oldObj)
-      console.log(this.ModeValArr, 'ModeValArr')
+    getdata (evt) {
+      console.log(evt)
+      console.log(evt.draggedContext.element.props)
     },
-    onStart () {
-      this.drag = true;
-      this.currentIndexCot = null;
+    datadragEnd (evt) {
+      console.log('拖动前的索引 :' + evt.oldIndex)
+      console.log('拖动后的索引 :' + evt.newIndex)
+      if (evt.newIndex === evt.oldIndex) return false;
+      let oldObj = { ...this.ModeValArr[evt.oldIndex] };
+      let newObj = { ...this.ModeValArr[evt.newIndex] };
+      this.$set(this.ModeValArr, evt.oldIndex, newObj);
+      this.$set(this.ModeValArr, evt.newIndex, oldObj);
+      console.log(this.ModeValArr,'移动之后的modevalarr')
+      console.log(this.currentModeArr,'移动之后的currentModeArr')
     },
-    //拖拽结束事件
-    onEnd(e) {
-      this.drag = false;
-      this.update(e.oldIndex, e.newIndex)
-    },
-    
-    async getInfo() {// 获取详情
+    async getInfo() {
+      // 获取详情
       try {
         let { Data } = await getLists(
           { Action: "GetDecorate", SID: this.modeSID },
@@ -289,9 +290,9 @@ export default {
         this.$message.error(e);
       }
     },
-    submitForm(formName) {//保存按钮
+    submitForm(formName) {
+      //保存按钮
       let errorTip = false;
-      console.log(this.$refs.setModeRef,'this.$refs.setModeRef')
       if (this.$refs.setModeRef) {
         this.$refs.setModeRef.forEach(D => {
           if (D.reportErrorsFun) {
@@ -344,7 +345,7 @@ export default {
                 HtmlInfo: arr,
                 Name: this.ruleForm.name,
                 SID: this.ruleForm.SID,
-                IsDefault:this.ruleForm.IsDefault
+                IsDefault: this.ruleForm.IsDefault
               },
               "MShopOpera"
             );
@@ -358,7 +359,7 @@ export default {
           this.$message.error("请填写模块名称！");
           return false;
         }
-      });//暂时注释
+      }); //暂时注释
     },
     mouseoverFun(index) {
       this.currentIndex = index;
@@ -422,11 +423,13 @@ export default {
       }
     },
     setModeVal(obj, index) {
+      let timestamp = new Date().getTime();
+      let flag = { timestamp };
+      Object.assign(obj, flag);
       this.$set(this.ModeValArr, index, obj);
+      this.currentModeArr[index].props = this.ModeValArr[index];
       // 这里为保持同步，因为this.currentModeArr 的改变未被监控到
-      this.currentModeArr[index].props = obj
-      this.$set(this.ModeValArr, index, obj);
-      //obj代表的是右边的对象
+      // this.currentModeArr[index].props = obj;
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {
         this.$refs.setModeRef[index].changeBox();
       }
@@ -445,8 +448,7 @@ export default {
     cancelFun() {
       this.$router.push("/weChat/manager/custom/customList");
     }
-  },
-  // watch: {}
+  }
 };
 
 function validateFun(_this, paramName) {

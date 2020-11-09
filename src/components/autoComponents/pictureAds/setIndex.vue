@@ -16,12 +16,12 @@
         </div>
       </el-form-item>
       <!-- //添加图片 -->
-      
+
       <el-form-item label="添加图片:" style="margin-bottom:0 !important">
         <span style="margin-bottom: 5px;color: #999;">最多添加10个广告，鼠标拖拽调整广告顺序</span>
       </el-form-item>
       <draggable v-model="form.imgList" @change="changeDrag">
-        <div
+      <div
         class="rc-design-editor-card-item editor-card-add"
         style="margin:0px 0 20px 0;height:118px;"
         v-for="(item,index) in form.imgList"
@@ -156,7 +156,7 @@ import aDropdwnLink from "../a-dropdwn-link/index";
 import draggable from "vuedraggable";
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink, draggable},
+  components: { imgLoad, aDropdwnLink, draggable },
   data() {
     return {
       currentIndex: 0,
@@ -227,8 +227,8 @@ export default {
     this.form.imgNum = this.form.imgNum.toString();
   },
   methods: {
-    changeDrag(e){
-      console.log(e,'拖拽change')
+    changeDrag(e) {
+      this.$emit("setModeVal", this.form);
     },
     changeModeFun(index) {
       if (index !== this.currentIndex) {
@@ -248,7 +248,7 @@ export default {
     upLoadImgsMain(url, row) {
       // 图片
       row.img = url.replace(process.env.Prefix, "");
-      this.form.imgList = this.form.imgList.slice()
+      this.form.imgList = this.form.imgList.slice();
 
       this.$emit("setModeVal", this.form);
     },
@@ -262,7 +262,7 @@ export default {
       this.form.imgList.push({});
       this.$emit("setModeVal", this.form);
     },
-    clickDropdown(val,index) {
+    clickDropdown(val, index) {
       this.form.imgList[index].urlObj = val;
       this.$emit("setModeVal", this.form);
     }

@@ -48,13 +48,15 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
-let url = window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/";
+// let url = window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/";
+let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
 export default {
   name: "autoHomeUrl",
   data() {
     return {
       copyData: null,
-      cateUrl:window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/",
+      // cateUrl:window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/",
+      cateUrl:"http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/",
       tableData: [
         {
           Name: "商城首页",
@@ -74,21 +76,21 @@ export default {
           Name: "积分商城",
           url: url + "pages/integralMall/index",
         },
-        {
-          Name: "秒杀活动",
-          url: url + "pages/shoppingMall/seckill/index",
-        },
-        {
-          Name: "拼团活动",
-          url: url + "pages/shoppingMall/makeGroup/makeGroup",
-        },
+        // {
+        //   Name: "秒杀活动",
+        //   url: url + "pages/shoppingMall/seckill/index",
+        // },
+        // {
+        //   Name: "拼团活动",
+        //   url: url + "pages/shoppingMall/makeGroup/makeGroup",
+        // },
         {
           Name: "购物车",
           url: url + "pages/shoppingMall/shoppingCart/index",
         },
         {
           Name: "我的粉丝",
-          url: url + "pages/vip/myFan",
+          url: url + "pages/vip/myFans",
         },
         {
           Name: "个人中心",

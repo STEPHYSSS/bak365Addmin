@@ -88,11 +88,8 @@ export default {
       }
     };
   },
-  created(){
-    console.log(this.defaultMode,this.form)
-  },
-  mounted() {
-  },
+  created() {},
+  mounted() {},
   methods: {
     tipFun() {
       this.$refs.form.validate(valid => {
@@ -115,7 +112,7 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val) {
-      console.log(val)
+      console.log(val);
       this.form.urlClick = val.url;
       this.form.name = val.name;
       // console.log(this.form)

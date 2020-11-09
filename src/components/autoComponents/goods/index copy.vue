@@ -179,30 +179,30 @@ export default {
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
-          Name: "显示商品名称，最多显示1行",
+          Name: "这里显示商品名称，最多显示1行",
           SalePrice: "99",
-          Describe: "显示商品描述，最多显示1行"
+          Describe: "这里显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
-          Name: "显示商品名称，最多显示1行",
+          Name: "这里显示商品名称，最多显示1行",
           SalePrice: "99",
-          Describe: "显示商品描述，最多显示1行"
+          Describe: "这里显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
-          Name: "显示商品名称，最多显示1行",
+          Name: "这里显示商品名称，最多显示1行",
           SalePrice: "99",
-          Describe: "显示商品描述，最多显示1行"
+          Describe: "这里显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
-          Name: "显示商品名称，最多显示1行",
+          Name: "这里显示商品名称，最多显示1行",
           SalePrice: "99",
-          Describe: "显示商品描述，最多显示1行"
+          Describe: "这里显示商品描述，最多显示1行"
         }
       ]
       // reportErrorsFun:true
@@ -274,16 +274,11 @@ export default {
       if (this.currentObj.goodSource === "1" && val.length > 0) {
         this.currentGoodList = val;
       }
-      // if (this.currentObj._Prod_Data && this.currentObj._Prod_Data.length > 0) {
-      //   this.currentGoodList = val;
-      // } else {
-      //   this.currentGoodList = this.fakeData;
-      // }
     },
     "currentObj._data"() {
-      // if (this.currentObj._data.length === "0") {
-      //   this.currentGoodList = this.fakeData;
-      // }
+      if (this.currentObj._data.length === "0") {
+        this.currentGoodList = this.fakeData;
+      }
     }
   }
 };
