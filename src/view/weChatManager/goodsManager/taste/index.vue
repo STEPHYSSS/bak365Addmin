@@ -6,9 +6,9 @@
       class="tableAdd"
       :v-loading="loading"
       :data="tableData"
-      :style="{width:ruleForm.Type!==3?'60%':'100%'}"
+      :style="{width:ruleForm.Type!=0?'100%':'60%'}"
     >
-      <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type===3" width="200" align="center">
+      <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type!=0" width="200" align="center">
         <template slot="header">
           图片
           <span
@@ -23,7 +23,7 @@
               folder="PartsImg"
               :isAutoFixed="true"
               @upLoadImgs="upLoadImgsMain($event,scoped.row)"
-              :fileListUrl="scoped.row.Img |setImgPrex"
+              :fileListUrl="scoped.row.Img |SetImage"
               :limit="1"
               :enlarge="1"
               :showFileList="true"
@@ -31,7 +31,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" prop="GoodId" v-if="ruleForm.Type===3" width="180" align="center">
+      <el-table-column label="商品编号" prop="GoodId" v-if="ruleForm.Type!=0" width="180" align="center">
         <template slot-scope="scoped">
           <!--          <span v-if="scoped.row.SID">商品编号</span>-->
           <el-input
@@ -59,17 +59,17 @@
           </el-select>
         </template>
       </el-table-column>-->
-      <el-table-column v-if="ruleForm.Type===3" width="80" label="显示" align="center">
+      <el-table-column v-if="ruleForm.Type!=0" width="80" label="显示" align="center">
         <template slot-scope="scoped">
           <el-checkbox v-model="scoped.row.State"></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="价格" v-if="ruleForm.Type===3" align="center">
+      <el-table-column label="价格" v-if="ruleForm.Type!=0" align="center">
         <template slot-scope="scoped">
           <el-input style="max-width:150px" v-model="scoped.row.SalePrice"></el-input>
         </template>
       </el-table-column>
-      <el-table-column label="库存" v-if="ruleForm.Type===3" align="center">
+      <el-table-column label="库存" v-if="ruleForm.Type!=0" align="center">
         <template slot-scope="scoped">
           <el-input style="max-width:150px" v-model="scoped.row.StoreQty"></el-input>
         </template>
@@ -83,7 +83,7 @@
             class="labelImgStyle tableLabelImgStyle"
             @click="changeImg(scoped.$index)"
           >
-            <img :src="scoped.row.Img|setImgPrex" alt />
+            <img :src="scoped.row.Img|SetImage" alt />
           </div>
           <el-button v-else size="small" type="text" @click="changeImg(scoped.$index)">选择图片</el-button>
         </template>
@@ -92,7 +92,7 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
           <el-button
-            v-if="scoped.row.SID&&ruleForm.Type===3"
+            v-if="scoped.row.SID&&ruleForm.Type!=0"
             type="primary"
             size="small"
             @click="submitSure(scoped.row,scoped.$index)"
@@ -112,67 +112,8 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <div style="margin:25px 0;" v-if="ruleForm.Type===2">
-      <div style="margin-bottom:10px">口味模板设置</div>
-      <el-table :data="tasteModeList" style="width:70%">
-        <el-table-column label="口味集合">
-          <template slot-scope="scoped">
-            <!-- v-model="scoped.row.Name" -->
-            <el-select
-              v-model="scoped.row.Name"
-              :multiple="true"
-              filterable
-              :allow-create="false"
-              default-first-option
-              @change="changeTasteListFa($event,scoped.row)"
-              placeholder="请选择口味"
-            >
-              <el-option
-                v-for="(item,i) in tableDataMode"
-                :key="i"
-                :label="item.Name"
-                :value="item.Name"
-              ></el-option>
-            </el-select>
-            <!-- <tasteList
-              :Type="2"
-              @changeTaste="changeTasteListFa($event,scoped.row)"
-              ref="tasteListFa"
-              :valueCurrent="tasteModeList.Name"
-            ></tasteList>-->
-            <!-- <el-input type="textarea"
-            :rows="2" v-model="scoped.row.Name"></el-input>-->
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scoped">
-            <el-button
-              v-if="scoped.row.SID"
-              type="primary"
-              size="small"
-              @click="submitSure(scoped.row,scoped.$index,true)"
-              :disabled="btnLoading"
-            >保存</el-button>
-            <el-button
-              v-if="scoped.row.SID"
-              type="text"
-              @click="deleteTaste(scoped.row,scoped.$index,true)"
-            >删除</el-button>
-            <el-button
-              v-if="!scoped.row.SID"
-              type="primary"
-              size="small"
-              @click="addTaste(scoped.row,scoped.$index,true)"
-            >添加</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-
     <Del :show="show" @delFunction="delFunction" @confirmEnd="confirmEnd"></Del>
-
-    <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods>
+    <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
 
     <el-dialog
       title="点击选择图片"
@@ -197,7 +138,7 @@
           style="margin-bottom:5px"
           @click="clickMaterial(index,item.Img)"
         >
-          <img :id="'materialImgUp'+index" :src="item.Img |setImgPrex" alt />
+          <img :id="'materialImgUp'+index" :src="item.Img |SetImage" alt />
         </div>
       </div>
     </el-dialog>
@@ -216,18 +157,18 @@
             :key="index"
             class="labelImgStyle tableLabelImgStyle labelImgStyleWidth"
           >
-            <img :src="item.Img |setImgPrex" alt />
+            <img :src="item.Img | SetImage" alt />
+            <!-- <span class="icon">删除</span> -->
           </div>
         </div>
         <div class="lineBack" v-if="materialList.length>0"></div>
-
         <div>
           <imgLoad
             folder="LabelImg"
             :isAutoFixed="true"
             @upLoadImgs="upLoadImgs"
             :fileListUp="fileListUp"
-            :limit="20"
+            :limit="1"
             :enlarge="0.15"
           ></imgLoad>
         </div>
@@ -287,38 +228,30 @@ export default {
     };
   },
   created() {
-    if (this.labelType.length === 3) {
-      this.labelType = this.labelType.slice(1, 3);
-    }
-    if (this.$route.path === "/weChat/manager/tasteList") {
-      this.ruleForm.Type = 2;
-    } else if (this.$route.path === "/weChat/manager/labelList") {
+    if (this.$route.path === "/weChat/manager/labelList") {
       this.ruleForm.Type = 0;
-    } else if (this.$route.path === "/weChat/manager/partsList") {
-      this.ruleForm.Type = 3;
     }
     this.getImgList();
     this.getList();
-    this.getTasteModeList();
   },
   methods: {
     async getList() {
       try {
-        // "GetPartsList"
         this.loading = true;
-        let action = this.ruleForm.Type === 3 ? "GetPartsList" : "GetParamList";
-        let opera = this.ruleForm.Type === 3 ? "MProdOpera" : "MBaseOpera";
+        // 类型（0、商品标签 1、商品类型 2、商品属性名 3、商品属性值）
+        let action = this.ruleForm.Type != 0 ? "GetPartsList" : "GetParamList";
+        let opera = this.ruleForm.Type != 0 ? "MProdOpera" : "MBaseOpera";
         let { Data } = await getLists(
           { Action: action, Type: this.ruleForm.Type },
           opera
         );
         let param =
-          this.ruleForm.Type === 3 ? "ProdPartsList" : "ParamInfoList";
+          this.ruleForm.Type != 0 ? "ProdPartsList" : "ParamInfoList";
 
         this.tableDataMode = Data[param];
         this.tableData = Data[param];
 
-        if (this.ruleForm.Type === 3) {
+        if (this.ruleForm.Type !=0) {
           this.tableData.forEach(D => {
             D.State = D.State === "1" ? true : false;
           });
@@ -331,21 +264,6 @@ export default {
         this.loading = false;
       }
     },
-    async getTasteModeList() {
-      let { Data } = await getLists(
-        { Action: "GetParamList", Type: 21 },
-        "MBaseOpera"
-      );
-      this.tasteModeList = Data.ParamInfoList;
-      this.tasteModeList.forEach(D => {
-        if (D.Name instanceof Array) {
-          return;
-        }
-        D.Name = D.Name.split(",");
-      });
-
-      this.tasteModeList.push({});
-    },
     async getImgList() {
       this.loadingImg = true;
       try {
@@ -353,7 +271,6 @@ export default {
           { Action: "GetImgs", Type: 2 },
           "MBaseOpera"
         );
-        console.log(Data.Imgs, "77");
         this.materialList = Data.Imgs;
         this.loadingImg = false;
       } catch (e) {
@@ -379,10 +296,12 @@ export default {
     },
     async confirmEnd() {
       try {
+        let viewkey=this.ruleForm.Type != 0 ? "MProdOpera" : "MBaseOpera";
         await getLists(
-          { Action: "RemoveParamInfo", SID: this.ruleForm.SID },
-          "MBaseOpera"
+          { Action: this.ruleForm.Type !=0?"RemovePartsInfo":"RemoveParamInfo", SID: this.ruleForm.SID },
+          viewkey
         );
+        
         let arr = this.isTasteMode ? this.tasteModeList : this.tableData;
         arr.splice(this.current_index, 1);
         this.$message.success("删除成功");
@@ -418,11 +337,11 @@ export default {
       if (row) {
         Object.assign(obj, row);
       }
-      let action = this.ruleForm.Type === 3 ? "SetPartsInfo" : "SetParamInfo";
-      let Opera = this.ruleForm.Type === 3 ? "MProdOpera" : "MBaseOpera";
+      let action = this.ruleForm.Type !=0 ? "SetPartsInfo" : "SetParamInfo";
+      let Opera = this.ruleForm.Type !=0 ? "MProdOpera" : "MBaseOpera";
       if (this.ruleForm.Type === 0) {
         //  标签
-        obj.TypeName = "商品便签";
+        obj.TypeName = "商品标签";
       }
 
       if (obj.Name instanceof Array) {
@@ -535,6 +454,7 @@ export default {
           this.$message.info("请选择相片");
           return;
         }
+        // 配件、标签 通用图片素材
         await getLists(
           { Action: "SetImg", Img: this.GetImgs, Type: 2 },
           "MBaseOpera"
@@ -628,6 +548,16 @@ export default {
     width: 60px;
     height: 60px;
     margin-bottom: 5px;
+    position: relative;
+    .icon{
+      position: absolute;
+      top: -1px;
+      right: 0;
+      width: 100%;
+      text-align: center;
+      line-height: 60px;
+      background: #ccc;
+    }
   }
   .tableLabelImgStyle {
     border: 1px solid #eee;

@@ -50,7 +50,8 @@
 </template>
 
 <script>
-let url = window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/";
+// let url = window.location.protocol + '//' + window.location.host + "/WeixinNew/Dist/index.html#/";
+let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
 export default {
   name: "",
   props: {
@@ -101,12 +102,16 @@ export default {
           url: url + "pages/shoppingMall/shoppingCart/index",
         },
         {
+          name: "个人中心",
+          url: url + "pages/home",
+        },
+        {
           name: "我的粉丝",
           url: url + "pages/vip/myFan",
         },
         {
-          name: "个人中心",
-          url: url + "pages/home",
+          Name:"我的足迹",
+          url:url+"pages/vip/FootPrint"
         },
         {
           name: "申请团长",

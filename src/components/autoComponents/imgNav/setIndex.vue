@@ -47,7 +47,7 @@
         </el-form-item>
       </div>
       <div class="editor-bottom-help-desc">最多添加10个导航，拖动选中的导航可对其排序</div>
-      <!-- <draggable v-model="form.listNav" @start="onstart" @end="onEnd"> -->
+      <draggable v-model="form.listNav" @start="onstart" @end="onEnd">
         <div
           class="rc-design-editor-card-item editor-card-add"
           style="margin:0px 0 20px 0;height:118px;padding:"
@@ -87,7 +87,7 @@
             style="color: rgb(0, 0, 0, 0.3)"
           ></i>
         </div>
-      <!-- </draggable> -->
+      </draggable>
       <div
         v-if="form.listNav.length<10"
         class="rc-design-editor-card-item editor-card-add"

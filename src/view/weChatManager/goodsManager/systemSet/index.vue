@@ -81,8 +81,8 @@
       <!-- 推广基础设置开始  提现比例（推广订单金额 * 提现比例 =实际返佣金额） 有效期  提现备注-->
       <el-tab-pane label="分销设置" name="2">
         <el-form ref="form2" :model="form2" :rules="rules" label-width="200px">
-          <el-form-item label="提现日期" prop="DrawingsDate">
-            <el-date-picker
+          <el-form-item label="提现日期">
+            <!-- <el-date-picker
               is-range
               @change="change"
               :clearable="false"
@@ -92,7 +92,9 @@
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
-            ></el-date-picker>
+            ></el-date-picker> -->
+            <el-input v-model="form2.DrawingsStartDate" placeholder="请输入开始日期" style="width:80px"></el-input> ~
+            <el-input v-model="form2.DrawingsEndDate" placeholder="请输入结束日期" style="width:80px"></el-input>
           </el-form-item>
           <el-form-item label="提现方式" prop="DrawingsType">
             <el-radio v-model="form2.DrawingsType" label="1">微卡</el-radio>

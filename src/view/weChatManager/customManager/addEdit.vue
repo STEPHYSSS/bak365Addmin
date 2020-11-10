@@ -13,23 +13,24 @@
             </div>
             <div>
               <draggable v-model="currentModeArr" :move="getdata" @update="datadragEnd">
-                <div class="preview-item clearfix drag" v-for="(item,index) in currentModeArr" :key="index">
-                  <div @click.stop="clickCurrentCot(index)" @mouseenter.stop="clickCurrentFun(index)" @mouseleave.stop="clickCurrentoutFun(index)" 
+                 <div class="preview-item clearfix drag" v-for="(item,index) in currentModeArr" :key="index">
+                  <div @click.stop="clickCurrentCot(item.key)" @mouseenter.stop="clickCurrentFun(item.key)" @mouseleave.stop="clickCurrentoutFun(item.key)" 
                   class="modeBox">
-                    <component :is="item.viewComponets" ref="setModeRef" :propsObj="ModeValArr[index]"></component>
-                    <i @click.stop="delMode(index)" v-if="currentIndexDel===index" class="el-icon-error error-icon-style"></i>
+                    <component :is="item.viewComponets" ref="setModeRef" :propsObj="ModeValArr[item.key]"></component>
+                    <i @click.stop="delMode(item.key)" v-if="currentIndexDel===item.key" class="el-icon-error error-icon-style"></i>
                   </div>
                   <div
                     class="zent-design-editor-item"
                     ref="setModeRefFun"
-                    v-if="currentIndexCot === index&&item.viewComponets"
+                    v-if="currentIndexCot === item.key&&item.viewComponets"
                   >
-                    <component class="drag" :is="item.viewComponets + 'Fun'" :defaultMode="ModeValArr[index]" 
-                    @setModeVal="setModeVal($event,index)"
+                    <component class="drag" :is="item.viewComponets + 'Fun'" :defaultMode="ModeValArr[item.key]" 
+                    @setModeVal="setModeVal($event,item.key,index)"
                     ></component>
                   </div>
-                </div>
+                </div> 
               </draggable>
+
             </div>
           </div>
           <!-- 基础组件开始 -->
@@ -52,6 +53,7 @@
                   >
                     <a :class="['add-component__grouped-btn',itemChild.id===currentIndex?'backgroundCurrent':'']"
                     >{{itemChild.name}}</a>
+                    
                   </div>
                 </div>
               </div>
@@ -231,12 +233,12 @@ export default {
           ]
         }
       ],
-      currentIndex: null,
-      currentIndexCot: 0,
-      currentIndexDel: null,
-      currentModeArr: [],
+      currentIndex: "",//组件ID
+      currentIndexCot: "",//当前选择的组件
+      currentIndexDel: "",
+      currentModeArr: [],//组件列表
       dialogVisible: false,
-      ModeValArr: [], //
+      ModeValArr: {}, //组件数据
       setBottom: 0,
       loadingBtn: false,
       drag: false,
@@ -244,6 +246,7 @@ export default {
       key: 0
     };
   },
+
   mounted() {
     this.modeSID = this.$route.query.SID || "";
 
@@ -257,19 +260,24 @@ export default {
       console.log(evt)
       console.log(evt.draggedContext.element.props)
     },
-    datadragEnd (evt) {
-      console.log('拖动前的索引 :' + evt.oldIndex)
-      console.log('拖动后的索引 :' + evt.newIndex)
-      if (evt.newIndex === evt.oldIndex) return false;
-      let oldObj = { ...this.ModeValArr[evt.oldIndex] };
-      let newObj = { ...this.ModeValArr[evt.newIndex] };
-      this.$set(this.ModeValArr, evt.oldIndex, newObj);
-      this.$set(this.ModeValArr, evt.newIndex, oldObj);
-      console.log(this.ModeValArr,'移动之后的modevalarr')
-      console.log(this.currentModeArr,'移动之后的currentModeArr')
+
+    findModeKay(arr,key){
+      for (var value of arr){
+         if(key === value.key) return value;
+      }
     },
-    async getInfo() {
-      // 获取详情
+
+    findModeIndex(arr,key){
+      for(var i=0;i<arr.length;i++){
+         if(arr[i].key === key) return i;
+      }
+    },
+
+    datadragEnd (evt) {
+      //console.log('拖动前的索引 :' + evt.oldIndex)
+      //console.log('拖动后的索引 :' + evt.newIndex)
+    },
+    async getInfo() {// 获取详情
       try {
         let { Data } = await getLists(
           { Action: "GetDecorate", SID: this.modeSID },
@@ -279,13 +287,16 @@ export default {
         this.ruleForm.name = Data.Decorate.Name;
         this.ruleForm.SID = Data.Decorate.SID;
         this.ruleForm.IsDefault = Data.Decorate.IsDefault;
-        this.currentModeArr.forEach(D => {
-          if (D.props && D.props.contentRich) {
+       this.currentModeArr.forEach(D => {
+           if (D.props && D.props.contentRich) {
             // 解密富文本框
-            D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");
-          }
-          this.ModeValArr.push(D.props);
+            // D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");            
+          }          
+          // Vue.set(this.ModeValArr,Kay,D.props);
+          this.$set(this.ModeValArr,D.key,D.props)
         });
+
+
       } catch (e) {
         this.$message.error(e);
       }
@@ -308,10 +319,9 @@ export default {
       let arr = JSON.parse(JSON.stringify(this.currentModeArr)); //外部数据 名称
       let autoArr = JSON.parse(JSON.stringify(this.ModeValArr)); //自定义组件数据
 
-      autoArr.forEach((D, index) => {
-        if (!D) {
-          D = {};
-        }
+     for(let kay in autoArr) {
+        let D = autoArr[kay];
+        console.log(D)
         if (D._data && D._data instanceof Array) {
           //商品data
           D._data = D._data.join(",");
@@ -324,16 +334,14 @@ export default {
           let contentRichStr = replacePre(contentRichObj, "img");
           D.contentRich = $.base64.btoa(contentRichStr, "utf8");
         }
-        arr[index].props = D;
-      });
+        console.log(D.contentRich)
+        // this.findModeKay(arr,kay).props = D;
+      };
 
       if (arr.length === 0) {
         this.$message("请选择组件");
         return;
       }
-
-      // console.log(arr, "arr");
-      // return;
       this.$refs[formName].validate(async valid => {
         if (valid) {
           this.loadingBtn = true;
@@ -359,10 +367,10 @@ export default {
           this.$message.error("请填写模块名称！");
           return false;
         }
-      }); //暂时注释
+      });
     },
-    mouseoverFun(index) {
-      this.currentIndex = index;
+    mouseoverFun(kay) {
+      this.currentIndex = kay;
     },
     mouseoutFun(id) {
       this.currentIndex = null;
@@ -372,26 +380,31 @@ export default {
       if (!itemChild.viewComponets) {
         return;
       }
-      if (this.currentModeArr.length > 0) {
-        let bool = this.currentModeArr.some(D => {
-          return (
-            D.viewComponets === "shopinfoma" &&
-            itemChild.viewComponets === "shopinfoma"
-          );
-        });
+
+      if (this.currentModeArr.length > 0 && itemChild.viewComponets === "shopinfoma") {
+
+        let bool = false;
+        for(var item of this.currentModeArr) {
+           if(item.viewComponets === "shopinfoma") bool = true;
+        }
         if (bool) {
           this.$message.info("该组件最多只能添加一个");
           return;
         }
       }
+      
+      var key = (new Date()).valueOf();
+
+      this.$set(itemChild,"key",key);
+
       this.setHeight();
 
       this.currentModeArr.push(itemChild);
-      this.currentIndexCot =
-        this.currentModeArr.length > 1 ? this.currentModeArr.length - 1 : 0;
+      this.currentIndexCot = key;
     },
-    clickCurrentCot(index) {
-      this.currentIndexCot = index;
+
+    clickCurrentCot(kay) {
+      this.currentIndexCot = kay;
       this.setHeight();
     },
     setHeight() {
@@ -410,24 +423,22 @@ export default {
         }
       }, 100);
     },
-    clickCurrentFun(index) {
-      this.currentIndexDel = index;
+    clickCurrentFun(kay) {
+      this.currentIndexDel = kay;
     },
     clickCurrentoutFun() {
       this.currentIndexDel = null;
     },
-    delMode(index) {
-      if (this.currentModeArr.length > 0) {
-        this.currentModeArr.splice(index, 1);
-        // this.ModeValArr.splice(index, 1);
-      }
+    delMode(kay) {
+      this.currentModeArr.splice(this.findModeIndex(this.currentModeArr,kay),1);
+
     },
-    setModeVal(obj, index) {
-      let timestamp = new Date().getTime();
-      let flag = { timestamp };
-      Object.assign(obj, flag);
-      this.$set(this.ModeValArr, index, obj);
-      this.currentModeArr[index].props = this.ModeValArr[index];
+
+    setModeVal(obj, kay,index) {
+
+      this.$set(this.ModeValArr, kay, obj);
+      
+      this.findModeKay(this.currentModeArr,kay).props = obj;
       // 这里为保持同步，因为this.currentModeArr 的改变未被监控到
       // this.currentModeArr[index].props = obj;
       if (this.$refs.setModeRef[index].hasOwnProperty("changeBox")) {

@@ -89,12 +89,16 @@ export default {
           url: url + "pages/shoppingMall/shoppingCart/index",
         },
         {
+          Name: "个人中心",
+          url: url + "pages/home",
+        },
+        {
           Name: "我的粉丝",
           url: url + "pages/vip/myFans",
         },
         {
-          Name: "个人中心",
-          url: url + "pages/home",
+          Name:"我的足迹",
+          url:url+"pages/vip/FootPrint"
         },
         {
           Name: "申请团长",

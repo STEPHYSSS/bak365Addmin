@@ -88,7 +88,7 @@ export default {
         let arr = _.differenceBy(Data.ProdPartsList, [{ State: "0" }], "State");
         this.options = arr;
         this.options.forEach(D => {
-          D.SID = D.ProdNo;
+          D.SID = D.SID;
         });
       } else {
         if (Data.ParamInfoList.length > 0) {
