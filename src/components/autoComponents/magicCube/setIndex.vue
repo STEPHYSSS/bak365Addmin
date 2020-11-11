@@ -36,7 +36,7 @@
           >
             <img
               v-if="form.imgList[i]&&form.imgList[i].hasOwnProperty('img')"
-              :src="form.imgList[i].img  |SetImage"
+              :src="form.imgList[i].img |SetImage"
               alt
             />
             <div v-else class="cube-selected-text">

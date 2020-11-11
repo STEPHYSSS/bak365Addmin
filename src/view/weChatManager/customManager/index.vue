@@ -31,7 +31,7 @@
           <span v-else style="color:#2d8cf0">是</span>
         </template>
       </el-table-column>
-      <el-table-column prop="Name" label="操作" width="200" align="center">
+      <el-table-column prop="Name" label="操作" width="250" align="center">
         <template slot-scope="scoped">
           <el-button type="text" v-if="scoped.row.IsDefault === '0'" @click="changeDef(1, scoped.row)">开启</el-button>
           <el-button type="text" v-else @click="changeDef(0, scoped.row)">关闭</el-button>

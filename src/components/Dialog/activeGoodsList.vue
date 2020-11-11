@@ -1,8 +1,8 @@
 <template>
   <div class="activeGoods">
     <el-table :data="dataList" v-loading="loading" style="width: 100%;">
-      <el-table-column label="商品名称" width="250" align="center">
-        <template slot-scope="scoped">
+      <el-table-column label="活动名称" width="250" prop="Name" align="center">
+        <!-- <template slot-scope="scoped">
           <el-row>
             <el-col :span="12" class="goodsInfo">
               <img :src="scoped.row.Img | setImgPrex" />
@@ -11,7 +11,7 @@
               <div>{{scoped.row.Name}}</div>
             </el-col>
           </el-row>
-        </template>
+        </template> -->
       </el-table-column>
       <el-table-column prop="SID" label="商品编号" align="center"></el-table-column>
       <el-table-column prop="Type" label="活动类型" align="center">
@@ -110,7 +110,7 @@ export default {
       try {
         this.loading = true;
         let { Data } = await getLists(
-          { Action: "GetPromotionList" },
+          { Action: "GetPromotionList" ,Type:this.activeTypeShow},
           "MPromotionOpera"
         );
         this.loading = false;
@@ -128,12 +128,12 @@ export default {
           // this.$set(D, "Audit", D.Audit === "0" || !D.Audit ? true : false);
         });
         this.allData = PromotionList;
-
-        if (PromotionList.length > 0) {
-          this.dataList = PromotionList.filter(
-            (item) => item.Type == this.activeTypeShow
-          );
-        }
+        this.dataList = PromotionList
+        // if (PromotionList.length > 0) {
+        //   this.dataList = PromotionList.filter(
+        //     (item) => item.Type == this.activeTypeShow
+        //   );
+        // }
       } catch (e) {
         this.$message.error(e);
         this.loading = false;

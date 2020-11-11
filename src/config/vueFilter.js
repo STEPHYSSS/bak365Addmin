@@ -75,6 +75,7 @@ Vue.filter('setImgPrex', (val) => {
   } */
 })
 Vue.filter('SetImage',(val) => {
+     console.log(val)
      if (val) {
           return process.env.BASE_URL + val; 
      } else {

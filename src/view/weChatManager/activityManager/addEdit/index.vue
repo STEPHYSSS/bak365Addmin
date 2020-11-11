@@ -14,7 +14,7 @@
           v-model="ruleForm.Type"
           placeholder="请选择"
           @change="changeNorms"
-          :disabled="this.$route.query.SID?true:false"
+          :disabled="this.$route.query.SID ? true : false"
         >
           <el-option
             v-for="item in activeTypeNorms"
@@ -29,16 +29,33 @@
         <!-- <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请选择商品"></el-input> -->
         <el-button
           type="primary"
-          style="margin-left:10px"
+          style="margin-left: 10px"
           size="medium"
           @click="selectGoods(null)"
-        >选择商品</el-button>
+          >选择商品</el-button
+        >
         <!-- 选择商品之后展示的表格 -->
         <!-- v-if="ruleForm.ProdList&&ruleForm.SpecType!=='1'" -->
-        <el-table style="margin-top: 10px;width:700px" ref="ProdNoList" :data="ruleForm.ProdList">
-          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
-          <el-table-column prop="OldPrice" label="商品原价¥" align="center"></el-table-column>
+        <el-table
+          style="margin-top: 10px; width: 700px"
+          ref="ProdNoList"
+          :data="ruleForm.ProdList"
+        >
+          <el-table-column
+            prop="Name"
+            label="商品名称"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="Stock"
+            label="商品库存"
+            align="center"
+          ></el-table-column>
+          <el-table-column
+            prop="OldPrice"
+            label="商品原价¥"
+            align="center"
+          ></el-table-column>
           <el-table-column prop="SalePrice" label="活动价格" align="center">
             <!-- prop="Price" -->
             <template slot-scope="{ row }">
@@ -63,7 +80,11 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="SurplusQty" label="活动剩余商品个数" align="center">
+          <el-table-column
+            prop="SurplusQty"
+            label="活动剩余商品个数"
+            align="center"
+          >
             <!-- prop="SurplusQty" -->
             <template slot-scope="{ row }">
               <input
@@ -104,16 +125,20 @@
         <el-input-number v-model="ruleForm.SurplusQty" controls-position="right" :min="0"></el-input-number>
       </el-form-item>-->
       <el-form-item label="活动名称" prop="Name">
-        <el-input v-model="ruleForm.Name" placeholder="请填写活动名称"></el-input>
+        <el-input
+          v-model="ruleForm.Name"
+          placeholder="请填写活动名称"
+        ></el-input>
       </el-form-item>
-      <el-form-item label="活动时间" prop="activityDate">
+      <el-form-item label="活动时间" prop="activityDate" >
         <el-date-picker
+        style="width:380px"
           v-model="activityDate"
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
-          value-format="yyyy-MM-dd hh:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
         ></el-date-picker>
       </el-form-item>
       <!-- <el-form-item label="主活动图片" prop="Img">
@@ -134,7 +159,11 @@
         ></imgLoad>(建议尺寸:800*800;大小:小于500kb;格式:JPG,PNG,JPEG)
       </el-form-item>-->
       <el-form-item label="最大购买数量" prop="MaxBuyCnt">
-        <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
+        <el-input-number
+          v-model="ruleForm.MaxBuyCnt"
+          controls-position="right"
+          :min="0"
+        ></el-input-number>
         <div>不填或者0的时候，不限制购买数量</div>
       </el-form-item>
       <el-form-item label="状态" prop="Start">
@@ -162,18 +191,38 @@
         </el-checkbox-group>
       </el-form-item>-->
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
-        <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
-        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
-        <el-button type="text" @click="FeaturesShow=false" v-if="FeaturesShow===true">隐藏</el-button>
-      </el-form-item>
-      <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
         <el-button
           type="text"
-          @click="ImportantNotesShow=true"
-          v-if="ImportantNotesShow===false"
-        >+编辑</el-button>
+          @click="FeaturesShow = true"
+          v-if="FeaturesShow === false"
+          >+编辑</el-button
+        >
+        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
+        <el-button
+          type="text"
+          @click="FeaturesShow = false"
+          v-if="FeaturesShow === true"
+          >隐藏</el-button
+        >
+      </el-form-item>
+      <el-form-item
+        label="重要提示"
+        prop="ImportantNotes"
+        class="FeaturesStyle"
+      >
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = true"
+          v-if="ImportantNotesShow === false"
+          >+编辑</el-button
+        >
         <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
-        <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = false"
+          v-if="ImportantNotesShow === true"
+          >隐藏</el-button
+        >
       </el-form-item>
     </el-form>
 
@@ -193,7 +242,12 @@
     >
       <div class="addScroll">
         <el-checkbox-group v-model="checkClick">
-          <el-checkbox :label="item.SID" v-for="item in checkList" :key="item.SID">{{item.Name}}</el-checkbox>
+          <el-checkbox
+            :label="item.SID"
+            v-for="item in checkList"
+            :key="item.SID"
+            >{{ item.Name }}</el-checkbox
+          >
         </el-checkbox-group>
       </div>
       <div slot="footer" class="dialog-footer" style="text-align: center">
@@ -204,14 +258,22 @@
 
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
-      <el-button type="primary" style="margin-left:20px" @click="preserveFun">保存</el-button>
+      <el-button type="primary" style="margin-left: 20px" @click="preserveFun"
+        >保存</el-button
+      >
     </div>
 
     <div class="active-code-style" v-if="codeUrl">
       <div class="active-code-style-title">手机微信扫码浏览</div>
       <QRCode
         :newWidth="200"
-        :newText="activeUrlGood + codeUrl + '?AppNo=' + AppNoMy+'&seckill=true&isBrowse=true'"
+        :newText="
+          activeUrlGood +
+          codeUrl +
+          '?AppNo=' +
+          AppNoMy +
+          '&seckill=true&isBrowse=true'
+        "
       ></QRCode>
     </div>
   </div>
@@ -243,7 +305,7 @@ export default {
         Start: "1",
         SalePrice: 0,
         MaxBuyCnt: 0,
-        ProdList: []
+        ProdList: [],
       },
       multipleL: "",
       activityDate: [],
@@ -255,10 +317,10 @@ export default {
         StoreQty: [ruleText.StoreQty(this)],
         ShopInfo: [ruleText.ShopInfo(this)],
         PayType: [
-          { required: true, message: "请选择支付方式", trigger: "change" }
+          { required: true, message: "请选择支付方式", trigger: "change" },
         ],
         SalePrice: [
-          { required: true, message: "请填写秒杀售价", trigger: "blur" }
+          { required: true, message: "请填写秒杀售价", trigger: "blur" },
         ],
         activityDate: [
           {
@@ -271,9 +333,9 @@ export default {
               } else {
                 callback();
               }
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       loading: false,
       goodsShow: false,
@@ -291,7 +353,7 @@ export default {
       ImportantNotesShow: true,
       activeTypeNorms: activeTypeNorms,
       codeUrl: "",
-      prodListArr: []
+      prodListArr: [],
     };
   },
   created() {
@@ -307,7 +369,7 @@ export default {
           ? getLists(
               {
                 Action: "GetPromotion",
-                SID: this.$route.query.SID
+                SID: this.$route.query.SID,
               },
               "MPromotionOpera"
             )
@@ -407,7 +469,7 @@ export default {
     upLoadImgsList(imgs) {
       // 图片集
       let arr = [];
-      imgs.forEach(D => {
+      imgs.forEach((D) => {
         arr.push(D.url);
       });
       this.ruleForm.ImgList = arr.join(",");
@@ -415,7 +477,7 @@ export default {
     CheckTicketFun() {
       let newArr = [];
       //供货门店
-      this.checkClick.forEach(D => {
+      this.checkClick.forEach((D) => {
         newArr.push(_.find(this.checkList, { SID: D }));
       });
       let { nameArr, idArr } = setData(newArr, "Name", "SID");
@@ -445,9 +507,9 @@ export default {
       this.$router.push("/weChat/manager/activity/goodSetting");
     },
     preserveFun() {
-      // console.log(this.ruleForm.ProdList);
+      console.log(this.ruleForm.ProdList);
       let arr = [];
-      this.ruleForm.ProdList.forEach(val => {
+      this.ruleForm.ProdList.forEach((val) => {
         arr.push({
           Name: val.Name,
           StoreQty: val.StoreQty,
@@ -455,75 +517,60 @@ export default {
           SalePrice: val.SalePrice,
           Stock: val.Stock,
           SurplusQty: val.SurplusQty,
-          ProdSID:val.ProdSID,
-          SpecSID:val.SpecSID,
-          ProdNo:val.ProdNo,
-          SpecType:val.SpecType
+          ProdSID: val.ProdSID,
+          SpecSID: val.SpecSID,
+          ProdNo: val.ProdNo,
+          SpecType: val.SpecType,
         });
       });
-      // console.log(arr); // 处理后的表格数据
+      console.log(arr, "处理后的表格数据"); // 处理后的表格数据
       this.ruleForm.ProdList = arr;
-      this.$refs["ruleForm"].validate(async valid => {
-        if (!valid) {
-          return false;
-        } else {
-          try {
-            let obj = _.cloneDeep(this.ruleForm);
-            // if (!obj.Img) {
-            //   this.$message.info("请添加主商品图片");
-            //   // return;
-            // } else {
-            //   obj.Img = replacePre(obj, "Img");
-            // }
-            // if (obj.ImgList) {
-            //   obj.ImgList = replacePre(obj, "ImgList");
-            // }
-            let Features = this.$refs.Features.getUEContent();
-            Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
-            obj.Features = $.base64.btoa(Features, "utf8");
-            let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-            ImportantNotes = ImportantNotes.replace(
-              /src="\.\.\/Files/g,
-              `src="Files`
-            );
-            obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+      if (this.ruleForm.ProdList.SalePrice === undefined) {
+        return this.$message.error("请填写活动价格");
+      } else {
+        this.$refs["ruleForm"].validate(async (valid) => {
+          if (!valid) {
+            return false;
+          } else {
+            try {
+              let obj = _.cloneDeep(this.ruleForm);
 
-            if (this.activityDate) {
-              obj.StartDate = this.activityDate[0];
-              obj.EndDate = this.activityDate[1];
+              let Features = this.$refs.Features.getUEContent();
+              Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
+              obj.Features = $.base64.btoa(Features, "utf8");
+              let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
+              ImportantNotes = ImportantNotes.replace(
+                /src="\.\.\/Files/g,
+                `src="Files`
+              );
+              obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+
+              if (this.activityDate) {
+                obj.StartDate = this.activityDate[0];
+                obj.EndDate = this.activityDate[1];
+              }
+              obj.ProdList = JSON.stringify(obj.ProdList);
+              obj.Action = "SetPromotionInfo";
+              let data = await getLists(obj, "MPromotionOpera");
+              this.$message.success("操作成功,可用二维码浏览");
+              setTimeout(() => {
+                this.$router.push("/weChat/manager/activity/goodSetting");
+              }, 300);
+              this.codeUrl = data.Message;
+            } catch (e) {
+              this.$message.error(e);
             }
-
-            // if (obj.SpecType === "1") {
-            //   obj.ProdList[0].SalePrice = obj.SalePrice;
-            //   obj.ProdList[0].StoreQty = obj.StoreQty;
-            //   let SurplusQty = obj.SurplusQty ? obj.SurplusQty : 0;
-            //   obj.ProdList[0].SurplusQty =
-            //     Number(obj.StoreQty) - Number(SurplusQty);
-            // }
-            obj.ProdList = JSON.stringify(obj.ProdList);
-            obj.Action = "SetPromotionInfo";
-
-            // console.log(obj, 5555566);
-            // return;
-            let data = await getLists(obj, "MPromotionOpera");
-            this.$message.success("操作成功,可用二维码浏览");
-            setTimeout(() => {
-              this.$router.push("/weChat/manager/activity/goodSetting");
-            }, 300);
-            this.codeUrl = data.Message;
-          } catch (e) {
-            this.$message.error(e);
           }
-        }
-      });
+        });
+      }
     },
     setInputDec(FinHour, val) {
       //不让填写小数
       if (!FinHour) return;
       this.ruleForm[val] = FinHour.toString().split(".")[0];
-    }
+    },
   },
-  watch: {}
+  watch: {},
 };
 
 function setData(data, label, id) {
@@ -531,14 +578,14 @@ function setData(data, label, id) {
   let nameArr = [];
   let idArr = [];
   if (arr.length > 0) {
-    arr.forEach(D => {
+    arr.forEach((D) => {
       nameArr.push(D[label]);
       idArr.push(D[id]);
     });
   }
   return {
     nameArr,
-    idArr
+    idArr,
   };
 }
 function setJoin(item) {

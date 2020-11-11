@@ -82,19 +82,8 @@
       <el-tab-pane label="分销设置" name="2">
         <el-form ref="form2" :model="form2" :rules="rules" label-width="200px">
           <el-form-item label="提现日期">
-            <!-- <el-date-picker
-              is-range
-              @change="change"
-              :clearable="false"
-              v-model="DrawingsDate"
-              value-format="yyyy-MM-dd"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            ></el-date-picker> -->
-            <el-input v-model="form2.DrawingsStartDate" placeholder="请输入开始日期" style="width:80px"></el-input> ~
-            <el-input v-model="form2.DrawingsEndDate" placeholder="请输入结束日期" style="width:80px"></el-input>
+            每月 <el-input v-model="form2.DrawingsStartDate" placeholder="请输入开始日期" style="width:80px"></el-input> ~
+            <el-input v-model="form2.DrawingsEndDate" placeholder="请输入结束日期" style="width:80px"></el-input> 号
           </el-form-item>
           <el-form-item label="提现方式" prop="DrawingsType">
             <el-radio v-model="form2.DrawingsType" label="1">微卡</el-radio>
@@ -104,14 +93,14 @@
             <el-input
               v-model="form2.Ratio"
               placeholder="推广订单金额 * 提现比例 =实际返佣金额"
-            ></el-input>
+            ></el-input> % 
             <span style="color: #999"
               >推广订单金额 * 提现比例 =实际返佣金额</span
             >
           </el-form-item>
-          <el-form-item label="返佣核算有效期">
+          <el-form-item label="分销有效期">
             <!-- 有效期（0表示永久粉丝） -->
-            <el-input v-model="form2.ValidDay"></el-input>&nbsp;天
+            <el-input v-model="form2.ValidDay"></el-input>&nbsp;天 
           </el-form-item>
           <el-form-item label="返佣核算方式" prop="RatioWay">
             <!-- RatioWay 返佣核算方式  1订单金额核算  2支付金额核算  -->

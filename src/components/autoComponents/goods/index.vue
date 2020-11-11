@@ -305,4 +305,9 @@ export default {
     z-index: 4;
   }
 }
+.cap-goods-layout__info-title{
+overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+width: 140px;
+}
+
 </style>

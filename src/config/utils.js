@@ -47,7 +47,6 @@ export const stockTypeList = [
 ]
 
 export const optionsRetreat = [
-  { label: '直接退款', value: '1' },
   { label: '不可退款', value: '2' },
   { label: '审核退款', value: '3' }
 ]
