@@ -47,6 +47,11 @@
             align="center"
           ></el-table-column>
           <el-table-column
+            prop="ProdNo"
+            label="商品编号"
+            align="center"
+          ></el-table-column>
+          <el-table-column
             prop="Stock"
             label="商品库存"
             align="center"
@@ -68,7 +73,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="StoreQty" label="活动商品数量" align="center">
+          <el-table-column prop="StoreQty" label="活动数量" align="center">
             <!-- prop="Stock" -->
             <template slot-scope="{ row }">
               <input
@@ -82,7 +87,7 @@
           </el-table-column>
           <el-table-column
             prop="SurplusQty"
-            label="活动剩余商品个数"
+            label="剩余数量"
             align="center"
           >
             <!-- prop="SurplusQty" -->

@@ -13,6 +13,8 @@
       <el-table-column prop="DeliveryType" label="用户手机号码">
         <template slot-scope="scope">{{scope.row.Mobile}}</template>
       </el-table-column>
+      <el-table-column prop="RefundTime" label="申请退款时间"></el-table-column>
+      <el-table-column prop="RefCompleteTime" label="退款完成时间"></el-table-column>
       <el-table-column prop="AddTime" label="添加时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -84,7 +86,8 @@ export default {
       Object.assign(obj, {
         SID: this.formObj.SID,
         RefundState: type,
-        Reply: this.Reply
+        Reply: this.Reply,
+        OrderType:this.formObj.OrderType
       });
       try {
         await getLists(obj, "MOrderOpera");

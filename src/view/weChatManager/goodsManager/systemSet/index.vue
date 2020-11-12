@@ -144,7 +144,9 @@ export default {
         IsDeduction:'2',
         ScoreDeduction:'',
         MoneyDeduction:'',
-        ScoreRatio:''
+        ScoreRatio:'',
+        IsRefund:'3'
+        
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],

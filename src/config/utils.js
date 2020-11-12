@@ -46,9 +46,9 @@ export const stockTypeList = [
   // { label: '使用门店指定库存', value: '3' }
 ]
 
-export const optionsRetreat = [
-  { label: '不可退款', value: '2' },
-  { label: '审核退款', value: '3' }
+export const optionsRetreat = [  
+  { label: '审核退款', value: '3' },
+  { label: '不可退款', value: '2' }
 ]
 // 推广订单
 export const sharingStatus = [
