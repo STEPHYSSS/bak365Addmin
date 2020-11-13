@@ -56,30 +56,24 @@
             label="商品库存"
             align="center"
           ></el-table-column>
-          <el-table-column
-            prop="OldPrice"
-            label="商品原价¥"
-            align="center"
-          ></el-table-column>
+          <el-table-column label="商品原价" align="center">
+            <template slot-scope="scope">¥{{scope.row.OldPrice}}</template>
+          </el-table-column>
           <el-table-column prop="SalePrice" label="活动价格" align="center">
-            <!-- prop="Price" -->
             <template slot-scope="{ row }">
-              <input
-                oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
-                maxlength="10"
-                class="number"
-                type="text"
+              <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
+                class="number" type="text"
+                oninput="value=value.replace(/[^\d.]/g, '').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
                 v-model="row.SalePrice"
               />
             </template>
           </el-table-column>
           <el-table-column prop="StoreQty" label="活动数量" align="center">
-            <!-- prop="Stock" -->
             <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
-                class="number"
+                class="number" style="width: 100%; text-align: center;border: 1px solid #c1c1c1"
                 type="text"
                 v-model="row.StoreQty"
               />
@@ -90,9 +84,9 @@
             label="剩余数量"
             align="center"
           >
-            <!-- prop="SurplusQty" -->
             <template slot-scope="{ row }">
               <input
+              style="width: 100%; text-align: center;border: 1px solid #c1c1c1"
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
                 class="number"
@@ -169,7 +163,7 @@
           controls-position="right"
           :min="0"
         ></el-input-number>
-        <div>不填或者0的时候，不限制购买数量</div>
+        <span class="Spancolor">(不填或者0的时候，不限制购买数量)</span>
       </el-form-item>
       <el-form-item label="状态" prop="Start">
         <el-select v-model="ruleForm.Start" placeholder="请选择">
@@ -384,10 +378,7 @@ export default {
         if (this.$route.query.SID) {
           this.ruleForm = res[0].Data.Promotion;
           this.ruleForm.ProdList = res[0].Data.ItemList;
-          console.log(this.ruleForm.ProdList);
           this.prodListArr = res[0].Data.ItemList;
-
-          // console.log(this.ruleForm.ProdList,'this.ruleForm')
 
           this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
 
@@ -448,7 +439,6 @@ export default {
     },
     // 获取的商品的名字和编号
     sureGood(val) {
-      console.log(val, "0000000");
       this.goodsShow = false;
       this.ruleForm.ProdList = val;
       // this.ruleForm.ProdNo = "";
@@ -461,7 +451,6 @@ export default {
       //     this.ruleForm.ProdNo += D.ProdNo + (val.length > 1 ? ";" : "");
       //   }
       // });
-      console.log(this.ruleForm.ProdList);
     },
     upLoadImgsMain(arr) {
       // 图片
@@ -512,7 +501,6 @@ export default {
       this.$router.push("/weChat/manager/activity/goodSetting");
     },
     preserveFun() {
-      console.log(this.ruleForm.ProdList);
       let arr = [];
       this.ruleForm.ProdList.forEach((val) => {
         arr.push({
@@ -528,18 +516,19 @@ export default {
           SpecType: val.SpecType,
         });
       });
-      console.log(arr, "处理后的表格数据"); // 处理后的表格数据
       this.ruleForm.ProdList = arr;
-      if (this.ruleForm.ProdList.SalePrice === undefined) {
-        return this.$message.error("请填写活动价格");
-      } else {
+        for(let i = 0;i<this.ruleForm.ProdList.length;i++){
+          if(this.ruleForm.ProdList[i].SalePrice===undefined){
+            this.$message.error("请填写活动价格")
+            return false;
+          }
+        }
         this.$refs["ruleForm"].validate(async (valid) => {
           if (!valid) {
             return false;
           } else {
             try {
-              let obj = _.cloneDeep(this.ruleForm);
-
+              let obj = _.cloneDeep(this.ruleForm);              
               let Features = this.$refs.Features.getUEContent();
               Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
               obj.Features = $.base64.btoa(Features, "utf8");
@@ -567,7 +556,6 @@ export default {
             }
           }
         });
-      }
     },
     setInputDec(FinHour, val) {
       //不让填写小数
@@ -602,6 +590,9 @@ function setJoin(item) {
 .addEditActive {
   .el-input {
     width: 300px;
+  }
+  .Spancolor{
+    color: red;
   }
   .el-input-number {
     .el-input {

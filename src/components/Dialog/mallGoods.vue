@@ -1,104 +1,5 @@
 <template>
   <div class="mallGoods">
-    <!-- 选择线下的商品 -->
-    <!-- <el-dialog
-      class="mallGoodsDialog"
-      title="选择商品1111"
-      :visible.sync="dialogVisible"
-      width="800px"
-      :before-close="handleClose"
-      center
-    >
-      <div style="margin-bottom: 20px;text-align: center;">
-        <span>名称搜索</span>
-        <el-input
-          v-model="search.Name"
-          placeholder="请输入"
-          @keyup.enter="searchName"
-          style="margin-right:10px;width:180px"
-        ></el-input>
-        <el-button type="primary" @click="searchName">搜索</el-button>
-      </div>
-      <div class="rightGoods">
-        <el-table
-          v-loading="loadingGoods"
-          highlight-current-row
-          :data="goodsNameList"
-          @row-click="rowClick"
-          style="width: 100%"
-        >
-          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="SpecType" label="商品类型" align="center">
-            <template slot-scope="scoped">
-              <span>{{setSpecType(scoped.row.SpecType)}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
-          <el-table-column prop="StoreQty" label="商品库存" align="center"></el-table-column>
-          <el-table-column prop="SalePrice" label="商品售价" align="center"></el-table-column>
-          <el-table-column prop="Img" label="图片" align="center">
-            <template slot-scope="scoped">
-              <div class="goodsInfo">
-                <img :src="scoped.row.Img | setImgPrex" />
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <span slot="footer" class="dialog-footer" v-if="!isEvaluate">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureGood">确 定</el-button>
-      </span>
-    </el-dialog>
-
-    <el-dialog
-      title="选择商品规格"
-      :visible.sync="dialogVisibleSpecs"
-      width="900px"
-      :before-close="handleCloseSpecs"
-      center
-    >
-      <div style="margin-bottom:8px">请填写完价格后，再勾选参加活动的商品</div>
-      <el-table
-        ref="multipleTable"
-        v-loading="loadingGoodsSpecs"
-        :data="goodsSpecsList"
-        tooltip-effect="dark"
-        @selection-change="rowClickSpecs"
-        style="width: 100%"
-      >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="Name" label="规格名称"></el-table-column>
-        <el-table-column prop="SalePrice" label="规格价格"></el-table-column>
-        <el-table-column prop="StoreQty" label="规格库存" width="80px"></el-table-column>
-        <el-table-column prop="TastName" label="规格口味"></el-table-column>
-        <el-table-column prop="Price" label="活动价格">
-          <template slot-scope="scoped">
-            <el-input style="width:80px" v-model="scoped.row.Price"></el-input>
-          </template>
-        </el-table-column>
-        <el-table-column prop="Stock" label="活动商品数量">
-          <template slot-scope="scoped">
-            <el-input style="width:80px" v-model="scoped.row.Stock"></el-input>要注释
-            <el-input-number style="width:80px" v-model="scoped.row.Stock" :controls="false"></el-input-number>
-          </template>
-        </el-table-column>
-        <el-table-column label="默认已售多少件" prop="SurplusQty">
-          <template slot-scope="scoped">
-            <el-input-number
-              style="width:80px"
-              v-model="scoped.row.SurplusQty"
-              :controls="false"
-              :max="scoped.row.Stock"
-            ></el-input-number>
-          </template>
-        </el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisibleSpecs = false">取 消</el-button>
-        <el-button type="primary" @click="sureGoodSpecs">确 定</el-button>
-      </span>
-    </el-dialog>-->
     <!-- 多选商品 -->
     <el-dialog
       class="mallGoodsDialog"
@@ -111,7 +12,8 @@
       <div style="margin-bottom: 20px;text-align: center;">
         <span>名称搜索</span>
         <el-input v-model="search.Name" placeholder="请输入" style="margin-right:10px;width:180px"></el-input>
-        <el-button type="primary">搜索</el-button>
+        <el-button type="primary" @click="searchGood">搜索</el-button>
+        <el-button type="primary" @click="cancerGood">重置</el-button>
       </div>
       <div class="rightGoods">
         <el-table
@@ -125,11 +27,6 @@
         >
           <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
-          <!-- <el-table-column prop="SpecType" label="商品类型" align="center">
-            <template slot-scope="scoped">
-              <span>{{setSpecType(scoped.row.SpecType)}}</span>
-            </template>
-          </el-table-column>-->
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
           <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
@@ -215,6 +112,13 @@ export default {
         // console.log(e);
         this.$message.error(e);
       }
+    },
+    searchGood(){
+      this.getList();
+    },
+    cancerGood(){
+      this.search.Name = "";
+      this.getList();
     },
     handleSelectionChange(val) {      
       this.multipleSelection = val;

@@ -53,9 +53,9 @@ export default {
     };
   },
   mounted() {
-    // this.$router.push({path: '/login' + '?AppNo=001'})    //记得删除，模拟商户编号
+    this.$router.push({path: '/login' + '?AppNo=001'})    //记得删除，模拟商户编号
     // this.loginForm.BusinNo = GetQueryString('BusinNo')
-    this.loginForm.AppNo = GetQueryString("AppNo");
+    // this.loginForm.AppNo = GetQueryString("AppNo");
   },
   computed: {},
   methods: {

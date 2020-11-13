@@ -45,7 +45,7 @@
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
-                <span>小程序码</span>
+                <span>扫码预览</span>
                 <span class="close" @click="scoped.row.visible = false">×</span>
               </div>
               <div style="width:200px;height:200px;border: 1px solid #efefef;">
@@ -61,7 +61,7 @@
               slot="reference"
               style="margin-left:8px;"
               @click="clicCode(scoped.$index)"
-            >小程序码</el-button>
+            >扫码预览</el-button>
           </el-popover>
         </template>
       </el-table-column>

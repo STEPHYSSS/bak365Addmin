@@ -72,7 +72,7 @@ export default {
       currentRow:"",
       //链接列表
       list: [
-        // { url: "", name: "自定义链接", id: 1 },
+        { url: "", name: "自定义链接", id: 1 },
         {
           name: "商城首页",
           url: url,
@@ -85,18 +85,18 @@ export default {
           name:'商品列表-点餐',
           url:url+"pages/shoppingMall/menu_naixue/menu/menu"
         },
-        {
-          name: "积分商城",
-          url: url + "pages/integralMall/index",
-        },
-        {
-          name: "秒杀活动",
-          url: url + "pages/shoppingMall/seckill/index",
-        },
-        {
-          name: "拼团活动",
-          url: url + "pages/shoppingMall/makeGroup/makeGroup",
-        },
+        // {
+        //   name: "积分商城",
+        //   url: url + "pages/integralMall/index",
+        // },
+        // {
+        //   name: "秒杀活动",
+        //   url: url + "pages/shoppingMall/seckill/index",
+        // },
+        // {
+        //   name: "拼团活动",
+        //   url: url + "pages/shoppingMall/makeGroup/makeGroup",
+        // },
         {
           name: "购物车",
           url: url + "pages/shoppingMall/shoppingCart/index",
@@ -166,7 +166,7 @@ export default {
       this.$emit("clickDropdown", val);
     },
     clickDropdownDel() {
-          // 清空
+      // 清空
       // this.currentItemObj.url = "";
       
       this.currentItemObj = {};

@@ -28,6 +28,12 @@
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
+      <el-form-item label="经度：" prop="Longitude">
+        <el-input v-model="form.Longitude" :readonly="true" placeholder="请输入内容"></el-input>
+      </el-form-item>
+      <el-form-item label="纬度：" prop="Latitude">
+        <el-input v-model="form.Latitude" :readonly="true" placeholder="请输入内容"></el-input>
+      </el-form-item>
       <el-form-item label="门店图片：">
         <imgLoad
           style="margin-top:10px"
@@ -36,12 +42,6 @@
           folder="ShopImg"
           ref="imgLoad"
         ></imgLoad>
-      </el-form-item>
-      <el-form-item label="经度：" prop="Longitude">
-        <el-input v-model="form.Longitude" :readonly="true" placeholder="请输入内容"></el-input>
-      </el-form-item>
-      <el-form-item label="纬度：" prop="Latitude">
-        <el-input v-model="form.Latitude" :readonly="true" placeholder="请输入内容"></el-input>
       </el-form-item>
       <!-- <el-form-item>
         <div>可移动选择经纬度</div>
@@ -102,26 +102,26 @@ export default {
       currentRow: null,
       rules: {
         Name: [{ required: true, message: "请填写门店名称", trigger: "blur" }],
-        Address: [
-          { required: true, message: "请填写门店地址", trigger: "blur" }
-        ],
-        Tel: [{ required: true, message: "请填写门店电话", trigger: "blur" }],
-        AreaSID: [
-          {
-            required: true,
-            message: "请填写门店区域",
-            trigger: "change",
-            validator: (rules, value, callback) => {
-              if (!value) {
-                callback(new Error("请填写门店区域"));
-              } else {
-                callback();
-              }
-            }
-          }
-        ],
-        Longitude: [{ required: true, message: "请填写经度", trigger: "blur" }],
-        Latitude: [{ required: true, message: "请填写纬度", trigger: "blur" }]
+        // Address: [
+        //   { required: true, message: "请填写门店地址", trigger: "blur" }
+        // ],
+        // Tel: [{ required: true, message: "请填写门店电话", trigger: "blur" }],
+        // AreaSID: [
+        //   {
+        //     required: true,
+        //     message: "请填写门店区域",
+        //     trigger: "change",
+        //     validator: (rules, value, callback) => {
+        //       if (!value) {
+        //         callback(new Error("请填写门店区域"));
+        //       } else {
+        //         callback();
+        //       }
+        //     }
+        //   }
+        // ],
+        // Longitude: [{ required: true, message: "请填写经度", trigger: "blur" }],
+        // Latitude: [{ required: true, message: "请填写纬度", trigger: "blur" }]
       },
       fileListUp: [],
       btnLoading: false,
@@ -201,7 +201,7 @@ export default {
             this.$message.error(e);
           }
         } else {
-          return false;
+          // return false;
         }
       });
     },

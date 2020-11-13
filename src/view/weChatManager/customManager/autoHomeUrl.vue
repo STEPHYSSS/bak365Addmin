@@ -127,7 +127,7 @@ export default {
         {
           Name: "地址管理",
           url: url + "pages/myAddress/myAddress",
-        },
+        }
       ],
       CateData:[],
       dialogTableVisible:false

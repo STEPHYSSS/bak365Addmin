@@ -1,14 +1,14 @@
 <template>
   <div class="tasteStyle">
     <!-- 配件，口味，标签 列表 -->
-    <el-button type="primary" size="small" @click="openMaterial" class="marginBottom">图标素材</el-button>
+    <el-button type="primary" size="small" @click="openMaterial" class="marginBottom" v-if="ruleForm.Type==0">图标素材</el-button>
     <el-table
       class="tableAdd"
       :v-loading="loading"
       :data="tableData"
       :style="{width:ruleForm.Type!=0?'100%':'60%'}"
     >
-      <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type!=0" width="200" align="center">
+      <!-- <el-table-column label="图片" prop="GoodId" v-if="ruleForm.Type!=0" width="200" align="center">
         <template slot="header">
           图片
           <span
@@ -30,7 +30,7 @@
             ></imgLoad>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="商品编号" prop="GoodId" v-if="ruleForm.Type!=0" width="180" align="center">
         <template slot-scope="scoped">
           <!--          <span v-if="scoped.row.SID">商品编号</span>-->
