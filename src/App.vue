@@ -151,7 +151,11 @@ div::-webkit-scrollbar {
   /*滚动条整体样式*/
   height: 10px;
 }
-
+.block{
+    background: #fff;
+    text-align: right;
+    padding: 10px 0;
+  }
 // .preserveStyle {
 //   position: fixed;
 //   background: #fff;

@@ -36,12 +36,15 @@
           <el-button type="text" v-if="scoped.row.IsDefault === '0'" @click="changeDef(1, scoped.row)">开启</el-button>
           <el-button type="text" v-else @click="changeDef(0, scoped.row)">关闭</el-button>
           <el-button type="text" @click="editRowGoods(scoped.row)"
-            >编辑</el-button
-          >
-          <!-- <el-button type="text" @click="setName(scoped.row)">改名</el-button> -->
+            >编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
-            >删除</el-button
-          >
+            >删除</el-button>
+          <el-popover placement="left" v-model="scoped.row.visibleUrl">
+            <el-input v-model="scoped.row.codeUrl" readonly placeholder="商品链接" style="width:500px">
+              <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
+            </el-input>
+            <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
+          </el-popover>
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
@@ -181,6 +184,13 @@ export default {
             message: "已取消",
           });
         });
+    },
+    copyUrl(val) {//复制
+     let index = $(".el-popover").length - 1;
+      let input = $($(".el-popover")[index]).find("input");
+      input.select();
+      document.execCommand("Copy");
+      this.$Message.info("复制成功");
     },
   },
 };

@@ -1,72 +1,6 @@
 <template>
   <!-- 订单列表 -->
-  <div class="orderList-style">
-    <!-- <div style="margin-bottom:20px;">
-      <span>订单状态：</span>
-      <el-select
-        v-model="search.State"
-        placeholder="请选择订单状态"
-        clearable
-        @change="changeState"
-        class="selectSearch"
-      >
-        <el-option
-          v-for="item in StateList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <span>支付类型：</span>
-      <el-select
-        v-model="search.PayType"
-        placeholder="请选择支付类型"
-        clearable
-        @change="changeState"
-        style="margin-left:5px"
-      >
-        <el-option
-          v-for="item in PayTypeList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <span>配送方式：</span>
-      <el-select
-        v-model="search.DeliveryType"
-        placeholder="请选择配送方式"
-        clearable
-        @change="changeState"
-        style="margin-left:5px"
-      >
-        <el-option
-          v-for="item in DeliveryTypeList"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
-      <span>开始时间：</span>
-      <el-date-picker
-        style="margin-left:5px"
-        v-model="search.searchTime"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        @change="changePicker"
-        value-format="yyyy-MM-dd HH:mm:ss"
-      ></el-date-picker>
-      <span>订单编号：</span>
-      <el-input placeholder="查询订单编号" v-model="search.SID" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
-      </el-input>
-      <span>手机号：</span>
-      <el-input placeholder="查询手机手机号" v-model="search.Mobile" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
-      </el-input>
-    </div>-->
+  <div class="orderList-style">    
     <div style="margin-bottom:20px;">
       <el-row :gutter="20">
         <el-col :span="6">
@@ -197,9 +131,7 @@ export default {
     async getList() {
       this.loading = true;
       try {
-        // 获取商品列表
-        // , OrderType: 2
-        let obj = { Action: "GetOrderList",Page: this.currentPage - 1};
+        let obj = { Action: "GetOrderList",Page: this.currentPage - 1,OrderType:'2'};
         this.search.StartAddTime = this.search.searchTime
           ? this.search.searchTime[0]
           : "";
@@ -248,6 +180,6 @@ export default {
   .input-with-select {
     width: 250px;
     margin-left: 10px;
-  }
+  }  
 }
 </style>

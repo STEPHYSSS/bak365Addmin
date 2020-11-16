@@ -80,8 +80,8 @@ export const withRebated =[
 ]
 export const payTypeLists = [
   { label: '微卡支付', value: '1' },
-  { label: '微信支付', value: '2' },
-  { label: '货到付款', value: '3' }
+  { label: '微信支付', value: '2' }
+  // { label: '货到付款', value: '3' }
 ]
 
 export const stateLists = [

@@ -30,6 +30,8 @@ const storeInfo = r => require.ensure([], () => r(require('../view/weChatManager
 const storeAreaSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/storeAreaSet/index')), 'storeAreaSet')
 // 订单管理
 const orderList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList')), 'orderList')
+const TiketIndex = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/TiketIndex')), 'TiketIndex')
+const wellFuIndex = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/wellFuIndex')), 'wellFuIndex')
 const orderInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/orderInfo')), 'orderInfo')
 const refundSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/refund')), 'refundSet')
 // 积分商城管理
@@ -309,6 +311,16 @@ export const asyncRouterMap = [
               label: '订单列表',
             },
             component: orderList
+          },
+          {
+            path:'TiketIndex',
+            meta:{ label: '电子券订单' },
+            component:TiketIndex
+          },
+          {
+            path:'wellFuIndex',
+            meta:{ label: '充值订单' },
+            component:wellFuIndex
           },
           {
             path: 'info',

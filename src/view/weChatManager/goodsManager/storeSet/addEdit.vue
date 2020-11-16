@@ -2,7 +2,7 @@
   <div class="storeSet">
     <!-- 新增门店，门店编辑 -->
     <el-form ref="form" :model="form" label-width="150px" :rules="rules">
-      <el-form-item label="门店" prop="ShopNo">
+      <el-form-item label="门店编号" prop="ShopNo">
         <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店"></el-input>
         <el-button
           type="primary"
@@ -11,10 +11,7 @@
           @click="selecStore(null)"
           v-if="!$route.query.sid"
         >选择门店</el-button>
-      </el-form-item>
-      <el-form-item label="门店区域：" prop="AreaSID">
-        <storeAreaList @changeType="changeType"></storeAreaList>
-      </el-form-item>
+      </el-form-item>      
       <el-form-item label="门店名称：" prop="Name">
         <el-input v-model="form.Name" placeholder="请输入内容"></el-input>
       </el-form-item>
@@ -24,7 +21,9 @@
       <el-form-item label="门店电话：" prop="Tel">
         <el-input v-model="form.Tel" placeholder="请输入内容"></el-input>
       </el-form-item>
-
+      <!-- <el-form-item label="门店区域：" prop="AreaSID">
+        <storeAreaList @changeType="changeType"></storeAreaList>
+      </el-form-item> -->
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
@@ -59,7 +58,7 @@
         ></el-input>
         <el-button type="primary" @click="searchName">搜索</el-button>
       </div>
-      <el-table :data="gridData" highlight-current-row @current-change="handleCurrentChange">
+      <el-table :data="gridData" highlight-current-row @current-change="handleCurrentChange" class="maxHeight">
         <el-table-column prop="ShopName" label="名称" width="150"></el-table-column>
         <el-table-column prop="ShopNo" label="门店编号" width="200"></el-table-column>
         <el-table-column prop="Mobile" label="电话"></el-table-column>
@@ -201,7 +200,7 @@ export default {
             this.$message.error(e);
           }
         } else {
-          // return false;
+          return false;
         }
       });
     },
@@ -245,5 +244,9 @@ export default {
   .el-input {
     width: 300px;
   }
+}
+.maxHeight{
+  max-height: 500px;
+  overflow-y: scroll;
 }
 </style>
