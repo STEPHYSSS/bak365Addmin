@@ -334,7 +334,6 @@ export default {
           let contentRichStr = replacePre(contentRichObj, "img");
           D.contentRich = $.base64.btoa(contentRichStr, "utf8");
         }
-        console.log(D.contentRich)
         // this.findModeKay(arr,kay).props = D;
       };
 
@@ -354,7 +353,7 @@ export default {
                 Name: this.ruleForm.name,
                 SID: this.ruleForm.SID,
                 IsDefault: this.ruleForm.IsDefault,
-                Type:'0'
+                Type:'2'
               },
               "MShopOpera"
             );

@@ -55,7 +55,7 @@
             <el-radio v-model="form.ShopRadio" label="1">点餐模式</el-radio>
             <el-radio v-model="form.ShopRadio" label="2">自定义模式</el-radio>
           </el-form-item>
-          <el-form-item label="积分抵扣">
+          <!-- <el-form-item label="积分抵扣">
             <el-radio v-model="form.IsDeduction" label="1">开启</el-radio>
             <el-radio v-model="form.IsDeduction" label="2">关闭</el-radio>
             <em style="color:red;display:inline-block;margin-left:5px" v-if="form.IsDeduction=='1'">(例：积分最高抵扣订单金额：100(元) * 5%(抵扣比例) = 5(元) 积分单次最高抵扣5元)</em>
@@ -63,8 +63,6 @@
               <el-input v-model="form.ScoreDeduction" placeholder="例：100" class="inputWidth"></el-input>积分，抵扣<el-input v-model="form.MoneyDeduction" placeholder="例：1" class="inputWidth"></el-input>元，积分最高抵扣订单金额
               <el-input v-model="form.ScoreRatio" class="inputWidth" placeholder="例：5"></el-input>%              
             </p>
-          </el-form-item>
-          <!-- <el-form-item label="商城模式">
           </el-form-item> -->
           <el-form-item>
             <el-button

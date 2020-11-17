@@ -8,6 +8,7 @@
         <div class="rc-design-component-default-preview__text">点击编辑魔方</div>
       </div>
       <div class="cap-cube-wrap" v-else>
+        {{currentObj}}
         <div
           class="cap-cube"
           :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH+'px','width':bigBoxW+'px'}"
@@ -21,7 +22,7 @@
             ,'background-image':`url(${SetImage(item.img)})`}"
             @click="clickLink(item.url)"
           >
-            <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" />
+            <!-- <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" /> -->
           </div>
         </div>
       </div>
@@ -106,55 +107,31 @@ export default {
       //手机端记得把320删除
       let clientWidth = 320 || document.body.clientWidth;
       let m = Number(this.currentObj.changeMode);
+      console.log(m,'num个数')
       this.currentObj.pageGap = Number(this.currentObj.pageGap);
-
       if (m !== 8) {
         let arr = [];
-        switch (m) {
-          case 1:
+         switch (m) {
+           case 1:
+            arr = [
+              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 4 },
+              { pageX: 0, pageY: 0, pWidth: 0, pHeight: 0 }
+            ];
+            break;
+          case 2:
             arr = [
               { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
               { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 }
             ];
             break;
-          case 4:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 5:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 6:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 2 },
-              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 7:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 1, pHeight: 2 },
-              { pageX: 3, pageY: 2, pWidth: 1, pHeight: 2 }
-            ];
-            break;
-          case 2:
+          case 3:
             arr = [
               { pageX: 0, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
               { pageX: 1.33, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
               { pageX: 2.66, pageY: 0, pWidth: 1.33, pHeight: 1.33 }
             ];
             break;
-          case 3:
+          case 4:
             arr = [
               { pageX: 0, pageY: 0, pWidth: 1, pHeight: 1 },
               { pageX: 1, pageY: 0, pWidth: 1, pHeight: 1 },
@@ -162,8 +139,92 @@ export default {
               { pageX: 3, pageY: 0, pWidth: 1, pHeight: 1 }
             ];
             break;
+          case 5:
+            arr = [
+              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
+              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+            ];
+            break;
+          case 6:
+            arr = [
+              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+            ];
+            break;
+          case 7:
+            arr = [
+              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 2 },
+              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+            ];
+            break;
+          case 8:
+            arr = [
+              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+              { pageX: 2, pageY: 2, pWidth: 1, pHeight: 2 },
+              { pageX: 3, pageY: 2, pWidth: 1, pHeight: 2 }
+            ];
+            break;
         }
+        // switch (m) {
+        //   case 1:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 }
+        //     ];
+        //     break;
+        //   case 2:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
+        //       { pageX: 1.33, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
+        //       { pageX: 2.66, pageY: 0, pWidth: 1.33, pHeight: 1.33 }
+        //     ];
+        //     break;
+        //   case 3:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 1, pHeight: 1 },
+        //       { pageX: 1, pageY: 0, pWidth: 1, pHeight: 1 },
+        //       { pageX: 2, pageY: 0, pWidth: 1, pHeight: 1 },
+        //       { pageX: 3, pageY: 0, pWidth: 1, pHeight: 1 }
+        //     ];
+        //     break;
+        //   case 4:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+        //       { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+        //     ];
+        //     break;
+        //   case 5:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+        //       { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+        //     ];
+        //     break;
+        //   case 6:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 4, pHeight: 2 },
+        //       { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+        //     ];
+        //     break;
+        //   case 7:
+        //     arr = [
+        //       { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+        //       { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+        //       { pageX: 2, pageY: 2, pWidth: 1, pHeight: 2 },
+        //       { pageX: 3, pageY: 2, pWidth: 1, pHeight: 2 }
+        //     ];
+        //     break;
+        // }
         this.listBox.forEach((D, index) => {
+          console.log(D)
           if (arr[index]) {
             this.$set(arr[index], "img", D.img);
           }
@@ -181,8 +242,9 @@ export default {
           this.currentObj.pageGap * 2
         ).toFixed(2) / Number(this.currentObj.densityMode)
       );
+      console.log(averageW,'平均宽度')
       let newList = JSON.parse(JSON.stringify(this.listBox));
-
+      console.log(newList,'newList')
       //求最多的height盒子的个数
       let mostH = newList.reduce((D, D2) => {
         let a =
@@ -201,7 +263,9 @@ export default {
         return a > b ? a : b;
       });
       this.bigBoxH = (mostH * averageW).toFixed();
+      console.log(mostH,averageW,'相乘的东西')
       this.bigBoxW = (mostW * averageW).toFixed();
+      console.log(this.bigBoxH)
 
       newList.forEach((D, index) => {
         this.listBox[index].Dwidth =
@@ -247,8 +311,9 @@ export default {
   },
   watch: {
     "propsObj.changeMode"(val) {
+      console.log(val,'changeMode')
       this.changeBox();
-    }
+    }    
   }
 };
 </script>

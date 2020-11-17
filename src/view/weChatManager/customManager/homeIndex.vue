@@ -7,7 +7,7 @@
       @click="addGood"
       class="marginBottom"
       :disabled="loading"
-      >新建自定义模块</el-button
+      >新建自定义首页模块</el-button
     >
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
       <el-table-column
@@ -39,12 +39,6 @@
             >编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
             >删除</el-button>
-          <el-popover placement="left" v-model="scoped.row.visibleUrl">
-            <el-input v-model="scoped.row.codeUrl" readonly placeholder="商品链接" style="width:500px">
-              <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
-            </el-input>
-            <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
-          </el-popover>
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
@@ -184,14 +178,7 @@ export default {
             message: "已取消",
           });
         });
-    },
-    copyUrl(val) {//复制
-     let index = $(".el-popover").length - 1;
-      let input = $($(".el-popover")[index]).find("input");
-      input.select();
-      document.execCommand("Copy");
-      this.$Message.info("复制成功");
-    },
+    }
   },
 };
 </script>

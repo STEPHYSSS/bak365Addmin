@@ -54,7 +54,6 @@ export default {
   },
   mounted() {
     this.$router.push({path: '/login' + '?AppNo=001'})    //记得删除，模拟商户编号
-    // this.loginForm.BusinNo = GetQueryString('BusinNo')
     // this.loginForm.AppNo = GetQueryString("AppNo");
   },
   computed: {},
@@ -72,7 +71,8 @@ export default {
             this.$router.push("/weChat/manager");
           } catch (e) {
             this.loading = false;
-            this.$message.error(e);
+            e.message
+            // this.$message.error(e);
           }
         }
       });

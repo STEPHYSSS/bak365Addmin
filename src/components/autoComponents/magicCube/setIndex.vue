@@ -157,6 +157,11 @@ export default {
       },
       selectTemplates: [
         {
+          title: "1行1个",
+          url:
+            ""
+        },
+        {
           title: "1行2个",
           url:
             "https://img.yzcdn.cn/public_files/2017/11/03/60342dcc32a039ef613a14db0291f3ab.png"
@@ -201,6 +206,9 @@ export default {
       rules: {},
       layoutIndex: 0,
       layoutList: [
+        [
+          { width: "320", height: "320", left: 0, top: 0, widthImg: 375 },
+        ],
         [
           { width: "161", height: "161", left: 0, top: 0, widthImg: 375 },
           { width: "161", height: "161", left: 162, top: 0, widthImg: 375 }
@@ -342,7 +350,8 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+  },
   mounted() {
     this.changeImg();
     this.currentImg = this.form.imgList[0] || "";
@@ -350,12 +359,14 @@ export default {
   },
   methods: {
     changeMode(index) {
+      console.log(index,'点击模板的时候index')
       if (index !== this.currentIndex) {
         this.form.changeMode = Number(index) + 1;
         this.form.changeMode = this.form.changeMode.toString();
         this.$emit("magicCubeFun", this.form, "magicCube");
       }
       this.currentIndex = index;
+      console.log(this.currentIndex,'把index赋值给currentIndexd')
       this.$emit("setModeVal", this.form);
     },
     clickLayout(i) {

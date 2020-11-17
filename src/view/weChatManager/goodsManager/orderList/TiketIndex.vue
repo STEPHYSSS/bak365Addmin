@@ -46,19 +46,20 @@
       </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
-      <el-table-column prop="SID" label="订单编号"></el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额">
+      <el-table-column prop="SID" label="订单编号" align="center"></el-table-column>
+      <el-table-column prop="Name" label="名称" align="center"></el-table-column>
+      <el-table-column prop="PayAmt" label="支付金额" align="center">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>
-      <el-table-column prop="State" label="订单状态">
+      <el-table-column prop="State" label="订单状态" align="center">
         <template slot-scope="scope">{{scope.row.State |orderState}}</template>
       </el-table-column>
-      <el-table-column prop="AddTime" label="添加时间"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
+      <!-- <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="viewRow(scope.row)">查看</el-button>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <div class="block" v-if="TotalList">
       <el-pagination
@@ -134,10 +135,9 @@ export default {
     changeState() {
       this.getList();
     },
-    viewRow(val) {
-      // console.log(val,'val')
-      this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID);
-    },
+    // viewRow(val) {
+    //   this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=3');
+    // },
   },
 };
 </script>

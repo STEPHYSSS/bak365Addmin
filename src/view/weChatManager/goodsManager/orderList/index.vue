@@ -63,27 +63,27 @@
       </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
-      <el-table-column prop="SID" label="单号"></el-table-column>
-      <el-table-column label="收货人姓名">
+      <el-table-column prop="SID" label="单号" align="center"></el-table-column>
+      <el-table-column label="收货人姓名" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.UserName">{{scoped.row.UserName}}</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额">
+      <el-table-column prop="PayAmt" label="支付金额" align="center">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>
-      <el-table-column prop="State" label="订单状态">
+      <el-table-column prop="State" label="订单状态" align="center">
         <template slot-scope="scope">{{scope.row.State |orderState}}</template>
       </el-table-column>
-      <el-table-column prop="DeliveryType" label="用户手机号码">
+      <el-table-column prop="DeliveryType" label="用户手机号码" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.Mobile">{{scoped.row.Mobile}}</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="AddTime" label="添加时间"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" @click="viewRow(scope.row)">查看</el-button>
         </template>
@@ -157,15 +157,13 @@ export default {
       this.getList(val);
     },
     changePicker() {
-      // console.log(this.search.searchTime, 8888);
       this.getList();
     },
     changeState() {
       this.getList();
     },
     viewRow(val) {
-      // console.log(val,'val')
-      this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID);
+      this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=2');
     },
   },
 };

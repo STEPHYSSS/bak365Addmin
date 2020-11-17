@@ -45,9 +45,11 @@ const activityGoodsAdd = r => require.ensure([], () => r(require('../view/weChat
 const groupGoods = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupIndex')), 'groupGoods')
 const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities')), 'groupActivityAdd')
 // 自定义页面管理
-const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/index')), 'customPage')
-const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')
-const autoHomeUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoHomeUrl')), 'autoHomeUrl')
+const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage')//自定义首页
+const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')//自定义首页编辑
+const customAutoPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoIndex')), 'customAutoPage')//自定义页面
+const autoAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoAddEdit')), 'autoAddEdit')//自定义页面编辑
+const autoHomeUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoHomeUrl')), 'autoHomeUrl')//商城链接
 // 营销管理
 const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/index')), 'markingPage')
 const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/orderSharingList')), 'orderSharingList')
@@ -429,15 +431,25 @@ export const asyncRouterMap = [
               label: '首页'
             },
             component: customPage
+          },{
+            path:'customAutoPage',
+            meta:{label:'自定义页面'},
+            component:customAutoPage
           },
           {
             path: 'addEdit',
             isHidden: true,
             meta: {
-              label: '添加自定义页面'
+              label: '添加自定义首页'
             },
             component: customPageAdd
           },{
+            path:'autoAddEdit',
+            isHidden:true,
+            meta:{label:'添加自定义页面'},
+            component: autoAddEdit
+          },
+          {
             path:'autoHomeUrl',
             meta: {
               label: '商城网址'

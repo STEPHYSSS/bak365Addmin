@@ -33,7 +33,7 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </a>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :command="item" v-for="(item,index) in list" :key="index">{{item.name}}  {{item.url}}</el-dropdown-item>
+          <el-dropdown-item :command="item" v-for="(item,index) in list" :key="index">{{item.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
