@@ -1,7 +1,7 @@
 <template>
   <div class>
     <!-- 门店区域下拉列表 -->
-    <el-select v-model="value" placeholder="请选择" @change="changeType">
+    <el-select v-model="value" placeholder="请选择" @change="changeType" :setArea="setArea">
       <el-option v-for="item in list" :key="item.SID" :label="item.Name" :value="item.SID"></el-option>
     </el-select>
   </div>
@@ -17,6 +17,12 @@ export default {
       value: ""
     };
   },
+  props:{
+    setArea:{
+      type: Object,
+      default: true
+    }
+  },
   components: {},
   created() {
     if (this.list.length === 0) {
@@ -27,14 +33,19 @@ export default {
     async getAreaList() {
       // 门店区域
       try {
-        let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");
-        this.list = Data.ProdCateList;
+        let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
+        this.list = Data.AreaList;
       } catch (e) {
         this.$message.error(e);
       }
     },
     changeType(val) {
       this.$emit("changeType", val);
+    }
+  },
+  watch:{
+    "setArea.AreaSID"(){
+      this.value = this.setArea.AreaSID
     }
   }
 };

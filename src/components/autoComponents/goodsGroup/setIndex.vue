@@ -314,7 +314,6 @@ export default {
     this.form.pageSpace = Number(this.form.pageSpace);
     this.form.goodSpace = Number(this.form.goodSpace);
     this.nowlistStyleList = this.listStyleList;
-    console.log(this.form._data, "_data");
 
     this.setSourceGoods();
   },

@@ -158,8 +158,7 @@ export default {
       selectTemplates: [
         {
           title: "1行1个",
-          url:
-            ""
+          url:"../static/img/magicCube.png"
         },
         {
           title: "1行2个",

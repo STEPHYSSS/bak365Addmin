@@ -44,6 +44,89 @@
       <el-form-item label="商品名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
       </el-form-item>
+      <span class="goods_normsLabel" v-if="ruleForm.SpecType !== '1'">商品规格</span>
+      <fieldset class="goods_norms" v-if="ruleForm.SpecType !== '1'" :key="5">
+        <legend style="margin-left: 20px">规格项目</legend>
+        <span>可拖动移动位置</span>
+        <vuedraggable v-model="ruleForm.SpecList" @change="changeDrag">
+          <div
+            v-for="(item, index) in ruleForm.SpecList"
+            class="goods_norms_row"
+            @mouseover="mouseover(index)"
+            @mouseout="mouseout(index)"
+            :key="index"
+          >
+            <el-form-item
+              v-if="ruleForm.SpecType !== '3'"
+              :key="index + 1"
+              :prop="'SpecList.' + index + '.ProdNo'"
+              :rules="rules.ProdNoChildren"
+              label="商品编号"
+            >
+              <el-input v-model="item.ProdNo" placeholder="编号" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item
+              :key="index + 2"
+              :prop="'SpecList.' + index + '.Name'"
+              :rules="rules.NameChildren"
+              label="规格名称"
+            >
+              <el-input v-model="item.Name" placeholder="规格名称"></el-input>
+            </el-form-item>
+            <el-form-item
+              :key="index + 3"
+              :prop="'SpecList.' + index + '.StoreQty'"
+              :rules="rules.StoreQty"
+              label="库存"
+              v-if="ruleForm.StockType =='1'"
+            >
+              <el-input-number
+                style="width: auto; text-align: left"
+                v-model="item.StoreQty"
+                controls-position="right"
+                :min="0"
+                placeholder="库存"
+                :step="1"
+                step-strictly
+              ></el-input-number>
+            </el-form-item>
+            <el-form-item
+              :key="index + 4"
+              :prop="'SpecList.' + index + '.SalePrice'"
+              :rules="rules.SalePrice"
+              label="售价"
+            >
+              <el-input v-model="item.SalePrice" placeholder="售价">
+                <template slot="prepend">¥</template>
+              </el-input>
+            </el-form-item>
+            <imgLoad
+              :isCoverCurrentImgs="isCoverCurrentImgs"
+              :fileListUp="item.Img"
+              class="ImgLoadStyle"
+              folder="ProdImg"
+              :limit="1"
+              ref="imgLoad"
+              @cloneIsCoverImgs="cloneIsCoverImgs"
+              @upLoadImgs="upLoadImgs($event, item, index)"
+            ></imgLoad>
+            <el-button
+              v-if="ruleForm.SpecType !== '3'"
+              type="primary"
+              style="margin-left: 10px"
+              size="medium"
+              @click="selectGoods(index)"
+            >...</el-button>
+            <span
+              class="el-icon-error iconError"
+              v-show="DelIconIndex === index && showDelIcon === true"
+              @click="delGoodsNorms(index)"
+            ></span>
+          </div>
+        </vuedraggable>
+
+        <el-button type="info" @click="addGoodsNorms">添加规格项目</el-button>
+      </fieldset>
       <el-form-item label="商品售价" prop="SalePrice" v-if="ruleForm.SpecType === '1'">
         ¥
         <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
@@ -271,91 +354,7 @@
           controls-position="right"
           :min="0"
         ></el-input-number>
-      </el-form-item>-->
-
-      <span class="goods_normsLabel" v-if="ruleForm.SpecType !== '1'">商品规格</span>
-      <fieldset class="goods_norms" v-if="ruleForm.SpecType !== '1'" :key="5">
-        <legend style="margin-left: 20px">规格项目</legend>
-        <span>可拖动移动位置</span>
-        <vuedraggable v-model="ruleForm.SpecList" @change="changeDrag">
-          <div
-            v-for="(item, index) in ruleForm.SpecList"
-            class="goods_norms_row"
-            @mouseover="mouseover(index)"
-            @mouseout="mouseout(index)"
-            :key="index"
-          >
-            <el-form-item
-              v-if="ruleForm.SpecType !== '3'"
-              :key="index + 1"
-              :prop="'SpecList.' + index + '.ProdNo'"
-              :rules="rules.ProdNoChildren"
-              label="商品编号"
-            >
-              <el-input v-model="item.ProdNo" placeholder="编号" :readonly="true"></el-input>
-            </el-form-item>
-            <el-form-item
-              :key="index + 2"
-              :prop="'SpecList.' + index + '.Name'"
-              :rules="rules.NameChildren"
-              label="规格名称"
-            >
-              <el-input v-model="item.Name" placeholder="规格名称"></el-input>
-            </el-form-item>
-            <el-form-item
-              :key="index + 3"
-              :prop="'SpecList.' + index + '.StoreQty'"
-              :rules="rules.StoreQty"
-              label="库存"
-              v-if="ruleForm.StockType =='1'"
-            >
-              <el-input-number
-                style="width: auto; text-align: left"
-                v-model="item.StoreQty"
-                controls-position="right"
-                :min="0"
-                placeholder="库存"
-                :step="1"
-                step-strictly
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item
-              :key="index + 4"
-              :prop="'SpecList.' + index + '.SalePrice'"
-              :rules="rules.SalePrice"
-              label="售价"
-            >
-              <el-input v-model="item.SalePrice" placeholder="售价">
-                <template slot="prepend">¥</template>
-              </el-input>
-            </el-form-item>
-            <imgLoad
-              :isCoverCurrentImgs="isCoverCurrentImgs"
-              :fileListUp="item.Img"
-              class="ImgLoadStyle"
-              folder="ProdImg"
-              :limit="1"
-              ref="imgLoad"
-              @cloneIsCoverImgs="cloneIsCoverImgs"
-              @upLoadImgs="upLoadImgs($event, item, index)"
-            ></imgLoad>
-            <el-button
-              v-if="ruleForm.SpecType !== '3'"
-              type="primary"
-              style="margin-left: 10px"
-              size="medium"
-              @click="selectGoods(index)"
-            >...</el-button>
-            <span
-              class="el-icon-error iconError"
-              v-show="DelIconIndex === index && showDelIcon === true"
-              @click="delGoodsNorms(index)"
-            ></span>
-          </div>
-        </vuedraggable>
-
-        <el-button type="info" @click="addGoodsNorms">添加规格项目</el-button>
-      </fieldset>
+      </el-form-item>-->      
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
         <el-button type="text" @click="FeaturesShow = true" v-if="FeaturesShow === false">+编辑</el-button>
         <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>

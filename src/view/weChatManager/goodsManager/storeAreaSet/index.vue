@@ -54,7 +54,7 @@ export default {
       this.loadingTable = true;
       try {
         let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");
-        this.tableData = Data.ProdCateList;
+        this.tableData = Data.AreaList;
         this.tableData.push({});
         this.loadingTable = false;
       } catch (e) {

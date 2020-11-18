@@ -249,6 +249,9 @@ export default {
       }
     },
     reportErrorsFun() {
+      console.log(this.currentObj._data )
+      console.log(this.currentObj )
+      console.log(Array.isArray(this.currentObj._data))
       let _dataString = "";
       if (Array.isArray(this.currentObj._data)) {
         _dataString = this.currentObj._data.join(",");

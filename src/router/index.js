@@ -209,19 +209,19 @@ export const asyncRouterMap = [
           {
             path: 'newTaste',
             meta: {
-              label: '商品属性设置'
+              label: '属性管理'
             },
             component: newTaste
           },{
             path: 'labelList',
             meta: {
-              label: '商品标签设置'
+              label: '标签管理'
             },
             component: tasteList
           },{
             path: 'partsList',
             meta: {
-              label: '商品配件设置'
+              label: '配件管理'
             },
             component: tasteList
           },{

@@ -2,6 +2,9 @@
   <div class="storeSet">
     <!-- 新增门店，门店编辑 -->
     <el-form ref="form" :model="form" label-width="150px" :rules="rules">
+       <el-form-item label="门店区域：" prop="AreaSID">
+        <storeAreaList @changeType="changeType" :setArea="setArea"></storeAreaList>
+      </el-form-item>
       <el-form-item label="门店编号" prop="ShopNo">
         <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店"></el-input>
         <el-button
@@ -20,10 +23,7 @@
       </el-form-item>
       <el-form-item label="门店电话：" prop="Tel">
         <el-input v-model="form.Tel" placeholder="请输入内容"></el-input>
-      </el-form-item>
-      <!-- <el-form-item label="门店区域：" prop="AreaSID">
-        <storeAreaList @changeType="changeType"></storeAreaList>
-      </el-form-item> -->
+      </el-form-item>     
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
@@ -124,7 +124,8 @@ export default {
       },
       fileListUp: [],
       btnLoading: false,
-      checkedType: true
+      checkedType: true,
+      setArea:{}
     };
   },
   created() {
@@ -152,6 +153,7 @@ export default {
           "MShopOpera"
         );
         this.form = Data.ShopInfo;
+        this.setArea = this.form;
         // if (this.form.Type) {
         //   this.checkedType = this.form.Type.indexOf("2") > -1 ? true : false;
         // }
