@@ -32,24 +32,6 @@
           size="medium"
           @click="selectGoods(null)"
         >选择商品</el-button>
-        <!-- <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请选择商品"></el-input>
-        <el-button
-          type="primary"
-          style="margin-left:10px"
-          size="medium"
-          @click="selectGoods(null)"
-        >...</el-button> -->
-        <!-- <el-table
-          style="margin-top: 10px;width:600px"
-          v-if="ruleForm.ProdList&&ruleForm.SpecType!=='1'"
-          ref="ProdNoList"
-          :data="ruleForm.ProdList"
-        >
-          <el-table-column prop="Name" label="活动商品名称"></el-table-column>
-          <el-table-column prop="SalePrice" label="活动价格¥"></el-table-column>
-          <el-table-column prop="StoreQty" label="活动商品个数"></el-table-column>
-          <el-table-column prop="SurplusQty" label="活动剩余商品个数"></el-table-column>
-        </el-table> -->
         <el-table style="margin-top: 10px;width:700px" ref="ProdNoList" :data="ruleForm.ProdList">
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
@@ -57,35 +39,29 @@
           <el-table-column prop="SalePrice" label="活动价格" align="center">
             <!-- prop="Price" -->
             <template slot-scope="{ row }">
-              <input
-                oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
-                maxlength="10"
-                class="number"
-                type="text"
+              <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
+                class="number" type="text"
+                oninput="value=value.replace(/[^\d.]/g, '').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
                 v-model="row.SalePrice"
               />
             </template>
           </el-table-column>
-          <el-table-column prop="StoreQty" label="活动商品数量" align="center">
+          <el-table-column prop="StoreQty" label="活动数量" align="center">
             <!-- prop="Stock" -->
             <template slot-scope="{ row }">
-              <input
-                oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
-                maxlength="10"
-                class="number"
-                type="text"
+              <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
+                class="number" type="text"
+                oninput="value=value.replace(/[^\d.]/g, '').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
                 v-model="row.StoreQty"
               />
             </template>
           </el-table-column>
-          <el-table-column prop="SurplusQty" label="活动剩余商品个数" align="center">
+          <el-table-column prop="SurplusQty" label="剩余数量" align="center">
             <!-- prop="SurplusQty" -->
             <template slot-scope="{ row }">
-              <input
-                oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
-                maxlength="10"
-                class="number"
-                type="text"
+              <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
+                class="number" type="text"
+                oninput="value=value.replace(/[^\d.]/g, '').replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3')"
                 v-model="row.SurplusQty"
               />
             </template>
@@ -380,6 +356,7 @@ export default {
           this.ruleForm.GroupNum = this.ruleForm.PromWhere.split(',')[1]
           this.ruleForm.ValidTime = this.ruleForm.PromWhere.split(',')[2]
           this.ruleForm.Virtual = this.ruleForm.PromWhere.split(',')[3]
+          this.PickTime//提货时间
 
 
           this.ruleForm.ProdList = res[0].Data.ItemList;

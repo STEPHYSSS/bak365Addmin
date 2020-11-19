@@ -1,4 +1,5 @@
 <template>
+<!-- 商品属性的页面 -->
   <div class="tasteList">
     <el-button type="primary" @click="add">新增</el-button>
     <el-table :data="tableData" style="width: 90%; margin-top: 30px">

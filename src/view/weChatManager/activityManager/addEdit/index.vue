@@ -129,7 +129,7 @@
           placeholder="请填写活动名称"
         ></el-input>
       </el-form-item>
-      <el-form-item label="活动时间" prop="activityDate" >
+      <el-form-item label="活动日期" prop="activityDate" >
         <el-date-picker
         style="width:380px"
           v-model="activityDate"
@@ -140,28 +140,22 @@
           value-format="yyyy-MM-dd HH:mm:ss"
         ></el-date-picker>
       </el-form-item>
-      <!-- <el-form-item label="主活动图片" prop="Img">
-        <imgLoad
-          folder="activeImg"
-          :isAutoFixed="true"
-          @upLoadImgs="upLoadImgsMain"
-          :fileListUp="fileListUpMain"
-          :limit="1"
-        ></imgLoad>(建议尺寸:800*800;大小:小于500kb;格式:JPG,PNG,JPEG)
-      </el-form-item>-->
-      <!-- <el-form-item label="活动图片" prop="ImgList">
-        <imgLoad
-          folder="activeImg"
-          :isAutoFixed="true"
-          @upLoadImgs="upLoadImgsList"
-          :fileListUp="fileListUpList"
-        ></imgLoad>(建议尺寸:800*800;大小:小于500kb;格式:JPG,PNG,JPEG)
-      </el-form-item>-->
+      <el-form-item label="活动时间段" prop="activeTime">
+        <el-time-picker
+          is-range
+          v-model="activeTime"
+          value-format="HH:mm:ss"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          placeholder="选择时间范围"
+        ></el-time-picker>
+      </el-form-item>
       <el-form-item label="最大购买数量" prop="MaxBuyCnt">
         <el-input-number
           v-model="ruleForm.MaxBuyCnt"
           controls-position="right"
-          :min="0"
+          :min="1"
         ></el-input-number>
         <span class="Spancolor">(不填或者0的时候，不限制购买数量)</span>
       </el-form-item>
@@ -171,24 +165,6 @@
           <el-option label="关闭" value="0">关闭</el-option>
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="供货门店" prop="ShopInfo">
-        <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择门店"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="PickShopFun">...</el-button>
-      </el-form-item>-->
-      <!-- <el-form-item label="配送方式" prop="DeliveryType">
-      <el-checkbox-group v-model="ruleForm.DeliveryType" @change="changeCheckbox">-->
-      <!-- <el-checkbox label="3" :disabled="disabledLogistics">物流配送</el-checkbox>
-      <el-checkbox label="2" :disabled="disabledTakeout">外卖配送</el-checkbox>-->
-      <!-- <el-checkbox label="1">门店自取</el-checkbox>
-      </el-checkbox-group>-->
-      <!-- <div style="color:#999">物流与配送冲突</div> -->
-      <!-- </el-form-item> -->
-      <!-- <el-form-item label="支付方式" prop="PayType">
-        <el-checkbox-group v-model="ruleForm.PayType">
-          <el-checkbox label="2">微信支付</el-checkbox>
-          <el-checkbox label="1">微卡支付</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>-->
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
         <el-button
           type="text"
@@ -308,6 +284,7 @@ export default {
       },
       multipleL: "",
       activityDate: [],
+      activeTime:[],//活动时间段范围
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -381,7 +358,7 @@ export default {
           this.prodListArr = res[0].Data.ItemList;
 
           this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
-
+          this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
           this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
             ? Number(this.ruleForm.MaxBuyCnt)
             : 0;
@@ -497,7 +474,6 @@ export default {
     },
     cancelFun() {
       // 取消
-      // this.$router.push("/weChat/manager/integral/goodSetting");
       this.$router.push("/weChat/manager/activity/goodSetting");
     },
     preserveFun() {
@@ -542,6 +518,10 @@ export default {
               if (this.activityDate) {
                 obj.StartDate = this.activityDate[0];
                 obj.EndDate = this.activityDate[1];
+              }
+              if(this.activeTime){
+                obj.StartTime = this.activeTime[0];
+                obj.EndTime = this.activeTime[1];
               }
               obj.ProdList = JSON.stringify(obj.ProdList);
               obj.Action = "SetPromotionInfo";

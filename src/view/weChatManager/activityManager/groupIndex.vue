@@ -4,9 +4,6 @@
     <div style="margin-bottom:20px">
       <el-button type="primary" size="small" @click="addGood">添加活动商品</el-button>
     </div>
-    <!-- <el-tabs v-model="activeType" @tab-click="handleClick" type="card" style="margin-top:20px">
-      <el-tab-pane label="秒杀活动" name="1"></el-tab-pane>
-    </el-tabs> -->
     <activeGoodsList :activeTypeShow = "activeTypeShow"></activeGoodsList>
   </div>
 </template>

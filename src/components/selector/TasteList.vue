@@ -78,12 +78,12 @@ export default {
       this.getModeList();
     }
     try {
-      let action = Number(this.Type) === 3 ? "GetPartsList" : "GetParamList";
-      let opera = Number(this.Type) === 3 ? "MProdOpera" : "MBaseOpera";
+      let action = Number(this.Type) != 0 ? "GetPartsList" : "GetParamList";
+      let opera = Number(this.Type) != 0 ? "MProdOpera" : "MBaseOpera";
       let { Data } = await getLists({ Action: action, Type: this.Type }, opera);
       // console.log(Data, 99999)
 
-      if (Number(this.Type) === 3 && Data.ProdPartsList) {
+      if (Number(this.Type) != 0 && Data.ProdPartsList) {
         // 获取开启的
         let arr = _.differenceBy(Data.ProdPartsList, [{ State: "0" }], "State");
         this.options = arr;
@@ -117,7 +117,7 @@ export default {
       let newArr = [];
       if (this.Type == 2) {
         paramsArr = JSON.parse(JSON.stringify(val));
-        // console.log(paramsArr, "paramsArr11111111");
+        console.log(paramsArr, "paramsArr11111111");
         for (let j = 0; j < paramsArr.length; j++) {
           let D = paramsArr[j];
           let index = j;
@@ -135,20 +135,33 @@ export default {
           //模板和单个合并
           paramsArr = paramsArr.concat(newArr);
         }
-      } else {
+        this.$emit("changeTaste", paramsArr);
+      } else if(this.Type == 3){
+        paramsArr = val;        
+        var str1 = "";  
+        for (let i = 0; i < paramsArr.length; i++) {
+          if (i < paramsArr.length - 1) {
+            str1 += paramsArr[i] + ",";
+          } else {
+            str1 += paramsArr[i];
+          }
+        }
+        this.$emit("changeTaste", str1);
+      }else{
         paramsArr = val;
+        this.$emit("changeTaste", paramsArr);
       }
-      let hash = []; //去重
-      for (let i = 0; i < paramsArr.length; i++) {
-        if (!paramsArr[i]) {
-          continue;
-        }
-        if (hash.indexOf(paramsArr[i]) === -1) {
-          hash.push(paramsArr[i]);
-        }
-      }
-      paramsArr = hash;
-      this.$emit("changeTaste", paramsArr);
+      // let hash = []; //去重
+      // for (let i = 0; i < paramsArr.length; i++) {
+      //   if (!paramsArr[i]) {
+      //     continue;
+      //   }
+      //   if (hash.indexOf(paramsArr[i]) === -1) {
+      //     hash.push(paramsArr[i]);
+      //   }
+      // }
+      // paramsArr = hash;
+      // this.$emit("changeTaste", paramsArr);
     },
     mouldChange(bool) {
       this.isMould = bool ? true : false;

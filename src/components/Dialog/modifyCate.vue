@@ -245,7 +245,7 @@ function clearData(_this) {
 <style lang="less">
 .modifyCate {
   .goodsSelectRow {
-    margin: 0 30px !important;
+    margin: 0 10px !important;
     /*margin:30px 0 !important;*/
 
     .leftGoods,

@@ -113,7 +113,7 @@
       </el-table-column>
     </el-table>
     <Del :show="show" @delFunction="delFunction" @confirmEnd="confirmEnd"></Del>
-    <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
+    <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods>
 
     <el-dialog
       title="点击选择图片"
