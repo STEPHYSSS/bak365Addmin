@@ -165,7 +165,7 @@
           <el-option label="关闭" value="0">关闭</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
+      <el-form-item label="产品介绍" prop="Features" class="FeaturesStyle">
         <el-button
           type="text"
           @click="FeaturesShow = true"
@@ -207,6 +207,7 @@
       @changeDig="changeDig"
       @sureGood="sureGood"
       :prodList="prodListArr"
+      :isGroup="isGroup"
     ></mall-goods>
     <el-dialog
       class="areaTree TicketDialog"
@@ -274,6 +275,7 @@ export default {
   components: { goodType, Goods, imgLoad, ueditor1, mallGoods, QRCode },
   data() {
     return {
+      isGroup:'noGroup',
       ruleForm: {
         Type: "1",
         //    DeliveryType: ["2", "1"],

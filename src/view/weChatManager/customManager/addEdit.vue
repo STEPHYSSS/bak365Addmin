@@ -399,8 +399,9 @@ export default {
       this.$set(itemChild,"key",key);
 
       this.setHeight();
-
-      this.currentModeArr.push(itemChild);
+      
+      let temp = JSON.parse(JSON.stringify(itemChild));
+      this.currentModeArr.push(temp);
       this.currentIndexCot = key;
     },
 

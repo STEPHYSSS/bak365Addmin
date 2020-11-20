@@ -17,6 +17,7 @@
       </div>
       <div class="rightGoods">
         <el-table
+        v-if="isGroup !='group'"
           ref="multipleTable"
           :data="goodsNameList"
           tooltip-effect="dark"
@@ -26,6 +27,25 @@
           :row-key="getGoodsCode"
         >
           <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
+          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
+          <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
+          <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
+          <el-table-column prop="Img" label="图片" align="center">
+            <template slot-scope="scoped">
+              <div class="goodsInfo">
+                <img :src="scoped.row.Img | setImgPrex" />
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table
+          v-else
+          ref="singleTable"
+          :data="goodsNameList"
+          highlight-current-row
+          @current-change="handleCurrentChange"
+          style="width: 100%">
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
@@ -60,7 +80,11 @@ export default {
       type: Array,
       default: []
     },
-    isEvaluate: [Boolean, String]
+    isEvaluate: [Boolean, String],
+    isGroup:{
+      type: String,
+      default: []
+    }
   },
   data() {
     return {
@@ -98,18 +122,8 @@ export default {
             })
           })
         }
-        // goodsNameList.forEach(item => {
-        //   this.$set(item,item.SpecType === '1' ? 'ProdSID':'SpecSID',item.SID)
-        // });
-        // this.goodsNameList = goodsNameList;
-        // console.log(this.goodsNameList,'011')
-        // 去掉了 单规格商品-不同种类商品参加活动 我昨天改了一个列表的，好像就是这参数
-        // this.goodsNameList = this.goodsNameList.filter((D) => {
-        //   return D.State === "1" && D.SpecType !== "3";
-        // });
         this.loadingGoods = false;
       } catch (e) {
-        // console.log(e);
         this.$message.error(e);
       }
     },
@@ -127,6 +141,10 @@ export default {
     selectAll(selection) {
       this.multipleSelection = selection;
     },
+    // 单选
+    handleCurrentChange(val){
+      this.currentRow = val
+    },
     getGoodsCode(row,enent,column) {
       return row.SID;
     },
@@ -136,62 +154,6 @@ export default {
     handleCloseSpecs(done) {
       done();
     },
-    // async rowClick(row) {
-    //   console.log(row);
-    //   // 点击当前的商品
-    //   // if (this.isEvaluate) {
-    //   //   this.$emit("sureGood", row);
-    //   //   this.dialogVisible = false;
-    //   //   return;
-    //   // }
-    //   // this.tableData = this.multipleSelection2;
-    //   // if (this.currentRow.SID === row.SID) {
-    //   //   if (row.SpecType !== "1") {
-    //   //     this.dialogVisibleSpecs = true;
-    //   //   }
-    //   //   return;
-    //   // }
-    //   // this.specsListCurrent = [];
-    //   // this.currentRow = row;
-    //   // if (row.SpecType !== "1") {
-    //   //   this.dialogVisibleSpecs = true;
-    //   //   //除了单规格以外
-    //   //   try {
-    //   //     // 获取商品规格列表
-    //   //     let { Data } = await getLists(
-    //   //       { Action: "GetSpecList", SID: row.SID },
-    //   //       "MProdOpera"
-    //   //     );
-    //   //     this.loadingGoodsSpecs = false;
-    //   //     this.goodsSpecsList = Data.ProdSpecList;
-
-    //   //     let arr = JSON.parse(JSON.stringify(this.prodList));
-    //   //     if (arr.length > 0) {
-    //   //       //添加默认值
-    //   //       arr.forEach((D, index) => {
-    //   //         D.Price = D.SalePrice;
-    //   //         D.Stock = D.StoreQty;
-    //   //         D.SurplusQty =
-    //   //           Math.round((Number(D.StoreQty) - Number(D.SurplusQty)) * 100) /
-    //   //           100;
-    //   //         delete arr[index].StoreQty;
-    //   //       });
-
-    //   //       this.goodsSpecsList.forEach((D, index) => {
-    //   //         arr.forEach((data, i) => {
-    //   //           data.Stock = Number(data.Stock);
-    //   //           if (data.SpecSID === D.SID) {
-    //   //             Object.assign(this.goodsSpecsList[index], arr[i]);
-    //   //           }
-    //   //         });
-    //         // });
-    //     //   }
-    //     // } catch (e) {
-    //     //   console.log(e, 888);
-    //     //   this.$message.error(e);
-    //   //   }
-    //   // }
-    // },
     rowClickSpecs(list) {
       if (list.length === 0) return;
       this.specsListCurrent = list;
@@ -208,67 +170,16 @@ export default {
       }
     },
     sureGood() {
-      this.ProdList = this.multipleSelection;
-      this.$emit("sureGood", this.ProdList);
-      // let ProdList = [];
-      // if (this.currentRow.SpecType !== "1") {
-      //   if (this.specsListCurrent.length === 0) {
-      //     this.$message.info("请选择参加商品的规格");
-      //   } else {
-      //     this.specsListCurrent.forEach((D, index) => {
-      //       ProdList[index] = {
-      //         SpecType: this.currentRow.SpecType,
-      //         ProdNo: D.ProdNo,
-      //         ProdSID: D.ProdSID || "",
-      //         SalePrice: D.Price,
-      //         StoreQty: D.Stock,
-      //         //总库存 - 已售多少件 = 剩余多少库存
-      //         SurplusQty: Number(D.Stock) - Number(D.SurplusQty || 0),
-      //         SpecSID: D.SpecSID ? D.SpecSID : D.SID,
-      //         Name: D.Name,
-      //         OldPrice: D.SalePrice,
-      //       };
-      //     });
-      //     let bool = this.specsListCurrent.some((value, index) => {
-      //       return !value.Price;
-      //     });
-
-      //     let bool1 = this.specsListCurrent.some((value, index) => {
-      //       return !value.Stock;
-      //     });
-
-      //     if (bool) {
-      //       this.$message.info("请填写活动价格");
-      //     } else if (bool1) {
-      //       this.$message.info("请填写活动商品数量");
-      //     } else {
-      //       // 出去
-      //       this.$emit("sureGood", ProdList);
-      //     }
-      //   }
-      // } else {
-      // ProdList = [
-      //   {
-      //     SpecType: this.currentRow.SpecType,
-      //     ProdNo: this.currentRow.ProdNo,
-      //     ProdSID: this.currentRow.SID,
-      //     OldPrice: this.currentRow.SalePrice
-      //   }
-      // ];
-      // ProdList = [this.currentRow];
-      // console.log(ProdList);
-      // // 出去
-      // this.$emit("sureGood", ProdList);
+      if(this.isGroup == 'group'){
+        let current=[];
+        current.push(this.currentRow)
+        this.$emit("sureGood", current);
+      }else{
+        this.ProdList = this.multipleSelection;
+        this.$emit("sureGood", this.ProdList);
+      }
     }
   },
-  // sureGoodSpecs() {
-  //   this.dialogVisibleSpecs = false;
-  // },
-
-  // searchName() {
-  //   this.getList();
-  // },
-  // },
   watch: {
     dialogVisible(bool) {
       this.$emit("changeDig", bool);

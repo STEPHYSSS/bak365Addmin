@@ -93,10 +93,11 @@ export const stateLists = [
   { label: '已提货', value: '3' },
   { label: '已作废', value: '4' }
 ]
+
 export const deliveryTypeLists = [
   { label: '到店取餐', value: '1' },
-  { label: '外卖配送', value: '2' },
-  { label: '物流配送', value: '3' }
+  { label: '外卖配送', value: '2' }
+  // { label: '物流配送', value: '3' }
 ]
 
 export const refundStateTypeLists = [

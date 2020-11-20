@@ -8,7 +8,8 @@
       <el-table-column label="商品属性值" align="center">
         <template slot-scope="scope">
           <span v-for="(item,index) in scope.row.AttributeList" :key="index">
-            {{item.Name +`(￥` + item.Price +`) ,`}}
+            <!-- {{item.Name +`(￥` + item.Price +`)`}} -->
+             {{AttributeJoin(item, index)}}
           </span>
         </template>
       </el-table-column>
@@ -34,6 +35,7 @@
         <el-form-item prop="Name" label="商品属性名"
           :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
             <el-input v-model="dynamicValidateForm.Name" style="width:200px"></el-input>
+            属性名排序：<el-input v-model="dynamicValidateForm.Sort" style="width:50px"></el-input>
           </el-form-item>
         <el-form-item
           v-for="(domain, index) in dynamicValidateForm.domains"
@@ -46,6 +48,7 @@
         >
           <el-input v-model="domain.Name" style="width:200px"></el-input>
           ￥<el-input v-model="domain.Price" style="width:50px"></el-input>
+          排序<el-input v-model="domain.Sort" style="width:50px"></el-input>
           <el-button @click.prevent="removeDomain(domain)">删除</el-button>
         </el-form-item>
         <el-form-item>
@@ -69,9 +72,11 @@ export default {
       dynamicValidateForm: {
         domains: [{
           Name: '',
-          Price:0
+          Price:0,
+          Sort:0
         }],
-        Name: ''
+        Name: '',
+        Sort:0
       },
       eidtSID:'',
       dialogFormVisible: false,
@@ -87,13 +92,13 @@ export default {
           Price:0,
           key: Date.now()
         });
-      },
-      removeDomain(item) {
-        var index = this.dynamicValidateForm.domains.indexOf(item)
-        if (index !== -1) {
-          this.dynamicValidateForm.domains.splice(index, 1)
-        }
-      },
+    },
+    removeDomain(item) {
+      var index = this.dynamicValidateForm.domains.indexOf(item)
+      if (index !== -1) {
+        this.dynamicValidateForm.domains.splice(index, 1)
+      }
+    },
     // 列表
     async getInfo() {
       let { Data } = await getLists(
@@ -107,6 +112,9 @@ export default {
     },
     add() {//新增
       this.dialogFormVisible = true;
+      this.dynamicValidateForm = {}
+      this.eidtSID = "";
+      this.dynamicValidateForm.domains = [];
       this.dynamicValidateForm = {
         domains: [{
           Name: '',
@@ -114,18 +122,19 @@ export default {
         }],
         Name: ''
       }
+      
     },
     edit(row){//编辑
       this.dialogFormVisible = true;
       this.eidtSID = row.SID;
-      this.detail();
+      this.detail(row.SID);     
     },
     // 详情
-    async detail(){
+    async detail(sid){
       let { Data } = await getLists(
         {
           Action: "GetParamInfo",
-          SID:this.eidtSID,
+          SID:sid,
           Type: "2",
         },
         "MBaseOpera"
@@ -135,10 +144,12 @@ export default {
     },
     // 确定按钮
     async sure() {
+      console.log(this.dynamicValidateForm)
       this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
         return {
           Name: item.Name,
-          Price:item.Price
+          Price:item.Price,
+          Sort:item.Sort
         };
       });
       let { Data } = await getLists(
@@ -147,7 +158,8 @@ export default {
           Name: this.dynamicValidateForm.Name,
           AttributeList: JSON.stringify(this.dynamicValidateForm.domains),
           Type: "2",
-          SID:this.eidtSID?this.eidtSID:''
+          SID:this.eidtSID?this.eidtSID:'',
+          Sort:this.dynamicValidateForm.Sort
         },
         "MBaseOpera"
       );
@@ -177,5 +189,13 @@ export default {
         });
     }
   },
+  computed:{
+    AttributeJoin () {
+        return function (item, index) {
+          if (index > 0) return `,  ${item.Name}(￥${item.Price})`
+          else return `${item.Name}(￥${item.Price})`
+        }
+      },
+  }
 };
 </script>

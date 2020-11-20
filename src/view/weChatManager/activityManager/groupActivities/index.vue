@@ -2,13 +2,7 @@
   <div class="addEditActive">
     <!-- 活动详情 -->
     基本信息
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="150px"
-      v-loading="loading"
-    >
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" v-loading="loading">
       <el-form-item label="活动类型" :key="6">
         <el-select
           v-model="ruleForm.Type"
@@ -68,77 +62,27 @@
           </el-table-column>
         </el-table>
       </el-form-item>
-
-      <!-- <el-form-item
-        label="开团售价"
-        prop="SalePrice"
-        v-if="(ruleForm.ProdList&&ruleForm.SpecType=='1')"
-      >
-        ¥
-        <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
-      </el-form-item>
-      <el-form-item label="库存" prop="StoreQty" v-if="ruleForm.ProdList&&ruleForm.SpecType=='1'">
-        ¥
-        <el-input-number
-          :step="1"
-          v-model="ruleForm.StoreQty"
-          controls-position="right"
-          :min="0"
-          @change="setInputDec(ruleForm.StoreQty,'StoreQty')"
-        ></el-input-number>
-      </el-form-item>
-      <el-form-item
-        v-if="ruleForm.ProdList&&ruleForm.SpecType=='1'"
-        label="默认已售多少件"
-        prop="SurplusQty"
-      >
-        <el-input-number v-model="ruleForm.SurplusQty" controls-position="right" :min="0"></el-input-number>
-      </el-form-item> -->
       <el-form-item label="活动名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写活动名称"></el-input>
       </el-form-item>
-      <el-form-item label="提货日期" prop="activityDate">
-        <el-date-picker
-          v-model="activityDate"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-        ></el-date-picker>
+      <el-form-item label="提货日期" prop="PickDate">
+        <el-date-picker v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
+        type="daterange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
       </el-form-item>
-      <el-form-item label="开始时间">
+      <!-- <el-form-item label="开始时间">
         <el-date-picker v-model="ruleForm.StartTime" type="datetime" placeholder="选择开始时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="结束时间">
         <el-date-picker v-model="ruleForm.EndTime" type="datetime" placeholder="选择结束时间"></el-date-picker>
-      </el-form-item>
-      <!-- <el-form-item label="主活动图片" prop="Img">
-        <imgLoad
-          folder="activeImg"
-          :isAutoFixed="true"
-          @upLoadImgs="upLoadImgsMain"
-          :fileListUp="fileListUpMain"
-          :limit="1"
-        ></imgLoad>(建议尺寸:800*800;大小:小于500kb;格式:JPG,PNG,JPEG)
-      </el-form-item>-->
-      <!-- <el-form-item label="活动图片" prop="ImgList">
-        <imgLoad
-          folder="activeImg"
-          :isAutoFixed="true"
-          @upLoadImgs="upLoadImgsList"
-          :fileListUp="fileListUpList"
-        ></imgLoad>(建议尺寸:800*800;大小:小于500kb;格式:JPG,PNG,JPEG)
-      </el-form-item>-->
-      <!-- <el-form-item label="最大购买数量" prop="MaxBuyCnt">
-        <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
-        <div>不填或者0的时候，不限制购买数量</div>
-      </el-form-item>
-      <el-form-item label="状态" prop="Start">
-        <el-select v-model="ruleForm.Start" placeholder="请选择">
-          <el-option label="启动" value="1">启动</el-option>
-          <el-option label="关闭" value="0">关闭</el-option>
-        </el-select>
       </el-form-item> -->
+      <el-form-item label="活动日期" prop="activityDate" >
+        <el-date-picker style="width:380px" v-model="activityDate" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item label="活动时间段" prop="activityStartTime">
+        <el-time-picker is-range v-model="activityStartTime" value-format="HH:mm:ss" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围"
+        ></el-time-picker>
+      </el-form-item>
       <el-form-item label="团上限" prop="MaxGroupCnt">
         <em class="elText">最多可开</em>
         <p class="Inpwidth">
@@ -169,25 +113,6 @@
         <el-radio v-model="ruleForm.Virtual" label="1">开启</el-radio>
         <span class="fontColor">开启虚拟成团后，活动结束以后，已开团但人数未满的团不进行退款，默认拼团成功</span>
       </el-form-item>
-      <!-- <el-form-item label="供货门店" prop="ShopInfo">
-        <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择门店"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="PickShopFun">...</el-button>
-      </el-form-item>-->
-      <!-- <el-form-item label="配送方式" prop="DeliveryType">
-      <el-checkbox-group v-model="ruleForm.DeliveryType" @change="changeCheckbox">-->
-      <!-- <el-checkbox label="3" :disabled="disabledLogistics">物流配送</el-checkbox>
-      <el-checkbox label="2" :disabled="disabledTakeout">外卖配送</el-checkbox>-->
-      <!-- <el-checkbox label="1">门店自取</el-checkbox>
-      </el-checkbox-group>-->
-      <!-- <div style="color:#999">物流与配送冲突</div> -->
-      <!-- </el-form-item> -->
-      <!-- <el-form-item label="支付方式" prop="PayType">
-        <el-checkbox-group v-model="ruleForm.PayType">
-          <el-checkbox label="2">微信支付</el-checkbox>
-          <el-checkbox label="1">微卡支付</el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>-->
-      <!-- 拼团成功通知模板 -->
       <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
         <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
         <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
@@ -205,12 +130,7 @@
     </el-form>
 
     <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
-    <mall-goods
-      :goodsShow="goodsShow"
-      @changeDig="changeDig"
-      @sureGood="sureGood"
-      :prodList="prodListArr"
-    ></mall-goods>
+    <mall-goods :goodsShow="goodsShow" :isGroup="isGroup" @changeDig="changeDig" @sureGood="sureGood" :prodList="prodListArr"></mall-goods>
     <!-- 选择门店 -->
     <el-dialog
       class="areaTree TicketDialog"
@@ -265,27 +185,27 @@ export default {
   components: { goodType, Goods, imgLoad, ueditor1, mallGoods, QRCode },
   data() {
     return {
+      isGroup:'group',
       ruleForm: {
         Type: "5",
-        //    DeliveryType: ["2", "1"],
-        // Start: "1",
-        SalePrice: 0,
-        MaxBuyCnt: 0,
+        MaxBuyCnt: 1,
         ProdList: [],
         // virtualSales:'',//虚拟销量
         Name:'',//活动名称
-        StartTime:'',//开始时间
-        EndTime:'',//结束时间
+        // StartTime:'',//开始时间
+        // EndTime:'',//结束时间
         MaxGroupCnt:''  ,//最大开团数量
         GroupNum:'' ,//成团人数
         ValidTime:'' ,//有效时间（小时）
         Virtual:'1' ,//虚拟成团开启（0未开启，1开启）
       },
-      activityDate: [],
+      PickDate: [],//提货日期
+      activityDate:[],//开始日期范围
+      activityStartTime:[],//开始时间范围
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
-        ProdNo: [ruleText.ProdNo(this, "请选择活动商品")],
+        // ProdNo: [ruleText.ProdNo(this, "请选择活动商品")],
         Name: [ruleText.Name(this, "请填写活动名称")],
         StoreQty: [ruleText.StoreQty(this)],
         ShopInfo: [ruleText.ShopInfo(this)],
@@ -295,13 +215,13 @@ export default {
         SalePrice: [
           { required: true, message: "请填写秒杀售价", trigger: "blur" }
         ],
-        activityDate: [
+        PickDate: [
           {
             required: true,
-            message: "请选择活动日期",
+            message: "请选择提货日期",
             trigger: "change",
             validator: (rules, value, callback) => {
-              if (!this.activityDate) {
+              if (!this.PickDate) {
                 callback(new Error("请选择活动日期"));
               } else {
                 callback();
@@ -356,20 +276,14 @@ export default {
           this.ruleForm.GroupNum = this.ruleForm.PromWhere.split(',')[1]
           this.ruleForm.ValidTime = this.ruleForm.PromWhere.split(',')[2]
           this.ruleForm.Virtual = this.ruleForm.PromWhere.split(',')[3]
-          this.PickTime//提货时间
-
-
+          this.ruleForm.PickStartTime=this.ruleForm.PromWhere.split(',')[4]
+          this.ruleForm.PickEndTime=this.ruleForm.PromWhere.split(',')[5]
+          this.PickDate = [this.ruleForm.PickStartTime, this.ruleForm.PickEndTime];//获取提货时间
+          this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];//获取开始时间范围
+          this.activityStartTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];//获取开始时间范围
           this.ruleForm.ProdList = res[0].Data.ItemList;
           this.prodListArr = res[0].Data.ItemList;
-
-          // console.log(this.ruleForm.ProdList,'this.ruleForm')
-
-          this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
-
-          this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
-            ? Number(this.ruleForm.MaxBuyCnt)
-            : 0;
-
+          this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt ? Number(this.ruleForm.MaxBuyCnt) : 0;
           this.ruleForm.ProdNo = "";
           this.ruleForm.ProdList.forEach(D => {
             this.ruleForm.ProdNo +=
@@ -425,16 +339,16 @@ export default {
       // 获取的商品的名字和编号
       this.goodsShow = false;
       this.ruleForm.ProdList = val;
-      this.ruleForm.ProdNo = "";
-      this.ruleForm.SpecType = val[0].SpecType;
-
-      val.forEach(D => {
-        if (this.ruleForm.SpecType === "3") {
-          this.ruleForm.SpecSID += D.SpecSID + (val.length > 1 ? ";" : "");
-        } else {
-          this.ruleForm.ProdNo += D.ProdNo + (val.length > 1 ? ";" : "");
-        }
-      });
+      // this.ruleForm.ProdNo = "";
+      // this.ruleForm.SpecType = val[0].SpecType;
+      
+      // val.forEach(D => {
+      //   if (this.ruleForm.SpecType === "3") {
+      //     this.ruleForm.SpecSID += D.SpecSID + (val.length > 1 ? ";" : "");
+      //   } else {
+      //     this.ruleForm.ProdNo += D.ProdNo + (val.length > 1 ? ";" : "");
+      //   }
+      // });
     },
     upLoadImgsMain(arr) {
       // 图片
@@ -500,21 +414,18 @@ export default {
         });
       });
       this.ruleForm.ProdList = arr;
+      for(let i = 0;i<this.ruleForm.ProdList.length;i++){
+          if(this.ruleForm.ProdList[i].SalePrice===undefined){
+            this.$message.error("请填写活动价格")
+            return false;
+          }
+        }
       this.$refs["ruleForm"].validate(async valid => {
         if (!valid) {
           return false;
         } else {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            // if (!obj.Img) {
-            //   this.$message.info("请添加主商品图片");
-            //   // return;
-            // } else {
-            //   obj.Img = replacePre(obj, "Img");
-            // }
-            // if (obj.ImgList) {
-            //   obj.ImgList = replacePre(obj, "ImgList");
-            // }
             let Features = this.$refs.Features.getUEContent();
             Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
             obj.Features = $.base64.btoa(Features, "utf8");
@@ -524,27 +435,25 @@ export default {
               `src="Files`
             );
             obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
-
+            console.log(this.PickDate,this.activityDate,this.activityStartTime)
+            // if (this.PickDate) {
+            //   obj.PickStartTime = this.PickDate[0];
+            //   obj.PickEndTime = this.PickDate[1];
+            // }
             if (this.activityDate) {
               obj.StartDate = this.activityDate[0];
               obj.EndDate = this.activityDate[1];
             }
-
-            // if (obj.SpecType === "1") {
-            //   obj.ProdList[0].SalePrice = obj.SalePrice;
-            //   obj.ProdList[0].StoreQty = obj.StoreQty;
-            //   let SurplusQty = obj.SurplusQty ? obj.SurplusQty : 0;
-            //   obj.ProdList[0].SurplusQty =
-            //     Number(obj.StoreQty) - Number(SurplusQty);
-            // }
+            if(this.activityStartTime){
+              obj.StartTime = this.activityStartTime[0];
+              obj.EndTime = this.activityStartTime[1];
+            }
             obj.ProdList = JSON.stringify(obj.ProdList);
             obj.Action = "SetPromotionInfo";
             const PromWhere = [];
-            PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual)            
+            PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])            
             obj.PromWhere = PromWhere.toString()
-            // console.log(obj, 5555566);
-            // return;
-            let data = await getLists(obj, "MPromotionOpera");
+            let data =  getLists(obj, "MPromotionOpera");
             this.$message.success("操作成功,可用二维码浏览");
             setTimeout(() => {
               this.$router.push("/weChat/manager/activity/groupGoodSetting");
