@@ -39,11 +39,15 @@ const integralGoods = r => require.ensure([], () => r(require('../view/weChatMan
 const integralGoodsAdd = r => require.ensure([], () => r(require('../view/weChatManager/integralManager/addEdit/index')), 'integralGoodsAdd')
 
 // 商品活动管理
-// activityGoods 秒杀商品活动  groupGoods 拼团商品活动
+// activityGoods 秒杀商品活动  groupGoods 拼团商品活动 entStoreCoupon 进店送券 
 const activityGoods = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/index')), 'activityGoods')
 const activityGoodsAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/addEdit')), 'activityGoodsAdd')
 const groupGoods = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupIndex')), 'groupGoods')
 const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities')), 'groupActivityAdd')
+const entStoreCoupon = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entStoreCouponList')), 'entStoreCoupon')//进店送券
+const entCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entCouponAddEdit')), 'entCouponAddEdit')//进店送券编辑和新增
+const ConditionsList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsList')), 'ConditionsList')//参与条件设置
+const ConditionsAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsAddEdit')), 'ConditionsAddEdit')//参与条件设置新增与编辑
 // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage')//自定义首页
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')//自定义首页编辑
@@ -409,7 +413,33 @@ export const asyncRouterMap = [
               label: '添加活动商品'
             },
             component: groupActivityAdd
-          },
+          },{
+            path:'entStoreCoupon',
+            meta:{
+              label:'进店送券',
+            },
+            component: entStoreCoupon
+          },{
+            path:'entCouponAddEdit',
+            isHidden:true,
+            meta:{
+              label:'添加进店送券'
+            },
+            component:entCouponAddEdit
+          },{
+            path:'ConditionsList',
+            meta:{
+              label:'参与条件设置'
+            },
+            component:ConditionsList
+          },{
+            path:'ConditionsAddEdit',
+            isHidden: true,
+            meta:{
+              label:'参与条件设置'
+            },
+            component:ConditionsAddEdit
+          }
           
         ]
       },

@@ -119,3 +119,15 @@ export const activeTypeNorms = [
 export const activeTypeNorms2 = [
   { label: '拼团活动', value: '5' }
 ]
+// 参与人员 和 卡类型
+export const ConditionPerson = [
+  { value: '0', label: '全部粉丝'},
+  { value: '1', label: '新粉丝'}, 
+  { value: '2', label: '会员'}
+]
+
+export const ConditionCard = [
+  { value: '0', label: '全部'}, 
+  { value: '1', label: '绑定卡'}, 
+  { value: '2', label: '申请卡'}
+]
