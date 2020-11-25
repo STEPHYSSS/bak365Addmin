@@ -28,10 +28,10 @@
         >选择商品</el-button>
         <el-table style="margin-top: 10px;width:700px" ref="ProdNoList" :data="ruleForm.ProdList">
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
           <el-table-column prop="OldPrice" label="商品原价¥" align="center"></el-table-column>
-          <el-table-column prop="SalePrice" label="活动价格" align="center">
-            <!-- prop="Price" -->
+          <el-table-column prop="SalePrice" label="活动价格" align="center"> <!-- prop="Price" -->
             <template slot-scope="{ row }">
               <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
                 class="number" type="text"

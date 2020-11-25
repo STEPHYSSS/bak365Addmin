@@ -131,3 +131,8 @@ export const ConditionCard = [
   { value: '1', label: '绑定卡'}, 
   { value: '2', label: '申请卡'}
 ]
+export const giftType = [
+  { value: '1', label: '电子券'}, 
+  { value: '2', label: '积分'},
+  { value: '3', label: '卡充值'}
+]

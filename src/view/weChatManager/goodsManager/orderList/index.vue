@@ -131,7 +131,7 @@ export default {
     async getList() {
       this.loading = true;
       try {
-        let obj = { Action: "GetOrderList",Page: this.currentPage - 1,OrderType:'2'};
+        let obj = { Action: "GetOrderList",Page: this.currentPage - 1,OrderType:'2',State:'0'};
         this.search.StartAddTime = this.search.searchTime
           ? this.search.searchTime[0]
           : "";

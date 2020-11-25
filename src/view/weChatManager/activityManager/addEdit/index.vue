@@ -157,7 +157,6 @@
           controls-position="right"
           :min="1"
         ></el-input-number>
-        <span class="Spancolor">(不填或者0的时候，不限制购买数量)</span>
       </el-form-item>
       <el-form-item label="状态" prop="Start">
         <el-select v-model="ruleForm.Start" placeholder="请选择">
@@ -500,7 +499,12 @@ export default {
             this.$message.error("请填写活动价格")
             return false;
           }
+          if(Number(this.ruleForm.ProdList[i].SurplusQty) > Number(this.ruleForm.ProdList[i].StoreQty)){
+            this.$message.error("剩余数量不能大于活动数量")
+            return false;
+          }
         }
+      
         this.$refs["ruleForm"].validate(async (valid) => {
           if (!valid) {
             return false;

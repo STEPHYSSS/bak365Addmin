@@ -376,7 +376,7 @@ export const asyncRouterMap = [
       {//商品活动管理
         path: '/weChat/manager/activity',
         meta: {
-          label: '商品活动管理'
+          label: '活动管理'
         },
         component: {
           render(c) {
@@ -388,7 +388,7 @@ export const asyncRouterMap = [
           {
             path: 'goodSetting',
             meta: {
-              label: '秒杀商品活动'
+              label: '秒杀活动'
             },
             component: activityGoods
           },
@@ -403,7 +403,7 @@ export const asyncRouterMap = [
           {
             path: 'groupGoodSetting',
             meta: {
-              label: '多人拼团活动'
+              label: '拼团活动'
             },
             component: groupGoods
           },{
@@ -416,14 +416,14 @@ export const asyncRouterMap = [
           },{
             path:'entStoreCoupon',
             meta:{
-              label:'进店送券',
+              label:'进店送礼',
             },
             component: entStoreCoupon
           },{
             path:'entCouponAddEdit',
             isHidden:true,
             meta:{
-              label:'添加进店送券'
+              label:'添加进店送礼'
             },
             component:entCouponAddEdit
           },{

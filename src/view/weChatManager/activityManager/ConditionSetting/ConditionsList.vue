@@ -61,24 +61,32 @@ export default {
      editCondition(row){
           this.$router.push({ path: "/weChat/manager/activity/ConditionsAddEdit",query:{SID:row.SID} });
      },
-     delCondition(row){
-          this.$confirm('是否删除此数据?', '提示', {
-               confirmButtonText: '确定',
-               cancelButtonText: '取消',
-               type: 'warning'
-          }).then(() => {
-               let { Data } =  getLists(
-               { Action: "RemoveSchemes", SID:row.SID },
-               "MShopOpera"
-               );
-               this.getList();
-          }).catch(() => {
-               this.$message({
-               type: 'info',
-               message: '已取消删除'
-               });          
-          });
-     }
+     delCondition(row){      
+        this.$confirm('是否删除此数据?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+        }).then(() => {
+              this.delFun(row);
+        }).catch(() => {
+              this.$message({
+              type: 'info',
+              message: '已取消删除'
+              });          
+        });
+     },
+     async delFun(row){
+        try {
+            let Data = await getLists(
+              { Action: "RemoveSchemes", SID: row.SID },
+              "MShopOpera"
+            );
+              this.$message.success("删除成功");
+              this.getList();
+            } catch (e) {
+              this.$message.error(e);
+            }
+        }
   },
 };
 </script>

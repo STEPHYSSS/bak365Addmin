@@ -13,7 +13,6 @@
           </el-row>
         </template> -->
       </el-table-column>
-      <el-table-column prop="SID" label="商品编号" align="center"></el-table-column>
       <el-table-column prop="Type" label="活动类型" align="center">
         <template slot-scope="scoped">{{setActiveType(scoped.row.Type)}}</template>
       </el-table-column>
@@ -273,9 +272,9 @@ export default {
     //是否启用
     setActiveOpen(val) {
       if (val === "1") {
-        return "启用";
+        return "已启用";
       } else {
-        return "停用";
+        return "已停用";
       }
     },
   },

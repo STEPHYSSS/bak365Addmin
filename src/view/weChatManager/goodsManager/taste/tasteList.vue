@@ -90,6 +90,7 @@ export default {
         this.dynamicValidateForm.domains.push({
           Name: '',
           Price:0,
+          Sort:'',
           key: Date.now()
         });
     },
@@ -114,11 +115,11 @@ export default {
       this.dialogFormVisible = true;
       this.dynamicValidateForm = {}
       this.eidtSID = "";
-      this.dynamicValidateForm.domains = [];
       this.dynamicValidateForm = {
         domains: [{
           Name: '',
-          Price:0
+          Price:0,
+          Sort:''
         }],
         Name: ''
       }
