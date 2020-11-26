@@ -142,6 +142,7 @@
       </el-form-item>
       <el-form-item label="活动时间段" prop="activeTime">
         <el-time-picker
+        @clearable="clearable"
           is-range
           v-model="activeTime"
           value-format="HH:mm:ss"
@@ -476,6 +477,9 @@ export default {
     cancelFun() {
       // 取消
       this.$router.push("/weChat/manager/activity/goodSetting");
+    },
+    clearable(){
+      this.activeTime = []
     },
     preserveFun() {
       let arr = [];

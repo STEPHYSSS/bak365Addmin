@@ -18,14 +18,14 @@
           <el-button
             v-if="scoped.row.SID"
             type="text"
-            @click="del(scoped.row, scoped.$index)"
-            >删除</el-button
+            @click="edit(scoped.row, scoped.$index)"
+            >编辑</el-button
           >
           <el-button
             v-if="scoped.row.SID"
             type="text"
-            @click="edit(scoped.row, scoped.$index)"
-            >编辑</el-button
+            @click="del(scoped.row, scoped.$index)"
+            >删除</el-button
           >
         </template>
       </el-table-column>
@@ -93,11 +93,13 @@ export default {
           Sort:'',
           key: Date.now()
         });
+        // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
     },
     removeDomain(item) {
       var index = this.dynamicValidateForm.domains.indexOf(item)
       if (index !== -1) {
         this.dynamicValidateForm.domains.splice(index, 1)
+        // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
       }
     },
     // 列表
@@ -145,7 +147,6 @@ export default {
     },
     // 确定按钮
     async sure() {
-      console.log(this.dynamicValidateForm)
       this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
         return {
           Name: item.Name,

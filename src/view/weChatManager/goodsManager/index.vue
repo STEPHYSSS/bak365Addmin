@@ -195,9 +195,6 @@ export default {
         },{
           value: '2',
           label: '多规格'
-        },{
-          value: '3',
-          label: '多尺寸'
         }
       ],//商品规格
       phoneUrlGood: PhoneUrlGood,

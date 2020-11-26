@@ -35,8 +35,11 @@
         <el-input v-model="form.GiveMoney"></el-input>
       </el-form-item>
       <el-form-item label="发放总量">
-        <el-input v-model="form.GiveCnt"></el-input>，每人最多领取<el-input
-          v-model="form.LimitCnt"></el-input>次
+        <el-input v-model="form.GiveCnt"></el-input>，每人最多领取<el-input-number
+          v-model="form.LimitCnt"
+          controls-position="right"
+          :min="1"
+        ></el-input-number> 次
       </el-form-item>
       
       <el-form-item label="模板ID">
