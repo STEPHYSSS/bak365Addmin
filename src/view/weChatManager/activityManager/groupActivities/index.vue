@@ -41,7 +41,6 @@
             </template>
           </el-table-column>
           <el-table-column prop="StoreQty" label="活动数量" align="center">
-            <!-- prop="Stock" -->
             <template slot-scope="{ row }">
               <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
                 class="number" type="text"
@@ -69,12 +68,6 @@
         <el-date-picker v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
         type="daterange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
       </el-form-item>
-      <!-- <el-form-item label="开始时间">
-        <el-date-picker v-model="ruleForm.StartTime" type="datetime" placeholder="选择开始时间"></el-date-picker>
-      </el-form-item>
-      <el-form-item label="结束时间">
-        <el-date-picker v-model="ruleForm.EndTime" type="datetime" placeholder="选择结束时间"></el-date-picker>
-      </el-form-item> -->
       <el-form-item label="活动日期" prop="activityDate" >
         <el-date-picker style="width:380px" v-model="activityDate" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" value-format="yyyy-MM-dd HH:mm:ss"
         ></el-date-picker>
@@ -113,7 +106,7 @@
         <el-radio v-model="ruleForm.Virtual" label="1">开启</el-radio>
         <span class="fontColor">开启虚拟成团后，活动结束以后，已开团但人数未满的团不进行退款，默认拼团成功</span>
       </el-form-item>
-      <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
+      <!-- <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
         <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
         <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
         <el-button type="text" @click="FeaturesShow=false" v-if="FeaturesShow===true">隐藏</el-button>
@@ -126,7 +119,7 @@
         >+编辑</el-button>
         <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
         <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
@@ -300,23 +293,23 @@ export default {
             // console.log(this.ruleForm, 888);
           }
 
-          let Features = $.base64.atob(this.ruleForm.Features, "utf8");
-          let ImportantNotes = $.base64.atob(
-            this.ruleForm.ImportantNotes,
-            "utf8"
-          );
-          Features = Features.replace(
-            /src="Files/g,
-            `src="${process.env.Prefix}Files`
-          );
-          ImportantNotes = ImportantNotes.replace(
-            /src="Files/g,
-            `src="${process.env.Prefix}Files`
-          );
-          setTimeout(() => {
-            this.$refs.Features.setUEContent(Features);
-            this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-          }, 300);
+          // let Features = $.base64.atob(this.ruleForm.Features, "utf8");
+          // let ImportantNotes = $.base64.atob(
+          //   this.ruleForm.ImportantNotes,
+          //   "utf8"
+          // );
+          // Features = Features.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
+          // ImportantNotes = ImportantNotes.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
+          // setTimeout(() => {
+          //   this.$refs.Features.setUEContent(Features);
+          //   this.$refs.ImportantNotes.setUEContent(ImportantNotes);
+          // }, 300);
         }
       } catch (e) {}
 
@@ -426,16 +419,16 @@ export default {
         } else {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            let Features = this.$refs.Features.getUEContent();
-            Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
-            obj.Features = $.base64.btoa(Features, "utf8");
-            let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-            ImportantNotes = ImportantNotes.replace(
-              /src="\.\.\/Files/g,
-              `src="Files`
-            );
-            obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
-            console.log(this.PickDate,this.activityDate,this.activityStartTime)
+            // let Features = this.$refs.Features.getUEContent();
+            // Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
+            // obj.Features = $.base64.btoa(Features, "utf8");
+            // let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
+            // ImportantNotes = ImportantNotes.replace(
+            //   /src="\.\.\/Files/g,
+            //   `src="Files`
+            // );
+            // obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+            // console.log(this.PickDate,this.activityDate,this.activityStartTime)
             // if (this.PickDate) {
             //   obj.PickStartTime = this.PickDate[0];
             //   obj.PickEndTime = this.PickDate[1];
@@ -444,9 +437,13 @@ export default {
               obj.StartDate = this.activityDate[0];
               obj.EndDate = this.activityDate[1];
             }
-            if(this.activityStartTime){
+            debugger
+            if(this.activityStartTime!=null){
               obj.StartTime = this.activityStartTime[0];
               obj.EndTime = this.activityStartTime[1];
+            }else{
+               obj.StartTime="";
+               obj.EndTime="";
             }
             obj.ProdList = JSON.stringify(obj.ProdList);
             obj.Action = "SetPromotionInfo";
@@ -454,13 +451,14 @@ export default {
             PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])            
             obj.PromWhere = PromWhere.toString()
             let data =  getLists(obj, "MPromotionOpera");
-            this.$message.success("操作成功,可用二维码浏览");
-            setTimeout(() => {
-              this.$router.push("/weChat/manager/activity/groupGoodSetting");
-            }, 300);
+            // this.$message.success("操作成功,可用二维码浏览");
+            console.log(data)
+            // setTimeout(() => {
+            //   this.$router.push("/weChat/manager/activity/groupGoodSetting");
+            // }, 300);
             this.codeUrl = data.Message;
           } catch (e) {
-            this.$message.error(e);
+            // this.$message.error(e);
           }
         }
       });

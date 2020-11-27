@@ -4,7 +4,7 @@
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="商城设置" name="1">
         <el-form ref="form" :model="form" :rules="rules" label-width="200px">
-          <el-form-item label="送货日期(用户取货)">
+          <!-- <el-form-item label="送货日期(用户取货)">
             <el-input-number
               v-model="form.ScopeDay"
               @change="handleChange"
@@ -14,7 +14,7 @@
             <span style="color: #999"
               >从当前日期开始，可预约多少天配送(自取)</span
             >
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="营业时间段(取货,送货)">
             <el-time-picker
               v-model="form.StartTime"

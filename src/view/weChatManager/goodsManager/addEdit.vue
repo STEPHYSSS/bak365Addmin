@@ -259,9 +259,9 @@
           maxlength="500"
         ></el-input>
       </el-form-item>
-      <el-form-item label="赠送积分" prop="SendScore">
+      <!-- <el-form-item label="赠送积分" prop="SendScore">
         <el-checkbox v-model="ruleForm.SendScore" label="1">不支持购买赠送积分(仅限普通商品)</el-checkbox>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="可提货日期(配送)" prop="PickDate">
         <el-checkbox v-model="assistRuleForm.TakeDateBool">启用</el-checkbox>&nbsp;&nbsp;
         <el-date-picker
@@ -273,10 +273,45 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         ></el-date-picker>
-        <br />
+        <br />        
+      </el-form-item>
+      <el-form-item label="可提货时间(配送)" prop="PickTime">
+        <el-checkbox v-model="assistRuleForm.TakeDateTimeBool">启用</el-checkbox>&nbsp;&nbsp;
+        <el-time-picker
+          v-if="assistRuleForm.TakeDateTimeBool"
+          is-range
+          v-model="ruleForm.PickTime"
+          value-format="HH:mm:ss"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          placeholder="选择时间范围"
+        ></el-time-picker>
+      </el-form-item>
+      <el-form-item label="可购买时间" prop="BuyTime">
+        <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
+        <!-- <el-time-picker
+          v-if="assistRuleForm.BuyTimeBool"
+          is-range
+          v-model="ruleForm.BuyTime"
+          value-format="HH:mm:ss"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          placeholder="选择时间范围"
+        ></el-time-picker> -->
+        <el-date-picker
+          v-if="assistRuleForm.BuyTimeBool" is-range
+          v-model="ruleForm.BuyTime"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期" placeholder="选择日期时间范围">
+        </el-date-picker>
+        <br/>
         <el-select
           class="takeDateBool"
-          v-if="assistRuleForm.TakeDateBool"
+          v-if="assistRuleForm.BuyTimeBool"
           v-model="pickDateValue"
           placeholder="请选择方式"
           style="margin-top: 10px; width: 150px"
@@ -297,35 +332,10 @@
             :value="item.value"
           ></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="可提货时间(配送)" prop="PickTime">
-        <el-checkbox v-model="assistRuleForm.TakeDateTimeBool">启用</el-checkbox>&nbsp;&nbsp;
-        <el-time-picker
-          v-if="assistRuleForm.TakeDateTimeBool"
-          is-range
-          v-model="ruleForm.PickTime"
-          value-format="HH:mm:ss"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          placeholder="选择时间范围"
-        ></el-time-picker>
-      </el-form-item>
-      <el-form-item label="可购买时间" prop="BuyTime">
-        <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
-        <el-time-picker
-          v-if="assistRuleForm.BuyTimeBool"
-          is-range
-          v-model="ruleForm.BuyTime"
-          value-format="HH:mm:ss"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          placeholder="选择时间范围"
-        ></el-time-picker>
+        <el-input v-if="pickDateValue === '2'" readonly="true" v-model="Dates"></el-input>
       </el-form-item>
 
-      <el-form-item label="商品标签" prop="Tag" :key="8">
+      <!-- <el-form-item label="商品标签" prop="Tag" :key="8">
         <tasteList
           ref="labelRef"
           :multiple="false"
@@ -333,7 +343,7 @@
           :allowCreate="false"
           @changeTaste="changeTasteList($event, 0)"
         ></tasteList>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="商品配件" prop="AccessoriesInfo" :key="7">
         <tasteList
           ref="AccessoriesList"
@@ -341,7 +351,7 @@
           :allowCreate="false"
           @changeTaste="changeTasteList($event, 3)"
         ></tasteList>
-        <div style="color: #999">仅支持普通商品，仅实现于自定义模板</div>
+        <!-- <div style="color: #999">仅支持普通商品，仅实现于自定义模板</div> -->
       </el-form-item>
       <!-- <el-form-item label="可用电子劵" prop="TicketInfo">
         <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
@@ -602,7 +612,7 @@ export default {
       pickDateOptions: [
         { value: "0", label: "不限制" },
         { value: "1", label: "按星期" },
-        { value: "2", label: "按几号" }
+        { value: "2", label: "按日期" }
       ],
       valueWeek: [],
       optionsWeek: [
@@ -1528,6 +1538,7 @@ export default {
       this.dialogFormVisible = false;
     },
     handleCheckedCitiesChangeDay(value) {
+      console.log(value,'BuyTimeBool')
       let checkedCount = value.length;
       this.checkAllDay = checkedCount === this.datesList.length;
       this.isIndeterminate =

@@ -79,7 +79,8 @@
               />
             </template>
           </el-table-column>
-          <el-table-column
+          <el-table-column></el-table-column>
+          <!-- <el-table-column
             prop="SurplusQty"
             label="剩余数量"
             align="center"
@@ -94,35 +95,10 @@
                 v-model="row.SurplusQty"
               />
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </el-form-item>
 
-      <!-- <el-form-item
-        label="秒杀售价"
-        prop="SalePrice"
-        v-if="(ruleForm.ProdList&&ruleForm.SpecType=='1')"
-      >
-        ¥
-        <el-input-number v-model="ruleForm.SalePrice" controls-position="right" :min="0"></el-input-number>
-      </el-form-item>
-      <el-form-item label="库存" prop="StoreQty" v-if="ruleForm.ProdList&&ruleForm.SpecType=='1'">
-        ¥
-        <el-input-number
-          :step="1"
-          v-model="ruleForm.StoreQty"
-          controls-position="right"
-          :min="0"
-          @change="setInputDec(ruleForm.StoreQty,'StoreQty')"
-        ></el-input-number>
-      </el-form-item>
-      <el-form-item
-        v-if="ruleForm.ProdList&&ruleForm.SpecType=='1'"
-        label="默认已售多少件"
-        prop="SurplusQty"
-      >
-        <el-input-number v-model="ruleForm.SurplusQty" controls-position="right" :min="0"></el-input-number>
-      </el-form-item>-->
       <el-form-item label="活动名称" prop="Name">
         <el-input
           v-model="ruleForm.Name"
@@ -165,7 +141,7 @@
           <el-option label="关闭" value="0">关闭</el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="产品介绍" prop="Features" class="FeaturesStyle">
+      <!-- <el-form-item label="产品介绍" prop="Features" class="FeaturesStyle">
         <el-button
           type="text"
           @click="FeaturesShow = true"
@@ -198,19 +174,11 @@
           v-if="ImportantNotesShow === true"
           >隐藏</el-button
         >
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
-    <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
-    <mall-goods
-      :goodsShow="goodsShow"
-      @changeDig="changeDig"
-      @sureGood="sureGood"
-      :prodList="prodListArr"
-      :isGroup="isGroup"
-    ></mall-goods>
-    <el-dialog
-      class="areaTree TicketDialog"
+    <mall-goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood" :prodList="prodListArr" :isGroup="isGroup"></mall-goods>
+    <!-- <el-dialog class="areaTree TicketDialog"
       :title="'选择门店'"
       width="600px"
       :before-close="beforeClose"
@@ -230,13 +198,11 @@
         <el-button @click="showCheckTicket = false">取 消</el-button>
         <el-button type="primary" @click="CheckTicketFun">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
 
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
-      <el-button type="primary" style="margin-left: 20px" @click="preserveFun"
-        >保存</el-button
-      >
+      <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
     </div>
 
     <div class="active-code-style" v-if="codeUrl">
@@ -286,7 +252,7 @@ export default {
       },
       multipleL: "",
       activityDate: [],
-      activeTime:[],//活动时间段范围
+      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2020, 12, 31, 9, 40)],//活动时间段范围
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -335,7 +301,6 @@ export default {
     };
   },
   created() {
-    // console.log(this.$route.query.SID, "sid");
     this.codeUrl = this.$route.query.SID;
     this.getInfo();
   },
@@ -364,12 +329,6 @@ export default {
           this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
             ? Number(this.ruleForm.MaxBuyCnt)
             : 0;
-
-          // this.ruleForm.ProdNo = "";
-          // this.ruleForm.ProdList.forEach(D => {
-          //   this.ruleForm.ProdNo +=
-          //     D.ProdNo + (this.ruleForm.ProdList.length > 1 ? ";" : "");
-          // });
           if (this.ruleForm.SpecType === "1") {
             // 单规格
             let ProdArr = this.ruleForm.ProdList[0];
@@ -378,33 +337,27 @@ export default {
             let SurplusQty =
               Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
             this.ruleForm.SurplusQty = SurplusQty;
-            // console.log(this.ruleForm, 888);
           }
 
-          let Features = $.base64.atob(this.ruleForm.Features, "utf8");
-          let ImportantNotes = $.base64.atob(
-            this.ruleForm.ImportantNotes,
-            "utf8"
-          );
-          Features = Features.replace(
-            /src="Files/g,
-            `src="${process.env.Prefix}Files`
-          );
-          ImportantNotes = ImportantNotes.replace(
-            /src="Files/g,
-            `src="${process.env.Prefix}Files`
-          );
-          setTimeout(() => {
-            this.$refs.Features.setUEContent(Features);
-            this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-          }, 300);
+          // let Features = $.base64.atob(this.ruleForm.Features, "utf8");
+          // let ImportantNotes = $.base64.atob(
+          //   this.ruleForm.ImportantNotes,
+          //   "utf8"
+          // );
+          // Features = Features.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
+          // ImportantNotes = ImportantNotes.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
+          // setTimeout(() => {
+          //   this.$refs.Features.setUEContent(Features);
+          //   this.$refs.ImportantNotes.setUEContent(ImportantNotes);
+          // }, 300);
         }
       } catch (e) {}
-
-      // this.fileListUpMain = this.ruleForm.Img ? ImgList(this.ruleForm.Img) : [];
-      // this.fileListUpList = this.ruleForm.ImgList
-      //   ? ImgList(this.ruleForm.ImgList)
-      //   : [];
     },
     changeNorms() {},
     selectGoods(index) {
@@ -431,49 +384,6 @@ export default {
       //   }
       // });
     },
-    upLoadImgsMain(arr) {
-      // 图片
-      if (arr.length > 0) {
-        this.ruleForm.Img = arr[0].url;
-      } else {
-        this.ruleForm.Img = "";
-      }
-    },
-    upLoadImgsList(imgs) {
-      // 图片集
-      let arr = [];
-      imgs.forEach((D) => {
-        arr.push(D.url);
-      });
-      this.ruleForm.ImgList = arr.join(",");
-    },
-    CheckTicketFun() {
-      let newArr = [];
-      //供货门店
-      this.checkClick.forEach((D) => {
-        newArr.push(_.find(this.checkList, { SID: D }));
-      });
-      let { nameArr, idArr } = setData(newArr, "Name", "SID");
-      this.ruleForm.PickShopName = nameArr.join(",");
-      this.ruleForm.ShopInfo = this.checkClick.join(",");
-      this.showCheckTicket = false;
-      this.checkClick = [];
-    },
-    beforeClose(done) {
-      // 提货门店的弹框关闭
-      done();
-    },
-    changeCheckbox(val) {
-      if (val.indexOf("3") > -1) {
-        //选择了物流
-        this.disabledTakeout = true;
-      } else if (val.indexOf("2") > -1) {
-        this.disabledLogistics = true;
-      } else {
-        this.disabledTakeout = false;
-        this.disabledLogistics = false;
-      }
-    },
     cancelFun() {
       // 取消
       this.$router.push("/weChat/manager/activity/goodSetting");
@@ -490,7 +400,7 @@ export default {
           OldPrice: val.OldPrice,
           SalePrice: val.SalePrice,
           Stock: val.Stock,
-          SurplusQty: val.SurplusQty,
+          SurplusQty: val.StoreQty,
           ProdSID: val.ProdSID,
           SpecSID: val.SpecSID,
           ProdNo: val.ProdNo,
@@ -515,23 +425,26 @@ export default {
           } else {
             try {
               let obj = _.cloneDeep(this.ruleForm);              
-              let Features = this.$refs.Features.getUEContent();
-              Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
-              obj.Features = $.base64.btoa(Features, "utf8");
-              let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-              ImportantNotes = ImportantNotes.replace(
-                /src="\.\.\/Files/g,
-                `src="Files`
-              );
-              obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+              // let Features = this.$refs.Features.getUEContent();
+              // Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
+              // obj.Features = $.base64.btoa(Features, "utf8");
+              // let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
+              // ImportantNotes = ImportantNotes.replace(
+              //   /src="\.\.\/Files/g,
+              //   `src="Files`
+              // );
+              // obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
 
               if (this.activityDate) {
                 obj.StartDate = this.activityDate[0];
                 obj.EndDate = this.activityDate[1];
               }
-              if(this.activeTime){
+              if(this.activeTime!=null){
                 obj.StartTime = this.activeTime[0];
                 obj.EndTime = this.activeTime[1];
+              }else{
+                obj.StartTime = "";
+                obj.EndTime=""
               }
               obj.ProdList = JSON.stringify(obj.ProdList);
               obj.Action = "SetPromotionInfo";

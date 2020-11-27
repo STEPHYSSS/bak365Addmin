@@ -16,22 +16,22 @@
         >选择门店</el-button>
       </el-form-item>      
       <el-form-item label="门店名称：" prop="Name">
-        <el-input v-model="form.Name" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Name" placeholder="请输入门店名称"></el-input>
       </el-form-item>
       <el-form-item label="门店地址：" prop="Address">
-        <el-input v-model="form.Address" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Address" placeholder="请输入门店地址"></el-input>
       </el-form-item>
       <el-form-item label="门店电话：" prop="Tel">
-        <el-input v-model="form.Tel" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Tel" oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')" placeholder="请输入电话号码"></el-input>
       </el-form-item>     
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
       <el-form-item label="经度：" prop="Longitude">
-        <el-input v-model="form.Longitude" :readonly="true" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Longitude" :readonly="true"></el-input>
       </el-form-item>
       <el-form-item label="纬度：" prop="Latitude">
-        <el-input v-model="form.Latitude" :readonly="true" placeholder="请输入内容"></el-input>
+        <el-input v-model="form.Latitude" :readonly="true"></el-input>
       </el-form-item>
       <el-form-item label="门店图片：">
         <imgLoad
@@ -100,7 +100,7 @@ export default {
       Name: "", //搜索门店
       currentRow: null,
       rules: {
-        Name: [{ required: true, message: "请填写门店名称", trigger: "blur" }],
+        // Name: [{ required: true, message: "请填写门店名称", trigger: "blur" }],
         // Address: [
         //   { required: true, message: "请填写门店地址", trigger: "blur" }
         // ],
@@ -185,6 +185,9 @@ export default {
           }
           if (this.$route.query.sid) {
             this.form.ShopNo = "";
+          }
+          if(this.form.Name==""){
+            this.$message.error('请填写门店名称')
           }
           // this.form.Type = this.checkedType ? "1,2" : "1";
           let obj = {

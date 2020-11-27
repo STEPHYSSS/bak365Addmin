@@ -13,8 +13,13 @@
           </el-row>
         </template> -->
       </el-table-column>
-      <el-table-column prop="Type" label="活动类型" align="center">
+      <!-- <el-table-column prop="Type" label="活动类型" align="center">
         <template slot-scope="scoped">{{setActiveType(scoped.row.Type)}}</template>
+      </el-table-column> -->
+      <!-- <el-table-column prop="StartDate" label="开始时间" align="center"></el-table-column>
+      <el-table-column prop="EndDate" label="结束时间" align="center"></el-table-column> -->
+      <el-table-column label="活动时间" align="center" width="300">
+        <template slot-scope="scope">{{scope.row.StartDate}} ~ {{scope.row.EndDate}}</template>
       </el-table-column>
       <el-table-column prop="TimeName" label="活动状态" align="center"></el-table-column>
       <el-table-column label="审核状态" align="center">
@@ -38,7 +43,7 @@
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
-                <span>小程序码</span>
+                <span>扫码预览</span>
                 <span class="close" @click="scoped.row.visible = false">×</span>
               </div>
               <div style="width:200px;height:200px;border: 1px solid #efefef;">
@@ -61,7 +66,7 @@
               slot="reference"
               style="margin-left:8px;"
               @click="clicCode(scoped.$index)"
-            >小程序码</el-button>
+            >扫码预览</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -75,7 +80,7 @@
 import ModifyCate from "@/components/Dialog/modifyCate";
 import Del from "@/components/Dialog/del";
 import { getLists } from "@/api/vipCard";
-import { activeUrlGood } from "@/config/index";
+import { activeUrlGood,seckill} from "@/config/index";
 import { DownUrlFunCode } from "@/config/publicFunction";
 import Cookies from "js-cookie";
 import QRCode from "@/components/qrcodejs/qrcodejs";
@@ -90,6 +95,7 @@ export default {
       show: false,
       AppNoMy: Cookies.get("AppNo"),
       activeUrlGood: activeUrlGood,
+      seckill:seckill,//秒杀链接
       currentIndexCode: "",
       current_index: "",
       current_SID: "",
@@ -114,18 +120,23 @@ export default {
         );
         this.loading = false;
         let PromotionList = Data.PromotionList || [];
-        PromotionList.forEach((D) => {
-          D.codeUrl =
-            this.activeUrlGood +
-            "?SID=" +
-            D.SID +
-            "&AppNo=" +
-            this.AppNoMy +
-            "&seckill=true";
-
-          // this.$set(D, "Start", D.Start === "0" || !D.Start ? true : false);
-          // this.$set(D, "Audit", D.Audit === "0" || !D.Audit ? true : false);
+        if(this.activeTypeShow == '1'){
+          PromotionList.forEach((D) => {
+          D.codeUrl =this.seckill + "?SID=" + D.SID;
         });
+        }
+        // PromotionList.forEach((D) => {
+        //   D.codeUrl =
+        //     this.activeUrlGood +
+        //     "?SID=" +
+        //     D.SID +
+        //     "&AppNo=" +
+        //     this.AppNoMy +
+        //     "&seckill=true";
+
+        //   // this.$set(D, "Start", D.Start === "0" || !D.Start ? true : false);
+        //   // this.$set(D, "Audit", D.Audit === "0" || !D.Audit ? true : false);
+        // });
         this.allData = PromotionList;
         this.dataList = PromotionList
         // if (PromotionList.length > 0) {

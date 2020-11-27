@@ -2,7 +2,7 @@
   <div class="activeGoods">
     <!-- 秒杀活动 活动商品列表 -->
     <div style="margin-bottom:20px">
-      <el-button type="primary" size="small" @click="addGood">添加活动商品</el-button>
+      <el-button type="primary" size="small" @click="addGood">添加活动方案</el-button>
     </div>
     <activeGoodsList :activeTypeShow = "activeTypeShow"></activeGoodsList>
   </div>

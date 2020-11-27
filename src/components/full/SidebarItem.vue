@@ -1,17 +1,30 @@
 <template>
   <div class="sidebar">
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" >
+      <!-- <el-menu
+      default-active="2"
+      class="el-menu-vertical-demo"
+      @open="handleOpen"
+      @close="handleClose"
+      background-color="#545c64"
+      text-color="#fff"
+      active-text-color="#ffd04b">
+      <el-submenu index="1" v-for="(item,index) in routes" :key="index">
+        <template slot="title">{{ item.meta.label}}</template>
+        <el-menu-item index="1-1" v-for="(child,index) in item.children" :key="index" @click="addActive">{{child.meta.label}}</el-menu-item>
+      </el-submenu>
+    </el-menu> -->
       <ul class="nav">
         <template v-for="(item,index) in routes">
           <router-link
             tag="li"
-            class="nav-item nav-dropdown"
+            class="nav-item nav-dropdown"     
             v-if="!item.hidden&&item.children&&item.children.length>0"
             :to="item.path+''+item.children[0].path"
             disabled
             :key="index"
           >
-            <div class="nav-link nav-dropdown-toggle" @click="handleClick">
+            <div class="nav-link nav-dropdown-toggle" @click="handleClick" style="text-align:left">
               {{ item.meta.label}}
             </div>
             <ul class="nav-dropdown-items">
@@ -46,7 +59,6 @@
 
 <script>
 import { mapGetters } from "vuex";
-
 export default {
   props: {
     routes: {
@@ -54,7 +66,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      navStatus:''
+    };
   },
   methods: {
     handleClick(e) {

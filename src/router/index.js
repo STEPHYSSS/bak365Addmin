@@ -149,19 +149,21 @@ export const asyncRouterMap = [
             },
             component: logisticsSet
           },
+          // {
+          //   path:'lunboList',
+          //   meta:{
+          //     label:'轮播图设置'
+          //   },
+          //   component:lunboManager
+          // }
+          // ,{//主题颜色设置 
+          //   path:'mainStyle',
+          //   meta:{
+          //     label:'主题颜色设置'
+          //   },
+          //   component:mainStyle
+          // },
           {
-            path:'lunboList',
-            meta:{
-              label:'轮播图设置'
-            },
-            component:lunboManager
-          },{//主题颜色设置 
-            path:'mainStyle',
-            meta:{
-              label:'主题颜色设置'
-            },
-            component:mainStyle
-          },{
             path: 'menuBar',
             meta: {
               label: '自定义菜单栏'
@@ -216,50 +218,53 @@ export const asyncRouterMap = [
               label: '属性管理'
             },
             component: newTaste
-          },{
-            path: 'labelList',
-            meta: {
-              label: '标签管理'
-            },
-            component: tasteList
-          },{
+          },
+          {
             path: 'partsList',
             meta: {
               label: '配件管理'
             },
             component: tasteList
-          },{
-            path: 'userEvaluate',
-            component: {
-              render(c) {
-                return c('router-view')
-              }
-            },
-            meta: {
-              label: '用户评价',
-              noshow: true
-            },
-            redirect: '/weChat/manager/userEvaluate/index',
-            children: [
-              {
-                path: 'index',
-                isHidden: true,
-                meta: {
-                  label: '用户评价列表',
-                  labelNoshow: true
-                },
-                component: userEvaluate
-              },
-              {
-                path: 'info',
-                isHidden: true,
-                meta: {
-                  label: '用户评价详情'
-                },
-                component: userEvaluateInfo
-              }
-            ]
           }
+          // {
+          //   path: 'labelList',
+          //   meta: {
+          //     label: '标签管理'
+          //   },
+          //   component: tasteList
+          // },
+          // ,{
+          //   path: 'userEvaluate',
+          //   component: {
+          //     render(c) {
+          //       return c('router-view')
+          //     }
+          //   },
+          //   meta: {
+          //     label: '用户评价',
+          //     noshow: true
+          //   },
+          //   redirect: '/weChat/manager/userEvaluate/index',
+          //   children: [
+          //     {
+          //       path: 'index',
+          //       isHidden: true,
+          //       meta: {
+          //         label: '用户评价列表',
+          //         labelNoshow: true
+          //       },
+          //       component: userEvaluate
+          //     },
+          //     {
+          //       path: 'info',
+          //       isHidden: true,
+          //       meta: {
+          //         label: '用户评价详情'
+          //       },
+          //       component: userEvaluateInfo
+          //     }
+          //   ]
+          // }
         ]
       },
       {//门店管理
@@ -396,21 +401,22 @@ export const asyncRouterMap = [
             path: 'goodAdd',
             isHidden: true,
             meta: {
-              label: '添加活动商品'
+              label: '添加活动方案'
             },
             component: activityGoodsAdd
           },
+          // {
+          //   path: 'groupGoodSetting',
+          //   meta: {
+          //     label: '拼团活动'
+          //   },
+          //   component: groupGoods
+          // },
           {
-            path: 'groupGoodSetting',
-            meta: {
-              label: '拼团活动'
-            },
-            component: groupGoods
-          },{
             path: 'groupGoodAdd',
             isHidden: true,
             meta: {
-              label: '添加活动商品'
+              label: '添加活动方案'
             },
             component: groupActivityAdd
           },{
