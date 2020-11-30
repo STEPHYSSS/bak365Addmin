@@ -79,7 +79,27 @@
               />
             </template>
           </el-table-column>
-          <el-table-column></el-table-column>
+          <el-table-column prop="MaxBuyCnt" label="限购数量" align="center">
+            <template slot-scope="{ row }">
+              <input
+                oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
+                maxlength="10"
+                class="number" style="width: 100%; text-align: center;border: 1px solid #c1c1c1"
+                type="text"
+                v-model="row.MaxBuyCnt"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" align="center">
+            <template slot-scope="scoped">
+              <el-popover placement="left" v-model="scoped.row.visibleUrl">
+                <el-input v-model="scoped.row.codeUrlShop" readonly placeholder="商品链接">
+                  <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
+                </el-input>
+                <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
+              </el-popover>
+            </template>
+          </el-table-column>
           <!-- <el-table-column
             prop="SurplusQty"
             label="剩余数量"
@@ -128,13 +148,13 @@
           placeholder="选择时间范围"
         ></el-time-picker>
       </el-form-item>
-      <el-form-item label="最大购买数量" prop="MaxBuyCnt">
+      <!-- <el-form-item label="最大购买数量" prop="MaxBuyCnt">
         <el-input-number
           v-model="ruleForm.MaxBuyCnt"
           controls-position="right"
           :min="1"
         ></el-input-number>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="状态" prop="Start">
         <el-select v-model="ruleForm.Start" placeholder="请选择">
           <el-option label="启动" value="1">启动</el-option>
@@ -205,7 +225,7 @@
       <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
     </div>
 
-    <div class="active-code-style" v-if="codeUrl">
+    <!-- <div class="active-code-style" v-if="codeUrl">
       <div class="active-code-style-title">手机微信扫码浏览</div>
       <QRCode
         :newWidth="200"
@@ -217,7 +237,7 @@
           '&seckill=true&isBrowse=true'
         "
       ></QRCode>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -247,7 +267,7 @@ export default {
         //    DeliveryType: ["2", "1"],
         Start: "1",
         SalePrice: 0,
-        MaxBuyCnt: 0,
+        // MaxBuyCnt: 0,
         ProdList: [],
       },
       multipleL: "",
@@ -323,12 +343,20 @@ export default {
           this.ruleForm = res[0].Data.Promotion;
           this.ruleForm.ProdList = res[0].Data.ItemList;
           this.prodListArr = res[0].Data.ItemList;
-
+          let query={ SID:"",
+          seckill:true
+          }
+          this.ruleForm.ProdList.forEach(D => {
+            // D.codeUrlShop = this.activeUrlGood+ "?SID=" + D.SID + "&seckill=true"
+           
+            query.SID = D.SID;
+            D.codeUrlShop = this.activeUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
+          });
           this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
           this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
-          this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
-            ? Number(this.ruleForm.MaxBuyCnt)
-            : 0;
+          // this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
+          //   ? Number(this.ruleForm.MaxBuyCnt)
+          //   : 0;
           if (this.ruleForm.SpecType === "1") {
             // 单规格
             let ProdArr = this.ruleForm.ProdList[0];
@@ -338,7 +366,7 @@ export default {
               Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
             this.ruleForm.SurplusQty = SurplusQty;
           }
-
+          
           // let Features = $.base64.atob(this.ruleForm.Features, "utf8");
           // let ImportantNotes = $.base64.atob(
           //   this.ruleForm.ImportantNotes,
@@ -401,6 +429,7 @@ export default {
           SalePrice: val.SalePrice,
           Stock: val.Stock,
           SurplusQty: val.StoreQty,
+          MaxBuyCnt:val.MaxBuyCnt,//限购数量
           ProdSID: val.ProdSID,
           SpecSID: val.SpecSID,
           ProdNo: val.ProdNo,
@@ -449,7 +478,7 @@ export default {
               obj.ProdList = JSON.stringify(obj.ProdList);
               obj.Action = "SetPromotionInfo";
               let data = await getLists(obj, "MPromotionOpera");
-              this.$message.success("操作成功,可用二维码浏览");
+              // this.$message.success("操作成功,可用二维码浏览");
               setTimeout(() => {
                 this.$router.push("/weChat/manager/activity/goodSetting");
               }, 300);
@@ -459,6 +488,15 @@ export default {
             }
           }
         });
+    },
+    copyUrl(val) {
+      let index = $(".el-popover").length - 1;
+      let input = $($(".el-popover")[index]).find("input");
+      // // 复制输入框的地址
+      input.select();
+      document.execCommand("Copy");
+      this.$Message.info("复制成功");
+      val.visibleUrl = false;
     },
     setInputDec(FinHour, val) {
       //不让填写小数

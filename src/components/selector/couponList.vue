@@ -35,8 +35,6 @@ export default {
   async created(){
     try{
       let data = await getLists({Action: 'GetTicketTypeList'},'MTicketOpera')
-
-      console.log(data, 44444)
       this.allData = data.Data.TicketType || []
 
       if(this.defaultId){
@@ -44,7 +42,7 @@ export default {
         let a = _.find(this.allData,{TypeNo:this.defaultId})
         this.value = a.TypeName
       }
-      // this.$emit('changeValue', a)
+      this.$emit('changeValue', a)
     }catch(e){}
   },
   methods: {

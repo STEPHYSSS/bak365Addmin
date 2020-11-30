@@ -243,7 +243,7 @@
         ></el-input-number>
         {{ isAdvanceTime == "1" ? "天" : "小时" }}预定
         <!-- <el-input-number style="margin-left:20px" v-model="ruleForm.FinHour" controls-position="right" :min="0"></el-input-number>天预定 -->
-        <div style="color: #999">小时与天数冲突</div>
+        <!-- <div style="color: #999">小时与天数冲突</div> -->
       </el-form-item>
       <el-form-item label="供货门店" prop="ShopInfo">
         <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择门店"></el-input>
@@ -332,7 +332,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-input v-if="pickDateValue === '2'" readonly="true" v-model="Dates"></el-input>
+        <el-input v-if="pickDateValue === '2'&&assistRuleForm.BuyTimeBool" readonly="true" v-model="Dates"></el-input>
       </el-form-item>
 
       <!-- <el-form-item label="商品标签" prop="Tag" :key="8">
@@ -860,177 +860,6 @@ export default {
         this.loading = false;
       }
     },
-    // async getList() {
-    //   try {
-    //     this.loading = true;
-    //     // 获取电子券列表
-    //     let info = this.$route.query.SID || ''
-    //       ? getLists(
-    //           {
-    //             Action: "GetProdInfo",
-    //             SID: this.$route.query.SID
-    //           },
-    //           "MProdOpera"
-    //         )
-    //       : [];
-    //     let res = await Promise.all([
-    //       getLists({ Action: "GetTicketList" }, "MProdOpera"),
-    //       info,
-    //       getLists({ Action: "GetShopList" }, "MShopOpera")
-    //     ]);
-    //     if (res[1].Data && res[1].Data.ProdInfo) {
-    //       this.getInfo(res[1].Data.ProdInfo)
-    //     }else {
-    //       this.getInfo()
-    //     }
-    //     this.TicketList = res[0].Data.TicketList;
-    //     this.storeList = res[2].Data.ShopInfoList;
-    //     if (!this.$route.query.SID) {
-    //       this.loading = false;
-    //       return;
-    //     }
-    //     this.ruleForm = res[1].Data.ProdInfo;
-    //     this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
-
-    //     if (this.ruleForm.Weeks) {
-    //       this.pickDateValue = "1";
-    //       this.Weeks = this.ruleForm.Weeks.split(",");
-    //     }
-    //     if (this.ruleForm.Dates) {
-    //       this.pickDateValue = "2";
-    //       this.Dates = this.ruleForm.Dates.split(",");
-    //       this.handleCheckedCitiesChangeDay(this.Dates);
-    //     }
-
-    //     this.ruleForm.CateSID = this.ruleForm.CateSID
-    //       ? this.ruleForm.CateSID.split(",")
-    //       : this.ruleForm.CateSID;
-    //     this.$refs.goodType.value = this.ruleForm.CateSID;
-
-    //     this.ruleForm.PayType = this.ruleForm.PayType
-    //       ? this.ruleForm.PayType.split(",")
-    //       : [];
-    //     // this.ruleForm.TastName = this.ruleForm.TastName
-    //     //   ? this.ruleForm.TastName.split(",")
-    //     //   : [];
-
-    //     this.ruleForm.DeliveryType = this.ruleForm.DeliveryType
-    //       ? this.ruleForm.DeliveryType.split(",")
-    //       : [];
-
-    //     this.ruleForm.SendScore =
-    //       this.ruleForm.SendScore === "0" ? false : true;
-
-    //     if (this.ruleForm.PickDate) {
-    //       this.assistRuleForm.TakeDateBool = true;
-    //       this.ruleForm.PickDate = this.ruleForm.PickDate
-    //         ? this.ruleForm.PickDate.split(",")
-    //         : [];
-    //     }
-    //     if (this.ruleForm.PickTime) {
-    //       this.assistRuleForm.TakeDateTimeBool = true;
-    //       this.ruleForm.PickTime = this.ruleForm.PickTime
-    //         ? this.ruleForm.PickTime.split(",")
-    //         : [];
-    //     }
-
-    //     if (this.ruleForm.BuyTime) {
-    //       this.assistRuleForm.BuyTimeBool = true;
-    //       this.ruleForm.BuyTime = this.ruleForm.BuyTime
-    //         ? this.ruleForm.BuyTime.split(",")
-    //         : [];
-    //     }
-
-    //     this.$refs.labelRef.value = this.ruleForm.Tag;
-    //     this.$refs.AccessoriesList.value = this.ruleForm.AccessoriesInfo
-    //       ? this.ruleForm.AccessoriesInfo.split(",")
-    //       : [];
-
-    //     let arr = this.ruleForm.TicketInfo
-    //       ? this.ruleForm.TicketInfo.split(",")
-    //       : [];
-    //     let newArr = [];
-    //     arr.forEach(D => {
-    //       newArr.push(_.find(this.TicketList, { SID: D }));
-    //     });
-    //     let { nameArr, idArr } = setData(newArr, "Name", "SID");
-    //     this.ruleForm.TicketInfoName = nameArr.join(",");
-
-    //     this.checkClick1 = this.ruleForm.ShopInfo
-    //       ? this.ruleForm.ShopInfo.split(",")
-    //       : [];
-    //     let newArr1 = [];
-
-    //     this.checkClick1.forEach(D => {
-    //       newArr1.push(_.find(this.storeList, { SID: D }));
-    //     });
-    //     if (newArr1.length === 0) {
-    //       //全选
-    //       let arrstore = [];
-    //       this.storeList.forEach(D => {
-    //         arrstore.push(D.SID);
-    //       });
-    //       this.checkClick = arrstore;
-    //       this.ruleForm.PickShopName = "全部门店";
-    //     } else {
-    //       let data = setData(newArr1, "Name", "SID");
-    //       this.ruleForm.PickShopName = data.nameArr.join(",");
-    //     }
-
-    //     this.fileListUpList = this.ruleForm.ImgList
-    //       ? ImgList(this.ruleForm.ImgList)
-    //       : [];
-    //     this.fileListUpMain = this.ruleForm.Img
-    //       ? ImgList(this.ruleForm.Img)
-    //       : [];
-
-    //     let Features = $.base64.atob(this.ruleForm.Features, "utf8");
-    //     let ImportantNotes = $.base64.atob(
-    //       this.ruleForm.ImportantNotes,
-    //       "utf8"
-    //     );
-
-    //     Features = Features.replace(
-    //       /src="Files/g,
-    //       `src="${process.env.Prefix}Files`
-    //     );
-    //     ImportantNotes = ImportantNotes.replace(
-    //       /src="Files/g,
-    //       `src="${process.env.Prefix}Files`
-    //     );
-
-    //     this.$refs.Features.setUEContent(Features);
-    //     this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-
-    //     this.ruleForm.SpecList = this.ruleForm.SpecList
-    //       ? this.ruleForm.SpecList
-    //       : [];
-    //     if (this.ruleForm.SpecList && this.ruleForm.SpecList.length > 0) {
-    //       this.ruleForm.SpecList.forEach(D => {
-    //         D.Img = D.Img ? ImgList(D.Img) : [];
-    //         D.showImg = D.Img ? D.Img : [];
-
-    //         // D.TastName = D.TastName ? D.TastName.split(",") : [];
-    //       });
-    //     }
-
-    //     this.changeCheckbox(this.ruleForm.DeliveryType.join(",")); //默认物流与配送冲突
-
-    //     if (this.ruleForm.FinHour && Number(this.ruleForm.FinHour) > 23) {
-    //       this.ruleForm.FinHour = Number(this.ruleForm.FinHour) / 24; //时间转化为天数
-    //       this.isAdvanceTime = "1";
-    //     } else if (
-    //       this.ruleForm.FinHour &&
-    //       Number(this.ruleForm.FinHour) < 23
-    //     ) {
-    //       this.isAdvanceTime = "2";
-    //     }
-
-    //     this.loading = false;
-    //   } catch (e) {
-    //     this.loading = false;
-    //   }
-    // },
     setTastName(arr) {
       if (arr) {
         return arr.split(",");
@@ -1136,6 +965,11 @@ export default {
                         
             let obj = _.cloneDeep(this.ruleForm);
             Object.assign(obj, { Action: "SetProdInfo" });
+            if(this.isAdvanceTime === '1'){
+              obj.FinType = '1'
+            }else if(this.isAdvanceTime === '2'){
+              obj.FinType = '2'
+            }
             // itar+tab
             if (
               this.checkClick.length === this.checkList.length ||
@@ -1243,7 +1077,6 @@ export default {
             } else {
               obj.PickTime = "";
             }
-
             if (this.assistRuleForm.BuyTimeBool) {
               if (!obj.BuyTime) {
                 this.$message.info("填写购买时间");

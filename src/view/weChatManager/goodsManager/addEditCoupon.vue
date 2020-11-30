@@ -211,37 +211,37 @@ export default {
       }
 
       this.$refs.ruleForm.validate(async (valid) => {
-        if (valid) {
-          try {
-            let obj = {}
-            Object.assign(obj, {Action: 'SetTicket'})
-            Object.assign(obj, this.ruleForm)
+        // if (valid) {
+        //   try {
+        //     let obj = {}
+        //     Object.assign(obj, {Action: 'SetTicket'})
+        //     Object.assign(obj, this.ruleForm)
 
-            if (this.ruleForm.Start) {
-              obj.Start = 1
-              obj.BuyTime = this.assistRuleForm.BuyTime[0]
-              obj.EndTime = this.assistRuleForm.BuyTime[1]
-            } else {
-              obj.Start = 0
-              obj.BuyTime = ''
-              obj.EndTime = ''
-            }
+        //     if (this.ruleForm.Start) {
+        //       obj.Start = 1
+        //       obj.BuyTime = this.assistRuleForm.BuyTime[0]
+        //       obj.EndTime = this.assistRuleForm.BuyTime[1]
+        //     } else {
+        //       obj.Start = 0
+        //       obj.BuyTime = ''
+        //       obj.EndTime = ''
+        //     }
 
-            obj.Features = $.base64.btoa(this.$refs.Features.getUEContent(), 'utf8')
-            obj.ImportantNotes = $.base64.btoa(this.$refs.ImportantNotes.getUEContent(), 'utf8')
-            this.btnLoading = true
+        //     obj.Features = $.base64.btoa(this.$refs.Features.getUEContent(), 'utf8')
+        //     obj.ImportantNotes = $.base64.btoa(this.$refs.ImportantNotes.getUEContent(), 'utf8')
+        //     this.btnLoading = true
 
-            await getLists(obj, 'MTicketOpera')
-            this.btnLoading = false
-            this.$message.success('操作成功')
-            this.$router.push('/weChat/manager/couponSetting')
-          } catch (e) {
-            this.btnLoading = false
-            this.$message.error(e)
-          }
-        } else {
-          return false;
-        }
+        //     await getLists(obj, 'MTicketOpera')
+        //     this.btnLoading = false
+        //     this.$message.success('操作成功')
+        //     this.$router.push('/weChat/manager/couponSetting')
+        //   } catch (e) {
+        //     this.btnLoading = false
+        //     this.$message.error(e)
+        //   }
+        // } else {
+        //   return false;
+        // }
       })
     }
   },
