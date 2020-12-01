@@ -61,6 +61,28 @@
           </el-select>
         </el-col>
       </el-row>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <span>开始时间：</span>
+          <el-date-picker
+            v-model="search.StartAddTime"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            @change="changeTime">
+          </el-date-picker>
+        </el-col>
+        <el-col :span="6">
+          <span>结束时间：</span>
+          <el-date-picker
+            v-model="search.EndAddTime"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd hh:mm:ss"
+            @change="changeTime">
+          </el-date-picker>
+        </el-col>
+      </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column prop="SID" label="单号" align="center"></el-table-column>
@@ -73,6 +95,9 @@
       <el-table-column prop="PayAmt" label="支付金额" align="center">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>
+      <el-table-column prop="PayType" label="支付状态" align="center">
+         <template slot-scope="scope">{{scope.row.PayType|PayTypeTip}}</template>
+      </el-table-column>
       <el-table-column prop="State" label="订单状态" align="center">
         <template slot-scope="scope">{{scope.row.State |orderState}}</template>
       </el-table-column>
@@ -82,7 +107,7 @@
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
+      <el-table-column prop="AddTime" label="下单时间" align="center"></el-table-column>、
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="text" @click="viewRow(scope.row)">查看</el-button>
@@ -112,6 +137,7 @@ export default {
     return {
       search: {
         searchTime: "",
+        State:'0'
       },
       dataList: [],
       StateList: stateLists,
@@ -132,12 +158,12 @@ export default {
       this.loading = true;
       try {
         let obj = { Action: "GetOrderList",Page: this.currentPage - 1,OrderType:'2',State:'0'};
-        this.search.StartAddTime = this.search.searchTime
-          ? this.search.searchTime[0]
-          : "";
-        this.search.EndAddTime = this.search.searchTime
-          ? this.search.searchTime[1]
-          : "";
+        // this.search.StartAddTime = this.search.searchTime
+        //   ? this.search.searchTime[0]
+        //   : "";
+        // this.search.EndAddTime = this.search.searchTime
+        //   ? this.search.searchTime[1]
+        //   : "";
         obj = Object.assign(obj, this.search);
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
@@ -162,10 +188,22 @@ export default {
     changeState() {
       this.getList();
     },
+    changeTime(){
+      this.getList();
+    },
     viewRow(val) {
       this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=2');
     },
   },
+  filters:{
+    PayTypeTip(val){
+      if(val === '1'){
+        return '微卡支付'
+      }else{
+        return '微信支付'
+      }
+    }
+  }
 };
 </script>
 

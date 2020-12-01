@@ -33,7 +33,7 @@ export default {
         autoFloatEnabled: false, //是否工具栏可浮动
         initialContent: "", //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
         autoClearinitialContent: true, //是否自动清除编辑器初始内容，注意：如果focus属性设置为true,这个也为真，那么编辑器一上来就会触发导致初始化的内容看不到了
-        initialFrameWidth: 400,
+        initialFrameWidth: 600,
         initialFrameHeight: this.frameHeight || 350,
         BaseUrl: "",
         elementPathEnabled: false,
@@ -54,6 +54,7 @@ export default {
   updated() {},
   mounted() {
     this.editor = window.UE.getEditor(this.randomId, this.config);
+    console.log(this.config)
     let _this = this;
     this.editor.addListener("simpleupload_customcomplete", function(
       //图片上传成功

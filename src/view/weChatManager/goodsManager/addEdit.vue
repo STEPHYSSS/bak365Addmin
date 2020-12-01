@@ -332,7 +332,7 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-input v-if="pickDateValue === '2'&&assistRuleForm.BuyTimeBool" readonly="true" v-model="Dates"></el-input>
+        <el-input v-if="pickDateValue === '2'&&assistRuleForm.BuyTimeBool" :readonly="true" v-model="Dates"></el-input>
       </el-form-item>
 
       <!-- <el-form-item label="商品标签" prop="Tag" :key="8">
@@ -772,11 +772,10 @@ export default {
             : [];
         }
 
-        this.$refs.labelRef.value = this.ruleForm.Tag;
+        // this.$refs.labelRef.value = this.ruleForm.Tag;
         this.$refs.AccessoriesList.value = this.ruleForm.AccessoriesInfo
           ? this.ruleForm.AccessoriesInfo.split(",")
           : [];
-
         let arr = this.ruleForm.TicketInfo
           ? this.ruleForm.TicketInfo.split(",")
           : [];
@@ -829,7 +828,7 @@ export default {
           /src="Files/g,
           `src="${process.env.Prefix}Files`
         );
-
+      console.log(Features,ImportantNotes,'88888')
         this.$refs.Features.setUEContent(Features);
         this.$refs.ImportantNotes.setUEContent(ImportantNotes);
 
@@ -970,6 +969,9 @@ export default {
             }else if(this.isAdvanceTime === '2'){
               obj.FinType = '2'
             }
+            if(this.assistRuleForm.BuyTimeBool === false){
+              obj.Dates = "";
+            }
             // itar+tab
             if (
               this.checkClick.length === this.checkList.length ||
@@ -1051,11 +1053,12 @@ export default {
 
             let Features = this.$refs.Features.getUEContent();
             let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-            Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
+            Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);            
             ImportantNotes = ImportantNotes.replace(
               /src="\.\.\/Files/g,
               `src="Files`
             );
+            console.log(Features,ImportantNotes,'5555')
             obj.Features = $.base64.btoa(Features, "utf8");
             obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
 

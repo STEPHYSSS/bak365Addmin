@@ -34,6 +34,11 @@ const TiketIndex = r => require.ensure([], () => r(require('../view/weChatManage
 const wellFuIndex = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/wellFuIndex')), 'wellFuIndex')
 const orderInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/orderInfo')), 'orderInfo')
 const refundSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/orderList/refund')), 'refundSet')
+
+//订单退款管理
+const orderRefund = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/RefundManage/orderRefund')), 'orderRefund')
+const ticketRefund = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/RefundManage/ticketRefund')), 'ticketRefund')
+const wellFuRefund = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/RefundManage/wellFuRefund')), 'wellFuRefund')
 // 积分商城管理
 const integralGoods = r => require.ensure([], () => r(require('../view/weChatManager/integralManager/index')), 'integralManager')
 const integralGoodsAdd = r => require.ensure([], () => r(require('../view/weChatManager/integralManager/addEdit/index')), 'integralGoodsAdd')
@@ -319,7 +324,7 @@ export const asyncRouterMap = [
           {
             path: 'index',
             meta: {
-              label: '订单列表',
+              label: '销售订单',
             },
             component: orderList
           },
@@ -340,13 +345,46 @@ export const asyncRouterMap = [
               label: '订单详情'
             },
             component: orderInfo
-          }, {
-            path: 'refundSet',
-            meta: {
-              label: '退款审核管理'
-            },
-            component: refundSet
           }
+          // , {
+          //   path: 'refundSet',
+          //   meta: {
+          //     label: '退款审核管理'
+          //   },
+          //   component: refundSet
+          // }
+        ]
+      },
+       {//订单退款管理
+        path: '/weChat/manager/RefundManage',
+        meta: {
+          label: '退款管理'
+        },
+        component: {
+          render(c) {
+            return c('router-view')
+          }
+        },
+        redirect: '/weChat/manager/RefundManage/orderRefund',
+        children:[
+          {
+            path: 'orderRefund',
+            meta: {
+              label: '销售订单退款审核',
+            },
+            component: orderRefund
+          }
+          // ,
+          // {
+          //   path:'ticketRefund',
+          //   meta:{ label: '电子券订单退款审核' },
+          //   component:ticketRefund
+          // },
+          // {
+          //   path:'wellFuRefund',
+          //   meta:{ label: '充值订单退款审核' },
+          //   component:wellFuRefund
+          // }
         ]
       },
       // {//积分商城管理

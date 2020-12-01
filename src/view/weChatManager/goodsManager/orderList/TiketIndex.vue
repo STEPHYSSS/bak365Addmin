@@ -19,7 +19,7 @@
             class="selectSearch"
           >
             <el-option
-              v-for="item in StateList"
+              v-for="item in TickStateList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -51,8 +51,11 @@
       <el-table-column prop="PayAmt" label="支付金额" align="center">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>
+      <el-table-column prop="PayType" label="支付状态" align="center">
+         <template slot-scope="scope">{{scope.row.PayType|PayTypeTip}}</template>
+      </el-table-column>
       <el-table-column prop="State" label="订单状态" align="center">
-        <template slot-scope="scope">{{scope.row.State |orderState}}</template>
+        <template slot-scope="scope">{{scope.row.State |TickOrderState}}</template>
       </el-table-column>
       <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
       <!-- <el-table-column label="操作">
@@ -77,16 +80,18 @@
 
 <script>
 import { getLists } from "@/api/vipCard";
-import { stateLists, payTypeLists, deliveryTypeLists } from "@/config/utils";
+import { stateLists,TickStateList, payTypeLists, deliveryTypeLists } from "@/config/utils";
 export default {
   name: "",
   data() {
     return {
       search: {
         searchTime: "",
+        State:'-2'
       },
       dataList: [],
       StateList: stateLists,
+      TickStateList:TickStateList,//订单状态
       loading: true,
       PayTypeList: payTypeLists,
       DeliveryTypeList: deliveryTypeLists,
@@ -139,6 +144,15 @@ export default {
     //   this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=3');
     // },
   },
+  filters:{
+    PayTypeTip(val){
+      if(val === '1'){
+        return '微卡支付'
+      }else{
+        return '微信支付'
+      }
+    }
+  }
 };
 </script>
 

@@ -94,6 +94,11 @@ export const stateLists = [
   { label: '已作废', value: '4' }
 ]
 
+export const TickStateList = [
+  { label: '已取消', value: '-3' },
+  { label: '已付款', value: '-2' },
+  { label: '待付款', value: '-1' }]
+
 export const deliveryTypeLists = [
   { label: '到店取餐', value: '1' },
   { label: '外卖配送', value: '2' }
@@ -101,7 +106,12 @@ export const deliveryTypeLists = [
 ]
 
 export const refundStateTypeLists = [
-  { label: '订单正常', value: '1' },
+  { label: '暂无申请', value: '1' },
+  { label: '申请退款中', value: '2' },
+  { label: '退款成功', value: '3' },
+  { label: '退款失败', value: '4' }
+]
+export const refundState = [
   { label: '申请退款中', value: '2' },
   { label: '退款成功', value: '3' },
   { label: '退款失败', value: '4' }

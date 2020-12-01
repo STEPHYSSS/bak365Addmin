@@ -19,24 +19,7 @@
             class="selectSearch"
           >
             <el-option
-              v-for="item in StateList"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="8">
-          <span>支付类型：</span>
-          <el-select
-            v-model="search.PayType"
-            placeholder="请选择支付类型"
-            clearable
-            @change="changeState"
-            style="margin-left:5px"
-          >
-            <el-option
-              v-for="item in PayTypeList"
+              v-for="item in TickStateList"
               :key="item.value"
               :label="item.label"
               :value="item.value"
@@ -51,7 +34,7 @@
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>
       <el-table-column prop="State" label="订单状态" align="center">
-        <template slot-scope="scope">{{scope.row.State |orderState}}</template>
+        <template slot-scope="scope">{{scope.row.State |TickOrderState}}</template>
       </el-table-column>
       <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
       <!-- <el-table-column label="操作">
@@ -76,16 +59,17 @@
 
 <script>
 import { getLists } from "@/api/vipCard";
-import { stateLists, payTypeLists, deliveryTypeLists } from "@/config/utils";
+import { TickStateList, payTypeLists, deliveryTypeLists } from "@/config/utils";
 export default {
   name: "",
   data() {
     return {
       search: {
         searchTime: "",
+        State:'-2'
       },
       dataList: [],
-      StateList: stateLists,
+      TickStateList: TickStateList,
       loading: true,
       PayTypeList: payTypeLists,
       DeliveryTypeList: deliveryTypeLists,
