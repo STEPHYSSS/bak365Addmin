@@ -822,11 +822,11 @@ export default {
 
         Features = Features.replace(
           /src="Files/g,
-          `src="${process.env.Prefix}Files`
+          `src="${process.env.BASE_URL}${process.env.Prefix}Files`
         );
         ImportantNotes = ImportantNotes.replace(
           /src="Files/g,
-          `src="${process.env.Prefix}Files`
+          `src="${process.env.BASE_URL}${process.env.Prefix}Files`
         );
       console.log(Features,ImportantNotes,'88888')
         this.$refs.Features.setUEContent(Features);
@@ -1053,10 +1053,11 @@ export default {
 
             let Features = this.$refs.Features.getUEContent();
             let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-            Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);            
+            Features = Features.replace(/src="\.\.\/Files/g, `src="${process.env.BASE_URL}${process.env.Prefix}Files`);            
             ImportantNotes = ImportantNotes.replace(
               /src="\.\.\/Files/g,
-              `src="Files`
+              `src="${process.env.BASE_URL}${process.env.Prefix}Files`
+              
             );
             console.log(Features,ImportantNotes,'5555')
             obj.Features = $.base64.btoa(Features, "utf8");

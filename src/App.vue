@@ -193,4 +193,7 @@ div::-webkit-scrollbar {
   width: 30px !important;
   height: 30px !important;
 }
+.el-table__body tr.current-row>td{
+  background-color: #c1d7ec;
+}
 </style>

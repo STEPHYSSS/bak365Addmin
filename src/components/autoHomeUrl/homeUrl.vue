@@ -57,18 +57,18 @@ export default {
           Name: "商品列表",
           url: url + "pages/shoppingMall/list/goodsList",
         },
-        {
-          Name: "积分商城",
-          url: url + "pages/integralMall/index",
-        },
+        // {
+        //   Name: "积分商城",
+        //   url: url + "pages/integralMall/index",
+        // },
         {
           Name: "秒杀活动",
           url: url + "pages/shoppingMall/seckill/index",
         },
-        {
-          Name: "拼团活动",
-          url: url + "pages/shoppingMall/makeGroup/makeGroup",
-        },
+        // {
+        //   Name: "拼团活动",
+        //   url: url + "pages/shoppingMall/makeGroup/makeGroup",
+        // },
         {
           Name: "购物车",
           url: url + "pages/shoppingMall/shoppingCart/index",

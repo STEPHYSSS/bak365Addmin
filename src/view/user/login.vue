@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { GetQueryString } from "@/config/publicFunction";
+import { GetQueryString,GetAppNo } from "@/config/publicFunction";
 
 export default {
   data() {
@@ -53,13 +53,13 @@ export default {
     };
   },
   mounted() {
-    this.$router.push({path: '/login' + '?AppNo=001'})    //记得删除，模拟商户编号
-    // this.loginForm.AppNo = GetQueryString("AppNo");
+    // this.$router.push({path: '/login' + '?AppNo=001'})    //记得删除，模拟商户编号
+    this.loginForm.AppNo = GetAppNo();
   },
   computed: {},
   methods: {
     login() {
-      this.loginForm.AppNo = GetQueryString("AppNo");
+      this.loginForm.AppNo = GetAppNo();
       this.$refs["ruleForm"].validate(async valid => {
         if (!valid) {
           return false;

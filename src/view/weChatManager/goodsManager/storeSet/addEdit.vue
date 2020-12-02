@@ -5,8 +5,8 @@
        <el-form-item label="门店区域：" prop="AreaSID">
         <storeAreaList @changeType="changeType" :setArea="setArea"></storeAreaList>
       </el-form-item>
-      <el-form-item label="门店编号" prop="ShopNo">
-        <el-input v-model="form.ShopNo" :readonly="true" placeholder="请选择门店"></el-input>
+      <el-form-item label="门店编号：" prop="ShopNo">
+        <el-input v-model="form.ShopNo" :disabled="true" placeholder="请选择门店"></el-input>
         <el-button
           type="primary"
           style="margin-left:10px"
@@ -16,22 +16,22 @@
         >选择门店</el-button>
       </el-form-item>      
       <el-form-item label="门店名称：" prop="Name">
-        <el-input v-model="form.Name" placeholder="请输入门店名称"></el-input>
+        <el-input v-model="form.Name" :disabled="true" placeholder="请输入门店名称"></el-input>
       </el-form-item>
       <el-form-item label="门店地址：" prop="Address">
-        <el-input v-model="form.Address" placeholder="请输入门店地址"></el-input>
+        <el-input v-model="form.Address" :disabled="true" placeholder="请输入门店地址"></el-input>
       </el-form-item>
       <el-form-item label="门店电话：" prop="Tel">
-        <el-input v-model="form.Tel" oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')" placeholder="请输入电话号码"></el-input>
+        <el-input v-model="form.Tel" :disabled="true" oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')" placeholder="请输入电话号码"></el-input>
       </el-form-item>     
       <!-- <el-form-item label="支持配送：" prop="Type">
         <el-checkbox v-model="checkedType"></el-checkbox>
       </el-form-item>-->
       <el-form-item label="经度：" prop="Longitude">
-        <el-input v-model="form.Longitude" :readonly="true"></el-input>
+        <el-input v-model="form.Longitude" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="纬度：" prop="Latitude">
-        <el-input v-model="form.Latitude" :readonly="true"></el-input>
+        <el-input v-model="form.Latitude" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="门店图片：">
         <imgLoad

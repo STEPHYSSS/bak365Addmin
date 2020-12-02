@@ -1,5 +1,5 @@
 import { HeardUrl } from '@/config/index'
-
+import Cookies from 'js-cookie';
 export function DownUrlFun(imgSrc) {
   let url = imgSrc
   let src = null
@@ -109,6 +109,21 @@ export function GetQueryString(name) {
   if (r != null) return unescape(r[2]);
   return null;
 }
+export function GetAppNo() {
+  if(window.location.hostname == "localhost" || window.location.hostname == "dingtalk.bak365.cn" ){
+     let AppNo='001';
+     Cookies.set(AppNo,'001')
+     sessionStorage.setItem('AppNo',AppNo)
+     return AppNo;
+  }else{
+    let AppNo=window.location.hostname.substr(0,window.location.hostname.indexOf('.'));
+    sessionStorage.setItem('AppNo',AppNo)
+     Cookies.set(AppNo,AppNo)
+        return  AppNo;
+  }
+}
+
+
 
 export function ImgList(list) {
   // 判断是否是数组，然后换成 [{url:图片地址}]

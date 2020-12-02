@@ -4,6 +4,8 @@
  * build: Thu May 29 2014 16:47:49 GMT+0800 (中国标准时间)
  */
 
+const loader = require("sass-loader");
+
 (function(){
 
 // editor.js
@@ -24536,7 +24538,8 @@ UE.plugin.register('simpleupload', function (){
                     loader = me.document.getElementById(loadingId);
                     // 显示的数据
                     // loader.setAttribute('src', process.env.Prefix+response.url);//暂时注释
-                    loader.setAttribute('src', process.env.BASE_URL+response.url);
+                    // loader.setAttribute('src', process.env.BASE_URL+response.url);
+                    loader.setAttribute('src',process.env.BASE_URL+response.url)
                     // 传过去的数据
                     loader.setAttribute('_src', response.url);
                     loader.setAttribute('title', response.title || '');
