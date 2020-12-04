@@ -303,6 +303,7 @@
         <el-date-picker
           v-if="assistRuleForm.BuyTimeBool" is-range
           v-model="ruleForm.BuyTime"
+          value-format="yyyy-MM-DD HH:mm:ss"
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -724,7 +725,7 @@ export default {
           return;
         }
         this.ruleForm = res[0].Data.ProdInfo;
-        this.$set(this.ruleForm, "SpecList", res[1].Data.SpecList);
+        this.$set(this.ruleForm, "SpecList", res[0].Data.SpecList);
 
         if (this.ruleForm.Weeks) {
           this.pickDateValue = "1";
@@ -822,16 +823,14 @@ export default {
 
         Features = Features.replace(
           /src="Files/g,
-          `src="${process.env.BASE_URL}${process.env.Prefix}Files`
+          `src="${process.env.Prefix}Files`
         );
         ImportantNotes = ImportantNotes.replace(
           /src="Files/g,
-          `src="${process.env.BASE_URL}${process.env.Prefix}Files`
+          `src="${process.env.Prefix}Files`
         );
-      console.log(Features,ImportantNotes,'88888')
         this.$refs.Features.setUEContent(Features);
         this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-
         this.ruleForm.SpecList = this.ruleForm.SpecList
           ? this.ruleForm.SpecList
           : [];
@@ -843,16 +842,20 @@ export default {
         }
 
         this.changeCheckbox(this.ruleForm.DeliveryType.join(",")); //默认物流与配送冲突
-
-        if (this.ruleForm.FinHour && Number(this.ruleForm.FinHour) > 23) {
-          this.ruleForm.FinHour = Number(this.ruleForm.FinHour) / 24; //时间转化为天数
+        if(this.ruleForm.FinType == '1'){
           this.isAdvanceTime = "1";
-        } else if (
-          this.ruleForm.FinHour &&
-          Number(this.ruleForm.FinHour) < 23
-        ) {
+        }else{
           this.isAdvanceTime = "2";
         }
+        // if (this.ruleForm.FinHour && Number(this.ruleForm.FinHour) > 23) {
+        //   this.ruleForm.FinHour = Number(this.ruleForm.FinHour) / 24; //时间转化为天数
+        //   this.isAdvanceTime = "1";
+        // } else if (
+        //   this.ruleForm.FinHour &&
+        //   Number(this.ruleForm.FinHour) < 23
+        // ) {
+        //   this.isAdvanceTime = "2";
+        // }
 
         this.loading = false;
       } catch (e) {
@@ -1103,10 +1106,10 @@ export default {
               obj.ImgList = replacePre(obj, "ImgList");
 
             }
-            if (obj.FinHour > 0) {
-              obj.FinHour =
-                this.isAdvanceTime === "1" ? obj.FinHour * 24 : obj.FinHour;
-            }
+            // if (obj.FinHour > 0) {
+            //   obj.FinHour =
+            //     this.isAdvanceTime === "1" ? obj.FinHour * 24 : obj.FinHour;
+            // }
             // console.log(obj, 5555566);
             // return;
             // 获取电子券列表

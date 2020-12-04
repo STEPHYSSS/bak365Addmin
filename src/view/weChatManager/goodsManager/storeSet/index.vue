@@ -10,6 +10,7 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column prop="SID" label="门店编号"></el-table-column>
       <el-table-column prop="Name" label="门店名称"></el-table-column>
       <el-table-column prop="Address" label="门店地址"></el-table-column>
       <el-table-column label="门店电话">
