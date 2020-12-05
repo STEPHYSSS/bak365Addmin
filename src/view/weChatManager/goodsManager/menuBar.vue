@@ -14,7 +14,7 @@
           <div class="CenterBottom">
             <div :class="{CenterBottomLeft:true, borderRight:navigationList.length===0}"></div>
             <ul class="CenterBottomRight">
-              <li v-for="item in navigationList"
+              <li v-for="(item,index) in navigationList" :key="index"
                   ref="navigationLi"
                   class="popoverStyle" :style="{width:`${100/navigationList.length}%`,float:'left'}">
                 <el-popover
@@ -24,7 +24,7 @@
                   :width="popoverWidth"
                   trigger="click">
                   <ul class="popoverLi">
-                    <li v-for="itemChild in item.sub_button">
+                    <li v-for="(itemChild,i) in item.sub_button" :key="i">
                       {{itemChild.name}}
                     </li>
                   </ul>
@@ -63,13 +63,15 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.url`" :rules="rules.urlCilck"
+              <!-- :rules="rules.urlCilck" -->
+              <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.url`" 
                             v-if="!item.sub_button.length>0&&item.type === 'click'">
                 <el-input v-model="item.url" maxlength="128"></el-input>
               </el-form-item>
-              <el-form-item label="链接地址" style="margin-bottom:20px" :prop="`arr.${index}.url`" :rules="rules.url"
+              <!-- :rules="rules.url" -->
+              <el-form-item label="链接地址" style="margin-bottom:20px" :prop="`arr.${index}.url`" 
                             v-if="!item.sub_button.length>0&&item.type === 'view'">
-                <el-input v-model="item.url" :disabled="item.disabled" maxlength="1024"></el-input>
+                <el-input v-model="item.url" :disabled="item.disabled" maxlength="1024" @input="changeView($event)"></el-input>
                 <el-dropdown @command="handleCommand($event,item)">
                   <span class="el-dropdown-link">
                     修改链接地址
@@ -85,7 +87,7 @@
             <div class="menuBarRightTwo">
               <h2 class="menuBarRightH2">二级导航</h2>
               <div class="menuBarRightOne" v-if="item.sub_button.length>0"
-                   v-for="(itemChild,indexChild) in item.sub_button" :key="index"
+                   v-for="(itemChild,indexChild) in item.sub_button" :key="indexChild"
                    @mouseover="mouseoverChild(indexChild)"
                    @mouseout="currentMouseChild = false"
               >
@@ -273,6 +275,9 @@ export default {
   updated() {
   },
   methods: {
+    changeView(){
+      this.$forceUpdate() 
+    },
     mouseoverPa(index) {
       this.currentMouse = true
       this.currentIndex = index

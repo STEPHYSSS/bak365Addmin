@@ -72,6 +72,9 @@
       <el-table-column prop="PayAmt" label="支付金额">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>      
+      <el-table-column prop="PayType" label="支付方式">
+         <template slot-scope="scope">{{scope.row.Mobile}}</template>
+      </el-table-column>
       <el-table-column prop="DeliveryType" label="用户手机号码">
         <template slot-scope="scope">{{scope.row.Mobile}}</template>
       </el-table-column>
@@ -210,6 +213,15 @@ export default {
     handleClose(done) {
       this.Reply = "";
       done();
+    }
+  },
+  filters:{
+    PayType(val){
+      if(val==='1'){
+        return '微卡支付'
+      }else{
+        return "微信支付"
+      }
     }
   }
 };

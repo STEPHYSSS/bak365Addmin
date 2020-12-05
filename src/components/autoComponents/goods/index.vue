@@ -210,7 +210,6 @@ export default {
   },
   components: {},
   created() {
-    console.log(this.propsObj, "测试编辑获取详情propsObj");
   },
   mounted() {
     this.currentObj.showContent = this.currentObj.showContent

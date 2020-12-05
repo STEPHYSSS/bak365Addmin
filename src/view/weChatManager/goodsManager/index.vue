@@ -72,7 +72,7 @@
       </el-table-column>
       <el-table-column label="下架" align="center">
         <template slot-scope="scoped">
-          <el-switch v-model="scoped.row.State" active-text="上架" inactive-text="下架" @change="changeEnable($event,scoped.row)"></el-switch>
+          <el-switch v-model="scoped.row.State" active-text="上架" inactive-text="下架" :disabled="isDisabled" @change="changeEnable($event,scoped.row)"></el-switch>
           <!-- <el-checkbox v-model="scoped.row.State" @change="changeEnable($event,scoped.row)"></el-checkbox> -->
         </template>
       </el-table-column>
@@ -161,6 +161,7 @@ export default {
       pageSize:0,
       defaultImg: 'this.src="' + require("../../../assets/img/logo.png") + '"',
       loading: true,
+      isDisabled:false,
       search: {
         // 显示停用商品 返回true 和false
         Status: "",
@@ -276,6 +277,10 @@ export default {
       }
     },
     async changeEnable(bool, row) {
+      this.isDisabled = true;
+				setTimeout(() => {
+				  this.isDisabled = false;
+				}, 1000)
       // 是否启用 bool = true 为下架
       let State = bool === true ? 1 : 0;
       try {
