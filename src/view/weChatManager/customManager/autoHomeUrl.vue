@@ -48,15 +48,15 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
-let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
-// let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
+// let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
+let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
 export default {
   name: "autoHomeUrl",
   data() {
     return {
       copyData: null,
-      cateUrl:window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/",
-      // cateUrl:"http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/",
+      // cateUrl:window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/",
+      cateUrl:"http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/",
       tableData: [
         {
           Name: "商城首页",

@@ -1,6 +1,6 @@
 <template>
   <div class="customManager">
-    <!-- 自定义列表 -->
+    <!-- 自定义首页列表 -->
     <el-button
       type="primary"
       size="small"

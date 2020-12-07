@@ -97,5 +97,7 @@ export default {
 </script>
 
 <style lang="less">
-
+.el-tree-node:focus > .el-tree-node__content {
+  background-color: #ccd1d8 !important;
+}
 </style>

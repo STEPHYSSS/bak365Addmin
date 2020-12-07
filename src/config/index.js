@@ -6,8 +6,8 @@ export const TOKEN = 'token'
 
 // http://localhost:8080/wechatCard/vip/list
 // 当前的http
-export const HeardUrl = window.location.protocol + '//' + window.location.host+'/WebApp/Mobile/#/'
-// export const HeardUrl = window.location.protocol + '//' + window.location.host
+// export const HeardUrl = window.location.protocol + '//' + window.location.host+'/WebApp/Mobile/#/'
+export const HeardUrl = window.location.protocol + '//' + window.location.host+'/'
 
 export const defaultImg = ''
 

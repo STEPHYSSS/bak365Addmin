@@ -39,7 +39,7 @@
     </el-row>
 
     <el-table :data="data" v-loading="loading" style="width: 100%;">
-      <el-table-column label="商品名称" width="300" align="center">
+      <el-table-column label="商品名称" width="260" align="center">
         <template slot-scope="scoped">
           <el-row>
             <el-col :span="12" class="goodsInfo">
@@ -55,6 +55,9 @@
           </el-row>
         </template>
       </el-table-column>
+      <el-table-column prop="SpecType" label="规格类型" align="center">
+        <template slot-scope="scoped">{{scoped.row.SpecType|SpecType}}</template>
+      </el-table-column>
       <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
       <!--      <el-table-column-->
       <!--        label="商品类型">-->
@@ -63,11 +66,16 @@
       <!--          <span v-else>&#45;&#45;</span>-->
       <!--        </template>-->
       <!--      </el-table-column>-->
-      <el-table-column label="库存" align="center">
+      <el-table-column label="库存类型" align="center">
         <template slot-scope="scoped">
-          <!-- v-if="good.StockType != '0'&& good.StoreQty <= '0'" -->
-          <span v-if="scoped.row.StockType != '0'&& scoped.row.StoreQty>=0">{{scoped.row.StoreQty}}</span>
+          <span v-if="scoped.row.StockType==='1'">商城库存（{{scoped.row.StoreQty }}）</span>
+          <span v-else-if="scoped.row.StockType==='2'">门店库存</span>
           <span v-else>不限</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品排序" align="center" width="100">
+        <template slot-scope="scoped">
+          <el-input v-model="scoped.row.Sort" @blur="sort(scoped.row)"></el-input>
         </template>
       </el-table-column>
       <el-table-column label="下架" align="center">
@@ -98,7 +106,7 @@
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
-                <span>小程序码</span>
+                <span>扫码预览</span>
                 <span class="close" @click="scoped.row.visible = false">×</span>
               </div>
               <div style="width:200px;height:200px;border: 1px solid #efefef;">
@@ -109,14 +117,14 @@
                 ></QRCode>
               </div>
               <a id="downloadImg"></a>
-              <a class="smallRoutineUpDown" @click="upDownUrl(scoped.row.Name)">下载小程序码</a>
+              <a class="smallRoutineUpDown" @click="upDownUrl(scoped.row.Name)">扫码预览</a>
             </div>
             <el-button
               type="text"
               slot="reference"
               style="margin-left:8px;"
               @click="clicCode(scoped.$index)"
-            >小程序码</el-button>
+            >扫码预览</el-button>
           </el-popover>
         </template>
       </el-table-column>      
@@ -171,6 +179,7 @@ export default {
         ProdType:"",
         SpecType:""
       },
+      Sort:'',
       // 控制删除弹框
       show: false,
       // 商品类别修改
@@ -274,6 +283,19 @@ export default {
       } catch (e) {
         this.$message.error(e)
         this.loading = false;
+      }
+    },
+    sort(val){
+      try {
+        let data = getLists(
+          {
+            Action: "SetProdSort",
+            Sort:val.Sort,
+            SID:val.SID
+          }, "MProdOpera")
+        console.log(data,'888')
+      } catch (e) {
+        this.$message.error(e)
       }
     },
     async changeEnable(bool, row) {
@@ -386,6 +408,24 @@ export default {
         return '普通商品'
       }else{
         return '电子券'
+      }
+    },
+    SpecType(val){
+      if(val == '0'){
+        return '电子券'
+      }else if(val == '1'){
+        return '单规格'
+      }else{
+        return '多规格'
+      }
+    },
+    StockType(val){
+      if(val == '1'){
+         return '商城库存'
+      }else if(val == '2'){
+        return '门店库存'
+      }else{
+        return '无限'
       }
     }
   },

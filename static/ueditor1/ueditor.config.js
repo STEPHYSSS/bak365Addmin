@@ -21,6 +21,9 @@
      */
     // var URL = 'http:'+process.env.BASE_URL || getUEBasePath();
     var URL = process.env.BASE_URL || getUEBasePath();
+    // var URL = "http://dingtalk.bak365.cn/WeixinNew/"//测试的url
+    // var URL = window.location.protocol + '//' + window.location.host+'/WebApp/Mobile/#/'//心连心
+    
     // window.UEDITOR_HOME_URL = process.env.BASE_URL
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。

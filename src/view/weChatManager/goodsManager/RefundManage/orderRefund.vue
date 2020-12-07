@@ -73,7 +73,7 @@
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>      
       <el-table-column prop="PayType" label="支付方式">
-         <template slot-scope="scope">{{scope.row.Mobile}}</template>
+         <template slot-scope="scope">{{scope.row.PayType|PayType}}</template>
       </el-table-column>
       <el-table-column prop="DeliveryType" label="用户手机号码">
         <template slot-scope="scope">{{scope.row.Mobile}}</template>

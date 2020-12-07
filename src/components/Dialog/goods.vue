@@ -14,7 +14,7 @@
       @keyup.enter="searchName"
       style="margin-right:10px;width:180px"
     ></el-input>
-    <span>id搜索</span>
+    <span>编号搜索</span>
     <el-input
       v-model="search.ProdNo"
       placeholder="请输入"

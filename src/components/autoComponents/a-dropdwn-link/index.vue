@@ -50,8 +50,8 @@
 </template>
 
 <script>
-let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
-// let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
+// let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
+let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
 export default {
   name: "",
   props: {

@@ -39,7 +39,7 @@
           size="medium"
           @click="selectGoods(null)"
           v-if="!$route.query.SID"
-        >...</el-button>
+        >添加</el-button>
       </el-form-item>
       <el-form-item label="商品名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
@@ -116,7 +116,7 @@
               style="margin-left: 10px"
               size="medium"
               @click="selectGoods(index)"
-            >...</el-button>
+            >添加</el-button>
             <span
               class="el-icon-error iconError"
               v-show="DelIconIndex === index && showDelIcon === true"
@@ -180,7 +180,7 @@
           <div style="width: 300px; min-height: 40px; padding: 10px 15px; display: inline-block; border: 1px solid #DCDFE6; background: #fff; border-radius: 3px;">
             <p v-for="(item, index) in comfirmSelectTast" :key="index + 'a'">{{item.Name}}</p>
           </div>
-          <el-button type="primary" style="margin-left: 10px; height: 40px;" size="medium" @click="chooseTast">...</el-button>
+          <el-button type="primary" style="margin-left: 10px; height: 40px;" size="medium" @click="chooseTast">添加</el-button>
         </div>
       </el-form-item>
       <el-form-item label="商品排序" prop="Sort">
@@ -238,7 +238,6 @@
           v-model="ruleForm.FinHour"
           controls-position="right"
           :min="0"
-          :max="23"
           @change="setInputDec(ruleForm.FinHour)"
         ></el-input-number>
         {{ isAdvanceTime == "1" ? "天" : "小时" }}预定
@@ -247,7 +246,7 @@
       </el-form-item>
       <el-form-item label="供货门店" prop="ShopInfo">
         <el-input readonly v-model="ruleForm.PickShopName" placeholder="请选择门店"></el-input>
-        <el-button type="primary" style="margin-left: 10px" size="medium" @click="PickShopFun">...</el-button>
+        <el-button type="primary" style="margin-left: 10px" size="medium" @click="PickShopFun">添加</el-button>
         <div style="color: #999">不填为全选</div>
       </el-form-item>
       <el-form-item label="预定提示" prop="Tip">
@@ -356,7 +355,7 @@
       </el-form-item>
       <!-- <el-form-item label="可用电子劵" prop="TicketInfo">
         <el-input readonly v-model="ruleForm.TicketInfoName" placeholder="请选择电子劵"></el-input>
-        <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket">...</el-button>
+        <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket">添加</el-button>
         <div style="color: #999">只可用此设置的电子劵购买此商品</div>
       </el-form-item> 暂不需要此功能-->
       <!-- <el-form-item label="每人限购" prop="MaxBuyCnt">
@@ -645,7 +644,6 @@ export default {
       }
     }
   },
-  computed: {},
   created() {
     this.getList();
     let arr = []; //1-31天
@@ -969,7 +967,7 @@ export default {
             Object.assign(obj, { Action: "SetProdInfo" });
             if(this.isAdvanceTime === '1'){
               obj.FinType = '1'
-            }else if(this.isAdvanceTime === '2'){
+            }else if(this.isAdvanceTime === '2'){              
               obj.FinType = '2'
             }
             if(this.assistRuleForm.BuyTimeBool === false){
@@ -1056,10 +1054,10 @@ export default {
 
             let Features = this.$refs.Features.getUEContent();
             let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-            Features = Features.replace(/src="\.\.\/Files/g, `src="${process.env.BASE_URL}${process.env.Prefix}Files`);            
+            Features = Features.replace(/src="\.\.\/Files/g, `src="${process.env.Prefix}Files`);            
             ImportantNotes = ImportantNotes.replace(
               /src="\.\.\/Files/g,
-              `src="${process.env.BASE_URL}${process.env.Prefix}Files`
+              `src="${process.env.Prefix}Files`
               
             );
             console.log(Features,ImportantNotes,'5555')
@@ -1123,12 +1121,13 @@ export default {
       });
     },
     sureGood(val) {
+      console.log(val)
       // 获取的商品的名字和编号
       this.goodsShow = false;
       if (this.goodsNormsIndex === null) {
         this.ruleForm.ProdNo = val.ProdNo;
         this.ruleForm.Name = val.ProdName;
-        this.ruleForm.SalePrice = val.SalePrice;
+        this.ruleForm.SalePrice = val.Price;
         // if(this.ruleForm.SpecType === '2'){
         //   this.ruleForm.SpecList.Name= val.ProdName
         //   console.log(this.ruleForm.SpecList)
@@ -1137,7 +1136,8 @@ export default {
         // 给当前的 商品规格编号加 禁止
         // this.ruleForm.goodsNorms.push({number:'',norms:'',price:'',discount:''})
         this.ruleForm.SpecList[this.goodsNormsIndex].ProdNo = val.ProdNo;
-        this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName
+        this.ruleForm.SpecList[this.goodsNormsIndex].Name = val.ProdName;
+        this.ruleForm.SpecList[this.goodsNormsIndex].SalePrice = val.Price
       }
     },
     changeDig(bool) {
@@ -1353,6 +1353,8 @@ export default {
       // if (this.isAdvanceTime === "1") {
       this.ruleForm.FinHour = FinHour.toString().split(".")[0];
       // }
+      if(this.isAdvanceTime === "2"&&FinHour>23)
+      this.ruleForm.FinHour = '23'
     },
     handleCheckAllChange(val) {
       this.checkClick = val ? this.allCheckList : [];
