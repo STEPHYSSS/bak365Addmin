@@ -455,7 +455,7 @@
     :gridDataTaste="gridDataTaste"
     :comfirmSelectTast="comfirmSelectTast"
     :dialogTasteVisible="dialogTasteVisible"
-    @close="dialogTasteVisible=false"
+    @close="closeDia"
     @confirm="confirmSys"
     :ParamInfoName="ruleForm" />
     
@@ -474,7 +474,7 @@ import Tree from "@/components/tree/";
 import tasteList from "@/components/selector/TasteList";
 import ueditor1 from "@/components/ueditor1/";
 import TicketInfo from "@/components/Dialog/ticketInfo/";
-import { addScroll, ImgList, replacePre } from "@/config/publicFunction";
+import { addScroll, ImgList, replacePre,GetBaseImgUrl } from "@/config/publicFunction";
 import { stockTypeList } from "@/config/utils";
 import vuedraggable from "vuedraggable";
 import { getLists } from "@/api/vipCard";
@@ -652,7 +652,7 @@ export default {
     }
     this.datesList = arr;
   },
-  methods: {
+  methods: {    
     // 获取商品属性设置列表
     async getInfo(params) {
       // console.log(params)
@@ -814,18 +814,21 @@ export default {
           : [];
 
         let Features = $.base64.atob(this.ruleForm.Features, "utf8");
+        console.log(Features)
         let ImportantNotes = $.base64.atob(
           this.ruleForm.ImportantNotes,
           "utf8"
         );
-
+        let abc = GetBaseImgUrl();
+        console.log(abc)
         Features = Features.replace(
           /src="Files/g,
-          `src="${process.env.Prefix}Files`
+          `src="${abc}${process.env.Prefix}Files`
         );
+        console.log(Features,'one')
         ImportantNotes = ImportantNotes.replace(
           /src="Files/g,
-          `src="${process.env.Prefix}Files`
+          `src="${abc}${process.env.Prefix}Files`
         );
         this.$refs.Features.setUEContent(Features);
         this.$refs.ImportantNotes.setUEContent(ImportantNotes);
@@ -1380,7 +1383,6 @@ export default {
       this.dialogFormVisible = false;
     },
     handleCheckedCitiesChangeDay(value) {
-      console.log(value,'BuyTimeBool')
       let checkedCount = value.length;
       this.checkAllDay = checkedCount === this.datesList.length;
       this.isIndeterminate =
@@ -1389,7 +1391,9 @@ export default {
     chooseTast() {
       this.dialogTasteVisible = true;
     },
-
+    closeDia(){
+      this.dialogTasteVisible = false;
+    },
     onFocus() {
       //获取到焦点
     },

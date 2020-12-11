@@ -4,8 +4,7 @@
     <el-form ref="form" :rules="rules" :model="form" label-width="70px">
       <el-form-item label="选择模板:" prop="changeMode">
         <div>
-          <div
-            :class="['rc-design-select-templates',currentIndex===index?'active':'']"
+          <div :class="['rc-design-select-templates',currentIndex===index?'active':'']"
             @click="changeMode(index)"
             v-for="(item,index) in selectTemplates"
             :key="index"
@@ -158,42 +157,35 @@ export default {
       selectTemplates: [
         {
           title: "1行1个",
-          url:"../static/img/magicCube.png"
+          url:"static/img/magicCube.png"
         },
         {
           title: "1行2个",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/03/60342dcc32a039ef613a14db0291f3ab.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/03/60342dcc32a039ef613a14db0291f3ab.png"
         },
         {
           title: "1行3个",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/03/6268ad7610bdc42ece83ac20379b28e9.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/03/6268ad7610bdc42ece83ac20379b28e9.png"
         },
         {
           title: "1行4个",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/03/2781e737570549d45604867d8045aada.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/03/2781e737570549d45604867d8045aada.png"
         },
         {
           title: "2左2右",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/09/83a31af68ff039a2a636151fa7fa9279.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/09/83a31af68ff039a2a636151fa7fa9279.png"
         },
         {
           title: "1左2右",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/09/ba54374788fe99d976963da2fa7eca6e.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/09/ba54374788fe99d976963da2fa7eca6e.png"
         },
         {
           title: "1上2下",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/09/7b4cdf2cc81d386c2ec316cde4d7c419.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/09/7b4cdf2cc81d386c2ec316cde4d7c419.png"
         },
         {
           title: "1左3右",
-          url:
-            "https://img.yzcdn.cn/public_files/2017/11/09/baf20bd9462316851c81e47f8ae2cadf.png"
+          url:"https://img.yzcdn.cn/public_files/2017/11/09/baf20bd9462316851c81e47f8ae2cadf.png"
         }
         // {
         //   title: "自定义",
@@ -206,7 +198,8 @@ export default {
       layoutIndex: 0,
       layoutList: [
         [
-          { width: "320", height: "320", left: 0, top: 0, widthImg: 375 },
+          // { width: "320", height: "161", left: 0, top: 0, widthImg: 375 }
+          { width: "323", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375},
         ],
         [
           { width: "161", height: "161", left: 0, top: 0, widthImg: 375 },
@@ -223,124 +216,39 @@ export default {
           { width: "80", height: "80", left: 162, top: 0, widthImg: 180 },
           { width: "80", height: "80", left: 243, top: 0, widthImg: 180 }
         ],
-        [
-          {
-            width: "161",
-            height: "161",
-            left: 0,
-            top: 0,
-            widthImg: 375,
-            heightImg: 375
+        [{ width: "161", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 0,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 0,
-            top: 162,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 0, top: 162, widthImg: 375, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 162,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
         [
-          {
-            width: "161",
-            height: "323",
-            left: 0,
-            top: 0,
-            widthImg: 375,
-            heightImg: 750
+          { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 0,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 162,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
         [
-          {
-            width: "323",
-            height: "161",
-            left: 0,
-            top: 0,
-            widthImg: 750,
-            heightImg: 375
+          { width: "323", height: "161", left: 0, top: 0, widthImg: 750, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 0,
-            top: 162,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 0, top: 162, widthImg: 375, heightImg: 375
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 162,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
         [
-          {
-            width: "161",
-            height: "323",
-            left: 0,
-            top: 0,
-            widthImg: 375,
-            heightImg: 750
+          { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
           },
-          {
-            width: "161",
-            height: "161",
-            left: 162,
-            top: 0,
-            widthImg: 375,
-            heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
           },
-          {
-            width: "80",
-            height: "161",
-            left: 162,
-            top: 162,
-            widthImg: 188,
-            heightImg: 375
+          { width: "80", height: "161", left: 162, top: 162, widthImg: 188, heightImg: 375
           },
-          {
-            width: "80",
-            height: "161",
-            left: 243,
-            top: 162,
-            widthImg: 188,
-            heightImg: 375
+          { width: "80", height: "161", left: 243, top: 162, widthImg: 188, heightImg: 375
           }
         ]
       ],

@@ -4,10 +4,13 @@
       <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="CardImg"></imgLoad>
       <!--      默认200kb-->
     </el-form-item>
-    <el-form-item label="卡类别">
+    <!-- <el-form-item label="卡类别">
       <cardCategory ref="cardCategory" @changeValue="changeValue"></cardCategory>
+    </el-form-item> -->
+    <el-form-item label="微卡名称">
+      <el-input v-model="form.Name" maxlength="25"></el-input>
     </el-form-item>
-    <el-form-item label="微卡申请信息" class="MicroAppliy">
+    <!-- <el-form-item label="微卡申请信息" class="MicroAppliy">
       <el-checkbox-group v-model="form.ApplyMsg" v-for="item in ApplyMsgList" :key="item.value">
         <el-checkbox :label="item.value">{{item.name}}</el-checkbox>
       </el-checkbox-group>
@@ -20,7 +23,7 @@
         active-value="1"
         inactive-value="0">
       </el-switch>
-    </el-form-item>
+    </el-form-item> -->
     <el-form-item label="会员卡说明" class="ueditor-style">
       <ueditor1 v-if="!loading" ref="ueditorDom" :valText="ueditorDomText"></ueditor1>
     </el-form-item>
@@ -37,7 +40,7 @@
 import imgLoad from '@/components/download/imgLoad'
 // import ueditor from '@/components/ueditor/index'
 import ueditor1 from '@/components/ueditor1/index'
-import cardCategory from '@/components/selector/cardCategory'
+// import cardCategory from '@/components/selector/cardCategory'
 import {getLists} from '@/api/vipCard'
 import _ from 'lodash'
 import '@/config/jquery.base64.js'
@@ -46,10 +49,11 @@ import {replacePre} from '@/config/publicFunction'
 
 export default {
   name: "vaccaeParam",
-  components: {imgLoad, ueditor1, cardCategory},
+  components: {imgLoad, ueditor1},
   data() {
     return {
       form: {
+        Name:'',
         // 条款
         Clause: '',
         // 图片
@@ -57,8 +61,8 @@ export default {
         // 说明
         Explain: '',
         // 微卡申请信息
-        ApplyMsg: [],
-        IsPass: 0
+        // ApplyMsg: [],
+        // IsPass: 0
       },
       ApplyMsgList: bindList,
       // 默认图片
@@ -83,9 +87,9 @@ export default {
         if (typeof this.form.ApplyMsg === 'string' && this.form.ApplyMsg) {
           this.form.ApplyMsg = this.form.ApplyMsg.split(',')
         }
-        if (this.form.TypeNo) {
-          this.$refs.cardCategory.value = this.form.TypeNo
-        }
+        // if (this.form.TypeNo) {
+        //   this.$refs.cardCategory.value = this.form.TypeNo
+        // }
         // console.log(this.form, 666)
         this.ueditorDomText = $.base64.atob(this.form.Explain, 'utf8')
 

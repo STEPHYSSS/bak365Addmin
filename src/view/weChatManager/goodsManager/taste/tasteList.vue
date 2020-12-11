@@ -1,5 +1,5 @@
 <template>
-<!-- 商品属性的页面 -->
+  <!-- 商品属性的页面 -->
   <div class="tasteList">
     <el-button type="primary" @click="add">新增</el-button>
     <el-table :data="tableData" style="width: 90%; margin-top: 30px">
@@ -7,9 +7,9 @@
       </el-table-column>
       <el-table-column label="商品属性值" align="center">
         <template slot-scope="scope">
-          <span v-for="(item,index) in scope.row.AttributeList" :key="index">
+          <span v-for="(item, index) in scope.row.AttributeList" :key="index">
             <!-- {{item.Name +`(￥` + item.Price +`)`}} -->
-             {{AttributeJoin(item, index)}}
+             {{ AttributeJoin(item, index) }}
           </span>
         </template>
       </el-table-column>
@@ -31,7 +31,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="商品属性信息" :visible.sync="dialogFormVisible">
-      <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+      <!-- <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
         <el-form-item prop="Name" label="商品属性名"
           :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
             <el-input v-model="dynamicValidateForm.Name" style="width:200px"></el-input>
@@ -42,9 +42,9 @@
           label="商品属性值"
           :key="index" 
           :prop="'domains.' + index + '.Name'"
-          :rules="{
+          :rules="[{
             required: true, message: '属性值不能为空', trigger: 'blur'
-          }"
+          },{max: 25, message: '不超过25个字符', trigger: 'blur' }]"
         >
           <el-input v-model="domain.Name" style="width:200px"></el-input>
           ￥<el-input v-model="domain.Price" style="width:50px"></el-input>
@@ -54,6 +54,27 @@
         <el-form-item>
           <el-button @click="addDomain">新增属性值</el-button>
         </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="sure">确 定</el-button>
+      </div> -->
+      <el-form :model="ruleForm">
+        <el-form-item prop="Name" label="商品属性名" :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
+            <el-input v-model="ruleForm.Name" style="width:200px"></el-input>
+            属性名排序：<el-input v-model="ruleForm.Sort" style="width:50px"></el-input>
+          </el-form-item>
+         <div v-for="(item, index) in ruleForm.SpecList" :key="index">
+          <el-form-item :key="index + 1" :prop="'SpecList.' + index + '.ProdNo'" label="商品属性值" 
+          :rules="[
+            {max: 25, message: '不超过25个字符', trigger: 'blur' }]">
+            <el-input v-model="item.Name" style="width:200px"></el-input>
+            ￥<el-input v-model="item.Price" style="width:50px"></el-input>
+            排序<el-input v-model="item.Sort" style="width:50px"></el-input>
+            <el-button @click="delGoodsNorms(index)">删除</el-button>
+          </el-form-item>
+         </div>
+        <el-button type="info" @click="addGoodsNorms">添加</el-button>        
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -69,16 +90,27 @@ export default {
   data() {
     return {
       tableData: [],
-      dynamicValidateForm: {
-        domains: [{
-          Name: '',
-          Price:0,
-          Sort:0
+      ruleForm: {
+        Name:'',
+        Sort:'',
+        SpecList: [{
+          Name: "",
+            Price: 0,
+            Sort: 0,
         }],
-        Name: '',
-        Sort:0
       },
-      eidtSID:'',
+      dynamicValidateForm: {
+        domains: [
+          {
+            Name: "",
+            Price: 0,
+            Sort: 0,
+          },
+        ],
+        Name: "",
+        Sort: 0,
+      },
+      eidtSID: "",
       dialogFormVisible: false,
     };
   },
@@ -86,21 +118,34 @@ export default {
     this.getInfo();
   },
   methods: {
-    addDomain() {
-        this.dynamicValidateForm.domains.push({
-          Name: '',
+    addGoodsNorms(){
+      console.log(this.ruleForm.SpecList)
+      this.$nextTick(() => {
+        this.ruleForm.SpecList.push({
+          Name: "",
           Price:0,
-          Sort:'',
-          key: Date.now()
+          Sort:''
+          // TastName: []
         });
-        // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
+      });
     },
-    removeDomain(item) {
-      var index = this.dynamicValidateForm.domains.indexOf(item)
-      if (index !== -1) {
-        this.dynamicValidateForm.domains.splice(index, 1)
-        // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
-      }
+    addDomain() {
+      this.dynamicValidateForm.domains.push({
+        Name: "",
+        Price: 0,
+        Sort: "",
+        key: Date.now(),
+      });
+      // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
+    },
+    delGoodsNorms(index) {
+      console.log(index)
+       this.ruleForm.SpecList.splice(index, 1);
+      // var index = this.dynamicValidateForm.domains.indexOf(item);
+      // if (index !== -1) {
+      //   this.dynamicValidateForm.domains.splice(index, 1);
+      //   // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
+      // }
     },
     // 列表
     async getInfo() {
@@ -113,91 +158,108 @@ export default {
       );
       this.tableData = Data.ParamInfoList;
     },
-    add() {//新增
+    add() {
+      //新增
       this.dialogFormVisible = true;
-      this.dynamicValidateForm = {}
+      this.dynamicValidateForm = {};
       this.eidtSID = "";
       this.dynamicValidateForm = {
-        domains: [{
-          Name: '',
-          Price:0,
-          Sort:''
-        }],
-        Name: ''
-      }
-      
+        domains: [
+          {
+            Name: "",
+            Price: 0,
+            Sort: "",
+          },
+        ],
+        Name: "",
+      };
     },
-    edit(row){//编辑
+    edit(row) {
+      //编辑
       this.dialogFormVisible = true;
       this.eidtSID = row.SID;
-      this.detail(row.SID);     
+      this.detail(row.SID);
     },
     // 详情
-    async detail(sid){
+    async detail(sid) {
       let { Data } = await getLists(
         {
           Action: "GetParamInfo",
-          SID:sid,
+          SID: sid,
           Type: "2",
         },
         "MBaseOpera"
       );
-      this.dynamicValidateForm = Data.ParamInfo;
-      this.dynamicValidateForm.domains = Data.ParamList;
+      this.ruleForm.Name = Data.ParamInfo.Name;
+      this.ruleForm.Sort = Data.ParamInfo.Sort;
+      this.ruleForm.SpecList = Data.ParamList;
     },
     // 确定按钮
     async sure() {
-      this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map((item, index) => {
+      // this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map(
+      //   (item, index) => {
+      //     return {
+      //       Name: item.Name,
+      //       Price: item.Price,
+      //       Sort: item.Sort,
+      //     };
+      //   }
+      // );
+      this.ruleForm.SpecList = this.ruleForm.SpecList.map((item,index)=>{
+        console.log(item)
         return {
-          Name: item.Name,
-          Price:item.Price,
-          Sort:item.Sort
-        };
-      });
+            Name: item.Name,
+            Price: item.Price,
+            Sort: item.Sort,
+          };
+      })
       let { Data } = await getLists(
         {
           Action: "SetParamInfo",
-          Name: this.dynamicValidateForm.Name,
-          AttributeList: JSON.stringify(this.dynamicValidateForm.domains),
+          Name: this.ruleForm.Name,
+          AttributeList: JSON.stringify(this.ruleForm.SpecList),
           Type: "2",
-          SID:this.eidtSID?this.eidtSID:'',
-          Sort:this.dynamicValidateForm.Sort
+          SID: this.eidtSID ? this.eidtSID : "",
+          Sort: this.ruleForm.Sort,
         },
         "MBaseOpera"
       );
       this.getInfo();
       this.dialogFormVisible = false;
     },
-    del(row){//删除列表
-    this.$confirm('是否删除此属性?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          let { Data } =  getLists(
+    del(row) {
+      //删除列表
+      this.$confirm("是否删除此属性?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          let { Data } = getLists(
             {
               Action: "RemoveParamInfo",
-              SID:row.SID,
+              SID: row.SID,
               Type: "2",
             },
             "MBaseOpera"
           );
           this.getInfo();
-        }).catch(() => {
+        })
+        .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+            type: "info",
+            message: "已取消删除",
+          });
         });
-    }
+    },
   },
-  computed:{
-    AttributeJoin () {
-        return function (item, index) {
-          if (index > 0) return `,  ${item.Name}(￥${item.Price})`
-          else return `${item.Name}(￥${item.Price})`
-        }
-      },
-  }
+  computed: {
+    AttributeJoin() {
+      return function (item, index) {
+        if (index > 0) return `,  ${item.Name}(￥${item.Price})`;
+        else return `${item.Name}(￥${item.Price})`;
+      };
+    },
+  },
 };
 </script>

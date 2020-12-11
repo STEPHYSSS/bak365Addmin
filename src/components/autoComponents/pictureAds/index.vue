@@ -163,15 +163,14 @@ export default {
       this.current = index;
     },
     reportErrorsFun() {
-      console.log(this.currentObj, "this.currentObj");
-      // if (!this.currentObj.noticeText) {
-      //   return "请填写公告";
-      // }
+      if (this.currentObj.imgList.length === 0) {
+        return "请填写图文广告";
+      }
     }
   },
   watch: {
     "currentObj.pageGap"(n) {
-      console.log(n,'图文广告')
+      // console.log(n,'图文广告')
       n = Number(n);
       this.changeClientWidth = (this.clientWidth - n * 2).toFixed(2);
     }

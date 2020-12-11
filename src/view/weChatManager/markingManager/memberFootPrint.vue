@@ -5,11 +5,11 @@
       <el-table-column prop="Name" label="商品名称"></el-table-column>
       <el-table-column prop="CateSID" label="分类编号"></el-table-column>
       <el-table-column prop="SalePrice" label="销售价格"></el-table-column>
-      <el-table-column prop="Img" label="商品图片">
+      <el-table-column label="商品图片">
         <template slot-scope="scoped">
           <el-row>
             <el-col :span="12" class="goodsInfo">
-              <img :src="scoped.row.Img" alt />
+              <img :src="scoped.row.Img | SetImage" alt />
             </el-col>
           </el-row>
         </template>
@@ -43,15 +43,10 @@ export default {
           "MMemberOpera"
         );
         this.tableData = Data.FootPrintList;
+
         //  console.log(this.data)
         // let setImg = this.currentGoods ? "Img" : "ImgList";
-        // this.data.forEach(D => {
-        //   D.ImgList = D[setImg] ? D[setImg].split(",") : [];
-        //   D.ImgList.forEach((data, index) => {
-        //     D.ImgList[index] = process.env.Prefix + data;
-        //   });
-        //   this.$set(D, "State", D.State === "0" ? true : false);
-        // });
+        
         this.loading = false;
       } catch (e) {
         this.$message.error(e);

@@ -1,15 +1,17 @@
 <template>
   <!-- 选择口味弹窗 -->
-  <el-dialog title="选择商品属性" :visible.sync="dialogTasteVisible">
+  <el-dialog title="选择商品属性" :visible.sync="dialogTasteVisible" :before-close="handleClose">
     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
     <el-checkbox-group v-model="selectTast" @change="handleCheckedCitiesChange">
       <el-checkbox v-for="item in gridDataTaste" :label="item" :key="item.SID" style="display: block;">
-        <template>
-          {{item.Name}}
+        <template>          
+          <span>{{item.Name}}</span>
           &nbsp;:
-          <span v-for="(item2, index) in item.AttributeList" :key="index">
+         <p style="display:inline-block; width:600px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;vertical-align: bottom;">
+            <span v-for="(item2, index) in item.AttributeList" :key="index" :title="item2.Name">
             &nbsp;{{ item2.Name }}
           </span>
+         </p>
         </template>
       </el-checkbox>
     </el-checkbox-group>
@@ -34,6 +36,9 @@
         isIndeterminate: false, // indeterminate 状态，只负责样式控制
       };
     },
+    created(){
+      console.log(this.dialogTasteVisible)
+    },
     mounted () {
       if (this.comfirmSelectTast && this.comfirmSelectTast.length) {
         this.selectTast = []
@@ -47,6 +52,9 @@
       }
     },
     methods: {
+      handleClose(){
+        this.$emit('close')
+      },
       // 全选操作
       handleCheckAllChange(val) {
         this.selectTast = val ? this.gridDataTaste : [];

@@ -6902,8 +6902,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     //设置默认字体和字号
                     //font-family不能呢随便改，在safari下fillchar会有解析问题
                     'body{margin:8px;font-family:sans-serif;font-size:16px;}' +
+                    'img{max-width:400px;}'+
                     //设置段落间距
-                    'p{margin:5px 0;}img{width:100%;height:100%}</style>' +
+                    'p{margin:5px 0;}</style>' +
                     ( options.iframeCssUrl ? '<link rel=\'stylesheet\' type=\'text/css\' href=\'' + utils.unhtml(options.iframeCssUrl) + '\'/>' : '' ) +
                     (options.initialStyle ? '<style>' + options.initialStyle + '</style>' : '') +
                     '</head><body class=\'view\' ></body>' +
@@ -24405,6 +24406,7 @@ UE.plugin.register('section', function (){
 
 UE.plugin.register('simpleupload', function (){
   let api = 'http:'+ process.env.BASE_URL
+
   var me = this,
         isLoaded = false,
         containerBtn;
@@ -24535,8 +24537,7 @@ UE.plugin.register('simpleupload', function (){
                   if(response.state){
                     loader = me.document.getElementById(loadingId);
                     // 显示的数据
-                    // loader.setAttribute('src', process.env.Prefix+response.url);//暂时注释
-                    loader.setAttribute('src', process.env.BASE_URL+response.url);
+                    loader.setAttribute('src', process.env.BASE_URL+process.env.Prefix+response.url);
                     // 传过去的数据
                     loader.setAttribute('_src', response.url);
                     loader.setAttribute('title', response.title || '');

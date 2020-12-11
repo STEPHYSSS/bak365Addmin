@@ -22,18 +22,18 @@ export default {
     }
   },
   async created() {
-    try {
-      let data = await getLists({Action: 'GetCardTypeList'},'WeChatCardOpera')
-      this.options = data.Data.List
-    } catch (e) {
-      this.options = []
-      this.$message.error(e)
-    }
+    // try {
+    //   let data = await getLists({Action: 'GetCardTypeList'},'WeChatCardOpera')
+    //   this.options = data.Data.List
+    // } catch (e) {
+    //   this.options = []
+    //   this.$message.error(e)
+    // }
   },
   methods:{
-    changeValue(val){
-      this.$emit('changeValue', val)
-    }
+    // changeValue(val){
+    //   this.$emit('changeValue', val)
+    // }
   }
 }
 </script>

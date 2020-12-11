@@ -143,6 +143,17 @@ export const ConditionCard = [
 ]
 export const giftType = [
   { value: '1', label: '电子券'}, 
-  { value: '2', label: '积分'},
-  { value: '3', label: '卡充值'}
+  // { value: '2', label: '积分'},
+  // { value: '3', label: '卡充值'}
+]
+export const DirectType = [
+  { value: '0', label: '微卡卡号'}, 
+  { value: '1', label: '充值订单'}, 
+  { value: '2', label: '销售订单 '}, 
+  { value: '3', label: '电子券订单'}, 
+  { value: '4', label: '积分订单'}, 
+  { value: '5', label: '全部微卡用户'}, 
+  { value: '6', label: '全部会员'}, 
+  // { value: '2', label: '积分'},
+  // { value: '3', label: '卡充值'}
 ]

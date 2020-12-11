@@ -89,7 +89,7 @@
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
-          value-format="yyyy-MM-dd hh:mm:ss"
+          value-format="yyyy-MM-dd HH:mm:ss"
         ></el-date-picker>
       </el-form-item>
       <!-- <el-form-item label="主活动图片" prop="Img">

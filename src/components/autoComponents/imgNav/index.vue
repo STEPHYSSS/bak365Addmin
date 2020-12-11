@@ -95,7 +95,18 @@ export default {
   mounted() {
     this.setWidth();
   },
-  methods: {
+  methods: {   
+    reportErrorsFun() {
+      // this.currentObj.listNav.forEach(element => {
+      //   console.log(element,'555')
+      //   if(!element.url){
+      //     return "请填写图文导航";
+      //   }
+      // });
+      // if (this.currentObj.listNav.length === 0) {
+      //   return "请填写图文广告";
+      // }
+    },
     setWidth() {
       //手机端记得把320改成clientWidth
       let clientWidth = 320 || document.body.clientWidth;

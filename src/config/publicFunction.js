@@ -122,7 +122,16 @@ export function GetAppNo() {
         return  AppNo;
   }
 }
-
+export function GetBaseImgUrl() {//获取当前图片url
+     
+  if(window.location.hostname == "localhost" ){
+          return 'http://dingtalk.bak365.cn/WeixinNew/';
+  }else if( window.location.hostname == "dingtalk.bak365.cn" ){
+     return 'http://dingtalk.bak365.cn/WeixinNew/';
+  }else{
+     return 'http://'+window.location.hostname+'/WebApp/';
+  }
+}
 
 
 export function ImgList(list) {

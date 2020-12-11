@@ -15,7 +15,7 @@
         label="名称"
         align="center"
       ></el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="Name"
         label="最近应用在"
         align="center"
@@ -24,7 +24,7 @@
         prop="Name"
         label="共应用次数"
         align="center"
-      ></el-table-column>
+      ></el-table-column> -->
       <el-table-column prop="IsDefault" label="默认" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.IsDefault === '0'">否</span>
@@ -94,6 +94,7 @@ export default {
   components: { Del ,QRCode},
   mounted() {
     this.getList();
+    console.log(this.autoHome)
   },
   methods: {
     async getList() {
@@ -109,6 +110,7 @@ export default {
         this.tableData.forEach(D => {
           query.SID = D.SID;
           D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
+          console.log(D.codeUrl,'自定义页面')
         });               
         this.loading = false;
       } catch (e) {

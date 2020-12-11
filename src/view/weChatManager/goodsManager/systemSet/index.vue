@@ -55,6 +55,10 @@
             <el-radio v-model="form.ShopRadio" label="1">点餐模式</el-radio>
             <el-radio v-model="form.ShopRadio" label="2">自定义模式</el-radio>
           </el-form-item>
+          <el-form-item label="自定义充值">
+            <el-radio v-model="form.IsOpenRecharge" label="0">关闭</el-radio>
+            <el-radio v-model="form.IsOpenRecharge" label="1">开启</el-radio>
+          </el-form-item>
           <!-- <el-form-item label="积分抵扣">
             <el-radio v-model="form.IsDeduction" label="1">开启</el-radio>
             <el-radio v-model="form.IsDeduction" label="2">关闭</el-radio>
@@ -135,6 +139,7 @@ export default {
       },
       form: {
         ShopRadio:"1",
+        IsOpenRecharge:'1',//自定义充值
         ScopeDay:'7',
         StartTime:'',
         EndTime:'',

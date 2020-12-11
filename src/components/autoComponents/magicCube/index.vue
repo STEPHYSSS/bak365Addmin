@@ -112,7 +112,7 @@ export default {
          switch (m) {
            case 1:
             arr = [
-              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 4 },
+              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 1.72},
               { pageX: 0, pageY: 0, pWidth: 0, pHeight: 0 }
             ];
             break;

@@ -53,6 +53,8 @@ const entStoreCoupon = r => require.ensure([], () => r(require('../view/weChatMa
 const entCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entCouponAddEdit')), 'entCouponAddEdit')//进店送券编辑和新增
 const ConditionsList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsList')), 'ConditionsList')//参与条件设置
 const ConditionsAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsAddEdit')), 'ConditionsAddEdit')//参与条件设置新增与编辑
+const directCouponList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/DirectCoupon/directCouponList')), 'directCouponList')//直接送券
+const directCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/DirectCoupon/directCouponAddEdit')), 'directCouponAddEdit')//直接送券新增与编辑
 // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage')//自定义首页
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')//自定义首页编辑
@@ -161,13 +163,13 @@ export const asyncRouterMap = [
           //   },
           //   component:lunboManager
           // }
-          // ,{//主题颜色设置 
-          //   path:'mainStyle',
-          //   meta:{
-          //     label:'主题颜色设置'
-          //   },
-          //   component:mainStyle
-          // },
+          {//主题颜色设置 
+            path:'mainStyle',
+            meta:{
+              label:'主题颜色设置'
+            },
+            component:mainStyle
+          },
           {
             path: 'menuBar',
             meta: {
@@ -470,6 +472,19 @@ export const asyncRouterMap = [
               label:'添加进店送礼'
             },
             component:entCouponAddEdit
+          },{
+            path:'directCouponList',
+            meta:{
+              label:'直接送券'
+            },
+            component:directCouponList
+          },{
+            path:'directCouponAddEdit',
+            isHidden: true,
+            meta:{
+              label:'直接送券'
+            },
+            component:directCouponAddEdit
           },{
             path:'ConditionsList',
             meta:{
