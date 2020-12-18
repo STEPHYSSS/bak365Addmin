@@ -2,60 +2,26 @@
   <div class="addEditActive">
     <!-- 活动详情 -->
     基本信息
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      label-width="150px"
-      v-loading="loading"
-    >
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" v-loading="loading">
       <el-form-item label="活动类型" :key="6">
-        <el-select
-          v-model="ruleForm.Type"
-          placeholder="请选择"
-          @change="changeNorms"
-          :disabled="this.$route.query.SID ? true : false"
-        >
-          <el-option
-            v-for="item in activeTypeNorms"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
+        <el-select v-model="ruleForm.Type" placeholder="请选择" @change="changeNorms" :disabled="this.$route.query.SID ? true : false"> 
+          <el-option v-for="item in activeTypeNorms" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item label="商品选择" :key="1">
-        <!-- <el-input v-model="ruleForm.ProdNo" :readonly="true" placeholder="请选择商品"></el-input> -->
-        <el-button
-          type="primary"
-          style="margin-left: 10px"
-          size="medium"
-          @click="selectGoods(null)"
-          >选择商品</el-button
-        >
+        <el-button type="primary" style="margin-left: 10px" size="medium" @click="selectGoods(null)">选择商品</el-button>
         <!-- 选择商品之后展示的表格 -->
-        <!-- v-if="ruleForm.ProdList&&ruleForm.SpecType!=='1'" -->
-        <el-table
-          style="margin-top: 10px; width: 700px"
-          ref="ProdNoList"
-          :data="ruleForm.ProdList"
-        >
-          <el-table-column
-            prop="Name"
-            label="商品名称"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            prop="ProdNo"
-            label="商品编号"
-            align="center"
-          ></el-table-column>
-          <el-table-column
-            prop="Stock"
-            label="商品库存"
-            align="center"
-          ></el-table-column>
+        <el-table style="margin-top: 10px; width: 850px" ref="ProdNoList" :data="ruleForm.ProdList">
+          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
+          <el-table-column prop="Stock" label="商品库存" align="center">
+          <template slot-scope="scoped">
+            <span v-if="scoped.row.StockType==='1'">{{scoped.row.Stock }}</span>
+            <span v-else-if="scoped.row.StockType==='2'">门店库存</span>
+            <span v-else>不限</span>
+          </template>
+          </el-table-column>
           <el-table-column label="商品原价" align="center">
             <template slot-scope="scope">¥{{scope.row.OldPrice}}</template>
           </el-table-column>
@@ -68,7 +34,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="StoreQty" label="活动数量" align="center">
+          <el-table-column prop="StoreQty" label="活动数量" align="center" v-if="!this.$route.query.SID">
             <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
@@ -77,6 +43,12 @@
                 type="text"
                 v-model="row.StoreQty"
               />
+            </template>
+          </el-table-column>
+          <el-table-column prop="SurplusQty" label="剩余数量" align="center" v-if="this.$route.query.SID">
+            <template slot-scope="{ row }">
+              <input style="width: 100%; text-align: center;color:red"
+                v-model="row.SurplusQty" disabled = true/>
             </template>
           </el-table-column>
           <el-table-column prop="MaxBuyCnt" label="限购数量" align="center">
@@ -98,36 +70,27 @@
                 </el-input>
                 <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
               </el-popover>
+              <el-button type="text" @click="delGoodsNorms(scoped.$index)">删除</el-button>
             </template>
           </el-table-column>
-          <!-- <el-table-column
-            prop="SurplusQty"
-            label="剩余数量"
-            align="center"
-          >
+          <!-- <el-table-column prop="SurplusQty" label="剩余数量" align="center">
             <template slot-scope="{ row }">
-              <input
-              style="width: 100%; text-align: center;border: 1px solid #c1c1c1"
+              <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1"
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
                 maxlength="10"
                 class="number"
                 type="text"
-                v-model="row.SurplusQty"
-              />
+                v-model="row.SurplusQty"/>
             </template>
           </el-table-column> -->
         </el-table>
       </el-form-item>
 
       <el-form-item label="活动名称" prop="Name">
-        <el-input
-          v-model="ruleForm.Name"
-          placeholder="请填写活动名称"
-        ></el-input>
+        <el-input v-model="ruleForm.Name" placeholder="请填写活动名称"></el-input>
       </el-form-item>
       <el-form-item label="活动日期" prop="activityDate" >
-        <el-date-picker
-        style="width:380px"
+        <el-date-picker style="width:380px"
           v-model="activityDate"
           type="datetimerange"
           range-separator="至"
@@ -148,77 +111,9 @@
           placeholder="选择时间范围"
         ></el-time-picker>
       </el-form-item>
-      <!-- <el-form-item label="最大购买数量" prop="MaxBuyCnt">
-        <el-input-number
-          v-model="ruleForm.MaxBuyCnt"
-          controls-position="right"
-          :min="1"
-        ></el-input-number>
-      </el-form-item> -->
-      <el-form-item label="状态" prop="Start">
-        <el-select v-model="ruleForm.Start" placeholder="请选择">
-          <el-option label="启动" value="1">启动</el-option>
-          <el-option label="关闭" value="0">关闭</el-option>
-        </el-select>
-      </el-form-item>
-      <!-- <el-form-item label="产品介绍" prop="Features" class="FeaturesStyle">
-        <el-button
-          type="text"
-          @click="FeaturesShow = true"
-          v-if="FeaturesShow === false"
-          >+编辑</el-button
-        >
-        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
-        <el-button
-          type="text"
-          @click="FeaturesShow = false"
-          v-if="FeaturesShow === true"
-          >隐藏</el-button
-        >
-      </el-form-item>
-      <el-form-item
-        label="重要提示"
-        prop="ImportantNotes"
-        class="FeaturesStyle"
-      >
-        <el-button
-          type="text"
-          @click="ImportantNotesShow = true"
-          v-if="ImportantNotesShow === false"
-          >+编辑</el-button
-        >
-        <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
-        <el-button
-          type="text"
-          @click="ImportantNotesShow = false"
-          v-if="ImportantNotesShow === true"
-          >隐藏</el-button
-        >
-      </el-form-item> -->
     </el-form>
 
     <mall-goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood" :prodList="prodListArr" :isGroup="isGroup"></mall-goods>
-    <!-- <el-dialog class="areaTree TicketDialog"
-      :title="'选择门店'"
-      width="600px"
-      :before-close="beforeClose"
-      :visible.sync="showCheckTicket"
-    >
-      <div class="addScroll">
-        <el-checkbox-group v-model="checkClick">
-          <el-checkbox
-            :label="item.SID"
-            v-for="item in checkList"
-            :key="item.SID"
-            >{{ item.Name }}</el-checkbox
-          >
-        </el-checkbox-group>
-      </div>
-      <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button @click="showCheckTicket = false">取 消</el-button>
-        <el-button type="primary" @click="CheckTicketFun">确 定</el-button>
-      </div>
-    </el-dialog> -->
 
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
@@ -227,16 +122,7 @@
 
     <!-- <div class="active-code-style" v-if="codeUrl">
       <div class="active-code-style-title">手机微信扫码浏览</div>
-      <QRCode
-        :newWidth="200"
-        :newText="
-          activeUrlGood +
-          codeUrl +
-          '?AppNo=' +
-          AppNoMy +
-          '&seckill=true&isBrowse=true'
-        "
-      ></QRCode>
+      <QRCode :newWidth="200" :newText="   activeUrlGood +   codeUrl +   '?AppNo=' +   AppNoMy +   '&seckill=true&isBrowse=true'"></QRCode>
     </div> -->
   </div>
 </template>
@@ -264,15 +150,15 @@ export default {
       isGroup:'noGroup',
       ruleForm: {
         Type: "1",
-        //    DeliveryType: ["2", "1"],
-        Start: "1",
-        SalePrice: 0,
-        // MaxBuyCnt: 0,
         ProdList: [],
+        SalePrice: 0,
+        // DeliveryType: ["2", "1"],
+        // Start: "1",
+        // MaxBuyCnt: 0,
       },
       multipleL: "",
       activityDate: [],
-      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2020, 12, 31, 9, 40)],//活动时间段范围
+      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2020, 12, 31, 21, 40)],//活动时间段范围
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -315,9 +201,9 @@ export default {
       disabledLogistics: true,
       FeaturesShow: true,
       ImportantNotesShow: true,
-      activeTypeNorms: activeTypeNorms,
+      activeTypeNorms: activeTypeNorms,//活动类型
       codeUrl: "",
-      prodListArr: [],
+      prodListArr: [],//弹框数组
     };
   },
   created() {
@@ -328,8 +214,7 @@ export default {
     async getInfo() {
       try {
         this.loading = true;
-        let info = this.$route.query.SID
-          ? getLists(
+        let info = this.$route.query.SID ? getLists(
               {
                 Action: "GetPromotion",
                 SID: this.$route.query.SID,
@@ -354,9 +239,6 @@ export default {
           });
           this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
           this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
-          // this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt
-          //   ? Number(this.ruleForm.MaxBuyCnt)
-          //   : 0;
           if (this.ruleForm.SpecType === "1") {
             // 单规格
             let ProdArr = this.ruleForm.ProdList[0];
@@ -366,24 +248,6 @@ export default {
               Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
             this.ruleForm.SurplusQty = SurplusQty;
           }
-          
-          // let Features = $.base64.atob(this.ruleForm.Features, "utf8");
-          // let ImportantNotes = $.base64.atob(
-          //   this.ruleForm.ImportantNotes,
-          //   "utf8"
-          // );
-          // Features = Features.replace(
-          //   /src="Files/g,
-          //   `src="${process.env.Prefix}Files`
-          // );
-          // ImportantNotes = ImportantNotes.replace(
-          //   /src="Files/g,
-          //   `src="${process.env.Prefix}Files`
-          // );
-          // setTimeout(() => {
-          //   this.$refs.Features.setUEContent(Features);
-          //   this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-          // }, 300);
         }
       } catch (e) {}
     },
@@ -399,18 +263,9 @@ export default {
     },
     // 获取的商品的名字和编号
     sureGood(val) {
+      console.log(val,'选中之后的数据')
       this.goodsShow = false;
       this.ruleForm.ProdList = val;
-      // this.ruleForm.ProdNo = "";
-      // this.ruleForm.SpecType = val[0].SpecType;
-
-      // val.forEach(D => {
-      //   if (this.ruleForm.SpecType === "3") {
-      //     this.ruleForm.SpecSID += D.SpecSID + (val.length > 1 ? ";" : "");
-      //   } else {
-      //     this.ruleForm.ProdNo += D.ProdNo + (val.length > 1 ? ";" : "");
-      //   }
-      // });
     },
     cancelFun() {
       // 取消
@@ -424,11 +279,13 @@ export default {
       this.ruleForm.ProdList.forEach((val) => {
         arr.push({
           Name: val.Name,
-          StoreQty: val.StoreQty,
           OldPrice: val.OldPrice,
           SalePrice: val.SalePrice,
           Stock: val.Stock,
-          SurplusQty: val.StoreQty,
+          StockType:val.StockType,
+          // SurplusQty: val.StoreQty,
+          StoreQty: val.StoreQty,
+          SurplusQty:this.$route.query.SID?val.SurplusQty:val.StoreQty,
           MaxBuyCnt:val.MaxBuyCnt,//限购数量
           ProdSID: val.ProdSID,
           SpecSID: val.SpecSID,
@@ -442,10 +299,18 @@ export default {
             this.$message.error("请填写活动价格")
             return false;
           }
+          if(this.ruleForm.ProdList[i].StockType==='1'){
+            if(Number(this.ruleForm.ProdList[i].StoreQty) > Number(this.ruleForm.ProdList[i].Stock)){
+              this.$message.error("活动数量不能大于商品库存")
+              return false;
+            }
+          }
+          
           if(Number(this.ruleForm.ProdList[i].SurplusQty) > Number(this.ruleForm.ProdList[i].StoreQty)){
             this.$message.error("剩余数量不能大于活动数量")
             return false;
           }
+          
         }
       
         this.$refs["ruleForm"].validate(async (valid) => {
@@ -488,6 +353,9 @@ export default {
             }
           }
         });
+    },
+    async delGoodsNorms(index) {
+      this.ruleForm.ProdList.splice(index, 1);
     },
     copyUrl(val) {
       let index = $(".el-popover").length - 1;

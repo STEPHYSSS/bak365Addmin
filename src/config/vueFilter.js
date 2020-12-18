@@ -104,11 +104,17 @@ Vue.filter('payType', (val) => {
           return ''
      }
      let num = Number(val)
-     if (num) {
-          return num === 1 ? '微卡支付' : num === 2 ? '微信支付' : '货到付款'
-     } else {
-          return ''
-     }
+     if(num===1){
+		return '微卡支付'
+	}else if(num===2){
+		return '微信支付'
+	}else if(num===3){
+		return '货到付款'
+	}else if(num===4){
+		return '券支付'
+	}else{
+		return ''
+	}
 })
 
 Vue.filter('setImgPrex', (val) => {

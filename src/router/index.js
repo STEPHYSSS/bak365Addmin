@@ -18,6 +18,8 @@ const newTaste = r => require.ensure([], () => r(require('../view/weChatManager/
 const menuBar = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/menuBar')), 'menuBar')//自定义菜单设置
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
+const orderNotification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/orderNotification')), 'orderNotification')
+const ticketNotify = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/ticketNotify')), 'ticketNotify')//电子券订单通知
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
 // 电子券设置
 const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
@@ -67,6 +69,8 @@ const orderSharing = r => require.ensure([], () => r(require('../view/weChatMana
 const commissionWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/commissionDetail')), 'commissionDetail')
 const applicationWithdrawal= r => require.ensure([], () => r(require('../view/weChatManager/markingManager/withdrawal')), 'applicationWithdrawal')
 const footPrintList= r => require.ensure([], () => r(require('../view/weChatManager/markingManager/memberFootPrint')), 'footPrintList')
+// 会员列表管理
+const menmberShipList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/Membership/membershipList')), 'menmberShipList')
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
 // const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
@@ -121,7 +125,7 @@ export const asyncRouterMap = [
           }
         },
         redirect: '/weChat/manager/systemSet',
-        children: [
+        children: [          
           // {//券销售设置
           //   path: 'couponSetting',
           //   meta: {
@@ -149,6 +153,19 @@ export const asyncRouterMap = [
               label: '系统设置'
             },
             component: systemSet
+          },{//消息通知
+            path:'orderNotification',
+            meta: {
+              label: '通知设置'
+            },
+            component: orderNotification
+          },{
+            isHidden: true,
+            path:'ticketNotify',
+            meta: {
+              label: '通知设置'
+            },
+            component:ticketNotify
           },{//运费设置
             path: 'logisticsSet',
             meta: {
@@ -232,7 +249,7 @@ export const asyncRouterMap = [
               label: '配件管理'
             },
             component: tasteList
-          }
+          },
           // {
           //   path: 'labelList',
           //   meta: {
@@ -357,7 +374,7 @@ export const asyncRouterMap = [
           // }
         ]
       },
-       {//订单退款管理
+      {//订单退款管理
         path: '/weChat/manager/RefundManage',
         meta: {
           label: '退款管理'
@@ -595,6 +612,27 @@ export const asyncRouterMap = [
             },
             component:footPrintList
           },
+        ]
+      },
+      {//会员管理列表
+        path: '/weChat/manager/menmberShipList',
+        meta: {
+          label: '会员管理'
+        },
+        component: {
+          render(c) {
+            return c('router-view')
+          }
+        },
+        redirect: '/weChat/manager/menmberShipList',
+        children: [
+          {//申请团长列表
+            path: 'menmberShipList',
+            meta: {
+              label: '会员列表'
+            },
+            component: menmberShipList
+          }
         ]
       },
     ]

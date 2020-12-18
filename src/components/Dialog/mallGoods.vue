@@ -1,14 +1,7 @@
 <template>
   <div class="mallGoods">
     <!-- 多选商品 -->
-    <el-dialog
-      class="mallGoodsDialog"
-      title="选择商品"
-      :visible.sync="dialogVisible"
-      width="800px"
-      :before-close="handleClose"
-      center
-    >
+    <el-dialog class="mallGoodsDialog" title="选择商品" :visible.sync="dialogVisible" width="800px" :before-close="handleClose" center>
       <div style="margin-bottom: 20px;text-align: center;">
         <span>名称搜索</span>
         <el-input v-model="search.Name" placeholder="请输入" style="margin-right:10px;width:180px"></el-input>
@@ -16,20 +9,38 @@
         <el-button type="primary" @click="cancerGood">重置</el-button>
       </div>
       <div class="rightGoods">
-        <el-table
-        v-if="isGroup !='group'"
-          ref="multipleTable"
-          :data="goodsNameList"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange"
-          @select-all="selectAll"
-          :row-key="getGoodsCode"
-        >
+        <!-- <el-table v-if="isGroup !='group'"  ref="multipleTable"  :data="goodsNameList"  tooltip-effect="dark"  style="width: 100%"  @selection-change="handleSelectionChange"  @select-all="selectAll"  :row-key="getGoodsCode">
           <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
-          <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
+          <el-table-column prop="Stock" label="商品库存" align="center">
+            <template slot-scope="scoped">
+            <span v-if="scoped.row.StockType==='1'">{{scoped.row.Stock }}</span>
+            <span v-else-if="scoped.row.StockType==='2'">门店库存</span>
+            <span v-else>不限</span>
+          </template>
+          </el-table-column>
+          <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
+          <el-table-column prop="Img" label="图片" align="center">
+            <template slot-scope="scoped">
+              <div class="goodsInfo">
+                <img :src="scoped.row.Img | setImgPrex" />
+              </div>
+            </template>
+          </el-table-column>
+        </el-table> -->
+
+        <el-table :row-key="getRowKey" ref="multipleTable" :data="goodsNameList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
+          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
+          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
+          <el-table-column prop="Stock" label="商品库存" align="center">
+            <template slot-scope="scoped">
+            <span v-if="scoped.row.StockType==='1'">{{scoped.row.Stock }}</span>
+            <span v-else-if="scoped.row.StockType==='2'">门店库存</span>
+            <span v-else>不限</span>
+          </template>
+          </el-table-column>
           <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
           <el-table-column prop="Img" label="图片" align="center">
             <template slot-scope="scoped">
@@ -39,7 +50,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-table
+        <!-- <el-table
           v-else
           ref="singleTable"
           :data="goodsNameList"
@@ -57,7 +68,7 @@
               </div>
             </template>
           </el-table-column>
-        </el-table>
+        </el-table> -->
       </div>
       <span slot="footer" class="dialog-footer" v-if="!isEvaluate">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -98,7 +109,7 @@ export default {
   },
   components: {},
   mounted() {
-    this.getList();
+    // this.getList();
   },
   methods: {
     // 单规格 sid 转换成 prodSid
@@ -106,15 +117,16 @@ export default {
     async getList() {
       try {
         // 获取商品列表
-        let { Data } = await getLists(
-          { Action: "GetProdList", Name: this.search.Name, State: "1" },
-          "MProdOpera"
-        );
+        let { Data } = await getLists({ 
+          Action: "GetProdList",
+          Name: this.search.Name,
+          State: "1" 
+        },"MProdOpera");
         this.goodsNameList = Data.Prod_InfoList;
         if(this.$refs.multipleTable){
           this.goodsNameList.forEach((item,index) => {
             this.prodList.forEach((item2,index2)=>{
-              if(item.SID == item2.SID){
+              if(item.ProdNo == item2.ProdNo){
                 this.$nextTick(()=>{
                   this.$refs.multipleTable.toggleRowSelection(this.goodsNameList[index],true)
                 })
@@ -136,6 +148,10 @@ export default {
     },
     handleSelectionChange(val) {      
       this.multipleSelection = val;
+      console.log(val,'选中行')
+    },
+    getRowKey(row){
+      return row.ProdNo;
     },
     // 多选
     selectAll(selection) {
@@ -185,7 +201,11 @@ export default {
       this.$emit("changeDig", bool);
     },
     goodsShow(bool) {
+      if(bool===true){
+        this.getList()
+      }
       this.dialogVisible = bool;
+      console.log(bool)
     }
   }
 };

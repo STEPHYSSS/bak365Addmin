@@ -5,7 +5,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <span>订单编号：</span>
-          <el-input placeholder="查询订单编号" v-model="search.SID" class="input-with-select">
+          <el-input placeholder="查询订单编号" v-model="search.ExchNo" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
@@ -85,7 +85,7 @@
       </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
-      <el-table-column prop="SID" label="单号" align="center"></el-table-column>
+      <el-table-column prop="ExchNo" label="单号" align="center"></el-table-column>
       <el-table-column label="收货人姓名" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.UserName">{{scoped.row.UserName}}</span>

@@ -48,6 +48,7 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
+import { GetAppNo } from "@/config/publicFunction";
 // let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
 let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
 export default {
@@ -117,8 +118,10 @@ export default {
           url: url + "pages/vip/allMyOrder",
         },
         {
+          // http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo="+GetAppNo()
           Name: "绑定实体会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: 'url + "pages/vip/bind/index"',
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           Name: "申请会员卡",
@@ -126,6 +129,10 @@ export default {
         },
         {
           Name: "地址管理",
+          url: url + "pages/myAddress/myAddress",
+        },
+        {
+          Name: "活动管理",
           url: url + "pages/myAddress/myAddress",
         }
       ],

@@ -1,5 +1,11 @@
 <template>
   <div class="activeGoods">
+    <el-row>
+      <el-col :span="6"></el-col>
+      <el-col :span="6"></el-col>
+      <el-col :span="6"></el-col>
+      <el-col :span="6"></el-col>
+    </el-row>
     <el-table :data="dataList" v-loading="loading" style="width: 100%;">
       <el-table-column label="活动名称" width="250" prop="Name" align="center">
         <!-- <template slot-scope="scoped">
@@ -39,7 +45,7 @@
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
-          <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
+          <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
@@ -102,6 +108,7 @@ export default {
       activeType: "1",
       current_Status: "", //审核
       current_Open: "", //关闭
+      msg:''
     };
   },
   props: ["activeTypeShow"],
@@ -206,6 +213,9 @@ export default {
     },
     // 编辑 通过类型进入编辑页面
     editRowGoods(row) {
+      // if(row.TimeName ==='已结束'){
+      //   return this.$message.error('活动已结束')
+      // }
       if (this.activeTypeShow == "1") {
         this.$router.push({
           path: "/weChat/manager/activity/goodAdd",
@@ -288,6 +298,13 @@ export default {
         return "已停用";
       }
     },
+    startTips(val){
+       if (val === "0") {
+        return "开启";
+      } else {
+        return "关闭";
+      }
+    }
   },
 };
 </script>

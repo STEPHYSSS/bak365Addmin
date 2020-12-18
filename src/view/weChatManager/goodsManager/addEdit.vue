@@ -841,7 +841,6 @@ export default {
             D.showImg = D.Img ? D.Img : [];
           });
         }
-
         this.changeCheckbox(this.ruleForm.DeliveryType.join(",")); //默认物流与配送冲突
         if(this.ruleForm.FinType == '1'){
           this.isAdvanceTime = "1";

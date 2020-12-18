@@ -8,7 +8,6 @@
       <el-table-column label="商品属性值" align="center">
         <template slot-scope="scope">
           <span v-for="(item, index) in scope.row.AttributeList" :key="index">
-            <!-- {{item.Name +`(￥` + item.Price +`)`}} -->
              {{ AttributeJoin(item, index) }}
           </span>
         </template>
@@ -31,38 +30,12 @@
       </el-table-column>
     </el-table>
     <el-dialog title="商品属性信息" :visible.sync="dialogFormVisible">
-      <!-- <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
-        <el-form-item prop="Name" label="商品属性名"
-          :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
-            <el-input v-model="dynamicValidateForm.Name" style="width:200px"></el-input>
-            属性名排序：<el-input v-model="dynamicValidateForm.Sort" style="width:50px"></el-input>
-          </el-form-item>
-        <el-form-item
-          v-for="(domain, index) in dynamicValidateForm.domains"
-          label="商品属性值"
-          :key="index" 
-          :prop="'domains.' + index + '.Name'"
-          :rules="[{
-            required: true, message: '属性值不能为空', trigger: 'blur'
-          },{max: 25, message: '不超过25个字符', trigger: 'blur' }]"
-        >
-          <el-input v-model="domain.Name" style="width:200px"></el-input>
-          ￥<el-input v-model="domain.Price" style="width:50px"></el-input>
-          排序<el-input v-model="domain.Sort" style="width:50px"></el-input>
-          <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="addDomain">新增属性值</el-button>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sure">确 定</el-button>
-      </div> -->
       <el-form :model="ruleForm">
         <el-form-item prop="Name" label="商品属性名" :rules="[{ required: true, message: '请输入商品属性名', trigger: 'blur'}]">
             <el-input v-model="ruleForm.Name" style="width:200px"></el-input>
             属性名排序：<el-input v-model="ruleForm.Sort" style="width:50px"></el-input>
+            是否必选： <el-radio v-model="ruleForm.Radio" label="0">否</el-radio>
+                      <el-radio v-model="ruleForm.Radio" label="1">是</el-radio>
           </el-form-item>
          <div v-for="(item, index) in ruleForm.SpecList" :key="index">
           <el-form-item :key="index + 1" :prop="'SpecList.' + index + '.ProdNo'" label="商品属性值" 
@@ -71,6 +44,7 @@
             <el-input v-model="item.Name" style="width:200px"></el-input>
             ￥<el-input v-model="item.Price" style="width:50px"></el-input>
             排序<el-input v-model="item.Sort" style="width:50px"></el-input>
+            <el-radio v-model="defaultValue" :label="index " @click.native.prevent="changge(index)" border >默认</el-radio>
             <el-button @click="delGoodsNorms(index)">删除</el-button>
           </el-form-item>
          </div>
@@ -89,26 +63,17 @@ export default {
   name: "tasteList",
   data() {
     return {
+      defaultValue: -1, // 默认值
       tableData: [],
       ruleForm: {
         Name:'',
+        Radio:'0',
         Sort:'',
         SpecList: [{
           Name: "",
-            Price: 0,
-            Sort: 0,
+          Price: 0,
+          Sort: 0
         }],
-      },
-      dynamicValidateForm: {
-        domains: [
-          {
-            Name: "",
-            Price: 0,
-            Sort: 0,
-          },
-        ],
-        Name: "",
-        Sort: 0,
       },
       eidtSID: "",
       dialogFormVisible: false,
@@ -118,6 +83,13 @@ export default {
     this.getInfo();
   },
   methods: {
+    changge(index){
+      if (index === this.defaultValue) {
+        this.defaultValue = -1
+      }else {
+        this.defaultValue = index
+      }
+    },
     addGoodsNorms(){
       console.log(this.ruleForm.SpecList)
       this.$nextTick(() => {
@@ -125,27 +97,11 @@ export default {
           Name: "",
           Price:0,
           Sort:''
-          // TastName: []
         });
       });
     },
-    addDomain() {
-      this.dynamicValidateForm.domains.push({
-        Name: "",
-        Price: 0,
-        Sort: "",
-        key: Date.now(),
-      });
-      // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
-    },
     delGoodsNorms(index) {
-      console.log(index)
        this.ruleForm.SpecList.splice(index, 1);
-      // var index = this.dynamicValidateForm.domains.indexOf(item);
-      // if (index !== -1) {
-      //   this.dynamicValidateForm.domains.splice(index, 1);
-      //   // this.$set(this.dynamicValidateForm,this.dynamicValidateForm.domains,this.dynamicValidateForm.domains)
-      // }
     },
     // 列表
     async getInfo() {
@@ -161,18 +117,15 @@ export default {
     add() {
       //新增
       this.dialogFormVisible = true;
-      this.dynamicValidateForm = {};
       this.eidtSID = "";
-      this.dynamicValidateForm = {
-        domains: [
-          {
-            Name: "",
-            Price: 0,
-            Sort: "",
-          },
-        ],
-        Name: "",
-      };
+      this.ruleForm = {
+        SpecList: [{
+          Name: '',
+          Price:0,
+          Sort:''
+        }],
+        Name: ''
+      }
     },
     edit(row) {
       //编辑
@@ -193,31 +146,32 @@ export default {
       this.ruleForm.Name = Data.ParamInfo.Name;
       this.ruleForm.Sort = Data.ParamInfo.Sort;
       this.ruleForm.SpecList = Data.ParamList;
+      this.ruleForm.SpecList.forEach((item, index) => {
+        if (item.IsDefault == 1) {
+          this.defaultValue = index
+        }
+      });
     },
     // 确定按钮
     async sure() {
-      // this.dynamicValidateForm.domains = this.dynamicValidateForm.domains.map(
-      //   (item, index) => {
-      //     return {
-      //       Name: item.Name,
-      //       Price: item.Price,
-      //       Sort: item.Sort,
-      //     };
-      //   }
-      // );
-      this.ruleForm.SpecList = this.ruleForm.SpecList.map((item,index)=>{
+      let formData = this.ruleForm.SpecList.map((item,index)=>{
         console.log(item)
         return {
             Name: item.Name,
             Price: item.Price,
             Sort: item.Sort,
+            IsDefault: 0
           };
       })
+      if (this.defaultValue >= 0) {
+        formData[this.defaultValue].IsDefault = 1
+      }
       let { Data } = await getLists(
         {
           Action: "SetParamInfo",
           Name: this.ruleForm.Name,
-          AttributeList: JSON.stringify(this.ruleForm.SpecList),
+          Radio:this.ruleForm.Radio,
+          AttributeList: JSON.stringify(formData),
           Type: "2",
           SID: this.eidtSID ? this.eidtSID : "",
           Sort: this.ruleForm.Sort,
