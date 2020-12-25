@@ -87,7 +87,7 @@ export const payTypeLists = [
 export const stateLists = [
   { label: '已取消', value: '-3' },
   { label: '待付款', value: '-1' },
-  { label: '已付款', value: '0' },
+  { label: '已预定', value: '0' },
   { label: '生产中', value: '1' },
   { label: '已送货', value: '2' },
   { label: '已提货', value: '3' },
@@ -156,4 +156,9 @@ export const DirectType = [
   { value: '6', label: '全部会员'}, 
   // { value: '2', label: '积分'},
   // { value: '3', label: '卡充值'}
+]
+export const seckillType = [
+  { value: '0', label: '未开始'}, 
+  { value: '1', label: '进行中'}, 
+  { value: '2', label: '已结束 '}
 ]

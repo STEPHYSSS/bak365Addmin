@@ -63,6 +63,7 @@ const customPageAdd = r => require.ensure([], () => r(require('../view/weChatMan
 const customAutoPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoIndex')), 'customAutoPage')//自定义页面
 const autoAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoAddEdit')), 'autoAddEdit')//自定义页面编辑
 const autoHomeUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoHomeUrl')), 'autoHomeUrl')//商城链接
+const activedUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/activedUrl')), 'activedUrl')//活动链接
 // 营销管理
 const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/index')), 'markingPage')
 const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/orderSharingList')), 'orderSharingList')
@@ -71,6 +72,7 @@ const applicationWithdrawal= r => require.ensure([], () => r(require('../view/we
 const footPrintList= r => require.ensure([], () => r(require('../view/weChatManager/markingManager/memberFootPrint')), 'footPrintList')
 // 会员列表管理
 const menmberShipList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/Membership/membershipList')), 'menmberShipList')
+const customerService = r => require.ensure([], () => r(require('../view/weChatManager/customerService')), 'customerService')
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
 // const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
@@ -561,6 +563,13 @@ export const asyncRouterMap = [
               label: '商城网址'
             },
             component: autoHomeUrl
+          },
+          {
+            path:'activedUrl',
+            meta: {
+              label: '活动链接'
+            },
+            component: activedUrl
           }
         ]
       },
@@ -615,7 +624,7 @@ export const asyncRouterMap = [
         ]
       },
       {//会员管理列表
-        path: '/weChat/manager/menmberShipList',
+        path: '/weChat/manager',
         meta: {
           label: '会员管理'
         },
@@ -635,6 +644,27 @@ export const asyncRouterMap = [
           }
         ]
       },
+      {//客服管理 customerService
+        path: '/weChat/manager',
+        meta: {
+          label: '客服管理'
+        },
+        component: {
+          render(c) {
+            return c('router-view')
+          }
+        },
+        redirect: '/weChat/manager/customerService',
+        children: [
+          {
+            path: 'customerService',
+            meta: {
+              label: '客服设置'
+            },
+            component: customerService
+          }
+        ]
+      }
     ]
   },
   {//微信卡券(点击导航栏，右边展示栏)

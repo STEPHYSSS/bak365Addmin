@@ -1,7 +1,7 @@
 <template>
   <div class="mallGoods">
     <!-- 多选商品 -->
-    <el-dialog class="mallGoodsDialog" title="选择商品" :visible.sync="dialogVisible" width="800px" :before-close="handleClose" center>
+    <el-dialog class="mallGoodsDialog" title="选择商品" v-if="dialogVisible" :visible.sync="dialogVisible" width="850px" :before-close="handleClose" center>
       <div style="margin-bottom: 20px;text-align: center;">
         <span>名称搜索</span>
         <el-input v-model="search.Name" placeholder="请输入" style="margin-right:10px;width:180px"></el-input>
@@ -87,10 +87,7 @@ export default {
       type: Boolean,
       default: false
     },
-    prodList: {
-      type: Array,
-      default: []
-    },
+    prodList: Array,
     isEvaluate: [Boolean, String],
     isGroup:{
       type: String,
@@ -115,6 +112,7 @@ export default {
     // 单规格 sid 转换成 prodSid
     // 2,3 sid 转成 specSid
     async getList() {
+      console.log(this.prodList)
       try {
         // 获取商品列表
         let { Data } = await getLists({ 
@@ -123,17 +121,21 @@ export default {
           State: "1" 
         },"MProdOpera");
         this.goodsNameList = Data.Prod_InfoList;
-        if(this.$refs.multipleTable){
-          this.goodsNameList.forEach((item,index) => {
-            this.prodList.forEach((item2,index2)=>{
-              if(item.ProdNo == item2.ProdNo){
-                this.$nextTick(()=>{
-                  this.$refs.multipleTable.toggleRowSelection(this.goodsNameList[index],true)
-                })
-              }
+        this.$nextTick(() => {
+          if(this.$refs.multipleTable){
+            this.goodsNameList.forEach((item,index) => {
+              this.prodList.forEach((item2,index2)=>{
+                if(item.ProdNo == item2.ProdNo){
+                  this.$set(item, 'SalePrice', item2.SalePrice || '')
+                  this.$set(item, 'StoreQty', item2.StoreQty || '')
+                  this.$set(item, 'SurplusQty', item2.SurplusQty || '')
+                  this.$set(item, 'MaxBuyCnt', item2.MaxBuyCnt || '')
+                  this.$refs.multipleTable.toggleRowSelection(item, true)
+                }
+              })
             })
-          })
-        }
+          }
+        })
         this.loadingGoods = false;
       } catch (e) {
         this.$message.error(e);
@@ -148,7 +150,6 @@ export default {
     },
     handleSelectionChange(val) {      
       this.multipleSelection = val;
-      console.log(val,'选中行')
     },
     getRowKey(row){
       return row.ProdNo;
@@ -205,7 +206,6 @@ export default {
         this.getList()
       }
       this.dialogVisible = bool;
-      console.log(bool)
     }
   }
 };

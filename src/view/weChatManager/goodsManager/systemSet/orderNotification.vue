@@ -21,23 +21,12 @@
                          </el-form-item>
                          <el-form-item label="变量说明：">
                               <div class="explain">
-                                   <span>{产品}、{合计}、{姓名}、{提货时间}</span><br/>
-                                   <span>{提货方式}、{实付金额}、{下单时间}</span><br/>
-                                   <span>{订单编号}、{电话号码}、{送货地址}</span><br/>
-                                   <span>{提货门店}、{来源}、{备注}</span>
+                                   <span>{商品名称}、{合计}、{姓名}、{提货时间}</span><br/>
+                                   <span>{提货方式}、{订单金额}、{下单时间}</span><br/>
+                                   <span>{订单编号}、{联系方式}、{送货地址}</span><br/>
+                                   <span>{提货门店}、{备注}</span>
                               </div>
-                         </el-form-item>
-                         <el-form-item label="商户范例：">
-                              <div class="explain">
-                                   <span>first=恭喜您成功购买！</span><br/>
-                                   <span>keyword1={订单编号}=#F70A0A</span><br/>
-                                   <span>keyword2={产品}{合计}</span><br/>
-                                   <span>keyword3={提货门店}{送货地址}</span><br/>
-                                   <span>keyword4={提货时间}</span><br/>
-                                   <span>keyword5={姓名}、{电话号码}</span><br/>
-                                   <span>remark={备注}</span>
-                              </div>
-                         </el-form-item>
+                         </el-form-item>                         
                          <el-form-item label="客户通知模板ID：">
                               <el-input v-model="form.WeChatNo"></el-input>
                          </el-form-item>
@@ -47,23 +36,12 @@
                          </el-form-item>
                          <el-form-item label="变量说明：">
                               <div class="explain">
-                                   <span>{产品}、{合计}、{姓名}、{提货时间}</span><br/>
-                                   <span>{提货方式}、{实付金额}、{下单时间}</span><br/>
+                                   <span>{商品名称}、{合计}、{姓名}、{提货时间}</span><br/>
+                                   <span>{提货方式}、{订单金额}、{下单时间}</span><br/>
                                    <span>{订单编号}、{门店电话}、{送货地址}</span><br/>
-                                   <span>{提货门店}、{来源}、{备注}</span>
+                                   <span>{提货门店}</span>
                               </div>
-                         </el-form-item>
-                         <el-form-item label="客户范例：">
-                              <div class="explain">
-                                   <span>first=恭喜您成功购买！</span><br/>
-                                   <span>keyword1={订单编号}=#F70A0A</span><br/>
-                                   <span>keyword2={产品}{合计}</span><br/>
-                                   <span>keyword3={提货门店}{送货地址}</span><br/>
-                                   <span>keyword4={提货时间}</span><br/>
-                                   <span>keyword5={姓名}、{门店电话}</span><br/>
-                                   <span>remark={备注}</span>
-                              </div>
-                         </el-form-item>
+                         </el-form-item>                         
                     </el-form>
                     <div class="preserveStyle">
                          <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
@@ -132,6 +110,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.orderNotify{
+     margin-bottom: 20px;
+}
 .el-input,.explain,.el-textarea{
      width: 300px;
 }

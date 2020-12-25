@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <span>退款编号：</span>
-          <el-input placeholder="查询退款编号" v-model="search.SID" class="input-with-select">
+          <el-input placeholder="查询退款编号" v-model="search.ExchNo" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
@@ -67,7 +67,7 @@
       </el-row>
     </div>
     <el-table :data="dataList" v-loading="loading">
-      <el-table-column prop="SID" label="单号"></el-table-column>
+      <el-table-column prop="ExchNo" label="单号"></el-table-column>
       <el-table-column prop="UserName" label="收货人姓名"></el-table-column>
       <el-table-column prop="PayAmt" label="支付金额">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
@@ -159,7 +159,7 @@ export default {
      },
     async getInfo() {
       try {
-        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',SID:this.search.SID };
+        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',ExchNo:this.search.ExchNo };
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
         this.TotalList = Data.DataCount;

@@ -125,16 +125,17 @@ export default {
         },
         {
           Name: "申请会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: url + "pages/vip/bind/index",
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           Name: "地址管理",
           url: url + "pages/myAddress/myAddress",
         },
-        {
-          Name: "活动管理",
-          url: url + "pages/myAddress/myAddress",
-        }
+        // {
+        //   Name: "活动管理",
+        //   url: url + "pages/myAddress/myAddress",
+        // }
       ],
       CateData:[],
       dialogTableVisible:false

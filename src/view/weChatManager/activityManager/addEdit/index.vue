@@ -34,7 +34,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="StoreQty" label="活动数量" align="center" v-if="!this.$route.query.SID">
+          <el-table-column prop="StoreQty" label="活动数量" align="center">
             <template slot-scope="{ row }">
               <input
                 oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"
@@ -47,8 +47,8 @@
           </el-table-column>
           <el-table-column prop="SurplusQty" label="剩余数量" align="center" v-if="this.$route.query.SID">
             <template slot-scope="{ row }">
-              <input style="width: 100%; text-align: center;color:red"
-                v-model="row.SurplusQty" disabled = true/>
+              <input style="width: 100%; text-align: center;color:red;border: 1px solid #c1c1c1"
+                v-model="row.SurplusQty"/>
             </template>
           </el-table-column>
           <el-table-column prop="MaxBuyCnt" label="限购数量" align="center">
@@ -64,12 +64,12 @@
           </el-table-column>
           <el-table-column label="操作" align="center">
             <template slot-scope="scoped">
-              <el-popover placement="left" v-model="scoped.row.visibleUrl">
+              <!-- <el-popover placement="left" v-model="scoped.row.visibleUrl">
                 <el-input v-model="scoped.row.codeUrlShop" readonly placeholder="商品链接">
                   <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
                 </el-input>
                 <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
-              </el-popover>
+              </el-popover> -->
               <el-button type="text" @click="delGoodsNorms(scoped.$index)">删除</el-button>
             </template>
           </el-table-column>
@@ -158,7 +158,7 @@ export default {
       },
       multipleL: "",
       activityDate: [],
-      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2020, 12, 31, 21, 40)],//活动时间段范围
+      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2030, 12, 31, 21, 40)],//活动时间段范围
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -228,15 +228,6 @@ export default {
           this.ruleForm = res[0].Data.Promotion;
           this.ruleForm.ProdList = res[0].Data.ItemList;
           this.prodListArr = res[0].Data.ItemList;
-          let query={ SID:"",
-          seckill:true
-          }
-          this.ruleForm.ProdList.forEach(D => {
-            // D.codeUrlShop = this.activeUrlGood+ "?SID=" + D.SID + "&seckill=true"
-           
-            query.SID = D.SID;
-            D.codeUrlShop = this.activeUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
-          });
           this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
           this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
           if (this.ruleForm.SpecType === "1") {
@@ -249,12 +240,14 @@ export default {
             this.ruleForm.SurplusQty = SurplusQty;
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        this.$message.error(e)
+      }
     },
     changeNorms() {},
     selectGoods(index) {
       // 商品编号弹框
-      this.prodListArr = this.prodListArr;
+      this.prodListArr = this.ruleForm.ProdList;
       this.goodsShow = true;
       this.goodsNormsIndex = index;
     },
@@ -263,9 +256,38 @@ export default {
     },
     // 获取的商品的名字和编号
     sureGood(val) {
-      console.log(val,'选中之后的数据')
+      let arr = [];
       this.goodsShow = false;
-      this.ruleForm.ProdList = val;
+      // this.ruleForm.ProdList = val;
+      // if(this.$route.query.SID){
+      //   this.ruleForm.ProdList.forEach((item2,index)=>{
+      //     arr = val.filter(item => item2.ProdNo != item.ProdNo);
+      //   })
+      //   this.ruleForm.ProdList = this.ruleForm.ProdList.concat(arr)
+      // }
+      arr = val.map((item,index)=>{
+        return {
+          Name: item.Name,
+          SID:item.SID,
+          OldPrice: item.OldPrice,
+          SalePrice: item.SalePrice,
+          Stock: item.Stock,
+          StockType:item.StockType,
+          StoreQty: item.StoreQty,
+          SurplusQty:item.SurplusQty,
+          MaxBuyCnt:'1',//限购数量
+          ProdSID: item.ProdSID,
+          SpecSID: item.SpecSID,
+          ProdNo: item.ProdNo,
+          SpecType: item.SpecType,
+        }
+      })
+      this.ruleForm.ProdList = arr;
+      // 编辑时点击确定需要遍历数据，否则会覆盖已填写好的数据
+      // this.ruleForm.ProdList.forEach((item2,index)=>{
+      //   arr = val.filter(item => item2.ProdNo != item.ProdNo);
+      // })
+      // this.ruleForm.ProdList = this.ruleForm.ProdList.concat(arr)
     },
     cancelFun() {
       // 取消
@@ -274,27 +296,22 @@ export default {
     clearable(){
       this.activeTime = []
     },
-    preserveFun() {
-      let arr = [];
-      this.ruleForm.ProdList.forEach((val) => {
-        arr.push({
-          Name: val.Name,
-          OldPrice: val.OldPrice,
-          SalePrice: val.SalePrice,
-          Stock: val.Stock,
-          StockType:val.StockType,
-          // SurplusQty: val.StoreQty,
-          StoreQty: val.StoreQty,
-          SurplusQty:this.$route.query.SID?val.SurplusQty:val.StoreQty,
-          MaxBuyCnt:val.MaxBuyCnt,//限购数量
-          ProdSID: val.ProdSID,
-          SpecSID: val.SpecSID,
-          ProdNo: val.ProdNo,
-          SpecType: val.SpecType,
-        });
-      });
-      this.ruleForm.ProdList = arr;
-        for(let i = 0;i<this.ruleForm.ProdList.length;i++){
+    dateFormat(time) {
+      var date=new Date(time);
+      var year=date.getFullYear();
+      /* 在日期格式中，月份是从0开始的，因此要加0
+        * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+        * */
+      var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+      var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+      var hours=date.getHours()<10 ? "0"+date.getHours() : date.getHours();
+      var minutes=date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
+      var seconds=date.getSeconds()<10 ? "0"+date.getSeconds() : date.getSeconds();
+      // 拼接
+      return hours+":"+minutes+":"+seconds;
+    },
+    async preserveFun(formName) {
+      for(let i = 0;i<this.ruleForm.ProdList.length;i++){
           if(this.ruleForm.ProdList[i].SalePrice===undefined){
             this.$message.error("请填写活动价格")
             return false;
@@ -304,75 +321,66 @@ export default {
               this.$message.error("活动数量不能大于商品库存")
               return false;
             }
+            
           }
-          
           if(Number(this.ruleForm.ProdList[i].SurplusQty) > Number(this.ruleForm.ProdList[i].StoreQty)){
             this.$message.error("剩余数量不能大于活动数量")
             return false;
           }
-          
-        }
-      
-        this.$refs["ruleForm"].validate(async (valid) => {
-          if (!valid) {
-            return false;
-          } else {
-            try {
-              let obj = _.cloneDeep(this.ruleForm);              
-              // let Features = this.$refs.Features.getUEContent();
-              // Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
-              // obj.Features = $.base64.btoa(Features, "utf8");
-              // let ImportantNotes = this.$refs.ImportantNotes.getUEContent();
-              // ImportantNotes = ImportantNotes.replace(
-              //   /src="\.\.\/Files/g,
-              //   `src="Files`
-              // );
-              // obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
-
-              if (this.activityDate) {
-                obj.StartDate = this.activityDate[0];
-                obj.EndDate = this.activityDate[1];
-              }
-              if(this.activeTime!=null){
-                obj.StartTime = this.activeTime[0];
-                obj.EndTime = this.activeTime[1];
-              }else{
-                obj.StartTime = "";
-                obj.EndTime=""
-              }
-              obj.ProdList = JSON.stringify(obj.ProdList);
-              obj.Action = "SetPromotionInfo";
-              let data = await getLists(obj, "MPromotionOpera");
-              // this.$message.success("操作成功,可用二维码浏览");
-              setTimeout(() => {
-                this.$router.push("/weChat/manager/activity/goodSetting");
-              }, 300);
-              this.codeUrl = data.Message;
-            } catch (e) {
-              this.$message.error(e);
-            }
+          if(Number(this.ruleForm.ProdList[i].MaxBuyCnt) > Number(this.ruleForm.ProdList[i].StoreQty)){
+            this.$message.error("限购数量不能大于活动数量")
+            return false;
           }
-        });
+      }
+      this.$refs["ruleForm"].validate(async(valid) => {
+        if (valid) {
+          try {
+            let obj = _.cloneDeep(this.ruleForm);
+            let abc = this.dateFormat(this.activeTime[0])
+            if (this.activityDate) {
+              obj.StartDate = this.activityDate[0];
+              obj.EndDate = this.activityDate[1];
+            }
+            if(this.activeTime!=null){
+              obj.StartTime = this.dateFormat(this.activeTime[0]);
+              obj.EndTime = this.dateFormat(this.activeTime[1]);
+            }else{
+              obj.StartTime = "";
+              obj.EndTime=""
+            }
+            obj.ProdList = JSON.stringify(obj.ProdList);
+            obj.Action = "SetPromotionInfo";
+            let data = await getLists(obj, "MPromotionOpera");
+            setTimeout(() => {
+              this.$router.push("/weChat/manager/activity/goodSetting");
+            }, 300);
+          } catch (e) {
+            this.$message.error(e);
+          }
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     async delGoodsNorms(index) {
       this.ruleForm.ProdList.splice(index, 1);
     },
-    copyUrl(val) {
-      let index = $(".el-popover").length - 1;
-      let input = $($(".el-popover")[index]).find("input");
-      // // 复制输入框的地址
-      input.select();
-      document.execCommand("Copy");
-      this.$Message.info("复制成功");
-      val.visibleUrl = false;
-    },
+    // copyUrl(val) {
+    //   let index = $(".el-popover").length - 1;
+    //   let input = $($(".el-popover")[index]).find("input");
+    //   // // 复制输入框的地址
+    //   input.select();
+    //   document.execCommand("Copy");
+    //   this.$Message.info("复制成功");
+    //   val.visibleUrl = false;
+    // },
     setInputDec(FinHour, val) {
       //不让填写小数
       if (!FinHour) return;
       this.ruleForm[val] = FinHour.toString().split(".")[0];
     },
   },
-  watch: {},
 };
 
 function setData(data, label, id) {

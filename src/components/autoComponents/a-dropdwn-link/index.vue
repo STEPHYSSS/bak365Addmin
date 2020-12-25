@@ -52,6 +52,7 @@
 <script>
 // let url = window.location.protocol + '//' + window.location.host + "/WebApp/Mobile/index.html#/";
 let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/"
+import { GetAppNo } from "@/config/publicFunction";
 export default {
   name: "",
   props: {
@@ -131,11 +132,13 @@ export default {
         },
         {
           name: "绑定实体会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: url + "pages/vip/bind/index",
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           name: "申请会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: url + "pages/vip/bind/index",
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           name: "地址管理",

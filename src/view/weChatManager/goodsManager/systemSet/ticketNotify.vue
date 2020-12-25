@@ -23,16 +23,6 @@
                                    <span>{下单金额}、{获得奖励}</span>
                               </div>
                          </el-form-item>
-                         <el-form-item label="范例：">
-                              <div class="explain">
-                                   <span>first=恭喜你获得一张电子券!</span><br/>
-                                   <span>keyword1={客户昵称}=#F70A0A</span><br/>
-                                   <span>keyword2={商品名称}</span><br/>
-                                   <span>keyword3={订单号}</span><br/>
-                                   <span>keyword4={下单金额}</span><br/>
-                                   <span>keyword5={获得奖励}</span>
-                              </div>
-                         </el-form-item>
                     </el-form>
                     <div class="preserveStyle">
                          <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>

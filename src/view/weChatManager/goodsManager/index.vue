@@ -9,7 +9,7 @@
         <el-button size="small" type="primary" style="margin-left:10px;margin-top:10px" @click="modifyCateFun">添加/修改 类别</el-button>
       </el-col>
       <el-col :span="17">        
-        <div style="float: right;margin-top:5px">
+        <div style="margin-top:5px">
           <!-- 类别：
           <goodType
             style="display: inline-block"
@@ -25,12 +25,13 @@
           >
             <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>
           </el-input> -->
-          名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" style="width: auto"></el-input>
-          类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别"></goodType>
-          类型：<el-select v-model="search.ProdType" placeholder="请选择商品类型">
+          名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" class="widthW"></el-input>
+          编号：<el-input v-model="search.ProdNo" clearable @clear="clearName" placeholder="请输入商品编号" class="widthW"></el-input>
+          类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别" class="widthW"></goodType>
+          类型：<el-select v-model="search.ProdType" placeholder="请选择商品类型" class="widthW">
                   <el-option v-for="item in ProdTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
-          规格：<el-select v-model="search.SpecType" placeholder="请选择商品规格">
+          规格：<el-select v-model="search.SpecType" placeholder="请选择商品规格" class="widthW">
                   <el-option v-for="item in SpecTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
           <el-button slot="append" @click="searchName">查询</el-button>
@@ -176,6 +177,7 @@ export default {
         // 分类
         CateSID: "",
         Name: "",
+        ProdNo:"",
         ProdType:"",
         SpecType:""
       },
@@ -259,6 +261,7 @@ export default {
             Status:this.search.Status,
             CateSID:this.search.CateSID,
             Name:this.search.Name,
+            ProdNo:this.search.ProdNo,
             ProdType:this.search.ProdType,
             SpecType:this.search.SpecType,
             Page: this.currentPage - 1           
@@ -473,6 +476,9 @@ export default {
   .goodInfoRight {
     margin: 0px 0 0 20px;
     line-height: 32px;
+  }
+  .widthW{
+    width: 170px;
   }
 }
 </style>

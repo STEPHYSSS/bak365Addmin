@@ -13,6 +13,8 @@ import vcolorpicker from 'vcolorpicker'
 Vue.use(vcolorpicker)
 // import './mock/index.js';
 import * as filters from '@/config/filters'
+import Moment from 'moment'
+Vue.prototype.$moment = Moment
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
   })

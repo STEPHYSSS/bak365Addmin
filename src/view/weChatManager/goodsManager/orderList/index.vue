@@ -215,7 +215,7 @@ export default {
   }
   .input-with-select {
     width: 250px;
-    margin-left: 10px;
+    // margin-left: 10px;
   }  
 }
 </style>

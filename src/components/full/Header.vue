@@ -62,7 +62,7 @@
 
 
     <ul class="nav navbar-nav ml-auto">
-      <el-autocomplete
+      <!-- <el-autocomplete
         class="navbarInputCenter"
         style="margin-right:30px"
         prefix-icon="el-icon-search"
@@ -71,7 +71,7 @@
         placeholder="搜索"
         :trigger-on-focus="false"
         @select="handleSelect"
-      >
+      > -->
         <template slot-scope="{ item }">
           <div style="text-overflow: ellipsis;overflow: hidden;">{{ item.value }}</div>
           <!--          <span style="font-size:12px;color:#b4b4b4">{{ item.address }}</span>-->

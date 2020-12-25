@@ -42,6 +42,7 @@
 </template>
 <script>
 let url = window.location.host + "/WeixinNew/Dist/index.html#/";
+import { GetAppNo } from "@/config/publicFunction";
 export default {
   name: "autoHomeUrl",
   data() {
@@ -99,11 +100,13 @@ export default {
         },
         {
           Name: "绑定实体会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: url + "pages/vip/bind/index",
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           Name: "申请会员卡",
-          url: url + "pages/vip/bind/index",
+          // url: url + "pages/vip/bind/index",
+          url:'http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo='+GetAppNo()
         },
         {
           Name: "地址管理",

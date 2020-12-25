@@ -14,6 +14,17 @@
             </el-form-item>
             <el-form-item label="编号:">{{item.ProdNo}}</el-form-item>
             <el-form-item label="口味:" v-if="item.ParamInfo">{{item.ParamInfo}}</el-form-item>
+            <el-form-item label="配件:" v-if="item.PartsList">
+              <div class="parts-norms-info-one" v-for="(item2,index) in item.PartsList" :key="index">
+                <div>
+                  <span>{{item2.Name}}</span>
+                  <span>
+                    ¥{{item2.SalePrice}}/份
+                    <span style="margin-left:4px">x{{item2.BuyCnt}}</span>
+                  </span>
+                </div>
+              </div>
+            </el-form-item>
             <el-form-item label="价格:">¥{{item.SalePrice}}</el-form-item>
             <el-form-item label="数量:" v-if="item.BuyCnt">{{item.BuyCnt}}</el-form-item>
           </el-form>

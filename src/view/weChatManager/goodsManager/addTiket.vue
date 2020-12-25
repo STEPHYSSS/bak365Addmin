@@ -57,15 +57,6 @@
           step-strictly
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="商品库存">
-        <el-input-number
-          v-model="ruleForm.StoreQty"
-          controls-position="right"
-          :min="0"
-          :step="1"
-          step-strictly
-        ></el-input-number>
-      </el-form-item>
       <el-form-item label="库存类型">
         <el-select v-model="ruleForm.StockType" placeholder="请选择">
           <el-option
@@ -76,8 +67,14 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="每人限购" prop="MaxBuyCnt">
-        <el-input-number v-model="ruleForm.MaxBuyCnt" controls-position="right" :min="0"></el-input-number>
+      <el-form-item label="商品库存" v-if="ruleForm.StockType =='1'">
+        <el-input-number
+          v-model="ruleForm.StoreQty"
+          controls-position="right"
+          :min="0"
+          :step="1"
+          step-strictly
+        ></el-input-number>
       </el-form-item>
       <el-form-item label="销量基数" prop="SaleCnt">
         <el-input-number
@@ -87,15 +84,6 @@
           :step="1"
           step-strictly
         ></el-input-number>
-      </el-form-item>
-      <el-form-item label="商品标签" prop="Tag">
-        <tasteList
-          ref="labelRef"
-          :multiple="false"
-          :Type="0"
-          :allowCreate="false"
-          @changeTaste="changeTasteList($event,0)"
-        ></tasteList>
       </el-form-item>
       <el-form-item label="支付方式" prop="PayType">
         <el-checkbox-group v-model="ruleForm.PayType">
@@ -170,7 +158,7 @@ import Tree from "@/components/tree/";
 import tasteList from "@/components/selector/TasteList";
 import ueditor1 from "@/components/ueditor1/";
 import TicketInfo from "@/components/Dialog/ticketInfo/";
-import { addScroll, ImgList, replacePre } from "@/config/publicFunction";
+import { addScroll, ImgList, replacePre,GetBaseImgUrl } from "@/config/publicFunction";
 import vuedraggable from "vuedraggable";
 import { getLists } from "@/api/vipCard";
 import _ from "lodash";
@@ -199,6 +187,7 @@ export default {
       ruleForm: {
         PayType: ["1", "2"],
         ProdType:'1',//电子券类型
+        StockType: "0"
       },
       rules: {
         ProdNo: [ruleText.ProdNo(this)],
@@ -254,15 +243,24 @@ export default {
             this.ruleForm.ImportantNotes,
             "utf8"
           );
-
+          let abc = GetBaseImgUrl();
           Features = Features.replace(
             /src="Files/g,
-            `src="${process.env.Prefix}Files`
+            `src="${abc}${process.env.Prefix}Files`
           );
+          console.log(Features,'one')
           ImportantNotes = ImportantNotes.replace(
             /src="Files/g,
-            `src="${process.env.Prefix}Files`
+            `src="${abc}${process.env.Prefix}Files`
           );
+          // Features = Features.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
+          // ImportantNotes = ImportantNotes.replace(
+          //   /src="Files/g,
+          //   `src="${process.env.Prefix}Files`
+          // );
 
           this.$refs.Features.setUEContent(Features);
           this.$refs.ImportantNotes.setUEContent(ImportantNotes);
@@ -301,16 +299,6 @@ export default {
     // 电子券弹窗结束
     changeDigTicket(bool) {
       this.showTicket = bool;
-    },
-    changeTasteList(id, index) {
-      // 商品标签id
-      if (index === 0) {
-        // 商品标签id
-        this.ruleForm.Tag = id;
-      } else if (index === 3) {
-        // console.log(id)
-        this.ruleForm.AccessoriesInfo = id;
-      }
     },
     // 图片
     upLoadImgsList(imgs) {

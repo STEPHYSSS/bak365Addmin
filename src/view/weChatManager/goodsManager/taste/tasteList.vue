@@ -91,7 +91,6 @@ export default {
       }
     },
     addGoodsNorms(){
-      console.log(this.ruleForm.SpecList)
       this.$nextTick(() => {
         this.ruleForm.SpecList.push({
           Name: "",
@@ -124,7 +123,9 @@ export default {
           Price:0,
           Sort:''
         }],
-        Name: ''
+        Name: '',
+        Radio:'0',
+        Sort:''
       }
     },
     edit(row) {
@@ -145,6 +146,7 @@ export default {
       );
       this.ruleForm.Name = Data.ParamInfo.Name;
       this.ruleForm.Sort = Data.ParamInfo.Sort;
+      this.ruleForm.Radio = Data.ParamInfo.Radio;
       this.ruleForm.SpecList = Data.ParamList;
       this.ruleForm.SpecList.forEach((item, index) => {
         if (item.IsDefault == 1) {
@@ -154,32 +156,35 @@ export default {
     },
     // 确定按钮
     async sure() {
-      let formData = this.ruleForm.SpecList.map((item,index)=>{
-        console.log(item)
-        return {
-            Name: item.Name,
-            Price: item.Price,
-            Sort: item.Sort,
-            IsDefault: 0
-          };
-      })
-      if (this.defaultValue >= 0) {
-        formData[this.defaultValue].IsDefault = 1
+      try {
+        let formData = this.ruleForm.SpecList.map((item,index)=>{
+          return {
+              Name: item.Name,
+              Price: item.Price,
+              Sort: item.Sort,
+              IsDefault: 0
+            };
+        })
+        if (this.defaultValue >= 0) {
+          formData[this.defaultValue].IsDefault = 1
+        }
+        let { Data } = await getLists(
+          {
+            Action: "SetParamInfo",
+            Name: this.ruleForm.Name,
+            Radio:this.ruleForm.Radio,
+            AttributeList: JSON.stringify(formData),
+            Type: "2",
+            SID: this.eidtSID ? this.eidtSID : "",
+            Sort: this.ruleForm.Sort,
+          },
+          "MBaseOpera"
+        );
+        this.getInfo();
+        this.dialogFormVisible = false;
+      } catch (error) {
+        this.$message.error(error)
       }
-      let { Data } = await getLists(
-        {
-          Action: "SetParamInfo",
-          Name: this.ruleForm.Name,
-          Radio:this.ruleForm.Radio,
-          AttributeList: JSON.stringify(formData),
-          Type: "2",
-          SID: this.eidtSID ? this.eidtSID : "",
-          Sort: this.ruleForm.Sort,
-        },
-        "MBaseOpera"
-      );
-      this.getInfo();
-      this.dialogFormVisible = false;
     },
     del(row) {
       //删除列表
@@ -197,7 +202,9 @@ export default {
             },
             "MBaseOpera"
           );
-          this.getInfo();
+          setTimeout(()=>{
+            this.getInfo();
+          },200)
         })
         .catch(() => {
           this.$message({

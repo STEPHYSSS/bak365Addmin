@@ -1,10 +1,38 @@
 <template>
   <div class="activeGoods">
-    <el-row>
-      <el-col :span="6"></el-col>
-      <el-col :span="6"></el-col>
-      <el-col :span="6"></el-col>
-      <el-col :span="6"></el-col>
+    <el-row class="marginBottom">
+      <el-col :span="6">
+        <span>活动名称：</span>
+        <el-input placeholder="请输入活动名称" v-model="search.Name" clearable @clear = "clearN" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
+        </el-input>
+      </el-col>
+      <el-col :span="6">
+        <span>活动状态：</span>
+        <el-select v-model="search.TimeType" placeholder="请选择活动状态" clearable @change="changeState" class="selectSearch">
+          <el-option v-for="item in seckillType" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="6">
+        <span>开始时间：</span>
+        <el-date-picker
+            v-model="search.StartDate"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            @change="changeTime">
+          </el-date-picker>
+      </el-col>
+      <el-col :span="6">
+        <span>结束时间：</span>
+        <el-date-picker
+            v-model="search.EndDate"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            @change="changeTime">
+          </el-date-picker>
+      </el-col>
     </el-row>
     <el-table :data="dataList" v-loading="loading" style="width: 100%;">
       <el-table-column label="活动名称" width="250" prop="Name" align="center">
@@ -36,12 +64,12 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">
-          <el-popover placement="left" v-model="scoped.row.visibleUrl">
+          <!-- <el-popover placement="left" v-model="scoped.row.visibleUrl">
             <el-input v-model="scoped.row.codeUrl" readonly placeholder="商品链接">
               <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
             </el-input>
             <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
-          </el-popover>
+          </el-popover> -->
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
@@ -90,6 +118,7 @@ import { activeUrlGood,seckill} from "@/config/index";
 import { DownUrlFunCode } from "@/config/publicFunction";
 import Cookies from "js-cookie";
 import QRCode from "@/components/qrcodejs/qrcodejs";
+import { seckillType } from "@/config/utils";
 export default {
   name: "",
   data() {
@@ -108,7 +137,12 @@ export default {
       activeType: "1",
       current_Status: "", //审核
       current_Open: "", //关闭
-      msg:''
+      seckillType:seckillType,//类型
+      msg:'',
+      search:{
+        Name:'',
+        TimeType:''
+      },
     };
   },
   props: ["activeTypeShow"],
@@ -121,10 +155,13 @@ export default {
     async getList() {
       try {
         this.loading = true;
-        let { Data } = await getLists(
-          { Action: "GetPromotionList" ,Type:this.activeTypeShow},
-          "MPromotionOpera"
-        );
+        let obj = { Action: "GetPromotionList",Type:this.activeTypeShow};
+        obj = Object.assign(obj, this.search);
+        let { Data } = await getLists(obj, "MPromotionOpera");
+        // let { Data } = await getLists(
+        //   { Action: "GetPromotionList" ,Type:this.activeTypeShow,Name:this.search.Name},
+        //   "MPromotionOpera"
+        // );
         this.loading = false;
         let PromotionList = Data.PromotionList || [];
         if(this.activeTypeShow == '1'){
@@ -155,6 +192,19 @@ export default {
         this.$message.error(e);
         this.loading = false;
       }
+    },
+    searchN(){
+      this.getList()
+    },
+    clearN(){
+      this.search.Name = '';
+      this.getList()
+    },
+    changeState() {
+      this.getList();
+    },
+    changeTime(){
+      this.getList();
     },
     // 活动类型（1秒杀活动，2爆款活动，3套餐活动，4买赠活动，5团购活动）
     setActiveType(val) {
@@ -203,14 +253,14 @@ export default {
       }
     },
     // 复制输入框的地址
-    copyUrl(val) {
-      let index = $(".el-popover").length - 1;
-      let input = $($(".el-popover")[index]).find("input");
-      input.select();
-      document.execCommand("Copy");
-      this.$Message.info("复制成功");
-      val.visibleUrl = false;
-    },
+    // copyUrl(val) {
+    //   let index = $(".el-popover").length - 1;
+    //   let input = $($(".el-popover")[index]).find("input");
+    //   input.select();
+    //   document.execCommand("Copy");
+    //   this.$Message.info("复制成功");
+    //   val.visibleUrl = false;
+    // },
     // 编辑 通过类型进入编辑页面
     editRowGoods(row) {
       // if(row.TimeName ==='已结束'){
@@ -325,7 +375,13 @@ export default {
     margin: 0px 0 0 20px;
     line-height: 32px;
   }
-
+  .marginBottom{
+    margin-bottom: 15px;
+  }
+  .input-with-select {
+    width: 250px;
+    // margin-left: 10px;
+  }  
   .el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
     background: #fff !important;
     color: #409eff;
