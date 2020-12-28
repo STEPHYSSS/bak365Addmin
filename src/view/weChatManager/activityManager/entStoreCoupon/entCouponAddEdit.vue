@@ -53,8 +53,8 @@
         <el-input v-model="form.GiveMoney"></el-input>
       </el-form-item>
       <el-form-item label="发放总量">
-        <el-input v-model="form.GiveCnt"></el-input
-        >，每人最多领取<el-input-number
+        <el-input-number v-model="form.GiveCnt" :min="1" controls-position="right"></el-input-number
+        >，每人最多领取 <el-input-number
           v-model="form.LimitCnt"
           controls-position="right"
           :min="1"
@@ -72,12 +72,12 @@
           type="textarea"
         ></el-input>
       </el-form-item>
-      <el-form-item label="状态" prop="Start">
+      <!-- <el-form-item label="状态" prop="Start">
         <el-select v-model="Start" placeholder="请选择">
           <el-option label="启动" value="1">启动</el-option>
           <el-option label="关闭" value="0">关闭</el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <!-- <el-form-item label="活动规则" prop="Features" class="FeaturesStyle">
         <el-button
           type="text"
@@ -205,7 +205,7 @@ export default {
         TempText: "",
       },
       Name: "", //活动名称
-      Start: "1", //状态
+      // Start: "1", //状态
       SchemesName: "", //参与条件名
       SchemesSID: "", //参与条件SID
       StartDate: "", //开始时间
@@ -220,7 +220,7 @@ export default {
       tiketName: "", //电子券搜索名称
       dataTable: [], //选择参与条件方案列表
       number: "",
-      Audit: "",
+      // Audit: "",
     };
   },
   components: {
@@ -315,8 +315,8 @@ export default {
         // setTimeout(() => {
         // this.$refs.Features.setUEContent(Features)}, 300);
         this.Name = data.Data.Promotion.Name;
-        this.Start = data.Data.Promotion.Start;
-        this.Audit = data.Data.Promotion.Audit;
+        // this.Start = data.Data.Promotion.Start;
+        // this.Audit = data.Data.Promotion.Audit;
         this.SchemesSID = data.Data.Promotion.SchemesSID;
         this.SchemesName = data.Data.Promotion.SchemesName;
         this.PartTime.push(
@@ -354,8 +354,8 @@ export default {
             GiveList: JSON.stringify(GiveList),
             TemplateList: JSON.stringify(TemplateList),
             // Features:this.Features,
-            Start: this.Start,
-            Audit: this.Audit,
+            // Start: this.Start,
+            // Audit: this.Audit,
             Action: "SetPromotionInfo",
           },
           "MPromotionOpera"

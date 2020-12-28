@@ -11,18 +11,47 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="活动商品" :visible.sync="dialogTableVisible">
+      <el-table :data="urlList">
+        <el-table-column property="Name" label="网址名称"></el-table-column>
+        <el-table-column label="网址链接">
+          <template slot-scope="scoped">
+          <el-input v-model="scoped.row.goodsUrl" readonly></el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+          <el-popover placement="left" v-model="scope.row.visibleUrl">
+          <el-input v-model="scope.row.goodsUrl" readonly placeholder="商品链接" style="width:500px">
+              <el-button slot="append" @click="copyUrl2(scope.row)">复制</el-button>
+          </el-input>
+          <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
+          </el-popover>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!-- <goodsUrl :itemDate="urlList" :goodsShow="goodsShow" @changeDig="changeDig"></goodsUrl> -->
   </div>
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
-import { seckill } from "@/config/index";
+import { seckill,activeUrlGood } from "@/config/index";//链接前缀
+import goodsUrl from "@/components/Dialog/goodsUrl.vue"//弹窗
 export default {
   name: "",
   data() {
     return {
       tableData: [],
-      seckill: seckill //秒杀链接
+      seckill: seckill, //秒杀链接
+      activeUrlGood:activeUrlGood,//进入商品详情
+      goodsShow: false,//弹窗
+      urlList: [],//弹框数组
+      dialogTableVisible:false,
     };
+  },
+  components:{
+    goodsUrl
   },
   created() {
     this.getActiveList();
@@ -46,9 +75,29 @@ export default {
       }
     },
     copyUrl(row) {
+      //  let query={ SID:""}
+      //   this.data.forEach(D => {
+      //     query.SID = D.SID;
+      //     D.codeUrl = this.phoneUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
+      //   });
+      let query={ SID:"",
+      seckill: "true"}
       row.ItemList.forEach(D => {
-        D.goodsUrl = this.seckill + "?SID=" + D.SID;
+        query.SID = D.SID;
+        D.goodsUrl = this.activeUrlGood + "?query="+encodeURIComponent(JSON.stringify(query))
       });
+      this.urlList = row.ItemList;
+      this.dialogTableVisible = true;
+    },
+    changeDig(bool) {
+      this.goodsShow = bool;
+    },
+    copyUrl2(){
+      let index = $(".el-popover").length - 1;
+      let input = $($(".el-popover")[index]).find("input");
+      input.select();
+      document.execCommand("Copy");
+      this.$Message.info("复制成功");
     }
     // 后台 MPromotionOpera  GetPromInfoUrl  获取秒杀 拼团活动信息+活动明细
   }
