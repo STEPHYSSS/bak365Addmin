@@ -59,6 +59,16 @@
             <el-radio v-model="form.IsOpenRecharge" label="0">关闭</el-radio>
             <el-radio v-model="form.IsOpenRecharge" label="1">开启</el-radio>
           </el-form-item>
+          <!-- <el-form-item label="支付方式">
+            <el-checkbox-group v-model="form.BenePayMode">
+              <el-checkbox label="1">微卡支付</el-checkbox>
+              <el-checkbox label="2">微信支付</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item> -->
+          <!-- <el-form-item label="权益支付方式">
+            <el-radio v-model="form.BenePayMode" label="1">微卡支付</el-radio>
+            <el-radio v-model="form.BenePayMode" label="2">微信支付</el-radio>
+          </el-form-item> -->
           <!-- <el-form-item label="积分抵扣">
             <el-radio v-model="form.IsDeduction" label="1">开启</el-radio>
             <el-radio v-model="form.IsDeduction" label="2">关闭</el-radio>
@@ -137,9 +147,11 @@ export default {
       activeName: "1",
       rules: {       
       },
+      
       form: {
         ShopRadio:"1",
         IsOpenRecharge:'1',//自定义充值
+        // BenePayMode: ["1", "2"],//权益
         ScopeDay:'7',
         StartTime:'',
         EndTime:'',
@@ -148,8 +160,7 @@ export default {
         ScoreDeduction:'',
         MoneyDeduction:'',
         ScoreRatio:'',
-        IsRefund:'3'
-        
+        IsRefund:'3',
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],
@@ -183,8 +194,11 @@ export default {
           { Action: "GetBase", Type: 1 },
           "MShopOpera"
           ); 
-          if(Data.ShopBase.SetInfo){
+          if(Data.ShopBase.SetInfo){            
             this.form = Data.ShopBase.SetInfo;
+            this.form.BenePayMode = this.form.BenePayMode
+          ? this.form.BenePayMode.split(",")
+          : [];
           }
         }else{
         let { Data } = await getLists(
@@ -205,6 +219,10 @@ export default {
       }     
       try {
         let obj = {};
+        this.form.BenePayMode =
+              typeof this.form.BenePayMode !== "string" && this.form.BenePayMode
+                ? this.form.BenePayMode.join(",")
+                : this.form.BenePayMode;
         if (this.activeName == "1") {          
           obj = {
             Action: "SetBase",

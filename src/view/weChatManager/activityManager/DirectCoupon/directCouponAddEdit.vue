@@ -104,7 +104,7 @@ export default {
     return {
       form: {
         TicketNo:'',//电子券编号
-        SendType:'',//筛选类型
+        SendType:'0',//筛选类型
         Data:'',//订单号和卡号
       },
       DirectType:DirectType,//筛选类型

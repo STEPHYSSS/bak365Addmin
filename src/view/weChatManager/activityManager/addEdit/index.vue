@@ -336,18 +336,22 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            let abc = this.dateFormat(this.activeTime[0])
+            // let abc = this.dateFormat(this.activeTime[0])
             if (this.activityDate) {
               obj.StartDate = this.activityDate[0];
               obj.EndDate = this.activityDate[1];
             }
-            if(this.activeTime!=null){
-              obj.StartTime = this.dateFormat(this.activeTime[0]);
+            if(!this.$route.query.SID){
+              obj.StartTime =this.dateFormat(this.activeTime[0]) ;
               obj.EndTime = this.dateFormat(this.activeTime[1]);
-            }else{
-              obj.StartTime = "";
-              obj.EndTime=""
             }
+            // if(this.activeTime!=null){
+            //   obj.StartTime = this.activeTime[0];
+            //   obj.EndTime = this.activeTime[1];
+            // }else{
+            //   obj.StartTime = "";
+            //   obj.EndTime=""
+            // }
             obj.ProdList = JSON.stringify(obj.ProdList);
             obj.Action = "SetPromotionInfo";
             let data = await getLists(obj, "MPromotionOpera");
