@@ -117,6 +117,8 @@ import linkedLinks from "@/components/autoComponents/linkedLinks";
 import linkedLinksFun from "@/components/autoComponents/linkedLinks/setIndex";
 import titleBox from "@/components/autoComponents/titleBox";
 import titleBoxFun from "@/components/autoComponents/titleBox/setIndex";
+import seckill from "@/components/autoComponents/seckill";//秒杀
+import seckillFun from "@/components/autoComponents/seckill/setIndex";//秒杀
 import imgNav from "@/components/autoComponents/imgNav";
 import imgNavFun from "@/components/autoComponents/imgNav/setIndex";
 import magicCube from "@/components/autoComponents/magicCube";
@@ -155,6 +157,8 @@ export default {
     linkedLinksFun,
     titleBox,
     titleBoxFun,
+    seckill,
+    seckillFun,
     imgNav,
     imgNavFun,
     magicCube,
@@ -167,7 +171,8 @@ export default {
     richTextFun,
     goodGroup,
     goodGroupFun,
-    draggable
+    draggable,
+
   },
   data() {
     return {
@@ -199,23 +204,25 @@ export default {
             { id: 17, name: "文本", viewComponets: "textBox" },
             // linkedLinks
             // { id: 18, name: "关联链接", viewComponets: "" },
-            { id: 19, name: "标题", viewComponets: "titleBox" }
+            { id: 19, name: "标题", viewComponets: "titleBox" },
+            // { id: 20, name: "秒杀", viewComponets: "seckill" }
           ]
         },
         {
-          // id: 2,
-          // name: "营销组件",
-          // list: [
-          //   { id: 21, name: "优惠券" },
-          //   { id: 22, name: "拼团" },
-          //   { id: 23, name: "周期购" },
-          //   { id: 24, name: "限时折扣" },
-          //   { id: 25, name: "秒杀" },
-          //   { id: 26, name: "知识内容" },
-          //   { id: 27, name: "知识专栏" },
-          //   { id: 28, name: "积分商城" },
-          //   { id: 29, name: "个性化推荐" }
-          // ]
+          id: 2,
+          name: "营销组件",
+          list: [
+            // { id: 21, name: "优惠券" },
+            // { id: 22, name: "拼团" },
+            // { id: 23, name: "周期购" },
+            // { id: 24, name: "限时折扣" },
+            { id: 25, name: "秒杀" ,viewComponets: "seckill" },
+            { id: 26, name: "会员权益" ,viewComponets: "seckill" },
+            // { id: 26, name: "知识内容" },
+            // { id: 27, name: "知识专栏" },
+            // { id: 28, name: "积分商城" },
+            // { id: 29, name: "个性化推荐" }
+          ]
         },
         {
           id: 3,

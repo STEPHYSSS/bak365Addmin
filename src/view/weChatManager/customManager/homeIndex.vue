@@ -102,9 +102,9 @@ export default {
         let query={ SID:""}
         this.tableData.forEach(D => {
           query.SID = D.SID;
-          console.log(this.autoHome)
+          // console.log(this.autoHome)
           D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
-          console.log(D.codeUrl)
+          // console.log(D.codeUrl)
         }); 
                    
         this.loading = false;
