@@ -289,7 +289,7 @@ export default {
 
     if (this.form.goodSource === "1") {
       this.goodsList;
-    }
+      }
     this.goodsList = this.form._Prod_Data || [];
     this.goodInfoList = this.form._Prod_Data;
     // console.log(this.goodsList,'if外面的')

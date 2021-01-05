@@ -15,16 +15,6 @@
         label="名称"
         align="center"
       ></el-table-column>
-      <!-- <el-table-column
-        prop="Name"
-        label="最近应用在"
-        align="center"
-      ></el-table-column> -->
-      <!-- <el-table-column
-        prop="Name"
-        label="共应用次数"
-        align="center"
-      ></el-table-column> -->
       <el-table-column prop="IsDefault" label="默认" align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.IsDefault === '0'">否</span>
@@ -102,11 +92,8 @@ export default {
         let query={ SID:""}
         this.tableData.forEach(D => {
           query.SID = D.SID;
-          // console.log(this.autoHome)
           D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
-          // console.log(D.codeUrl)
         }); 
-                   
         this.loading = false;
       } catch (e) {
         this.$message.error(e);

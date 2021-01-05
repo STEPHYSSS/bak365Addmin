@@ -19,7 +19,8 @@ axios.interceptors.request.use(config => {
   return config;
 }, error => {
   // Do something with request error
-  console.log(error); // for debug
+  // console.log(error); // for debug
+  this.$message.error(error)
   Promise.reject(error);
 })
 

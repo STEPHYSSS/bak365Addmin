@@ -1,166 +1,378 @@
 <template>
-  <div>
-    <div
-      :class="['cap-title',currentObj.traditionStyle=='1'?'cap-title--wx':'cap-title--normal']"
-      :style="{'background-color': currentObj.backGColor, 'text-align': currentObj.textAlign}"
+  <div class="cap-goods-layout">
+    <ul
+      class="cap-goods-layout__container card"
+      :class="[currentObj.listStyle,currentObj.goodStyle]"
+      :style="{'padding-left':currentObj.pageSpace +'px','padding-right':currentObj.pageSpace +'px',
+          'margin-left':-(currentObj.goodSpace/2)+'px','margin-right':-(currentObj.goodSpace/2)+'px'}"
     >
-      <h2 class="cap-title__main">
-        {{currentObj.title?currentObj.title:'点击编辑『标题』'}}
-        <span
-          class="cap-title__custom-link"
-          v-if="currentObj.navName"
-        >
-          -&nbsp;
-          <a class="cap-title__link">{{currentObj.navName}}</a>
-        </span>
-      </h2>
-      <p class="cap-title__sub" v-if="currentObj.traditionStyle=='0'&&currentObj.subtitle">
-        <span class="cap-title__sub-title">{{currentObj.subtitle}}</span>
-      </p>
-      <p
-        class="cap-title__sub"
-        v-if="currentObj.traditionStyle=='1'&&(currentObj.dataTitle||currentObj.authorTitle||currentObj.titleUrlName)"
+      <li
+        class="cap-goods-layout__wrapper cap-goods-layout__wrapper--0"
+        v-for="(item,index) in currentGoodList"
+        :key="index"
       >
-        <span class="cap-title__set">
-          <span class="cap-title__date" v-if="currentObj.dataTitle">{{currentObj.dataTitle}}</span>
-          <span class="cap-title__author" v-if="currentObj.authorTitle">{{currentObj.authorTitle}}</span>
-          <span>
-            <a
-              href="javascript:;"
-              :style="{'margin-left':currentObj.dataTitle||currentObj.authorTitl?'10px':'0'}"
-              class="cap-title__link js-open-follow"
-            >{{currentObj.titleUrlName}}</a>
-          </span>
-        </span>
-      </p>
-    </div>
+        <a
+          log-params="null"
+          class="cap-goods-layout__item card"
+          style="margin: 5px;"
+          :class="[currentObj.listStyle,currentObj.goodStyle,currentObj.chamfer]"
+          :style="{'margin':(currentObj.goodSpace/2)+'px'}"
+        >
+          <div class="cap-goods__photo">
+            <div class="cap-goods__image-wrap" :style="{'padding-top':currentObj.imgScale+ '%'}">
+              <div
+                data-lazy-log="1"
+                :class="['cap-goods__img--'+currentObj.contain]"
+                class="cap-goods__img"
+                lazy="loaded"
+                :style="{'background-image':`url(${setImgPrex(item.Img)})`}"
+              ></div>
+              
+            </div>
+            <div v-if="currentObj.showContent.indexOf('5')>-1">
+              <i
+                v-if="currentObj.typeSign!=='4'"
+                class="van-icon cap-goods-layout__corner-mark"
+                :class="['type-'+currentObj.typeSign,currentObj.typeSign==='0'?'van-icon-new-arrival ':
+                currentObj.typeSign==='1'?'van-icon-hot-sale':currentObj.typeSign==='2'?'van-icon-new':
+                currentObj.typeSign==='3'?'van-icon-hot':'']"
+                style="color: rgb(255, 68, 68);"
+              ></i>
+
+              <div
+                v-if="currentObj.typeSign==='4'&&!currentObj.typeSignImg"
+                style="display: inline-table;"
+                class="cap-goods-layout__corner-mark cap-goods-layout__corner-mark--default"
+              >
+                <span>角标</span>
+                <br />
+                <span>区域</span>
+              </div>
+              <img
+                v-if="currentObj.typeSign==='4'&&currentObj.typeSignImg"
+                :src="currentObj.typeSignImg |setImgPrex"
+                class="cap-goods-layout__corner-mark cap-goods-layout__corner-mark--custom"
+              />
+            </div>
+            <div class="cap-goods-layout__tag small">
+              <!---->
+              <div class="cap-goods-layout__tag-countdown">
+                <span
+                  class="cap-goods-layout__tag-countdown-text"
+                  >距结束
+                </span>
+                <div
+                  class="cap-goods-layout__countdown cap-countdown cap-countdown--timeStyle"
+                >
+                  <span
+                    ><span
+                      class="cap-countdown__day cap-countdown__first"
+                      >{{activeTimeMy.day}}</span
+                    ><span class="cap-countdown__time-text"
+                      >天</span
+                    ></span
+                  ><span class="cap-countdown__hour">{{activeTimeMy.hours}}</span
+                  ><span class="cap-countdown__time-text"
+                    >:</span
+                  ><span class="cap-countdown__minute">{{activeTimeMy.minute}}</span
+                  ><span class="cap-countdown__time-text"
+                    >:</span
+                  ><span class="cap-countdown__second">{{activeTimeMy.second}}</span>
+                </div>
+              </div>
+              <!---->
+              <!-- <countDown></countDown> -->
+            </div>
+          </div>
+          
+          <div class="cap-goods-layout__info" v-if="currentObj.textCenter&&currentObj.showContent">
+            <div
+              class="has-title-1 has-subtitle-1 cap-goods-layout__info-title"
+              :class="[currentObj.listStyle]"
+              goods-index="0"
+              :style="{'text-align': currentObj.textCenter,'margin-top':'0'}"
+            >
+              <h3
+                class="title"
+                :style="{'font-weight': currentObj.fontWeight,'margin-top':'10px','height':'30px'}"
+                v-if="currentObj.showContent.indexOf('1')>-1"
+              >{{item.Name}}</h3>
+              <!-- <p
+                v-if="currentObj.showContent.indexOf('2')>-1&&item.Describe"
+                class="sub-title"
+              >{{item.Describe}}</p>-->
+            </div>
+            <div
+              v-if="currentObj.showContent&&currentObj.showContent.length!==0
+              &&(currentObj.showContent.indexOf('4')>-1||currentObj.showContent.indexOf('3')>-1)"
+              class="cap-goods-layout__info-price has-price-1 has-btn-1"
+              :class="[currentObj.listStyle,currentObj.listStyle==='big'||currentObj.listStyle==='list'?'size--big':'size--small',
+              currentObj.textCenter]"
+            >
+              <div
+                v-if="!(currentObj.textCenter==='center'&&currentObj.showContent.indexOf('3')===-1)"
+                class="price-info"
+                :style="{'padding-right':
+                currentObj.textCenter==='center'?'0':
+                currentObj.listStyle==='big'||currentObj.listStyle==='list'||currentObj.listStyle==='hybrid'?'39px'
+                :currentObj.buyButton === '9'?'65px':'29px',
+                 'font-weight': currentObj.fontWeight}"
+              >
+                <span class="sale-price" v-if="currentObj.showContent.indexOf('3')>-1">
+                  <div class="cap-theme-view" style="color: rgb(255, 68, 68);">
+                    <span class="price-tag">¥</span>
+                    {{item.SalePrice}}
+                  </div>
+                </span>
+              </div>
+              <div
+                v-if="currentObj.showContent.indexOf('4')>-1||currentObj.buyButton==='9'"
+                class="cap-goods-layout__buy-btn-wrapper"
+                :class="[currentObj.listStyle==='big'||currentObj.listStyle==='list'||currentObj.listStyle==='hybrid'?'big':'small',
+                'type-'+currentObj.buyButton]"
+              >
+                <i
+                  v-if="currentObj.buyButton!=='3'&& currentObj.buyButton!=='4'&& currentObj.buyButton!=='7'&& currentObj.buyButton!=='8'
+                  &&currentObj.buyButton!=='9'"
+                  class="van-icon"
+                  :class="['cap-goods-layout__buy-btn-'+currentObj.buyButton,
+                  currentObj.buyButton==='2'?'van-icon-add-o':currentObj.buyButton==='5'?'van-icon-add ':currentObj.buyButton==='6'?'van-icon-shopping-cart-o'
+                  :'van-icon-cart-circle-o',
+                  ]"
+                  style="color: rgb(255, 68, 68);"
+                ></i>
+
+                <button
+                  v-else
+                  class="van-button van-button--danger van-button--small"
+                  :class="['cap-goods-layout__buy-btn-'+ currentObj.buyButton]"
+                  :style="{'background-color': currentObj.buyButton==='3'?'rgb(255, 68, 68)':'',
+                   'border-color': currentObj.buyButton==='3'?'rgb(255, 68, 68)':''}"
+                >
+                  <span class="van-button__text">{{currentObj.buyButtonText}}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 import Mixins from "../public";
+import { GetBaseImgUrl } from "@/config/publicFunction";
+// import countDown from "./countDown.vue"
 export default {
   mixins: [Mixins],
+  name: "",
   props: {
     propsObj: {
       type: Object,
       default() {
         return {
-          title: "",
-          //0==>传统样式,1==>模仿微信图文页样式
-          traditionStyle: "0",
-          //left,center,right
-          textAlign: "left",
-          //   副标题
-          subtitle: "",
-          backGColor: "rgb(249, 249, 249)",
-          //   导航名称
-          navName: "",
-          //   导航名称链接
-          navNameUrl: "",
-          //   日期
-          dataTitle: "",
-          authorTitle: "",
-          titleUrlName: "",
-          //   链接标题url
-          titleUrl: ""
+          goodSource: "0",
+          //small  big   three list hybrid swipe
+          listStyle: "small",
+          // 商品间距
+          goodSpace: 9,
+          // 页面边距
+          pageSpace: 10,
+          // 图片比例  3:2 -->66.6667  1:1 3:4-->133.333  16:9-->56.25
+          imgScale: "100",
+          // 商品样式 无边白底 --> card  卡片投影--> card-shadow 描边白底--> card2 无边透明底 --> simple 促销-->promotion
+          goodStyle: "promotion",
+          // 圆角 circle 直角rect
+          chamfer: "circle",
+          // 图片填充 周边留白-->contain  填充 -->cover
+          contain: "contain",
+          // 文本样式 normal  bold
+          fontWeight: "normal",
+          // left center
+          textCenter: "left",
+          // 显示内容 1商品名称 2商品描述 3商品价格 4购买按钮
+          showContent: ["1", "2", "3", "4"],
+          // 购买按钮样式 1 到 9
+          buyButton: "9",
+          // 购买按钮样式 === 3 或者4 时，有个按钮文字
+          buyButtonText: "马上抢",
+          // 商品角标 0 到 4
+          typeSign: "4",
+          // 商品角标 === 4时，自定义的图片
+          typeSignImg: ""
         };
       }
     }
   },
   data() {
     return {
-      // currentObj: {
-      //   title: this.propsObj.title,
-      //   traditionStyle: this.propsObj.traditionStyle,
-      //   textAlign: this.propsObj.textAlign,
-      //   subtitle: this.propsObj.subtitle,
-      //   backGColor: this.propsObj.backGColor,
-      //   navName: this.propsObj.navName,
-      //   navNameUrl: this.propsObj.navNameUrl,
-      //   dataTitle: this.propsObj.dataTitle,
-      //   authorTitle: this.propsObj.authorTitle,
-      //   titleUrlName: this.propsObj.titleUrlName,
-      //   titleUrl: this.propsObj.titleUrl
-      // }
+      // curTime: new Date().getTime(), // 当前服务器时间
+      // countDownInfo: null, // 定时器所需信息
+      currentGoodList: [],
+      activeTimeMy: {},
+      fakeData: [
+        {
+          Img:
+            "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
+          Name: "显示商品名称，最多显示1行",
+          SalePrice: "99",
+          Describe: "显示商品描述，最多显示1行"
+        },
+        {
+          Img:
+            "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
+          Name: "显示商品名称，最多显示1行",
+          SalePrice: "99",
+          Describe: "显示商品描述，最多显示1行"
+        },
+        {
+          Img:
+            "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
+          Name: "显示商品名称，最多显示1行",
+          SalePrice: "99",
+          Describe: "显示商品描述，最多显示1行"
+        },
+        {
+          Img:
+            "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
+          Name: "显示商品名称，最多显示1行",
+          SalePrice: "99",
+          Describe: "显示商品描述，最多显示1行"
+        }
+      ]
+      // reportErrorsFun:true
     };
   },
-  computed: {},
+  components: {
+    // countDown
+  },
+  created() {
+    this.getTimeout()
+  },
   mounted() {
-    // this.changeStyle();
+    this.currentObj.showContent = this.currentObj.showContent
+      ? this.currentObj.showContent
+      : [];
+    if (
+      this.currentObj._Prod_Data &&
+      this.currentObj._Prod_Data.length > 0
+    ) {
+      this.currentGoodList = this.currentObj._Prod_Data;
+    } else {
+      this.currentGoodList = this.fakeData;
+    }
   },
   methods: {
-    reportErrorsFun() {
-      if (!this.currentObj.title) {
-        return "请填写标题内容";
+    // getTimeInfo(){
+    //   this.currentObj._Prod_Data.forEach((item,index) => {
+        
+    //   });
+    //   this.countDownInfo = {
+    //     duration: res.data.exam.duration,
+    //     deadline: res.data.exam.end_time,
+    //     nowTime: this.curTime,
+    //     starTime: res.data.exam.start_time
+    //   };
+    // },
+    getTimeout(current) {
+      let currentT = new Date().getTime()
+      let End = new Date(this.currentObj._Prod_Data[0].EndDate.replace(/-/g, '/')).getTime()
+      let Start = new Date(this.currentObj._Prod_Data[0].StartDate.replace(/-/g, '/')).getTime()
+      let startIS = Start - currentT >= 0 ? false : End - currentT > 0 ? true : 'end'
+      let activeTimeMy = startIS ? End - currentT : Start - currentT
+      let myTime = activeTimeMy
+      this.activeTimeMy = {
+        day: parseInt(myTime / (1000 * 60 * 60 * 24)),
+        hours: parseInt((myTime % (1000 * 60 * 60 * 24)) / (60 * 60 * 1000)),
+        minute: parseInt((myTime % (1000 * 60 * 60)) / (60 * 1000)),
+        second: parseInt((myTime % (1000 * 60)) / 1000)
       }
+      if(myTime>0){
+        setTimeout(() => {
+          this.getTimeout()
+        }, 1000)
+        this.$set(this.activeTimeMy,this.activeTimeMy)
+      }else{
+        clearInterval(this.activeTimeMy);
+       let activeTimeMy2 = {
+          day: 0,
+          hours: 0,
+          minute: 0,
+          second:0
+        }
+        this.$set(this.activeTimeMy,this.activeTimeMy2)
+      }
+      
+    },
+    setImgPrex(val) {
       if (
-        this.currentObj.traditionStyle === "1" &&
-        this.currentObj.titleUrlName &&
-        !this.currentObj.titleUrl
+        val &&
+        this.currentObj._Prod_Data &&
+        this.currentObj._Prod_Data.length > 0
       ) {
-        // return "请填写标题的链接";
+        // return process.env.BASE_URL + val; /* process.env.Prefix */
+        return GetBaseImgUrl()+val
+      } else {
+        return "";
       }
+    },
+    reportErrorsFun() {
+      let _dataString = "";
+      if (Array.isArray(this.currentObj._data)) {
+        _dataString = this.currentObj._data.join(",");
+      } else {
+        _dataString = this.currentObj._data;
+      }
+      return !_dataString ? "请选择商品" : "";
+    }
+  },
+  // computed:{
+  //   finishTimer() {
+  //     setTimeout(() => {
+  //       this.getTimeout()
+  //     }, 1000)
+  //   }
+  // },
+  watch: {
+    "currentObj.showContent"() {
+      this.currentObj.showContent = this.currentObj.showContent
+        ? this.currentObj.showContent
+        : [];
+    },
+    "currentObj._Prod_Data"(val) {
+      if (this.currentObj.goodSource === "0" && val.length > 0) {
+        this.currentGoodList = val;
+      }
+      if (this.currentObj.goodSource === "1" && val.length > 0) {
+        this.currentGoodList = val;
+      }
+    },
+    "currentObj._data"() {
     }
   }
 };
 </script>
 
-<style scoped>
-.cap-title {
-  padding: 10px;
-  box-sizing: border-box;
-  overflow: hidden;
-  word-break: break-all;
-  position: relative;
+<style lang="less" scoped>
+@import "../../../assets/css/autoComponents/goods.css";
+.cap-goods-layout {
+  .el-form-item__content {
+    line-height: 0;
+  }
+  .cap-goods-layout__buy-btn-wrapper {
+    display: flex;
+  }
+  .cap-goods__image-wrap {
+    border: 1px solid #eee;
+  }
+  .cap-goods-layout__corner-mark {
+    z-index: 4;
+  }
 }
-.cap-title:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 200%;
-  transform: scale(0.5);
-  transform-origin: 0 0;
-  pointer-events: none;
-  box-sizing: border-box;
-  border-bottom: 1px solid #e5e5e5;
-}
-.cap-title__main {
-  margin: 0;
-  font-size: 18px;
-  line-height: 22px;
-}
-.cap-title__sub {
-  color: #8c8c8c;
-  margin: 5px 0 0;
+.cap-goods-layout__info-title{
+overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+width: 140px;
 }
 
-.cap-title__date,
-.cap-title__author {
-  margin-left: 10px;
-}
-.cap-title__set span:nth-child(1) {
-  margin-left: 0;
-}
-.cap-title__link {
-  font-size: 12px;
-  color: #07d;
-}
-
-.cap-title__custom-link {
-  margin-left: 10px;
-  color: #999;
-}
-
-.cap-title--wx .cap-title__sub {
-  line-height: 1.6;
-  font-size: 12px;
-  font-weight: 400;
-  margin-top: 5px;
-}
-.cap-title--wx .cap-title__link {
-  color: #607fa6;
-}
 </style>

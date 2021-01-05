@@ -131,9 +131,16 @@ Vue.filter('setImgPrex', (val) => {
        return ''
   } */
 })
-Vue.filter('SetImage',(val) => {
+Vue.filter('SetImage',(val) => {     
      if (val) {
-          return process.env.BASE_URL + val; 
+          if(window.location.hostname == "localhost" ){
+               return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
+       }else if( window.location.hostname == "dingtalk.bak365.cn" ){
+          return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
+       }else{
+          return 'http://'+window.location.hostname+'/WebApp/'+ val;
+       }
+          // return process.env.BASE_URL + val; 
      } else {
           return '';
      }

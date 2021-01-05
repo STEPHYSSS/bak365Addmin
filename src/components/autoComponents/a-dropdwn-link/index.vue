@@ -76,11 +76,11 @@ export default {
         { url: "", name: "自定义链接", id: 1 },
         {
           name: "商城首页",
-          url: url,
+          url: url
         },
         {
           name: "商品列表-自定义",
-          url: url + "pages/shoppingMall/list/goodsList",
+          url: url + "pages/shoppingMall/list/goodsList"
         },
         {
           name:'商品列表-点餐',
@@ -100,15 +100,15 @@ export default {
         // },
         {
           name: "购物车",
-          url: url + "pages/shoppingMall/shoppingCart/index",
+          url: url + "pages/shoppingMall/shoppingCart/index"
         },
         {
           name: "个人中心",
-          url: url + "pages/home",
+          url: url + "pages/home"
         },
         {
           name: "我的粉丝",
-          url: url + "pages/vip/myFan",
+          url: url + "pages/vip/myFan"
         },
         {
           Name:"我的足迹",
@@ -116,19 +116,23 @@ export default {
         },
         {
           name: "申请团长",
-          url: url + "pages/vip/applyLeader",
+          url: url + "pages/vip/applyLeader"
         },
         {
           name: "付款码",
-          url: url + "pages/vip/payCode",
+          url: url + "pages/vip/payCode"
         },
         {
           name: "微卡充值",
-          url: url + "pages/vip/weiFull",
+          url: url + "pages/vip/weiFull"
         },
         {
           name: "订单列表",
-          url: url + "pages/vip/allMyOrder",
+          url: url + "pages/vip/allMyOrder"
+        },
+        {//pages/packages/index 权益入口
+          name:"权益列表",
+          url:url+"pages/packages/index"
         },
         {
           name: "绑定实体会员卡",
@@ -142,8 +146,8 @@ export default {
         },
         {
           name: "地址管理",
-          url: url + "pages/myAddress/myAddress",
-        },
+          url: url + "pages/myAddress/myAddress"
+        }
       ],
     };
   },

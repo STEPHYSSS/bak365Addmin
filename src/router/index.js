@@ -531,10 +531,10 @@ export const asyncRouterMap = [
             return c('router-view')
           }
         },
-        redirect: '/weChat/manager/custom/customList',
+        redirect: '/weChat/manager/custom/homeIndex',
         children: [
           {
-            path: 'customList',
+            path: 'homeIndex',
             meta: {
               label: '首页'
             },

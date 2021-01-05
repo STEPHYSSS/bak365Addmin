@@ -119,6 +119,8 @@ import titleBox from "@/components/autoComponents/titleBox";
 import titleBoxFun from "@/components/autoComponents/titleBox/setIndex";
 import seckill from "@/components/autoComponents/seckill";//秒杀
 import seckillFun from "@/components/autoComponents/seckill/setIndex";//秒杀
+import interests from "@/components/autoComponents/interests";//权益
+import interestsFun from "@/components/autoComponents/interests/setIndex";//权益
 import imgNav from "@/components/autoComponents/imgNav";
 import imgNavFun from "@/components/autoComponents/imgNav/setIndex";
 import magicCube from "@/components/autoComponents/magicCube";
@@ -159,6 +161,8 @@ export default {
     titleBoxFun,
     seckill,
     seckillFun,
+    interests,
+    interestsFun,
     imgNav,
     imgNavFun,
     magicCube,
@@ -217,7 +221,7 @@ export default {
             // { id: 23, name: "周期购" },
             // { id: 24, name: "限时折扣" },
             { id: 25, name: "秒杀" ,viewComponets: "seckill" },
-            { id: 26, name: "会员权益" ,viewComponets: "seckill" },
+            { id: 26, name: "会员权益" ,viewComponets: "interests" },
             // { id: 26, name: "知识内容" },
             // { id: 27, name: "知识专栏" },
             // { id: 28, name: "积分商城" },
@@ -264,8 +268,8 @@ export default {
   updated() {},
   methods: {
     getdata (evt) {
-      console.log(evt)
-      console.log(evt.draggedContext.element.props)
+      // console.log(evt)
+      // console.log(evt.draggedContext.element.props)
     },
 
     findModeKay(arr,key){
@@ -328,7 +332,7 @@ export default {
 
      for(let kay in autoArr) {
         let D = autoArr[kay];
-        console.log(D)
+        // console.log(D)
         if (D._data && D._data instanceof Array) {
           //商品data
           D._data = D._data.join(",");
@@ -341,7 +345,7 @@ export default {
           let contentRichStr = replacePre(contentRichObj, "img");
           D.contentRich = $.base64.btoa(contentRichStr, "utf8");
         }
-        console.log(D.contentRich)
+        // console.log(D.contentRich)
         // this.findModeKay(arr,kay).props = D;
       };
 
