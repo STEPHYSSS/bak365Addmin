@@ -17,35 +17,19 @@
                 v-for="(item,index) in currentObj.listNav"
                 :key="index"
               >
-                <a
-                  :style="{'color':currentObj.fontColor}"
-                  class="cap-image-ad__link--image-nav cap-image-ad__link"
-                >
-                  <!-- :href="item.urlObj?item.urlObj:''" -->
-                  <div
-                    class="cap-image-ad__image"
-                    :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px',
-                    'width':currentObj.isScroll==1?widthBox+'px':'100%'}"
-                  >
-                    <img v-if="item.url" class="cap-image-ad__image" :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px', 'width':currentObj.isScroll==1?widthBox+'px':'100%'}" 
-                    :src="item.url |SetImage" />
-                    <img v-else class="cap-image-ad__image" :style="{'height':currentObj.isScroll==1?widthBox+'px':HeightBoxHid+'px', 'width':currentObj.isScroll==1?widthBox+'px':'100%'}" 
-                    :src="'https://img.yzcdn.cn//public_files/2018/03/08/837f3d12e14b299778ae5fea5c05a3a3.png'" />
+                <a :style="{'color':currentObj.fontColor}" class="cap-image-ad__link--image-nav cap-image-ad__link">
+                  <div class="boxTitle">
+                    <img src="/static/img/quanyi.jpg">
+                    <span>{{item.name}}</span>
                   </div>
-                  <h3 class="cap-image-ad__nav-title">{{item.name}}</h3>
+                  <div>
+                    <img v-if="item.url" class="cap-image-ad__image" :style="{'width':currentObj.isScroll==1?widthBox+'px':'100%'}" 
+                    :src="item.url |SetImage" />
+                    <img v-else class="cap-image-ad__image" :style="{ 'width':currentObj.isScroll==1?widthBox+'px':'100%'}" 
+                    :src="'https://img.yzcdn.cn//public_files/2018/03/08/837f3d12e14b299778ae5fea5c05a3a3.png'" />
+                  </div>                  
                 </a>
               </div>
-            </div>
-            <div v-else>
-              <!-- 文字导航 -->
-              <a
-                :style="{'width':currentObj.isScroll==1?widthBox+'px':widthBoxHid,'background-color': currentObj.backGColor,'color':currentObj.fontColor}"
-                v-for="(item,index) in currentObj.listNav"
-                :key="index"
-                class="text-nav-wrapper"
-              >
-                <h3 class="cap-image-ad__nav-title">{{item.name}}</h3>
-              </a>
             </div>
           </div>
         </div>
@@ -67,16 +51,11 @@ export default {
           navStyle: "image",
           // 是否滚动0否，1是
           isScroll: "0",
-          //横向滑动时 有7个数据 100；77；62；52；45；40；35
           backGColor: "rgb(255,255,255)",
           pageShowNum: 1,
           fontColor: "rgb(0,0,0)", //rgb(0,0,0)
-          // listNav: { img: "", name: "", urlObj: { name: "", url: "" } }
           listNav: [
-            { name: "导航一" },
-            { name: "导航二" },
-            { name: "导航三" },
-            { name: "导航四" }
+            { name: "权益一" }
           ]
         };
       }
@@ -169,7 +148,7 @@ export default {
     width: 100%;
     padding-left: 5px;
     padding-right: 5px;
-
+    
     text-align: center;
     overflow: hidden;
     box-sizing: border-box;
@@ -194,6 +173,28 @@ export default {
   }
   .cap-image-ad__image-nav .cap-image-ad__link--image-nav {
     font-size: 0;
+  }
+  .boxTitle{
+    width: 100%;
+    height: 50px;
+    img{
+      width:100%;
+      position: relative;
+      height: 100%;
+    }
+    span{
+      position: absolute;
+      top: 0px;
+      line-height: 50px;
+      left: 30%;
+      font-size: 14px;
+      width: 39.5%;
+      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+    }
   }
   .cap-image-ad__image-nav .cap-image-ad__image {
     background-size: cover;

@@ -59,7 +59,9 @@
               <div class="cap-goods-layout__tag-countdown">
                 <span
                   class="cap-goods-layout__tag-countdown-text"
-                  >距结束
+                  >
+                  <!-- {{startIS?'距结束':'距开始'}} -->
+                  {{btnTitle}}
                 </span>
                 <div
                   class="cap-goods-layout__countdown cap-countdown cap-countdown--timeStyle"
@@ -211,6 +213,8 @@ export default {
       // countDownInfo: null, // 定时器所需信息
       currentGoodList: [],
       activeTimeMy: {},
+      startIS:false,
+      btnTitle: "距开始",
       fakeData: [
         {
           Img:
@@ -240,7 +244,9 @@ export default {
           SalePrice: "99",
           Describe: "显示商品描述，最多显示1行"
         }
-      ]
+      ],
+      startTime:'',
+      endTime:''
       // reportErrorsFun:true
     };
   },
@@ -248,7 +254,8 @@ export default {
     // countDown
   },
   created() {
-    this.getTimeout()
+    // this.getTimeout()
+    
   },
   mounted() {
     this.currentObj.showContent = this.currentObj.showContent
@@ -262,24 +269,25 @@ export default {
     } else {
       this.currentGoodList = this.fakeData;
     }
+    this.time()
   },
   methods: {
-    // getTimeInfo(){
-    //   this.currentObj._Prod_Data.forEach((item,index) => {
-        
-    //   });
-    //   this.countDownInfo = {
-    //     duration: res.data.exam.duration,
-    //     deadline: res.data.exam.end_time,
-    //     nowTime: this.curTime,
-    //     starTime: res.data.exam.start_time
-    //   };
-    // },
-    getTimeout(current) {
+    time(){
+      this.currentGoodList.forEach(item => {
+        let startTime = item.StartDate;
+        let endTime = item.EndDate;
+        this.getTimeout(startTime,endTime)
+      });
+    },
+    getTimeout(startTime,endTime) {
+      console.log(startTime,endTime)
       let currentT = new Date().getTime()
-      let End = new Date(this.currentObj._Prod_Data[0].EndDate.replace(/-/g, '/')).getTime()
-      let Start = new Date(this.currentObj._Prod_Data[0].StartDate.replace(/-/g, '/')).getTime()
-      let startIS = Start - currentT >= 0 ? false : End - currentT > 0 ? true : 'end'
+      let End = new Date(endTime.replace(/-/g, '/')).getTime()
+      let Start = new Date(startTime.replace(/-/g, '/')).getTime()
+      let startIS = Start - currentT >= 0 ? false : End - currentT > 0 ? true : 'end'   
+      if(startIS){
+        this.btnTitle = startIS?'距结束':'距开始'
+      }   
       let activeTimeMy = startIS ? End - currentT : Start - currentT
       let myTime = activeTimeMy
       this.activeTimeMy = {
@@ -288,21 +296,22 @@ export default {
         minute: parseInt((myTime % (1000 * 60 * 60)) / (60 * 1000)),
         second: parseInt((myTime % (1000 * 60)) / 1000)
       }
-      if(myTime>0){
-        setTimeout(() => {
-          this.getTimeout()
-        }, 1000)
-        this.$set(this.activeTimeMy,this.activeTimeMy)
-      }else{
-        clearInterval(this.activeTimeMy);
-       let activeTimeMy2 = {
-          day: 0,
-          hours: 0,
-          minute: 0,
-          second:0
-        }
-        this.$set(this.activeTimeMy,this.activeTimeMy2)
-      }
+      // if(myTime>0){
+      //   setTimeout(() => {
+      //     this.getTimeout()
+      //   }, 1000)
+      //   this.$set(this.activeTimeMy,this.activeTimeMy)
+      // }else{
+      //   clearInterval(this.activeTimeMy);
+      //   let activeTime = {
+      //     day: 0,
+      //     hours: 0,
+      //     minute: 0,
+      //     second: 0
+      //   }
+      //   this.btnTitle = "已结束"
+      //   this.activeTimeMy = activeTime
+      // }
       
     },
     setImgPrex(val) {
