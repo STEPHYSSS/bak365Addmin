@@ -55,8 +55,35 @@
               />
             </div>
             <div class="cap-goods-layout__tag small">
-              <countDown :examInfo="item" :nowTime3 = curTime v-if="item" @autoSubmit="autoHandInExaminationPaper" ref="countDown" class="exam-interval fr"
-          ></countDown>    
+              <!---->
+              <div class="cap-goods-layout__tag-countdown">
+                <span
+                  class="cap-goods-layout__tag-countdown-text"
+                  >
+                  <!-- {{startIS?'距结束':'距开始'}} -->
+                  {{btnTitle}}
+                </span>
+                <div
+                  class="cap-goods-layout__countdown cap-countdown cap-countdown--timeStyle"
+                >
+                  <span
+                    ><span
+                      class="cap-countdown__day cap-countdown__first"
+                      >{{activeTimeMy.day}}</span
+                    ><span class="cap-countdown__time-text"
+                      >天</span
+                    ></span
+                  ><span class="cap-countdown__hour">{{activeTimeMy.hours}}</span
+                  ><span class="cap-countdown__time-text"
+                    >:</span
+                  ><span class="cap-countdown__minute">{{activeTimeMy.minute}}</span
+                  ><span class="cap-countdown__time-text"
+                    >:</span
+                  ><span class="cap-countdown__second">{{activeTimeMy.second}}</span>
+                </div>
+              </div>
+              <!---->
+              <!-- <countDown></countDown> -->
             </div>
           </div>
           
@@ -138,7 +165,7 @@
 <script>
 import Mixins from "../public";
 import { GetBaseImgUrl } from "@/config/publicFunction";
-import countDown from "./countDown.vue"
+// import countDown from "./countDown.vue"
 export default {
   mixins: [Mixins],
   name: "",
@@ -182,8 +209,8 @@ export default {
   },
   data() {
     return {
-      curTime: new Date().getTime(), // 当前服务器时间
-      countDownInfo: null, // 定时器所需信息
+      // curTime: new Date().getTime(), // 当前服务器时间
+      // countDownInfo: null, // 定时器所需信息
       currentGoodList: [],
       activeTimeMy: {},
       startIS:false,
@@ -224,7 +251,7 @@ export default {
     };
   },
   components: {
-    countDown
+    // countDown
   },
   created() {
     // this.getTimeout()
@@ -245,54 +272,49 @@ export default {
     // this.time()
   },
   methods: {
-    autoHandInExaminationPaper() {
-      this.$message('答题时间即将结束，自动交卷')
-      // window.location.href = window.teacherSide + "/#/historyTryBook";
-      // window.location.href = "http://192.168.1.144:8081" + "/#/historyTryBook";
+    time(){
+      this.currentGoodList.forEach(item => {
+        let startTime = item.StartDate;
+        let endTime = item.EndDate;
+        this.getTimeout(startTime,endTime)
+      });
     },
-    // time(){
-    //   this.currentGoodList.forEach(item => {
-    //     let startTime = item.StartDate;
-    //     let endTime = item.EndDate;
-    //     this.getTimeout(startTime,endTime)
-    //   });
-    // },
-    // getTimeout(startTime,endTime) {
-    //   let currentT = new Date().getTime()
-    //   let End = new Date(endTime.replace(/-/g, '/')).getTime()
-    //   let Start = new Date(startTime.replace(/-/g, '/')).getTime()
-    //   console.log(End,Start,'7777')
-    //   let startIS = Start - currentT >= 0 ? false : End - currentT > 0 ? true : 'end'   
-    //   if(startIS){
-    //     this.btnTitle = startIS?'距结束':'距开始'
-    //   }   
-    //   let activeTimeMy = startIS ? End - currentT : Start - currentT
-    //   let myTime = activeTimeMy
-    //   this.activeTimeMy = {
-    //     day: parseInt(myTime / (1000 * 60 * 60 * 24)),
-    //     hours: parseInt((myTime % (1000 * 60 * 60 * 24)) / (60 * 60 * 1000)),
-    //     minute: parseInt((myTime % (1000 * 60 * 60)) / (60 * 1000)),
-    //     second: parseInt((myTime % (1000 * 60)) / 1000)
-    //   }
-    //   console.log(this.activeTimeMy)
-    //   // if(myTime>0){
-    //   //   setTimeout(() => {
-    //   //     this.getTimeout()
-    //   //   }, 1000)
-    //   //   this.$set(this.activeTimeMy,this.activeTimeMy)
-    //   // }else{
-    //   //   clearInterval(this.activeTimeMy);
-    //   //   let activeTime = {
-    //   //     day: 0,
-    //   //     hours: 0,
-    //   //     minute: 0,
-    //   //     second: 0
-    //   //   }
-    //   //   this.btnTitle = "已结束"
-    //   //   this.activeTimeMy = activeTime
-    //   // }
+    getTimeout(startTime,endTime) {
+      let currentT = new Date().getTime()
+      let End = new Date(endTime.replace(/-/g, '/')).getTime()
+      let Start = new Date(startTime.replace(/-/g, '/')).getTime()
+      console.log(End,Start,'7777')
+      let startIS = Start - currentT >= 0 ? false : End - currentT > 0 ? true : 'end'   
+      if(startIS){
+        this.btnTitle = startIS?'距结束':'距开始'
+      }   
+      let activeTimeMy = startIS ? End - currentT : Start - currentT
+      let myTime = activeTimeMy
+      this.activeTimeMy = {
+        day: parseInt(myTime / (1000 * 60 * 60 * 24)),
+        hours: parseInt((myTime % (1000 * 60 * 60 * 24)) / (60 * 60 * 1000)),
+        minute: parseInt((myTime % (1000 * 60 * 60)) / (60 * 1000)),
+        second: parseInt((myTime % (1000 * 60)) / 1000)
+      }
+      console.log(this.activeTimeMy)
+      // if(myTime>0){
+      //   setTimeout(() => {
+      //     this.getTimeout()
+      //   }, 1000)
+      //   this.$set(this.activeTimeMy,this.activeTimeMy)
+      // }else{
+      //   clearInterval(this.activeTimeMy);
+      //   let activeTime = {
+      //     day: 0,
+      //     hours: 0,
+      //     minute: 0,
+      //     second: 0
+      //   }
+      //   this.btnTitle = "已结束"
+      //   this.activeTimeMy = activeTime
+      // }
       
-    // },
+    },
     setImgPrex(val) {
       if (
         val &&
@@ -344,11 +366,6 @@ export default {
 
 <style lang="less" scoped>
 @import "../../../assets/css/autoComponents/goods.css";
-.cap-goods-layout__tag.small{
-  padding: 0;
-  font-size: 12px;
-  text-align: center;
-}
 .cap-goods-layout {
   .el-form-item__content {
     line-height: 0;

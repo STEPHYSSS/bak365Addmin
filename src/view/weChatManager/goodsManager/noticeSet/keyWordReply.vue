@@ -1,0 +1,196 @@
+<template>
+     <div class="keyWordReply">
+          <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+               <el-tab-pane label="关键词自动回复" name="first">
+                    <div class="keyword">
+                         <p class="tips title">关键字自动回复</p>
+                         <p class="tips">设置一次回复多条图文消息，请以相同关键字+‘,_1’,‘,_2’,‘,_3’格式结尾。</p>
+                         <p class="tips">例如：回复一：测试      回复二：测试,_1      回复二：测试,_2</p>
+                    </div>
+                    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                         <el-form-item label="关键词" prop="Name">
+                         <el-input v-model="ruleForm.Name" placeholder="关键字最长支持50个字符"></el-input>
+                         </el-form-item>
+                         <el-form-item label="回复类型" prop="ReplyType">
+                         <el-select v-model="ruleForm.ReplyType" placeholder="请选择回复类型">
+                              <el-option label="文本回复" value="1"></el-option>
+                              <el-option label="图文回复" value="2"></el-option>
+                              <el-option label="图片回复" value="3"></el-option>
+                         </el-select>
+                         </el-form-item>                         
+                         <div v-show="ruleForm.ReplyType === '2'||ruleForm.ReplyType==='3'">
+                              <el-form-item label="回复标题" prop="Title">
+                              <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
+                              </el-form-item>
+                              <el-form-item label="回复内容" prop="Contents">
+                              <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
+                              </el-form-item>
+                              <el-form-item label="链接地址" prop="Url">
+                              <el-input type="textarea" v-model="ruleForm.Url"></el-input>
+                              </el-form-item>
+                              <el-form-item label="图片" prop="Img">
+                                   <imgLoad
+                                        style="margin-top:10px"
+                                        :limit = '1'
+                                        @upLoadImgs="upLoadImg"
+                                        :fileListUp="fileListUp"
+                                        folder="ShopImg"
+                                        ref="imgLoad"
+                                   ></imgLoad>
+                              </el-form-item>
+                         </div>
+                         <div v-show="ruleForm.ReplyType === '1'">
+                              <el-form-item label="回复内容" prop="Contents">
+                              <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
+                              </el-form-item>
+                         </div>
+                    </el-form>
+                    <div class="preserveStyle">
+                         <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')">保存</el-button>
+                    </div>
+               </el-tab-pane>
+               <el-tab-pane label="关注后自动回复" name="second"></el-tab-pane>
+               <el-tab-pane label="消息托管" name="three"></el-tab-pane>
+               <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
+          </el-tabs>          
+     </div>
+</template>
+<script>
+import { getLists } from "@/api/vipCard";
+import imgLoad from "@/components/download/imgLoad";
+import _ from "lodash";
+export default {
+     name:'',
+     data(){
+          return{ 
+               activeName: "first",   
+               ruleForm: {
+                    Name:'',
+                    Type:'1',
+                    ReplyType:'1',
+                    Title:'',
+                    Contents:'',
+                    Url:'',
+                    Img:''
+
+               },
+               fileListUp: [],
+               rules: {
+                    Name: [
+                    { required: true, message: '请输入关键字', trigger: 'blur' }
+                    ],
+                    ReplyType: [
+                    { required: true, message: '请选择回复类型', trigger: 'change' }
+                    ],
+                    Title: [
+                    { required: true, message: '请输入回复标题', trigger: 'blur' }
+                    ]
+               }            
+          }
+     },
+     created(){
+          this.GetOrderTemplate()
+     },
+     components: { imgLoad }, 
+     methods:{
+          handleClick() {
+               if (this.activeName === "second") {
+                    this.$router.push({path:'/weChat/manager/autoReply'})
+               }else if(this.activeName === "three"){
+                    this.$router.push({path:'/weChat/manager/msgHosting'})
+               }else if(this.activeName === "four"){
+                    this.$router.push({path:'/weChat/manager/tails'})
+               }
+          },
+          upLoadImg(imgs) {
+               let arr = [];
+               let ti = imgs;
+               for (let i = 0; i < ti.length; i++) {
+               arr.push(ti[i].url);
+               }
+               this.ruleForm.Img = arr.join(",");
+          },
+          preserveFun(formName) {
+               this.$refs[formName].validate(async valid => {
+                    if (valid) {
+                         try {
+                              let obj = _.cloneDeep(this.ruleForm);   
+                              console.log(obj)   
+                              obj.Action = "SetReply";
+                              let data = await getLists(obj, "MBaseOpera");
+                              this.$message.success('操作成功')
+                         } catch (error) {
+                              this.$message.error(error);
+                         }
+                    } else {
+                    console.log('error submit!!');
+                    return false;
+                    }
+               });
+          },          
+          async GetOrderTemplate() {
+               let { Data } = await getLists(
+               {
+                    Action: "GetReply",
+                    Type: "1",
+                    SID:this.$route.query.sid
+               },
+               "MBaseOpera"
+               );
+               console.log(Data,'555')
+          },
+     }
+}
+</script>
+<style lang="less" scoped>
+.keyWordReply{
+     margin-bottom: 20px;
+     // background: #fff;
+     .keyword{
+          width: 50%;
+          background: #f3f3f3;
+          padding-left: 20px;
+          margin-bottom: 15px;
+          .title{
+               padding-top:5px ;
+               font-size: 16px;
+          }
+          .tips{
+               padding-bottom:4px ;
+          }
+     }
+     .avatar-uploader .el-upload {
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+     }
+     .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+     }
+     .avatar-uploader-icon {
+          font-size: 28px;
+          color: #8c939d;
+          width: 178px;
+          height: 178px;
+          line-height: 178px;
+     text-align: center;
+     }
+     .avatar {
+          width: 178px;
+          height: 178px;
+          display: block;
+     }
+     
+}
+.el-input,.explain,.el-textarea{
+     width: 300px;
+}
+.explain{
+     background-color: #cccccc;
+     span{
+          padding-left: 8px;
+     }
+}
+</style>

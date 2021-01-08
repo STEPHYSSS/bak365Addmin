@@ -18,8 +18,6 @@ const newTaste = r => require.ensure([], () => r(require('../view/weChatManager/
 const menuBar = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/menuBar')), 'menuBar')//自定义菜单设置
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
-const orderNotification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/orderNotification')), 'orderNotification')
-const ticketNotify = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/ticketNotify')), 'ticketNotify')//电子券订单通知
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
 // 电子券设置
 const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
@@ -73,6 +71,14 @@ const footPrintList= r => require.ensure([], () => r(require('../view/weChatMana
 // 会员列表管理
 const menmberShipList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/Membership/membershipList')), 'menmberShipList')
 const customerService = r => require.ensure([], () => r(require('../view/weChatManager/customerService')), 'customerService')
+const orderNotification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/orderNotification')), 'orderNotification')
+const ticketNotify = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/ticketNotify')), 'ticketNotify')//电子券订单通知
+const noticeList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/noticeList')), 'noticeList')//回复设置
+const keyWordReply = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/keyWordReply')), 'keyWordReply')//关键字回复
+const autoReply = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/autoReply')), 'autoReply')//消息托管
+const msgHosting = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/msgHosting')), 'msgHosting')//小尾巴
+const tails = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/tails')), 'tails')//小尾巴
+
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
 // const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
@@ -155,19 +161,6 @@ export const asyncRouterMap = [
               label: '系统设置'
             },
             component: systemSet
-          },{//消息通知
-            path:'orderNotification',
-            meta: {
-              label: '通知设置'
-            },
-            component: orderNotification
-          },{
-            isHidden: true,
-            path:'ticketNotify',
-            meta: {
-              label: '通知设置'
-            },
-            component:ticketNotify
           },{//运费设置
             path: 'logisticsSet',
             meta: {
@@ -662,6 +655,67 @@ export const asyncRouterMap = [
               label: '客服设置'
             },
             component: customerService
+          }
+        ]
+      },{//消息设置 noticeSet
+        path: '/weChat/manager',
+        meta: {
+          label: '消息设置'
+        },
+        component: {
+          render(c) {
+            return c('router-view')
+          }
+        },
+        redirect: '/weChat/manager/orderNotification',
+        children: [
+           {//消息通知
+            path:'orderNotification',
+            meta: {
+              label: '通知设置'
+            },
+            component: orderNotification
+          },{
+            isHidden: true,
+            path:'ticketNotify',
+            meta: {
+              label: '通知设置'
+            },
+            component:ticketNotify
+          },{
+            path:'noticeList',
+            meta: {
+              label: '回复设置'
+            },
+            component: noticeList            
+          },{//消息通知 keyWordReply autoReply msgHosting tails
+            path:'keyWordReply',
+            isHidden: true,
+            meta: {
+              label: '回复设置'
+            },
+            component: keyWordReply
+          },{
+            path:'autoReply',
+            isHidden: true,
+            meta: {
+              label: '回复设置'
+            },
+            component: autoReply
+          },{
+            path:'msgHosting',
+            isHidden: true,
+            meta: {
+              label: '回复设置'
+            },
+            component: msgHosting
+          },{
+            path:'tails',
+            isHidden: true,
+            meta: {
+              label: '回复设置'
+            },
+            component: tails
           }
         ]
       }
