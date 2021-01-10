@@ -3,21 +3,21 @@
     <!-- 消息设置 -->
     <el-button type="primary" size="small" @click="addGood" style="margin-bottom:20px">新建回复消息</el-button>
     <el-table :data="listData" v-loading="loading" style="width: 100%">
-          <el-table-column prop="Name" label="关键字" align="center"></el-table-column>
-          <el-table-column label="回复类型" align="center">
-               <template slot-scope="scoped">{{scoped.row.ReplyType | TypeVal}}</template>
-          </el-table-column>
-          <el-table-column prop="Contents" label="回复文本" align="center"></el-table-column>
-          <el-table-column prop="Title" label="回复标题" align="center"></el-table-column>
-          <el-table-column label="类型" align="center">
-               <template slot-scope="scoped">{{scoped.row.Type | Type}}</template>
-          </el-table-column>
-          <el-table-column label="操作" align="center">
-          <template slot-scope="scoped">
-               <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
-               <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
-          </template>
-          </el-table-column>
+      <el-table-column prop="Name" label="关键字" align="center"></el-table-column>
+      <el-table-column label="回复类型" align="center">
+        <template slot-scope="scoped">{{scoped.row.ReplyType | TypeVal}}</template>
+      </el-table-column>
+      <el-table-column prop="Contents" label="回复文本" align="center"></el-table-column>
+      <el-table-column prop="Title" label="回复标题" align="center"></el-table-column>
+      <el-table-column label="类型" align="center">
+        <template slot-scope="scoped">{{scoped.row.Type | Type}}</template>
+      </el-table-column>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scoped">
+          <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
+          <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -52,12 +52,12 @@ export default {
       } catch (e) {
         this.$message.error(e);
       }
-    },    
+    },
     editRowGoods(row) {
       this.$router.push({
-        path: "/weChat/manager/keyWordReply",
-        query: { sid: row.SID }
+        path: "/weChat/manager/keyWordReply"
       });
+      sessionStorage.setItem("noticeSID", row.SID);
     },
     addGood() {
       this.$router.push("/weChat/manager/keyWordReply");
@@ -92,28 +92,28 @@ export default {
       }
     }
   },
-  filters:{
-     TypeVal(val){
-          if(val==='1'){
-               return '文本回复'
-          }else if(val==='2'){
-               return '图文回复'
-          }else {
-               return '图片回复'
-          }
-     },
-     Type(val){
-          // 回复类型（1关键词自动回复  2关注后自动回复  3消息托管  4小尾巴）
-          if(val==='1'){
-               return '关键词自动回复'
-          }else if(val==='2'){
-               return '关注后自动回复'
-          }else if(val==='2'){
-               return '消息托管'
-          }else{
-               return '小尾巴'
-          }
-     }
+  filters: {
+    TypeVal(val) {
+      if (val === "1") {
+        return "文本回复";
+      } else if (val === "2") {
+        return "图文回复";
+      } else {
+        return "图片回复";
+      }
+    },
+    Type(val) {
+      // 回复类型（1关键词自动回复  2关注后自动回复  3消息托管  4小尾巴）
+      if (val === "1") {
+        return "关键词自动回复";
+      } else if (val === "2") {
+        return "关注后自动回复";
+      } else if (val === "2") {
+        return "消息托管";
+      } else {
+        return "小尾巴";
+      }
+    }
   }
 };
 </script>
