@@ -187,7 +187,6 @@ export default {
       currentGoodList: [],
       activeTimeMy: {},
       startIS:false,
-      btnTitle: "距开始",
       fakeData: [
         {
           Img:
@@ -246,9 +245,7 @@ export default {
   },
   methods: {
     autoHandInExaminationPaper() {
-      this.$message('答题时间即将结束，自动交卷')
-      // window.location.href = window.teacherSide + "/#/historyTryBook";
-      // window.location.href = "http://192.168.1.144:8081" + "/#/historyTryBook";
+      // this.$message('时间即将结束')
     },
     // time(){
     //   this.currentGoodList.forEach(item => {

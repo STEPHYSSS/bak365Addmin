@@ -7,13 +7,7 @@
           <p class="tips">设置一次回复多条图文消息，请以相同关键字+‘,_1’,‘,_2’,‘,_3’格式结尾。</p>
           <p class="tips">例如：回复一：测试 回复二：测试,_1 回复二：测试,_2</p>
         </div>
-        <el-form
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          label-width="100px"
-          class="demo-ruleForm"
-        >
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="关键词" prop="Name">
             <el-input v-model="ruleForm.Name" placeholder="关键字最长支持50个字符"></el-input>
           </el-form-item>
@@ -24,15 +18,16 @@
               <el-option label="图片回复" value="3"></el-option>
             </el-select>
           </el-form-item>
-          <div v-show="ruleForm.ReplyType === '2'||ruleForm.ReplyType==='3'">
-            <el-form-item label="回复标题" prop="Title">
+          <div v-show="ruleForm.ReplyType === '2'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
               <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
             </el-form-item>
             <el-form-item label="链接地址" prop="Url">
-              <el-input type="textarea" v-model="ruleForm.Url"></el-input>
+              <el-input type="text" v-model="ruleForm.Url"></el-input>
+              <el-button @click="chooseUrl">选择链接</el-button>
             </el-form-item>
             <el-form-item label="图片" prop="Img">
               <imgLoad
@@ -47,7 +42,23 @@
           </div>
           <div v-show="ruleForm.ReplyType === '1'">
             <el-form-item label="回复内容" prop="Contents">
-              <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
+              <el-input type="textarea" v-model="ruleForm.Contents" :autosize="{ minRows: 4}"></el-input>
+              <div style="display:inline-block">
+                <el-button @click="intoUrl">插入链接</el-button><br/>
+                <el-button @click="OpenEmotions">插入表情</el-button>
+              </div>
+            </el-form-item>
+          </div>
+          <div v-show="ruleForm.ReplyType === '3'">
+            <el-form-item label="图片" prop="Img">
+              <imgLoad
+                style="margin-top:10px"
+                :limit="1"
+                @upLoadImgs="upLoadImg"
+                :fileListUp="fileListUp"
+                folder="ShopImg"
+                ref="imgLoad"
+              ></imgLoad>
             </el-form-item>
           </div>
         </el-form>
@@ -59,12 +70,30 @@
       <el-tab-pane label="消息托管" name="three"></el-tab-pane>
       <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
     </el-tabs>
+    <autoHomeUrl ref="homeUrl" :showUrl = showUrl></autoHomeUrl>
+    <el-dialog title="设置链接" :visible.sync="dialogFormVisible" width="500px">
+      <el-form :model="form">
+        <el-form-item label="链接名称：" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="链接地址：" :label-width="formLabelWidth">
+          <el-input v-model="form.url" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="conserve">保 存</el-button>
+      </div>
+    </el-dialog>
+    <Emotion ref="EmotionB" @AppendInputValue="AppendMessageText"></Emotion>
   </div>
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import _ from "lodash";
+import { GetBaseImgUrl } from "@/config/publicFunction";
+import autoHomeUrl from '@/components/autoHomeUrl/homeUrl.vue';
+import Emotion from './emoji.vue'
 export default {
   name: "",
   data() {
@@ -79,21 +108,30 @@ export default {
         Url: "",
         Img: ""
       },
+      showUrl:false,
+      formLabelWidth:'120',
       fileListUp: [],
       rules: {
         Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
         ReplyType: [
           { required: true, message: "请选择回复类型", trigger: "change" }
-        ],
-        Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
+        ]
+        // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: sessionStorage.getItem("noticeSID")
+      noticeSid: this.$route.query.noticeSID,
+      dialogFormVisible:false,
+      form:{
+        name:'',
+        url:''
+      }
     };
   },
   created() {
-    this.GetOrderTemplate();
+    if(this.noticeSid){
+      this.GetOrderTemplate();
+    }
   },
-  components: { imgLoad },
+  components: { imgLoad ,autoHomeUrl,Emotion},
   methods: {
     handleClick() {
       if (this.activeName === "second") {
@@ -117,10 +155,10 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            console.log(obj);
             obj.Action = "SetReply";
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
+            this.$router.push({path:"/weChat/manager/noticeList"})
           } catch (error) {
             this.$message.error(error);
           }
@@ -139,8 +177,31 @@ export default {
         },
         "MBaseOpera"
       );
-      console.log(Data, "555");
-    }
+      this.ruleForm = Data.Reply;
+      this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
+    },
+    intoUrl(){
+      this.dialogFormVisible = true;
+      this.form = this.form
+    },
+    addEmoji(e) {
+      console.log(e)
+      this.ruleForm.Contents += e.native;
+    },
+    conserve(){//保存链接地址和名称
+      this.ruleForm.Contents += `<a href ='${this.form.url}'>${this.form.name}</a>`
+      this.dialogFormVisible = false;
+    },
+    OpenEmotions() {
+      this.$refs.EmotionB.OpenEmotion(true);
+    },
+    //表情选中后追加在input
+    AppendMessageText(EmotionChinese) {
+      this.ruleForm.Contents += EmotionChinese;
+    },
+    chooseUrl(){//选择地址
+      this.showUrl = true;
+    },
   }
 };
 </script>

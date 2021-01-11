@@ -25,15 +25,16 @@
               <el-option label="图片回复" value="3"></el-option>
             </el-select>
           </el-form-item>
-          <div v-show="ruleForm.ReplyType === '2'||ruleForm.ReplyType==='3'">
-            <el-form-item label="回复标题" prop="Title">
+          <div v-show="ruleForm.ReplyType === '2'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
               <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
             </el-form-item>
             <el-form-item label="链接地址" prop="Url">
-              <el-input type="textarea" v-model="ruleForm.Url"></el-input>
+              <el-input type="text" v-model="ruleForm.Url"></el-input>
+              <el-button>选择链接</el-button>
             </el-form-item>
             <el-form-item label="图片" prop="Img">
               <imgLoad
@@ -51,6 +52,18 @@
               <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
             </el-form-item>
           </div>
+          <div v-show="ruleForm.ReplyType === '3'">
+            <el-form-item label="图片" prop="Img">
+              <imgLoad
+                style="margin-top:10px"
+                :limit="1"
+                @upLoadImgs="upLoadImg"
+                :fileListUp="fileListUp"
+                folder="ShopImg"
+                ref="imgLoad"
+              ></imgLoad>
+            </el-form-item>
+          </div>
         </el-form>
         <div class="preserveStyle">
           <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')">保存</el-button>
@@ -65,6 +78,7 @@
 import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import _ from "lodash";
+import { GetBaseImgUrl } from "@/config/publicFunction";
 export default {
   name: "",
   data() {
@@ -72,7 +86,7 @@ export default {
       activeName: "second",
       ruleForm: {
         Name: "",
-        Type: "1",
+        Type: "2",
         ReplyType: "1",
         Title: "",
         Contents: "",
@@ -85,13 +99,15 @@ export default {
         ReplyType: [
           { required: true, message: "请选择回复类型", trigger: "change" }
         ],
-        Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
+        // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: sessionStorage.getItem("noticeSID")
+      noticeSid: this.$route.query.noticeSID
     };
   },
   created() {
-    this.GetOrderTemplate();
+    if(this.noticeSid){
+      this.GetOrderTemplate();
+    }
   },
   components: { imgLoad },
   methods: {
@@ -121,6 +137,7 @@ export default {
             obj.Action = "SetReply";
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
+            this.$router.push({path:"/weChat/manager/noticeList"})
           } catch (error) {
             this.$message.error(error);
           }
@@ -139,7 +156,8 @@ export default {
         },
         "MBaseOpera"
       );
-      console.log(Data, "555");
+      this.ruleForm = Data.Reply;
+      this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
     }
   }
 };

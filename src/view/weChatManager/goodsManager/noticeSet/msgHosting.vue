@@ -19,41 +19,20 @@
         >
           <div>
             <p>设置开启条件</p>
-            <table>
-              <tr>
-                <td>分时段开启：</td>
-                <td>
-                  <el-time-picker
-                    v-model="ruleForm.Time"
-                    :picker-options="{
-                                                  selectableRange: '00:00:00 - 23:59:59'
-                                             }"
-                    placeholder="任意时间点"
-                  ></el-time-picker>至
-                  <el-time-picker
-                    v-model="ruleForm.Time"
-                    :picker-options="{
-                                                  selectableRange: '00:00:00 - 23:59:59'
-                                             }"
-                    placeholder="任意时间点"
-                  ></el-time-picker>
-                </td>
-              </tr>
-              <tr>
-                <td>周几生效：</td>
-                <td>
-                  <el-checkbox-group v-model="ruleForm.Weeks" @change="handleCheckedCitiesChange">
-                    <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                  </el-checkbox-group>
-                </td>
-              </tr>
-              <tr>
-                <td>不重复回复：</td>
-                <td>
-                  <el-input type="number" v-model="ruleForm.Minute" min="0"></el-input>分钟内只答复一次
-                </td>
-              </tr>
-            </table>
+            <el-form-item label="分时段开启">
+              <!-- <el-time-picker is-range v-model="value4" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" placeholder="选择时间范围">
+  </el-time-picker> -->
+              <el-time-picker v-model="TimeStart" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker> 至 
+              <el-time-picker v-model="TimeEnd" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker>
+            </el-form-item>
+            <el-form-item label="周几生效">
+              <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="不重复回复">
+              <el-input type="number" v-model="ruleForm.Minute" min="0" class="inputSty"></el-input>&nbsp;&nbsp;分钟内只答复一次
+            </el-form-item>
           </div>
           <el-form-item label="关键词" prop="Name">
             <el-input v-model="ruleForm.Name" placeholder="关键字最长支持50个字符"></el-input>
@@ -65,15 +44,16 @@
               <el-option label="图片回复" value="3"></el-option>
             </el-select>
           </el-form-item>
-          <div v-show="ruleForm.ReplyType === '2'||ruleForm.ReplyType==='3'">
-            <el-form-item label="回复标题" prop="Title">
+          <div v-show="ruleForm.ReplyType === '2'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
               <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
             </el-form-item>
             <el-form-item label="链接地址" prop="Url">
-              <el-input type="textarea" v-model="ruleForm.Url"></el-input>
+              <el-input type="text" v-model="ruleForm.Url"></el-input>
+              <el-button>选择链接</el-button>
             </el-form-item>
             <el-form-item label="图片" prop="Img">
               <imgLoad
@@ -88,7 +68,24 @@
           </div>
           <div v-show="ruleForm.ReplyType === '1'">
             <el-form-item label="回复内容" prop="Contents">
-              <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
+              <el-input type="textarea" v-model="ruleForm.Contents" :autosize="{ minRows: 4}"></el-input>
+              <div style="display:inline-block">
+                <el-button @click="intoUrl">插入链接</el-button><br/>
+                <el-button @click="OpenEmotions">插入表情</el-button>
+              </div>
+            </el-form-item>
+            
+          </div>
+          <div v-show="ruleForm.ReplyType === '3'">
+            <el-form-item label="图片" prop="Img">
+              <imgLoad
+                style="margin-top:10px"
+                :limit="1"
+                @upLoadImgs="upLoadImg"
+                :fileListUp="fileListUp"
+                folder="ShopImg"
+                ref="imgLoad"
+              ></imgLoad>
             </el-form-item>
           </div>
         </el-form>
@@ -98,13 +95,29 @@
       </el-tab-pane>
       <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
     </el-tabs>
+    <el-dialog title="设置链接" :visible.sync="dialogFormVisible" width="500px">
+      <el-form :model="form">
+        <el-form-item label="链接名称：" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="链接地址：" :label-width="formLabelWidth">
+          <el-input v-model="form.url" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="conserve">保 存</el-button>
+      </div>
+    </el-dialog>
+    <Emotion ref="EmotionB" @AppendInputValue="AppendMessageText"></Emotion>
   </div>
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import _ from "lodash";
-const cityOptions = ["一", "二", "三", "四", "五", "六", "日"];
+import { GetBaseImgUrl } from "@/config/publicFunction";
+import Emotion from './emoji.vue'
+const dayOptions = ["一", "二", "三", "四", "五", "六", "日"];
 export default {
   name: "",
   data() {
@@ -112,35 +125,58 @@ export default {
       activeName: "three",
       ruleForm: {
         Name: "",
-        Type: "1",
-        ReplyType: "1",
+        Type: "3",
+        ReplyType: "2",
         Title: "",
         Contents: "",
         Url: "",
         Img: "",
-        Weeks: ""
+        Weeks: "",
+        Time:""
       },
-      cities: cityOptions,
+      TimeStart:"",
+      TimeEnd:"",
+      checkAll: false,
+      checkedCities: [],
+      cities: dayOptions,
+      isIndeterminate: true,
+      formLabelWidth:'120',
       fileListUp: [],
       rules: {
         Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
         ReplyType: [
           { required: true, message: "请选择回复类型", trigger: "change" }
-        ],
-        Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
+        ]
+        // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: sessionStorage.getItem("noticeSID")
+      noticeSid: this.$route.query.noticeSID,
+      dialogFormVisible:false,
+      form:{
+        name:'',
+        url:''
+      }
     };
   },
   created() {
-    this.GetOrderTemplate();
+    if(this.noticeSid){
+      this.GetOrderTemplate();
+    }
   },
-  components: { imgLoad },
+  components: { imgLoad,Emotion },
   methods: {
+    handleCheckAllChange(val) {
+      this.checkedCities = val ? cityOptions : [];
+      this.isIndeterminate = false;
+    },
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
-      this.isIndeterminate =
-        checkedCount > 0 && checkedCount < this.cities.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      this.ruleForm.Weeks = this.checkedCities;
+      if (Array.isArray(this.ruleForm.Weeks)) {
+        this.ruleForm.Weeks = this.checkedCities.join(",");
+      }
+      console.log(this.ruleForm.Weeks)
     },
     handleClick() {
       if (this.activeName === "second") {
@@ -164,10 +200,11 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            console.log(obj);
+            obj.Time = this.TimeStart+','+this.TimeEnd;
             obj.Action = "SetReply";
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
+            this.$router.push({path:"/weChat/manager/noticeList"})
           } catch (error) {
             this.$message.error(error);
           }
@@ -186,7 +223,33 @@ export default {
         },
         "MBaseOpera"
       );
-      console.log(Data, "555");
+      this.ruleForm = Data.Reply;
+      let time = this.ruleForm.Time.split(',')
+      this.TimeStart = time[0];
+      this.TimeEnd = time[1];
+      this.checkedCities = this.ruleForm.Weeks.split(",");
+      if(this.ruleForm.Img.length>0){
+        this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
+      }
+    },
+    intoUrl(){
+      this.dialogFormVisible = true;
+      this.form = this.form
+    },
+    addEmoji(e) {
+      console.log(e)
+      this.ruleForm.Contents += e.native;
+    },
+    conserve(){//保存链接地址和名称
+      this.ruleForm.Contents += `<a href ='${this.form.url}'>${this.form.name}</a>`
+      this.dialogFormVisible = false;
+    },
+    OpenEmotions:function () {
+      this.$refs.EmotionB.OpenEmotion(true);
+    },
+    //表情选中后追加在input
+    AppendMessageText:function (EmotionChinese) {
+      this.ruleForm.Contents += EmotionChinese;
     }
   }
 };
@@ -234,7 +297,7 @@ export default {
 }
 .el-input,
 .explain,
-.el-textarea {
+.el-textarea,.el-select {
   width: 300px;
 }
 .explain {
@@ -243,4 +306,5 @@ export default {
     padding-left: 8px;
   }
 }
+
 </style>

@@ -117,6 +117,10 @@ export default {
           Name: "订单列表",
           url: url + "pages/vip/allMyOrder",
         },
+        {//pages/packages/index 权益入口
+          Name:"权益列表",
+          url:url+"pages/packages/index"
+        },
         {
           // http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo="+GetAppNo()
           Name: "绑定实体会员卡",

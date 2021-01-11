@@ -4,7 +4,6 @@
       title="选择商品"
       class="goodsSelect"
       :visible.sync="dialogVisible"
-      :before-close="beforeClose"
       width="800px"
     >
       <el-table :data="tableData" style="width: 100%">
@@ -97,6 +96,9 @@ export default {
         {
           Name: "订单列表",
           url: url + "pages/vip/allMyOrder",
+        },{//pages/packages/index 权益入口
+          Name:"权益列表",
+          url:url+"pages/packages/index"
         },
         {
           Name: "绑定实体会员卡",

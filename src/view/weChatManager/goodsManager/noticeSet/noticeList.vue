@@ -19,13 +19,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <Del :show="show" @delFunction="delFunction" @confirmEnd="confirmEnd"></Del>
   </div>
 </template>
 
 <script>
 import { getLists } from "@/api/vipCard";
 import Del from "@/components/Dialog/del";
-
 export default {
   name: "index",
   components: {
@@ -54,10 +54,16 @@ export default {
       }
     },
     editRowGoods(row) {
-      this.$router.push({
-        path: "/weChat/manager/keyWordReply"
-      });
-      sessionStorage.setItem("noticeSID", row.SID);
+      // sessionStorage.setItem("noticeSID", row.SID);
+      if(row.Type === '2'){
+          this.$router.push({ path: "/weChat/manager/autoReply",query:{noticeSID:row.SID} });
+      } else if (row.Type === '3') {
+        this.$router.push({ path: "/weChat/manager/msgHosting",query:{noticeSID:row.SID}});
+      } else if (row.Type === '4') {
+        this.$router.push({ path: "/weChat/manager/tails",query:{noticeSID:row.SID} });
+      }else{
+        this.$router.push({ path: "/weChat/manager/keyWordReply",query:{noticeSID:row.SID}});
+      }
     },
     addGood() {
       this.$router.push("/weChat/manager/keyWordReply");
@@ -73,8 +79,8 @@ export default {
     async confirmEnd() {
       try {
         await getLists(
-          { Action: "RemoveShop", SID: this.current_SID },
-          "MShopOpera"
+          { Action: "RemoveReply", SID: this.current_SID },
+          "MBaseOpera"
         );
         this.listData.splice(this.current_index, 1);
         this.$message.success("删除成功");
