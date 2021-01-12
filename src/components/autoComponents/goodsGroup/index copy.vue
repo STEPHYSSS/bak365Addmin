@@ -392,9 +392,7 @@ export default {
       screenWidth: 0,
       currentMenuIndex: "0",
       Prod_InfoList: [],
-      fristIndex: "" ,//用来接收第一列系列的sid
-      goodsList:[],//用来渲染商品
-
+      fristIndex: "" //用来接收第一列系列的sid
     };
   },
   components: {},
@@ -458,18 +456,9 @@ export default {
           this.lineWidth / 2
         ).toFixed(2);
         if (item.groupId) {
-          // this.getList(item.groupId);
-          this.Prod_InfoList = this.Prod_InfoList.filter(D=>D.CateSID === item.SID)
+          this.getList(item.groupId);
         }
       }
-      // if (index === "0") {//全部
-			// 		this.translateXline = ((this.menuWidth - this.lineWidth) / 2).toFixed(2);
-			// 		this.goodList = this.currentObj._Cate_Data;
-			// 		this.prodInfo = this.currentObj._Prod_Data;
-			// 	} else {// 其他
-			// 		this.translateXline = ( Number(index) * Number(this.menuWidth) + this.lineWidth / 2 ).toFixed(2);
-			// 		this.Prod_InfoList = this.currentObj.goodList.filter(D=>D.groupId === item.SID);	
-			// 	}
     },
     reportErrorsFun() {
       if (this.currentObj.groupList.length === 0) {

@@ -21,7 +21,7 @@
       <el-table-column label="图片" width="120" v-if="!isGroup">
         <template slot-scope="scope">
           <div style="width:100px;height:100px;border:1px solid #eee">
-            <img :src="scope.row.Img|SetImage" alt style="width:100%;height:100%" />
+            <img :src="scope.row.Img|filterImg" alt style="width:100%;height:100%" />
           </div>
         </template>
       </el-table-column>

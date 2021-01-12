@@ -112,7 +112,6 @@ export default {
     // 单规格 sid 转换成 prodSid
     // 2,3 sid 转成 specSid
     async getList() {
-      console.log(this.prodList)
       try {
         // 获取商品列表
         let { Data } = await getLists({ 

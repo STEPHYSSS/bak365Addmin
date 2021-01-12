@@ -106,15 +106,11 @@ export default {
     clicCode(index) {
       this.currentIndexCode = index;
     },
-    async editRowGoods(val) {
-      try {
-        this.$router.push({
+    editRowGoods(val) {
+      this.$router.push({
           path: "/weChat/manager/custom/addEdit",
           query: { SID: val.SID },
         });
-      } catch (e) {
-        this.$message.error(e);
-      }
     },
     setName() {},
     delRow(row, index) {

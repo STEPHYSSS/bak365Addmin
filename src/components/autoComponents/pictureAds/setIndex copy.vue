@@ -281,6 +281,8 @@ export default {
     padding: 15px;
   }
   .imgLoad-style {
+    width: 80px;
+    height: 80px;
     .el-upload--picture-card {
       width: 80px;
       height: 80px;

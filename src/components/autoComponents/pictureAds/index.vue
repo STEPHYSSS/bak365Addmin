@@ -38,6 +38,7 @@
             class="cap-image-ad__image_swipe"
             :style="{'height':changeClientWidth+'px','width':changeClientWidth+'px'}"
             @change="onChange"
+            :autoplay="2100"
           >
             <van-swipe-item v-for="(image, index) in currentObj.imgList" :key="index">
               <img :src="image.img|SetImage" style="width:100%" />

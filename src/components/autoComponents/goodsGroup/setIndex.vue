@@ -4,7 +4,7 @@
     <el-form ref="form" :model="form" label-width="100px">
       <div>
         商品分组：
-        <span style="color:#999">最多添加30个商品分组</span>
+        <span style="color:#999">最多添加6个商品分组</span>
       </div>
       <div>
         <div
@@ -37,7 +37,7 @@
           ></i>
         </div>
         <div
-          v-if="form.groupList.length!==30"
+          v-if="form.groupList.length!==6"
           class="rc-design-editor-card-add_goodsG"
           @click="clickAddGroup"
         >

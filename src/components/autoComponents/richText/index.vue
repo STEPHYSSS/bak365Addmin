@@ -67,6 +67,7 @@
 
 <script>
 import Mixins from "../public";
+import { GetBaseImgUrl } from "@/config/publicFunction";
 export default {
   mixins: [Mixins],
   name: "",
@@ -86,13 +87,21 @@ export default {
     return {};
   },
   components: {},
-  mounted() {
-  },
   methods: {
      reportErrorsFun(){
       if(!this.currentObj.contentRich){
         return '请填写富文本内容'
       }
+    }
+  },
+  watch:{
+    'currentObj.contentRich'(){      
+        let abc = GetBaseImgUrl();
+        this.currentObj.contentRich = this.currentObj.contentRich.replace(
+          /src="Files/g,
+          `src="${abc}${process.env.Prefix}Files`
+        );
+        console.log(this.currentObj.contentRich,'one')
     }
   }
 };

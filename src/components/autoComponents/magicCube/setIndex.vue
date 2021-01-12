@@ -329,11 +329,11 @@ export default {
       //   移动到当前盒子的时候，判断，y，x轴 是否存在其他盒子，存在的不点亮）
       //再点击 最后算出点亮的width,height;算出当前盒子的x,y的单位盒子个数 width = 80*x轴个数 +1
 
-      console.log(this.$refs.test.offsetWidth, 111);
-      console.log(e.targetTouches[0].clientX, 999);
+      // console.log(this.$refs.test.offsetWidth, 111);
+      // console.log(e.targetTouches[0].clientX, 999);
     },
     touchmove(e) {
-      console.log(e.targetTouches[0].clientX, 888);
+      // console.log(e.targetTouches[0].clientX, 888);
     }
   }
 };
@@ -351,6 +351,8 @@ export default {
     padding: 15px;
   }
   .imgLoad-style {
+    width: 80px;
+    height: 80px;
     .el-upload--picture-card {
       width: 80px;
       height: 80px;

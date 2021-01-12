@@ -145,3 +145,16 @@ Vue.filter('SetImage',(val) => {
           return '';
      }
 })
+Vue.filter('filterImg',(val) => {     
+     if (val) {
+          if(window.location.hostname == "localhost" ){
+               return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
+          }else if( window.location.hostname == "dingtalk.bak365.cn" ){
+               return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
+          }else{
+               return 'http://'+window.location.hostname+'/WebApp/'+ val;
+          }
+     } else {
+          return '';
+     }
+})

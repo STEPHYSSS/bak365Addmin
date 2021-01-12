@@ -55,6 +55,8 @@ const ConditionsList = r => require.ensure([], () => r(require('../view/weChatMa
 const ConditionsAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsAddEdit')), 'ConditionsAddEdit')//参与条件设置新增与编辑
 const directCouponList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/DirectCoupon/directCouponList')), 'directCouponList')//直接送券
 const directCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/DirectCoupon/directCouponAddEdit')), 'directCouponAddEdit')//直接送券新增与编辑
+const satisfyList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/satisfy')), 'satisfyList')//满足赠送
+const satisfyAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/satisfy/addEdit')), 'satisfyAddEdit')//满足赠送新增编辑
 // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage')//自定义首页
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd')//自定义首页编辑
@@ -497,6 +499,19 @@ export const asyncRouterMap = [
               label:'直接送券'
             },
             component:directCouponAddEdit
+          },{//satisfyList satisfyAddEdit
+            path:"satisfyList",
+            meta:{
+              label:'满足赠送'
+            },
+            component:satisfyList
+          },{
+            path:"satisfyAddEdit",
+            isHidden: true,
+            meta:{
+              label:'满足赠送'
+            },
+            component:satisfyAddEdit
           },{
             path:'ConditionsList',
             meta:{
