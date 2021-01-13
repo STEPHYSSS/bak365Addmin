@@ -2,29 +2,14 @@
   <div class="goodManager">
     <!-- 商品列表 -->
     <el-row class="showStopGood" v-if="currentGoods">
-      <el-col :span="7" style="line-height: 50px;">
+      <el-col style="line-height: 50px;">
         <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button>
         <el-button type="primary" size="small" @click="addGood">添加商品</el-button>
         <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
         <el-button size="small" type="primary" style="margin-left:10px;margin-top:10px" @click="modifyCateFun">添加/修改 类别</el-button>
       </el-col>
-      <el-col :span="17">        
+      <!-- <el-col :span="17">        
         <div style="margin-top:5px">
-          <!-- 类别：
-          <goodType
-            style="display: inline-block"
-            @changeGoodType="changeGoodType"
-            :multiple="false"
-            placeholderProp="请选择类别"
-          ></goodType>
-          名称搜索：<el-input
-            v-model="search.Name"
-            placeholder="搜索"
-            style="width: auto"
-            @keyup.enter.native="searchName"
-          >
-            <el-button slot="append" icon="el-icon-search" @click="searchName"></el-button>
-          </el-input> -->
           名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" class="widthW"></el-input>
           编号：<el-input v-model="search.ProdNo" clearable @clear="clearName" placeholder="请输入商品编号" class="widthW"></el-input>
           类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别" class="widthW"></goodType>
@@ -36,6 +21,30 @@
                 </el-select>
           <el-button slot="append" @click="searchName">查询</el-button>
         </div>
+      </el-col> -->
+    </el-row>
+    <el-row v-if="currentGoods" class="showStopGood">
+      <el-col :span="4">
+        名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" class="widthW"></el-input>
+      </el-col>
+      <el-col :span="4">
+        编号：<el-input v-model="search.ProdNo" clearable @clear="clearName" placeholder="请输入商品编号" class="widthW"></el-input>
+      </el-col>
+      <el-col :span="4">
+        类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别" class="widthW"></goodType>
+      </el-col>
+      <el-col :span="4">
+         类型：<el-select v-model="search.ProdType" placeholder="请选择商品类型" class="widthW">
+                  <el-option v-for="item in ProdTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+      </el-col>
+      <el-col :span="4">
+         规格：<el-select v-model="search.SpecType" placeholder="请选择商品规格" class="widthW">
+                <el-option v-for="item in SpecTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+      </el-col>
+      <el-col :span="4">
+        <el-button  @click="searchName">查询</el-button>
       </el-col>
     </el-row>
 
@@ -60,13 +69,6 @@
         <template slot-scope="scoped">{{scoped.row.SpecType|SpecType}}</template>
       </el-table-column>
       <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
-      <!--      <el-table-column-->
-      <!--        label="商品类型">-->
-      <!--        <template slot-scope="scoped">-->
-      <!--          <span v-if="scoped.row.Type">{{scoped.row.TypeName}}</span>-->
-      <!--          <span v-else>&#45;&#45;</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <el-table-column label="库存类型" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.StockType==='1'">商城库存（{{scoped.row.StoreQty }}）</span>
@@ -85,10 +87,6 @@
           <!-- <el-checkbox v-model="scoped.row.State" @change="changeEnable($event,scoped.row)"></el-checkbox> -->
         </template>
       </el-table-column>
-      <!--      <el-table-column-->
-      <!--        prop="StoreQty"-->
-      <!--        label="商品类别">-->
-      <!--      </el-table-column>-->
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">
           <el-popover placement="left" v-model="scoped.row.visibleUrl">

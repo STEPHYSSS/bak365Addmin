@@ -68,7 +68,7 @@ export default {
           sureGood(val){//电子券弹窗确定按钮  
                this.showTicket = false;     
                this.form.Ticket = val;
-               console.log(val,'子组件返回的数据')        
+               // console.log(val,'子组件返回的数据')        
           },
           preserveFun(){
 

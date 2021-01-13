@@ -684,6 +684,7 @@ export default {
     ChangeAll() {},
     ChangeOne() {},
     changeCheckbox(val) {
+      // 1门店 2外卖 3物流
       //配送方式
       if (val.indexOf("3") > -1) {
         //选择了物流

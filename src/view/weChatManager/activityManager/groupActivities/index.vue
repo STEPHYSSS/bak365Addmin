@@ -50,7 +50,6 @@
             </template>
           </el-table-column>
           <el-table-column prop="SurplusQty" label="剩余数量" align="center">
-            <!-- prop="SurplusQty" -->
             <template slot-scope="{ row }">
               <input style="width: 100%; text-align: center;border: 1px solid #c1c1c1" maxlength="10"
                 class="number" type="text"
@@ -105,21 +104,7 @@
         <el-radio v-model="ruleForm.Virtual" label="0">未开启</el-radio>
         <el-radio v-model="ruleForm.Virtual" label="1">开启</el-radio>
         <span class="fontColor">开启虚拟成团后，活动结束以后，已开团但人数未满的团不进行退款，默认拼团成功</span>
-      </el-form-item>
-      <!-- <el-form-item label="产品特色" prop="Features" class="FeaturesStyle">
-        <el-button type="text" @click="FeaturesShow=true" v-if="FeaturesShow===false">+编辑</el-button>
-        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
-        <el-button type="text" @click="FeaturesShow=false" v-if="FeaturesShow===true">隐藏</el-button>
-      </el-form-item>
-      <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
-        <el-button
-          type="text"
-          @click="ImportantNotesShow=true"
-          v-if="ImportantNotesShow===false"
-        >+编辑</el-button>
-        <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
-        <el-button type="text" @click="ImportantNotesShow=false" v-if="ImportantNotesShow===true">隐藏</el-button>
-      </el-form-item> -->
+      </el-form-item>     
     </el-form>
 
     <!-- <Goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood"></Goods> -->
@@ -332,16 +317,6 @@ export default {
       // 获取的商品的名字和编号
       this.goodsShow = false;
       this.ruleForm.ProdList = val;
-      // this.ruleForm.ProdNo = "";
-      // this.ruleForm.SpecType = val[0].SpecType;
-      
-      // val.forEach(D => {
-      //   if (this.ruleForm.SpecType === "3") {
-      //     this.ruleForm.SpecSID += D.SpecSID + (val.length > 1 ? ";" : "");
-      //   } else {
-      //     this.ruleForm.ProdNo += D.ProdNo + (val.length > 1 ? ";" : "");
-      //   }
-      // });
     },
     upLoadImgsMain(arr) {
       // 图片

@@ -9,29 +9,11 @@
         <el-button type="primary" @click="cancerGood">重置</el-button>
       </div>
       <div class="rightGoods">
-        <!-- <el-table v-if="isGroup !='group'"  ref="multipleTable"  :data="goodsNameList"  tooltip-effect="dark"  style="width: 100%"  @selection-change="handleSelectionChange"  @select-all="selectAll"  :row-key="getGoodsCode">
-          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
-          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
-          <el-table-column prop="Stock" label="商品库存" align="center">
-            <template slot-scope="scoped">
-            <span v-if="scoped.row.StockType==='1'">{{scoped.row.Stock }}</span>
-            <span v-else-if="scoped.row.StockType==='2'">门店库存</span>
-            <span v-else>不限</span>
-          </template>
-          </el-table-column>
-          <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
-          <el-table-column prop="Img" label="图片" align="center">
-            <template slot-scope="scoped">
-              <div class="goodsInfo">
-                <img :src="scoped.row.Img | setImgPrex" />
-              </div>
-            </template>
-          </el-table-column>
-        </el-table> -->
-
-        <el-table :row-key="getRowKey" ref="multipleTable" :data="goodsNameList" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
+        <el-table :row-key="getRowKey" ref="multipleTable" :data="goodsNameList" tooltip-effect="dark" style="width: 100%" 
+        @selection-change="handleSelectionChange"
+        @current-change="handleCurrentChange"
+        highlight-current-row>
+          <el-table-column type="selection" width="55" :reserve-selection="true" v-if="!isGroup"></el-table-column>
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center">
@@ -50,25 +32,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <!-- <el-table
-          v-else
-          ref="singleTable"
-          :data="goodsNameList"
-          highlight-current-row
-          @current-change="handleCurrentChange"
-          style="width: 100%">
-          <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
-          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
-          <el-table-column prop="Stock" label="商品库存" align="center"></el-table-column>
-          <el-table-column prop="OldPrice" label="商品售价" align="center"></el-table-column>
-          <el-table-column prop="Img" label="图片" align="center">
-            <template slot-scope="scoped">
-              <div class="goodsInfo">
-                <img :src="scoped.row.Img | setImgPrex" />
-              </div>
-            </template>
-          </el-table-column>
-        </el-table> -->
       </div>
       <span slot="footer" class="dialog-footer" v-if="!isEvaluate">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -91,7 +54,7 @@ export default {
     isEvaluate: [Boolean, String],
     isGroup:{
       type: String,
-      default: []
+      default:''
     }
   },
   data() {
@@ -159,6 +122,7 @@ export default {
     },
     // 单选
     handleCurrentChange(val){
+      console.log(val)
       this.currentRow = val
     },
     getGoodsCode(row,enent,column) {
@@ -201,6 +165,7 @@ export default {
       this.$emit("changeDig", bool);
     },
     goodsShow(bool) {
+      console.log(bool)
       if(bool===true){
         this.getList()
       }

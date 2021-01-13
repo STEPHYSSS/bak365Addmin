@@ -459,13 +459,13 @@ export const asyncRouterMap = [
             },
             component: activityGoodsAdd
           },
-          // {
-          //   path: 'groupGoodSetting',
-          //   meta: {
-          //     label: '拼团活动'
-          //   },
-          //   component: groupGoods
-          // },
+          {
+            path: 'groupGoodSetting',
+            meta: {
+              label: '拼团活动'
+            },
+            component: groupGoods
+          },
           {
             path: 'groupGoodAdd',
             isHidden: true,

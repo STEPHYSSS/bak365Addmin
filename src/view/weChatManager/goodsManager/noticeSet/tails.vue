@@ -69,7 +69,8 @@ export default {
       rules: {
         Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
       },
-      noticeSid: this.$route.query.noticeSID,
+      // noticeSid: this.$route.query.noticeSID,
+      noticeSid:sessionStorage.getItem('noticeSID'),
       dialogFormVisible:false,
       form:{
         name:'',

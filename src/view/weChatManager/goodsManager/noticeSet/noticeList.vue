@@ -54,7 +54,7 @@ export default {
       }
     },
     editRowGoods(row) {
-      // sessionStorage.setItem("noticeSID", row.SID);
+      sessionStorage.setItem("noticeSID", row.SID);
       if(row.Type === '2'){
           this.$router.push({ path: "/weChat/manager/autoReply",query:{noticeSID:row.SID} });
       } else if (row.Type === '3') {
@@ -66,6 +66,7 @@ export default {
       }
     },
     addGood() {
+      sessionStorage.removeItem('noticeSID')
       this.$router.push("/weChat/manager/keyWordReply");
     },
     delRow(row, index) {
@@ -114,7 +115,7 @@ export default {
         return "关键词自动回复";
       } else if (val === "2") {
         return "关注后自动回复";
-      } else if (val === "2") {
+      } else if (val === "3") {
         return "消息托管";
       } else {
         return "小尾巴";

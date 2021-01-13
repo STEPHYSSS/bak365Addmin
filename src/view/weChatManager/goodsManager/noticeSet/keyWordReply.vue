@@ -70,20 +70,8 @@
       <el-tab-pane label="消息托管" name="three"></el-tab-pane>
       <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
     </el-tabs>
-    <autoHomeUrl ref="homeUrl" :showUrl = showUrl></autoHomeUrl>
-    <el-dialog title="设置链接" :visible.sync="dialogFormVisible" width="500px">
-      <el-form :model="form">
-        <el-form-item label="链接名称：" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="链接地址：" :label-width="formLabelWidth">
-          <el-input v-model="form.url" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="conserve">保 存</el-button>
-      </div>
-    </el-dialog>
+    <autoHomeUrl ref="homeUrl" :showUrl = "showUrl" @sureUrl="sureUrl" @closeUrl="closeUrl"></autoHomeUrl>
+    <SetUrlDialog ref="SetUrlD" :dialogShow="dialogShow" @closeSetUrl="closeSetUrl" @sureConserve="sureConserve"></SetUrlDialog>
     <Emotion ref="EmotionB" @AppendInputValue="AppendMessageText"></Emotion>
   </div>
 </template>
@@ -94,6 +82,7 @@ import _ from "lodash";
 import { GetBaseImgUrl } from "@/config/publicFunction";
 import autoHomeUrl from '@/components/autoHomeUrl/homeUrl.vue';
 import Emotion from './emoji.vue'
+import SetUrlDialog from './urlDialog'
 export default {
   name: "",
   data() {
@@ -118,8 +107,9 @@ export default {
         ]
         // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: this.$route.query.noticeSID,
-      dialogFormVisible:false,
+      // noticeSid: this.$route.query.noticeSID,
+      noticeSid:sessionStorage.getItem('noticeSID'),
+      dialogShow:false,
       form:{
         name:'',
         url:''
@@ -131,7 +121,7 @@ export default {
       this.GetOrderTemplate();
     }
   },
-  components: { imgLoad ,autoHomeUrl,Emotion},
+  components: { imgLoad ,autoHomeUrl,Emotion,SetUrlDialog},
   methods: {
     handleClick() {
       if (this.activeName === "second") {
@@ -180,17 +170,9 @@ export default {
       this.ruleForm = Data.Reply;
       this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
     },
-    intoUrl(){
-      this.dialogFormVisible = true;
-      this.form = this.form
-    },
     addEmoji(e) {
       console.log(e)
       this.ruleForm.Contents += e.native;
-    },
-    conserve(){//保存链接地址和名称
-      this.ruleForm.Contents += `<a href ='${this.form.url}'>${this.form.name}</a>`
-      this.dialogFormVisible = false;
     },
     OpenEmotions() {
       this.$refs.EmotionB.OpenEmotion(true);
@@ -199,9 +181,28 @@ export default {
     AppendMessageText(EmotionChinese) {
       this.ruleForm.Contents += EmotionChinese;
     },
-    chooseUrl(){//选择地址
+    chooseUrl(){//选择链接地址
       this.showUrl = true;
     },
+    closeUrl(bool){
+      this.showUrl = bool;
+    },
+    sureUrl(val){
+      this.showUrl = false;
+      // console.log(val)
+      this.ruleForm.Url = val.url;
+    },
+    intoUrl(){//插入链接
+      this.dialogShow = true;
+      this.form = this.form
+    },
+    closeSetUrl(bool){
+      this.dialogShow = bool;
+    },
+    sureConserve(val){
+      this.dialogShow = false;
+      this.ruleForm.Contents += `<a href ='${val.url}'>${val.name}</a>`
+    }
   }
 };
 </script>

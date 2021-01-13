@@ -1,7 +1,7 @@
 <template>
   <div class="orderNotify">
     <el-row class="marginBottom">
-      <el-col :span="6">
+      <el-col :span="24">
         <span>卡 号：</span>
         <el-input placeholder="请输入卡号" v-model="CardNo" clearable @clear = "clearN" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
@@ -105,9 +105,9 @@ export default {
      },
      Subscribe(val){
           if(val=='1'){
-               return '关注'
+               return '是'
           }else{
-               return '未关注'
+               return '否'
           }
      }
   }

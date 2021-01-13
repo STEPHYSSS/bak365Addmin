@@ -27,7 +27,7 @@
             </el-form-item>
             <el-form-item label="周几生效">
               <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                <el-checkbox v-for="(item,index) in optionsWeek" :label="item.value" :key="index">{{item.label}}</el-checkbox>
               </el-checkbox-group>
             </el-form-item>
             <el-form-item label="不重复回复">
@@ -117,7 +117,6 @@ import imgLoad from "@/components/download/imgLoad";
 import _ from "lodash";
 import { GetBaseImgUrl } from "@/config/publicFunction";
 import Emotion from './emoji.vue'
-const dayOptions = ["一", "二", "三", "四", "五", "六", "日"];
 export default {
   name: "",
   data() {
@@ -138,7 +137,15 @@ export default {
       TimeEnd:"",
       checkAll: false,
       checkedCities: [],
-      cities: dayOptions,
+      optionsWeek: [
+        { value: "1", label: "星期一" },
+        { value: "2", label: "星期二" },
+        { value: "3", label: "星期三" },
+        { value: "4", label: "星期四" },
+        { value: "5", label: "星期五" },
+        { value: "6", label: "星期六" },
+        { value: "7", label: "星期天" }
+      ],
       isIndeterminate: true,
       formLabelWidth:'120',
       fileListUp: [],
@@ -149,7 +156,8 @@ export default {
         ]
         // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: this.$route.query.noticeSID,
+      // noticeSid: this.$route.query.noticeSID,
+      noticeSid:sessionStorage.getItem('noticeSID'),
       dialogFormVisible:false,
       form:{
         name:'',
@@ -170,13 +178,13 @@ export default {
     },
     handleCheckedCitiesChange(value) {
       let checkedCount = value.length;
-      this.checkAll = checkedCount === this.cities.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      this.ruleForm.Weeks = this.checkedCities;
-      if (Array.isArray(this.ruleForm.Weeks)) {
-        this.ruleForm.Weeks = this.checkedCities.join(",");
-      }
-      console.log(this.ruleForm.Weeks)
+      this.checkAll = checkedCount === this.optionsWeek.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.optionsWeek.length;
+      this.ruleForm.Weeks = value
+      // this.ruleForm.Weeks = this.checkedCities.value;
+      // if (Array.isArray(this.ruleForm.Weeks)) {
+      //   this.ruleForm.Weeks = checkedCount.join(",");
+      // }
     },
     handleClick() {
       if (this.activeName === "second") {
@@ -224,9 +232,11 @@ export default {
         "MBaseOpera"
       );
       this.ruleForm = Data.Reply;
-      let time = this.ruleForm.Time.split(',')
-      this.TimeStart = time[0];
-      this.TimeEnd = time[1];
+      if(this.ruleForm.Time){
+        let time = this.ruleForm.Time.split(',')
+        this.TimeStart = time[0];
+        this.TimeEnd = time[1];
+      }
       this.checkedCities = this.ruleForm.Weeks.split(",");
       if(this.ruleForm.Img.length>0){
         this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];

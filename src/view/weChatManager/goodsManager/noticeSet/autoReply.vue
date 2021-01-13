@@ -101,7 +101,8 @@ export default {
         ],
         // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      noticeSid: this.$route.query.noticeSID
+      // noticeSid: this.$route.query.noticeSID
+      noticeSid:sessionStorage.getItem('noticeSID'),
     };
   },
   created() {

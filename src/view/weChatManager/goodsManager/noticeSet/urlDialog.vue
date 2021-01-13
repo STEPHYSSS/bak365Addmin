@@ -10,7 +10,7 @@
                </el-form-item>
                </el-form>
                <div slot="footer" class="dialog-footer">
-               <el-button type="primary" @click="conserve">保 存</el-button>
+                    <el-button type="primary" @click="sureConserve">保 存</el-button>
                </div>
           </el-dialog>
      </div>
@@ -28,10 +28,31 @@ export default {
                formLabelWidth:'120'
           }
      },
+     props:{
+          dialogShow:{
+               type: Boolean,
+               default: false
+          }
+     },
      methods:{
-          conserve(){
-               
+          sureConserve(){
+               this.$emit('sureConserve',this.form);
+          }
+     },
+     watch: {
+          dialogShow(val) {
+               this.dialogFormVisible = val;
+          },
+          dialogFormVisible(bool){
+               this.$emit('dialogShow',bool);
           }
      }
 }
 </script>
+<style scoped>
+.el-input,
+.explain,
+.el-textarea {
+  width: 300px;
+}
+</style>
