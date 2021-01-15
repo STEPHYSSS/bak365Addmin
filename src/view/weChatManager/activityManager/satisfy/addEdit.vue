@@ -2,79 +2,127 @@
      <div class="satisfyAddEdit">
           <el-form ref="form" :model="form" label-width="120px">
                <el-form-item label="活动名称">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="Name"></el-input>
                </el-form-item>
                <el-form-item label="时间">
-                    <el-date-picker v-model="form.value4" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间">
+                    <el-date-picker v-model="PartTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间">
                     </el-date-picker>
                </el-form-item>
                <el-form-item label="触发类型">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                    <el-select v-model="PromWhere" @change="changeProm" placeholder="请选择">
                          <el-option label="请选择触发类型" value=""></el-option>
                          <el-option label="用户关注" value="0"></el-option>
                          <el-option label="用户申请卡" value="1"></el-option>
                          <el-option label="用户绑定卡" value="2"></el-option>
                     </el-select>
                </el-form-item>
-               <el-form-item label="赠送电子券">
-                    <el-input :disabled="true" v-model="form.Ticket"></el-input>
+               <!-- <el-form-item label="赠送电子券">
+                    <el-input :disabled="true" v-model="form.GiveInfo"></el-input>
                     <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket" >添加</el-button>
                </el-form-item>
-               <el-form-item label="赠送积分" v-show="form.region!='0'">
-                    <el-input v-model="scorc"></el-input>
+               <el-form-item label="赠送积分" v-show="PromWhere!='0'">
+                    <el-input v-model="form.GiveScore"></el-input>
                </el-form-item>
-               <el-form-item label="赠送充值" v-show="form.region!='0'">
-                    <el-input v-model="scorc"></el-input>
+               <el-form-item label="赠送充值" v-show="PromWhere!='0'">
+                    <el-input v-model="form.GiveMoney"></el-input>
                </el-form-item>
                <el-form-item label="方案总数">
-                    <el-input v-model="scorc"></el-input>
+                    <el-input v-model="form.GiveCnt"></el-input>
                </el-form-item>
-               <el-form-item label="每人最多参与" v-show="form.region!='0'">
-                    <el-input v-model="scorc"></el-input>
-               </el-form-item>
+               <el-form-item label="每人最多参与" v-show="PromWhere!='0'">
+                    <el-input v-model="form.LimitCnt"></el-input>
+               </el-form-item> -->
+               <publicFunction ref="formInfo" :chooseType = "chooseType" :editInfo = "editInfo"></publicFunction>
           </el-form>
+          
           <div class="preserveStyle">
                <el-button @click="cancelFun">取消</el-button>
                <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
           </div>
-          <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+          <!-- <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket> -->
      </div>
      
      <!-- 当触发类型是用户关注时，不展示赠送积分、赠送充值 和 参与次数-->
 </template>
 <script>
-import satisfyTicket from "@/components/Dialog/satisfyTicket";
+// import satisfyTicket from "@/components/Dialog/satisfyTicket";
+import publicFunction from "@/components/Dialog/satisfyComm/publicTemplate";
+import { getLists } from "@/api/vipCard"; //调用接口引用
 export default {
      name:"satisfyAddEdit",
      data(){
           return{
                form:{
-                    name:'',
-                    region:'',
+                    GiveInfo:'',
+                    GiveScore:'',
+                    GiveMoney:'',
+                    GiveCnt:'',
+                    LimitCnt:''
                },
-               scorc:'',
-               showTicket:false,//显示与隐藏电子券弹窗
+               Name:'',
+               PromWhere:'',
+               PartTime: [], //开始时间数组
+               StartDate: "", //开始时间
+               EndDate: "", //结束时间
+               chooseType:'',
+               editInfo:{},
           }
      },
-     components:{ satisfyTicket },
-     created(){},
+     components:{publicFunction},
+     created(){
+          if(this.$route.query.SID){
+               this.getAddEditInfo();
+          }
+     },
      methods:{
-          clickTicket(){//赠送电子券
-               this.showTicket = true;
+          changeProm(){
+               this.chooseType = this.PromWhere;
           },
-          changeDig(bool){//用于子组件控制关闭按钮
-               this.showTicket = bool;
+          async getAddEditInfo(){
+               let SID = this.$route.query.SID;
+               let data = await getLists({
+                    SID: SID,
+                    Action: "GetPromotion",
+                    Type:'6'
+               },"MPromotionOpera");
+               this.editInfo = data.Data.GiveList[0];
+               this.Name = data.Data.Promotion.Name;
+               this.PromWhere = data.Data.Promotion.PromWhere;
+               this.PartTime.push(
+                    data.Data.Promotion.StartDate,
+                    data.Data.Promotion.EndDate
+               );
           },
-          sureGood(val){//电子券弹窗确定按钮  
-               this.showTicket = false;     
-               this.form.Ticket = val;
-               // console.log(val,'子组件返回的数据')        
-          },
-          preserveFun(){
-
+          async preserveFun(){
+               try {
+                    if (this.PartTime) {
+                         this.StartDate = this.PartTime[0];
+                         this.EndDate = this.PartTime[1];
+                    }
+                    let GiveList = [];
+                    GiveList.push(this.$refs.formInfo.formInfo);                    
+                    let data = await getLists({
+                         Name: this.Name,
+                         Type: "6",
+                         PromWhere:this.PromWhere,
+                         StartDate: this.StartDate,
+                         EndDate: this.EndDate,
+                         SID: this.$route.query.SID ? this.$route.query.SID : "",
+                         GiveList: JSON.stringify(GiveList),
+                         Action: "SetPromotionInfo",
+                         },
+                         "MPromotionOpera"
+                    );
+                    this.$message.success('操作成功')
+                    setTimeout(() => {
+                         this.$router.push("/weChat/manager/activity/satisfyList");
+                    }, 300);
+               } catch (error) {
+                    this.$message.error(error)
+               }
           },
           cancelFun(){
-
+               this.$router.push("/weChat/manager/activity/satisfyList");
           }
      }
 }

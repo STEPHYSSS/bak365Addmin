@@ -209,6 +209,7 @@ export default {
           try {
             let obj = _.cloneDeep(this.ruleForm);
             obj.Time = this.TimeStart+','+this.TimeEnd;
+            obj.Type = '3';
             obj.Action = "SetReply";
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");

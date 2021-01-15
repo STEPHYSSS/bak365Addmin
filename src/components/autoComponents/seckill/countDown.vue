@@ -83,13 +83,18 @@
                 clearInterval(this.timeName);
             },
             removeSession(path) { // 清除session后跳转页面
-                // sessionStorage.removeItem('lDur' + this.pid);
-                this.$router.replace({path: path}); // 清除session后跳转页面
+                sessionStorage.removeItem('lDur');
+                // this.$router.replace({path: path}); // 清除session后跳转页面
             }
         },
         watch: {
           lDur: function (val) { // 监听lDur小于0 时 提交试卷清除定时器
             if ((this.deadline && this.nowTime > this.deadline) || val < 0 ) {
+                this.title="已结束"
+                this.ds=0
+                this.hs=0
+                this.ms=0
+                this.ss=0
               // 调用父组件 结束考试
             //   this.$emit('autoSubmit');
             }

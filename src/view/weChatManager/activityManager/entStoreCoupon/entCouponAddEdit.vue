@@ -25,7 +25,7 @@
           >设置</el-button
         >
       </el-form-item>
-      <el-form-item label="赠送类型">
+      <!-- <el-form-item label="赠送类型">
         <el-select v-model="form.Type" placeholder="请选择">
           <el-option
             v-for="item in giftType"
@@ -35,8 +35,8 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="赠送券" v-if="form.Type == '1'">
+      </el-form-item> -->
+      <el-form-item label="赠送券">
         <el-input v-model="form.GiveInfo" readonly></el-input>
         <el-button
           type="primary"
@@ -46,12 +46,12 @@
           >添加</el-button
         >
       </el-form-item>
-      <el-form-item label="赠送积分" v-if="form.Type == '2'">
+      <!-- <el-form-item label="赠送积分" v-if="form.Type == '2'">
         <el-input v-model="form.GiveScore"></el-input>
       </el-form-item>
       <el-form-item label="赠送金额" v-if="form.Type == '3'">
         <el-input v-model="form.GiveMoney"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="发放总量">
         <el-input-number v-model="form.GiveCnt" :min="1" controls-position="right"></el-input-number
         >，每人最多领取 <el-input-number
@@ -193,7 +193,7 @@ export default {
   data() {
     return {
       form: {
-        Type: "1", //赠送类型
+        // Type: "1", //赠送类型
         GiveInfo: "",
         GiveMoney: "",
         GiveScore: "",
@@ -230,7 +230,9 @@ export default {
   created() {
     this.getTicket();
     this.getList();
-    this.getCouponInfo();
+    if(this.$route.query.SID){
+      this.getCouponInfo();
+    }
   },
   methods: {
     // 选择电子券
@@ -295,12 +297,13 @@ export default {
     },
     // 获取详情
     async getCouponInfo() {
-      if (this.$route.query.SID) {
+      // if (this.$route.query.SID) {
         let SID = this.$route.query.SID;
         let data = await getLists(
           {
             SID: SID,
             Action: "GetPromotion",
+            Type:'7'
           },
           "MPromotionOpera"
         );
@@ -323,7 +326,7 @@ export default {
           data.Data.Promotion.StartDate,
           data.Data.Promotion.EndDate
         );
-      }
+      // }
     },
     cancelFun() {
       //取消
@@ -353,9 +356,6 @@ export default {
             SID: this.$route.query.SID ? this.$route.query.SID : "",
             GiveList: JSON.stringify(GiveList),
             TemplateList: JSON.stringify(TemplateList),
-            // Features:this.Features,
-            // Start: this.Start,
-            // Audit: this.Audit,
             Action: "SetPromotionInfo",
           },
           "MPromotionOpera"

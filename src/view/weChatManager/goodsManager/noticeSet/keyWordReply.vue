@@ -145,6 +145,7 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
+            obj.Type = '1';
             obj.Action = "SetReply";
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
