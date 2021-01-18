@@ -54,7 +54,7 @@ export default {
       }
     },
     editRowGoods(row) {
-      sessionStorage.setItem("noticeSID", row.SID);
+      // sessionStorage.setItem("noticeSID", row.SID);
       if(row.Type === '2'){
           this.$router.push({ path: "/weChat/manager/autoReply",query:{noticeSID:row.SID} });
       } else if (row.Type === '3') {
@@ -66,7 +66,7 @@ export default {
       }
     },
     addGood() {
-      sessionStorage.removeItem('noticeSID')
+      // sessionStorage.removeItem('noticeSID')
       this.$router.push("/weChat/manager/keyWordReply");
     },
     delRow(row, index) {

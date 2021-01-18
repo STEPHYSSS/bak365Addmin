@@ -108,7 +108,7 @@ export default {
             {
               Action: "SetPromAudit",
               SID: row.SID,
-              Type:'7',
+              Type:row.Type,
               [val]: this.current_Status,
             },
             "MPromotionOpera"
@@ -117,7 +117,7 @@ export default {
           this.getList();
         } else {
           let data = await getLists(
-            { Action: "SetPromStart", SID: row.SID, [val]: this.current_Open,Type:'7' },
+            { Action: "SetPromStart", SID: row.SID, [val]: this.current_Open,Type:row.Type },
             "MPromotionOpera"
           );
           this.$message.success("操作成功");
@@ -130,22 +130,7 @@ export default {
         this.$message.error(e);
       }
     },
-  },
-  filters: {
-    setActiveStatus(val) {
-      if (val === "1") {
-        return "已审核";
-      } else return "未审核";
-    },
-    //是否启用
-    setActiveOpen(val) {
-      if (val === "1") {
-        return "已启用";
-      } else {
-        return "已停用";
-      }
-    },
-  },
+  },  
 };
 </script>
 <style lang="less" scoped>

@@ -16,22 +16,6 @@
                          <el-option label="用户绑定卡" value="2"></el-option>
                     </el-select>
                </el-form-item>
-               <!-- <el-form-item label="赠送电子券">
-                    <el-input :disabled="true" v-model="form.GiveInfo"></el-input>
-                    <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket" >添加</el-button>
-               </el-form-item>
-               <el-form-item label="赠送积分" v-show="PromWhere!='0'">
-                    <el-input v-model="form.GiveScore"></el-input>
-               </el-form-item>
-               <el-form-item label="赠送充值" v-show="PromWhere!='0'">
-                    <el-input v-model="form.GiveMoney"></el-input>
-               </el-form-item>
-               <el-form-item label="方案总数">
-                    <el-input v-model="form.GiveCnt"></el-input>
-               </el-form-item>
-               <el-form-item label="每人最多参与" v-show="PromWhere!='0'">
-                    <el-input v-model="form.LimitCnt"></el-input>
-               </el-form-item> -->
                <publicFunction ref="formInfo" :chooseType = "chooseType" :editInfo = "editInfo"></publicFunction>
           </el-form>
           

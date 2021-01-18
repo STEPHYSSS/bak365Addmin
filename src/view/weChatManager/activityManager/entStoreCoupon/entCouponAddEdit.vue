@@ -37,7 +37,7 @@
         </el-select>
       </el-form-item> -->
       <el-form-item label="赠送券">
-        <el-input v-model="form.GiveInfo" readonly></el-input>
+        <el-input v-model="form.GiveInfo" readonly :disabled="true"></el-input>
         <el-button
           type="primary"
           style="margin-left: 10px"
@@ -72,98 +72,12 @@
           type="textarea"
         ></el-input>
       </el-form-item>
-      <!-- <el-form-item label="状态" prop="Start">
-        <el-select v-model="Start" placeholder="请选择">
-          <el-option label="启动" value="1">启动</el-option>
-          <el-option label="关闭" value="0">关闭</el-option>
-        </el-select>
-      </el-form-item> -->
-      <!-- <el-form-item label="活动规则" prop="Features" class="FeaturesStyle">
-        <el-button
-          type="text"
-          @click="FeaturesShow = true"
-          v-if="FeaturesShow === false"
-          >+编辑</el-button
-        >
-        <ueditor1 v-if="FeaturesShow" ref="Features"></ueditor1>
-        <el-button
-          type="text"
-          @click="FeaturesShow = false"
-          v-if="FeaturesShow === true"
-          >隐藏</el-button
-        >
-      </el-form-item> -->
     </el-form>
-    <el-dialog
-      class="dialogTicketFa"
-      title="选择电子券"
-      :visible.sync="dialogVisible"
-      width="800px"
-    >
-      <div class="chaxun">
-        <span>名称搜索:</span>
-        <el-input
-          v-model="tiketName"
-          placeholder="请输入"
-          @keyup.enter="searchName"
-          style="margin-right: 10px; width: 180px"
-        ></el-input>
-        <el-button @click="chaxun">查询</el-button>
-      </div>
-      <!-- @row-click="handleCurrentChange" -->
-      <el-table
-        ref="multipleTable"
-        :data="tiketList"
-        highlight-current-row
-        style="width: 100%"
-      >
-        <el-table-column
-          prop="TypeNo"
-          label="编号"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="TypeName"
-          label="名称"
-          align="center"
-        ></el-table-column>
-        <el-table-column label="数量" align="center">
-          <template slot-scope="scope">
-            <el-input
-              v-model="scope.row.number"
-              maxlength="2"
-              oninput="value=value.replace(/[^\d]/g, '')"
-            ></el-input>
-          </template>
-        </el-table-column>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmEnd">确 定</el-button>
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="选择参与条件方案"
-      :visible.sync="dialogVisible2"
-      width="600px"
-    >
-      <el-table
-        ref="multipleTable"
-        :data="dataTable"
-        highlight-current-row
-        style="width: 100%"
-        @current-change="chooseData"
-      >
-        <el-table-column
-          prop="SID"
-          label="方案编号"
-          align="center"
-        ></el-table-column>
-        <el-table-column
-          prop="Name"
-          label="方案名称"
-          align="center"
-        ></el-table-column>
+    <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+    <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="600px">
+      <el-table ref="multipleTable" :data="dataTable" highlight-current-row style="width: 100%" @row-click="chooseData">
+        <el-table-column prop="SID" label="方案编号" align="center"></el-table-column>
+        <el-table-column prop="Name" label="方案名称" align="center"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取 消</el-button>
@@ -172,9 +86,7 @@
     </el-dialog>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
-      <el-button type="primary" style="margin-left: 20px" @click="preserveFun"
-        >保存</el-button
-      >
+      <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
     </div>
   </div>
 </template>
@@ -187,7 +99,7 @@ import "@/config/jquery.base64.js";
 import { addScroll, ImgList, replacePre } from "@/config/publicFunction";
 import * as ruleText from "@/view/wechatManager/rulesFrom";
 import _ from "lodash";
-
+import satisfyTicket from "@/components/Dialog/satisfyTicket";
 export default {
   name: "",
   data() {
@@ -214,67 +126,64 @@ export default {
       PartTime: [], //开始时间数组
       FeaturesShow: true, //用来控制富文本显示
       giftType: giftType, //赠送类型
-      dialogVisible: false, //控制电子劵信息弹框显示
+      showTicket: false, //控制电子劵信息弹框显示
       dialogVisible2: false, //控制选择参与条件方案弹窗显示
-      tiketList: [], //电子券列表
-      tiketName: "", //电子券搜索名称
       dataTable: [], //选择参与条件方案列表
       number: "",
+      singleRow:{},//选中参与条件一行信息
       // Audit: "",
     };
   },
   components: {
     imgLoad,
     ueditor1,
+    satisfyTicket
   },
   created() {
-    this.getTicket();
+    // this.getTicket();
     this.getList();
     if(this.$route.query.SID){
       this.getCouponInfo();
     }
   },
   methods: {
-    // 选择电子券
-    clickTicket() {
-      this.dialogVisible = true;
+    clickTicket() {// 选择赠送电子券
+      this.showTicket = true;
     },
-    async getTicket() {
-      //获取电子券列表
-      try {
-        let { Data } = await getLists(
-          { Action: "GetTicketList", TypeName: this.tiketName },
-          "MProdOpera"
-        );
-        this.tiketList = Data.TicketList;
-        this.$set(this.tiketList, "number");
-      } catch (error) {
-        this.$message.error(error);
-      }
+    changeDig(bool){//用于子组件控制关闭按钮
+      this.showTicket = bool;
     },
-    chaxun() {
-      //电子券查询
-      this.getTicket();
-    },
-    confirmEnd() {
-      //电子券确定
-      let info = "";
-      this.tiketList.forEach((item) => {
-        if (item.number) {
-          info += item.TypeNo + "," + Number(item.number) + ";";
-        }
-      });
-      this.form.GiveInfo = info;
-      this.dialogVisible = false;
+    sureGood(val){//电子券弹窗确定按钮  
+      this.showTicket = false;     
+      this.form.GiveInfo = val;
+      // console.log(val,'子组件返回的数据')        
     },
     Schemes() {
       this.dialogVisible2 = true;
     },
-    confirmEnd2() {
+    chooseData(row, event, column) { //选中条件
+      // if(this.SchemesName === row.Name){
+      //   this.SchemesName  ='';
+      //   this.SchemesSID = '';
+      // }else{
+      //   this.SchemesName  = row.Name;
+      //   this.SchemesSID = row.SID;
+      // }
+    /*
+      单选表格 也是radio  表格的点击（row-click）选中 之后 判断一下 v-model 有没有值 没有就赋值  有就判断选中的值等不等于 当前的值  不等于就覆盖 等于就置空 
+    */ 
+      this.singleRow = row;
+    },
+    confirmEnd2() { //确定选择参与条件 
+      this.SchemesName = this.singleRow.Name;
+      this.SchemesSID = this.singleRow.SID;
       this.dialogVisible2 = false;
     },
-    async getList() {
-      //选择参与条件方案列表
+    cancelFunAn(row){//参与条件取消
+      // this.$refs.multipleTable.setCurrentRow(row);      
+      this.dialogVisible2 = false;
+    },
+    async getList() {  //选择参与条件方案列表
       this.loading = true;
       try {
         let data = await getLists(
@@ -290,11 +199,7 @@ export default {
         this.loading = false;
       }
     },
-    chooseData(val) {
-      //选中条件
-      this.SchemesName = val.Name;
-      this.SchemesSID = val.SID;
-    },
+    
     // 获取详情
     async getCouponInfo() {
       // if (this.$route.query.SID) {

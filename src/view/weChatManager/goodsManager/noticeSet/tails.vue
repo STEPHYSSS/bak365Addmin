@@ -1,9 +1,9 @@
 <template>
   <div class="tails">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane label="关键词自动回复" name="first"></el-tab-pane>
-      <el-tab-pane label="关注后自动回复" name="second"></el-tab-pane>
-      <el-tab-pane label="消息托管" name="three"></el-tab-pane>
+      <el-tab-pane label="关键词自动回复" name="first" v-if="!this.noticeSid"></el-tab-pane>
+      <el-tab-pane label="关注后自动回复" name="second" v-if="!this.noticeSid"></el-tab-pane>
+      <el-tab-pane label="消息托管" name="three" v-if="!this.noticeSid"></el-tab-pane>
       <el-tab-pane label="小尾巴" name="four">
         <div class="keyword">
           <p class="tips title">小尾巴</p>
@@ -16,9 +16,9 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="关键词" prop="Name">
+          <!-- <el-form-item label="关键词" prop="Name">
             <el-input v-model="ruleForm.Name" :readonly="true" :disabled="true"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="回复内容" prop="Contents">
             <el-input type="textarea" v-model="ruleForm.Contents" :autosize="{ minRows: 4}"></el-input>
             <div style="display:inline-block">
@@ -28,6 +28,7 @@
           </el-form-item>
         </el-form>
         <div class="preserveStyle">
+          <el-button @click="cancelFun">取消</el-button>
           <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')">保存</el-button>
         </div>
       </el-tab-pane>
@@ -61,7 +62,7 @@ export default {
     return {
       activeName: "four",
       ruleForm: {
-        Name: "小尾巴",
+        // Name: "小尾巴",
         Type: "4",
         Contents: ""
       },
@@ -69,8 +70,8 @@ export default {
       rules: {
         Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
       },
-      // noticeSid: this.$route.query.noticeSID,
-      noticeSid:sessionStorage.getItem('noticeSID'),
+      noticeSid: this.$route.query.noticeSID,
+      // noticeSid:sessionStorage.getItem('noticeSID'),
       dialogFormVisible:false,
       form:{
         name:'',
@@ -111,6 +112,9 @@ export default {
           return false;
         }
       });
+    },
+    cancelFun() {
+      this.$router.push("/weChat/manager/noticeList");
     },
     async GetOrderTemplate() {
       let { Data } = await getLists(

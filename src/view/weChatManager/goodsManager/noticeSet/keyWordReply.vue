@@ -63,12 +63,13 @@
           </div>
         </el-form>
         <div class="preserveStyle">
-          <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')">保存</el-button>
+          <el-button @click="cancelFun">取消</el-button>
+          <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')" :disabled="isDisabled">保存</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="关注后自动回复" name="second"></el-tab-pane>
-      <el-tab-pane label="消息托管" name="three"></el-tab-pane>
-      <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
+      <el-tab-pane label="关注后自动回复" name="second" v-if="!this.noticeSid"></el-tab-pane>
+      <el-tab-pane label="消息托管" name="three" v-if="!this.noticeSid"></el-tab-pane>
+      <el-tab-pane label="小尾巴" name="four" v-if="!this.noticeSid"></el-tab-pane>
     </el-tabs>
     <autoHomeUrl ref="homeUrl" :showUrl = "showUrl" @sureUrl="sureUrl" @closeUrl="closeUrl"></autoHomeUrl>
     <SetUrlDialog ref="SetUrlD" :dialogShow="dialogShow" @closeSetUrl="closeSetUrl" @sureConserve="sureConserve"></SetUrlDialog>
@@ -107,13 +108,14 @@ export default {
         ]
         // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      // noticeSid: this.$route.query.noticeSID,
-      noticeSid:sessionStorage.getItem('noticeSID'),
+      noticeSid: this.$route.query.noticeSID,
+      // noticeSid:sessionStorage.getItem('noticeSID'),
       dialogShow:false,
       form:{
         name:'',
         url:''
-      }
+      },
+      isDisabled:false
     };
   },
   created() {
@@ -143,6 +145,10 @@ export default {
     preserveFun(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
+          this.isDisabled = true;
+          setTimeout(() => {
+            this.isDisabled = false;
+          }, 5000)
           try {
             let obj = _.cloneDeep(this.ruleForm);
             obj.Type = '1';
@@ -159,6 +165,9 @@ export default {
         }
       });
     },
+    cancelFun() {
+      this.$router.push("/weChat/manager/noticeList");
+    },
     async GetOrderTemplate() {
       let { Data } = await getLists(
         {
@@ -169,7 +178,10 @@ export default {
         "MBaseOpera"
       );
       this.ruleForm = Data.Reply;
-      this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
+      if(this.ruleForm.Img){
+        this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];  
+      }
+      
     },
     addEmoji(e) {
       console.log(e)

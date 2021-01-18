@@ -12,8 +12,12 @@
       </el-col>
       <el-col :span="20">
         <div style="margin-top: 5px">
-          开始时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input>
-          结束时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input>
+          <!-- 开始时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input>
+          结束时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input> -->
+          开始时间：<el-date-picker v-model="search.StartDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
+          </el-date-picker>
+          结束时间：<el-date-picker v-model="search.EndDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
+          </el-date-picker>
           <el-button slot="append" >查询</el-button>
         </div>
       </el-col>
@@ -22,13 +26,22 @@
       <el-table-column label="活动名称" prop="Name" align="center"></el-table-column>
       <el-table-column label="开始时间" prop="StartDate" align="center"></el-table-column>
       <el-table-column label="结束时间" prop="EndDate" align="center"></el-table-column>
-      <el-table-column label="触发条件" prop="PromWhere" align="center"></el-table-column>
-      <el-table-column label="所属城市" prop="" align="center"></el-table-column>
+      <el-table-column label="触发条件" align="center">
+        <template slot-scope="scoped">{{scoped.row.PromWhere|PromType}}</template>
+      </el-table-column>
+      <el-table-column label="审核状态" align="center">
+        <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
+      </el-table-column>
+      <el-table-column label="是否关闭" align="center">
+        <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
+      </el-table-column>
       <el-table-column label="活动状态" prop="TimeName" align="center"></el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">         
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
+          <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
+          <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
         </template>
       </el-table-column>      
     </el-table>
@@ -56,7 +69,10 @@ export default {
       currentPage: 0,
       pageSize: 0,
       loading:false,
-      tableDate:[]
+      tableDate:[],
+      current_Status: "", //审核
+      current_Open: "", //关闭
+      search:{},
     };
   },
   created(){
@@ -66,14 +82,9 @@ export default {
      async getList() {//获取列表
       this.loading = true;
       try {
-        let data = await getLists(
-          {
-            Action: "GetPromotionList",
-            Type: "6",
-            Page: this.currentPage - 1,
-          },
-          "MPromotionOpera"
-        );
+        let obj = { Action: "GetPromotionList",Type:'6',Page: this.currentPage - 1,};
+        obj = Object.assign(obj, this.search);
+        let data = await getLists(obj, "MPromotionOpera");
         this.tableDate = data.Data.PromotionList;
         this.loading = false;
       } catch (e) {
@@ -82,6 +93,9 @@ export default {
       }
       
      },
+     changeTime(){
+      this.getList();
+    },
      addSatisfy(){//新增
         this.$router.push({path:'/weChat/manager/activity/satisfyAddEdit'})
      },
@@ -123,6 +137,37 @@ export default {
           this.currentPage = val;
           // this.getList(val);
      },
+     async changeEnable(row, val) {
+        this.current_Status = row.Audit === "1" ? "0" : "1";
+        this.current_Open = row.Start === "1" ? "0" : "1";
+        try {
+          if (val === "Audit") {
+            let data = await getLists(
+              {
+                Action: "SetPromAudit",
+                SID: row.SID,
+                Type:row.Type,
+                [val]: this.current_Status,
+              },
+              "MPromotionOpera"
+            );
+            this.$message.success("操作成功");
+            this.getList();
+          } else {
+            let data = await getLists(
+              { Action: "SetPromStart", SID: row.SID, [val]: this.current_Open,Type:row.Type },
+              "MPromotionOpera"
+            );
+            this.$message.success("操作成功");
+            this.getList();
+          }
+        } catch (e) {
+          setTimeout(() => {
+            row.Start = !row.Start;
+          }, 500);
+          this.$message.error(e);
+        }
+    },
   },
 };
 </script>

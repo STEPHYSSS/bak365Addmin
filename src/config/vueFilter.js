@@ -158,3 +158,38 @@ Vue.filter('filterImg',(val) => {
           return '';
      }
 })
+Vue.filter('PromType',(val)=>{
+     if(val){
+          if(val==='0'){
+               return '用户关注'
+          }else if(val==='1'){
+               return '用户申请卡'
+          }else if(val==='2'){
+               return '用户绑定卡'
+          }else{
+               return ''
+          }
+     }else{
+          return ''
+     }
+})
+Vue.filter('setActiveStatus',(val)=>{//是否审核
+     if(val){
+          if (val === "1") {
+               return "已审核";
+          } else return "未审核";
+     }else{
+          return ''
+     }
+})
+Vue.filter('setActiveOpen',(val)=>{//是否启用
+     if(val){
+          if (val === "1") {
+               return "已启用";
+          } else {
+               return "已停用";
+          }
+     }else{
+          return ''
+     }
+})

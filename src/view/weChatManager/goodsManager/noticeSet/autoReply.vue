@@ -1,7 +1,7 @@
 <template>
   <div class="autoReply">
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane label="关键词自动回复" name="first"></el-tab-pane>
+      <el-tab-pane label="关键词自动回复" name="first" v-if="!this.noticeSid"></el-tab-pane>
       <el-tab-pane label="关注后自动回复" name="second">
         <div class="keyword">
           <p class="tips title">关注自动回复</p>
@@ -34,7 +34,7 @@
             </el-form-item>
             <el-form-item label="链接地址" prop="Url">
               <el-input type="text" v-model="ruleForm.Url"></el-input>
-              <el-button>选择链接</el-button>
+              <el-button @click="chooseUrl">选择链接</el-button>
             </el-form-item>
             <el-form-item label="图片" prop="Img">
               <imgLoad
@@ -49,7 +49,12 @@
           </div>
           <div v-show="ruleForm.ReplyType === '1'">
             <el-form-item label="回复内容" prop="Contents">
-              <el-input type="textarea" v-model="ruleForm.Contents"></el-input>
+              <!-- <el-input type="textarea" v-model="ruleForm.Contents"></el-input> -->
+              <el-input type="textarea" v-model="ruleForm.Contents" :autosize="{ minRows: 4}"></el-input>
+              <div style="display:inline-block">
+                <el-button @click="intoUrl">插入链接</el-button><br/>
+                <el-button @click="OpenEmotions">插入表情</el-button>
+              </div>
             </el-form-item>
           </div>
           <div v-show="ruleForm.ReplyType === '3'">
@@ -66,12 +71,16 @@
           </div>
         </el-form>
         <div class="preserveStyle">
-          <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')">保存</el-button>
+          <el-button @click="cancelFun">取消</el-button>
+          <el-button type="primary" style="margin-left: 20px" @click="preserveFun('ruleForm')" :disabled="isDisabled">保存</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="消息托管" name="three"></el-tab-pane>
-      <el-tab-pane label="小尾巴" name="four"></el-tab-pane>
+      <el-tab-pane label="消息托管" name="three" v-if="!this.noticeSid"></el-tab-pane>
+      <el-tab-pane label="小尾巴" name="four" v-if="!this.noticeSid"></el-tab-pane>
     </el-tabs>
+    <autoHomeUrl ref="homeUrl" :showUrl = "showUrl" @sureUrl="sureUrl" @closeUrl="closeUrl"></autoHomeUrl>
+    <SetUrlDialog ref="SetUrlD" :dialogShow="dialogShow" @closeSetUrl="closeSetUrl" @sureConserve="sureConserve"></SetUrlDialog>
+    <Emotion ref="EmotionB" @AppendInputValue="AppendMessageText"></Emotion>
   </div>
 </template>
 <script>
@@ -79,6 +88,9 @@ import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import _ from "lodash";
 import { GetBaseImgUrl } from "@/config/publicFunction";
+import autoHomeUrl from '@/components/autoHomeUrl/homeUrl.vue';
+import SetUrlDialog from './urlDialog'
+import Emotion from './emoji.vue'
 export default {
   name: "",
   data() {
@@ -101,8 +113,15 @@ export default {
         ],
         // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
-      // noticeSid: this.$route.query.noticeSID
-      noticeSid:sessionStorage.getItem('noticeSID'),
+      noticeSid: this.$route.query.noticeSID,
+      isDisabled:false,
+      form:{
+        name:'',
+        url:''
+      },
+      showUrl:false,
+      dialogShow:false,
+      // noticeSid:sessionStorage.getItem('noticeSID'),
     };
   },
   created() {
@@ -110,7 +129,7 @@ export default {
       this.GetOrderTemplate();
     }
   },
-  components: { imgLoad },
+  components: { imgLoad ,autoHomeUrl,SetUrlDialog,Emotion},
   methods: {
     handleClick() {
       if (this.activeName === "first") {
@@ -132,6 +151,10 @@ export default {
     preserveFun(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
+          this.isDisabled = true;
+          setTimeout(() => {
+            this.isDisabled = false;
+          }, 5000)
           try {
             let obj = _.cloneDeep(this.ruleForm);
             obj.Type = '2';
@@ -148,6 +171,9 @@ export default {
         }
       });
     },
+    cancelFun() {
+      this.$router.push("/weChat/manager/noticeList");
+    },
     async GetOrderTemplate() {
       let { Data } = await getLists(
         {
@@ -158,7 +184,43 @@ export default {
         "MBaseOpera"
       );
       this.ruleForm = Data.Reply;
-      this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
+      if(this.ruleForm.Img){
+        this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];  
+      }
+      // this.fileListUp = GetBaseImgUrl()+this.ruleForm.Img ? [{ url: GetBaseImgUrl() + this.ruleForm.Img }] : [];
+    },
+    addEmoji(e) {
+      console.log(e)
+      this.ruleForm.Contents += e.native;
+    },
+    OpenEmotions() {
+      this.$refs.EmotionB.OpenEmotion(true);
+    },
+    //表情选中后追加在input
+    AppendMessageText(EmotionChinese) {
+      this.ruleForm.Contents += EmotionChinese;
+    },
+    chooseUrl(){//选择链接地址
+      this.showUrl = true;
+    },
+    closeUrl(bool){
+      this.showUrl = bool;
+    },
+    sureUrl(val){
+      this.showUrl = false;
+      // console.log(val)
+      this.ruleForm.Url = val.url;
+    },
+    intoUrl(){//插入链接
+      this.dialogShow = true;
+      this.form = this.form
+    },
+    closeSetUrl(bool){
+      this.dialogShow = bool;
+    },
+    sureConserve(val){
+      this.dialogShow = false;
+      this.ruleForm.Contents += `<a href ='${val.url}'>${val.name}</a>`
     }
   }
 };

@@ -470,7 +470,7 @@ export default {
       }
     },
     cancelFun() {
-      this.$router.push("/weChat/manager/custom/customList");
+      this.$router.push("/weChat/manager/custom/homeIndex");
     }
   }
 };
