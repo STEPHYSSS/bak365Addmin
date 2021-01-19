@@ -26,7 +26,7 @@
             </el-select>
           </el-form-item>
           <div v-show="ruleForm.ReplyType === '2'">
-            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
@@ -159,6 +159,11 @@ export default {
             let obj = _.cloneDeep(this.ruleForm);
             obj.Type = '2';
             obj.Action = "SetReply";
+            if(obj.Img){
+               obj.Img = obj.Img.indexOf(process.env.Prefix) !== -1
+                         ? obj.Img.replace(process.env.Prefix, "")
+                         : obj.Img;
+               }
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
             this.$router.push({path:"/weChat/manager/noticeList"})

@@ -622,7 +622,7 @@ export default {
         { value: "4", label: "星期四" },
         { value: "5", label: "星期五" },
         { value: "6", label: "星期六" },
-        { value: "7", label: "星期天" }
+        { value: "0", label: "星期天" }
       ],
       dialogFormVisible: false,
       isIndeterminateDay: false,

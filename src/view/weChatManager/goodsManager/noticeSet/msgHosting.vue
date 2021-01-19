@@ -43,7 +43,7 @@
             </el-select>
           </el-form-item>
           <div v-show="ruleForm.ReplyType === '2'">
-            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
@@ -147,7 +147,7 @@ export default {
         { value: "4", label: "星期四" },
         { value: "5", label: "星期五" },
         { value: "6", label: "星期六" },
-        { value: "7", label: "星期天" }
+        { value: "0", label: "星期天" }
       ],
       isIndeterminate: true,
       formLabelWidth:'120',
@@ -222,6 +222,11 @@ export default {
             obj.Time = this.TimeStart+','+this.TimeEnd;
             obj.Type = '3';
             obj.Action = "SetReply";
+            if(obj.Img){
+               obj.Img = obj.Img.indexOf(process.env.Prefix) !== -1
+                         ? obj.Img.replace(process.env.Prefix, "")
+                         : obj.Img;
+               }
             await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
             this.$router.push({path:"/weChat/manager/noticeList"})

@@ -78,7 +78,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <!--                    <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>-->
-                    <el-dropdown-item command="customUrl">自定义链接</el-dropdown-item>
+                    <el-dropdown-item command="customUrl" >自定义链接</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </el-form-item>

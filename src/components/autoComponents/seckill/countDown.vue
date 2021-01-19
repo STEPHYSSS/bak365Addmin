@@ -34,7 +34,7 @@
             nowTime3:Number
         },
         created() {
-            console.log(this.examInfo,this.nowTime3)
+            // console.log(this.examInfo,this.nowTime3)
             // 统一单位 ，时间戳的单位是毫秒  除以1000变成秒
             this.nowTime = new Date(this.nowTime3).getTime()/1000;//转化为时间戳
             this.starTime = new Date(this.examInfo.StartDate).getTime()/1000;

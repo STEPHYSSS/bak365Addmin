@@ -9,9 +9,9 @@
         <template slot-scope="scope">{{scope.row.StartDate}}-{{scope.row.EndDate}}</template>
       </el-table-column>
       <el-table-column prop="TimeName" label="活动状态" align="center"></el-table-column>
-      <el-table-column label="审核状态" align="center">
+      <!-- <el-table-column label="审核状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="是否关闭" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
@@ -23,7 +23,7 @@
           <el-button type="text" @click="delCondition(scoped.row)"
             >删除</el-button
           >
-          <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
+          <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
         </template>
       </el-table-column>

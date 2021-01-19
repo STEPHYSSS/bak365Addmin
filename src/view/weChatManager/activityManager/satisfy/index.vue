@@ -29,9 +29,9 @@
       <el-table-column label="触发条件" align="center">
         <template slot-scope="scoped">{{scoped.row.PromWhere|PromType}}</template>
       </el-table-column>
-      <el-table-column label="审核状态" align="center">
+      <!-- <el-table-column label="审核状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="是否关闭" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
@@ -40,7 +40,7 @@
         <template slot-scope="scoped">         
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
-          <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
+          <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
         </template>
       </el-table-column>      

@@ -19,7 +19,7 @@
             </el-select>
           </el-form-item>
           <div v-show="ruleForm.ReplyType === '2'">
-            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'|| ruleForm.ReplyType==='3'">
+            <el-form-item label="回复标题" prop="Title" :rules="{required:true,message:'请输入回复标题',trigger:'blur'}" v-if="ruleForm.ReplyType === '2'">
               <el-input v-model="ruleForm.Title" placeholder="回复标题最长支持200个字符"></el-input>
             </el-form-item>
             <el-form-item label="回复内容" prop="Contents">
@@ -106,7 +106,6 @@ export default {
         ReplyType: [
           { required: true, message: "请选择回复类型", trigger: "change" }
         ]
-        // Title: [{ required: true, message: "请输入回复标题", trigger: "blur" }]
       },
       noticeSid: this.$route.query.noticeSID,
       // noticeSid:sessionStorage.getItem('noticeSID'),
@@ -134,7 +133,7 @@ export default {
         this.$router.push({ path: "/weChat/manager/tails" });
       }
     },
-    upLoadImg(imgs) {
+    upLoadImg(imgs) {      
       let arr = [];
       let ti = imgs;
       for (let i = 0; i < ti.length; i++) {
@@ -151,8 +150,15 @@ export default {
           }, 5000)
           try {
             let obj = _.cloneDeep(this.ruleForm);
+            console.log(obj.Img)
+
             obj.Type = '1';
             obj.Action = "SetReply";
+            if(obj.Img){
+              obj.Img = obj.Img.indexOf(process.env.Prefix) !== -1
+                    ? obj.Img.replace(process.env.Prefix, "")
+                    : obj.Img;
+            }
             let data = await getLists(obj, "MBaseOpera");
             this.$message.success("操作成功");
             this.$router.push({path:"/weChat/manager/noticeList"})
@@ -160,7 +166,6 @@ export default {
             this.$message.error(error);
           }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

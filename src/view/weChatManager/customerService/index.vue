@@ -86,6 +86,11 @@ export default {
           async preserveFun(){
                let obj = {Action: "SetCSRInfo"};
                Object.assign(obj, this.form);
+               if(obj.Img){
+               obj.Img = obj.Img.indexOf(process.env.Prefix) !== -1
+                         ? obj.Img.replace(process.env.Prefix, "")
+                         : obj.Img;
+               }
                this.btnLoading = true;
                try {
                     await getLists(obj, "MShopOpera");

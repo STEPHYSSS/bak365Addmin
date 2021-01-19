@@ -13,7 +13,7 @@
         @selection-change="handleSelectionChange"
         @current-change="handleCurrentChange"
         highlight-current-row>
-          <el-table-column type="selection" width="55" :reserve-selection="true" v-if="!isGroup"></el-table-column>
+          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center">
@@ -110,19 +110,19 @@ export default {
       this.search.Name = "";
       this.getList();
     },
-    handleSelectionChange(val) {      
+    handleSelectionChange(val) {    
+      console.log(val)  
       this.multipleSelection = val;
     },
     getRowKey(row){
       return row.ProdNo;
     },
     // 多选
-    selectAll(selection) {
+    selectAll(selection) {//秒杀多选
       this.multipleSelection = selection;
     },
     // 单选
     handleCurrentChange(val){
-      console.log(val)
       this.currentRow = val
     },
     getGoodsCode(row,enent,column) {
@@ -150,14 +150,15 @@ export default {
       }
     },
     sureGood() {
-      if(this.isGroup == 'group'){
-        let current=[];
-        current.push(this.currentRow)
-        this.$emit("sureGood", current);
-      }else{
+      // if(this.isGroup == 'group'){
+      //   let current=[];
+      //   current.push(this.currentRow)
+      //   this.$emit("sureGood", current);
+      // }else{
+
         this.ProdList = this.multipleSelection;
         this.$emit("sureGood", this.ProdList);
-      }
+      // }
     }
   },
   watch: {

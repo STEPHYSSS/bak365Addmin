@@ -279,15 +279,15 @@ export default {
       UploadImg(options.file, this.folder)
         .then(D => {
           if (this.showFileList) {
-            // this.imageUrl = process.env.Prefix + D.Message;
-            this.imageUrl = D.Message;
+            this.imageUrl = process.env.Prefix + D.Message;
+            // this.imageUrl = D.Message;
             this.$emit("upLoadImgs", this.imageUrl);
             return;
           }
 
           this.currentImgs.push({
-            // url: process.env.Prefix + D.Message
-            url: D.Message
+            url: process.env.Prefix + D.Message
+            // url: D.Message
           });
           this.$emit("upLoadImgs", this.fileList);
         })

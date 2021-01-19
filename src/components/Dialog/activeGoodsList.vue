@@ -56,9 +56,9 @@
         <template slot-scope="scope">{{scope.row.StartDate}} ~ {{scope.row.EndDate}}</template>
       </el-table-column>
       <el-table-column prop="TimeName" label="活动状态" align="center"></el-table-column>
-      <el-table-column label="审核状态" align="center">
+      <!-- <el-table-column label="审核状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="是否关闭" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
@@ -72,7 +72,7 @@
           </el-popover> -->
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
-          <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button>
+          <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
@@ -167,6 +167,7 @@ export default {
         if(this.activeTypeShow == '1'){
           PromotionList.forEach((D) => {
           D.codeUrl =this.seckill + "?SID=" + D.SID;
+          console.log(D.codeUrl,'lianjie')
         });
         }
         // PromotionList.forEach((D) => {

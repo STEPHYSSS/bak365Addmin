@@ -1,6 +1,6 @@
  <!-- 自定义页面使用的秒杀活动选择商品 使用到的弹框组件 -->
 <template>
-  <el-dialog title="秒杀商品" :visible.sync="dialogVisible" :before-close="beforeClose" width="850px" :modal-append-to-body="false" class="setDialogGoodsAuto" center>
+  <el-dialog title="秒杀商品" :visible.sync="dialogVisible" :before-close="beforeClose" width="900px" :modal-append-to-body="false" class="setDialogGoodsAuto" center>
      <!-- <div class="seckillDiv">
            <span>活动商品名称：</span><el-input placeholder="请输入活动商品名称" v-model="Name" clearable  class="input-with-select">
           <el-button slot="append" icon="el-icon-search" ></el-button>
@@ -19,9 +19,9 @@
           </el-table-column>
           <el-table-column prop="Name" label="商品名称"></el-table-column>
           <el-table-column prop="ProdNo" label="商品名称"></el-table-column>
-          <el-table-column label="活动时间" width="310">
+          <el-table-column label="活动时间" width="280" align="center">
                <template slot-scope="scoped">
-                    {{scoped.row.StartDate}} 至 {{scoped.row.EndDate}}
+                    {{scoped.row.StartDate|timeF}} 至 {{scoped.row.EndDate|timeF}}
                </template>
           </el-table-column>
           <el-table-column label="优惠情况">
@@ -96,6 +96,13 @@ export default {
                     }
                }
           },
+     },
+     filters:{
+          timeF(val){
+               let timef = val.split(' ');
+               let timef2 = timef[0];
+               return timef2
+          }
      }
 }
 </script>

@@ -10,7 +10,7 @@
       </el-form-item>
 
       <el-form-item label="商品选择" :key="1">
-        <el-button type="primary" style="margin-left: 10px" size="medium" @click="selectGoods(null)">选择商品</el-button>
+        <el-button type="primary" style="margin-left: 10px" size="medium" @click="selectGoods(null)">选择商品</el-button>        
         <!-- 选择商品之后展示的表格 -->
         <el-table style="margin-top: 10px; width: 850px" ref="ProdNoList" :data="ruleForm.ProdList">
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
@@ -45,7 +45,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column prop="SurplusQty" label="剩余数量" align="center" v-if="this.$route.query.SID">
+          <el-table-column  prop="SurplusQty" label="剩余数量" align="center" v-if="this.$route.query.SID">
             <template slot-scope="{ row }">
               <input style="width: 100%; text-align: center;color:red;border: 1px solid #c1c1c1"
                 v-model="row.SurplusQty"/>
@@ -85,7 +85,10 @@
           </el-table-column> -->
         </el-table>
       </el-form-item>
-
+      <el-form-item label="每日限购" prop="IsOpenProm">
+        <el-radio v-model="ruleForm.IsOpenProm" label="0">关闭</el-radio>
+        <el-radio v-model="ruleForm.IsOpenProm" label="1">开启</el-radio>
+      </el-form-item>
       <el-form-item label="活动名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写活动名称"></el-input>
       </el-form-item>
@@ -110,6 +113,28 @@
           end-placeholder="结束时间"
           placeholder="选择时间范围"
         ></el-time-picker>
+      </el-form-item>  
+      <el-form-item label="支付方式" prop="PayType">
+        <el-checkbox-group v-model="ruleForm.PayType">
+          <el-checkbox label="2">微信支付</el-checkbox>
+          <el-checkbox label="1">微卡支付</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="待支付订单过期时限" prop="AutoCancelOrder">
+        <el-input type="text" v-model="ruleForm.AutoCancelOrder" onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>&nbsp;&nbsp;分钟
+      </el-form-item>
+      <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = true"
+          v-if="ImportantNotesShow === false"
+        >+编辑</el-button>
+        <ueditor1 v-if="ImportantNotesShow" ref="ImportantNotes"></ueditor1>
+        <el-button
+          type="text"
+          @click="ImportantNotesShow = false"
+          v-if="ImportantNotesShow === true"
+        >隐藏</el-button>
       </el-form-item>
     </el-form>
 
@@ -128,7 +153,7 @@
 </template>
 
 <script>
-import { addScroll, ImgList, replacePre } from "@/config/publicFunction";
+import { addScroll, ImgList, replacePre,GetBaseImgUrl } from "@/config/publicFunction";
 import { integralStateList, activeTypeNorms } from "@/config/utils";
 import { getLists } from "@/api/vipCard";
 import { activeUrlGood } from "@/config/index";
@@ -152,6 +177,9 @@ export default {
         Type: "1",
         ProdList: [],
         SalePrice: 0,
+        IsOpenProm:"0",
+        PayType: ["1", "2"],
+        AutoCancelOrder:'10'
         // DeliveryType: ["2", "1"],
         // Start: "1",
         // MaxBuyCnt: 0,
@@ -202,13 +230,17 @@ export default {
       FeaturesShow: true,
       ImportantNotesShow: true,
       activeTypeNorms: activeTypeNorms,//活动类型
+
       codeUrl: "",
       prodListArr: [],//弹框数组
+      ImportantNotesShow: true, // 显示隐藏 重要提示
     };
   },
   created() {
     this.codeUrl = this.$route.query.SID;
-    this.getInfo();
+    // if(this.$route.query.SID){
+      this.getInfo();
+    // }
   },
   methods: {
     async getInfo() {
@@ -224,22 +256,35 @@ export default {
           : [];
         let res = await Promise.all([info]);
         this.loading = false;
-        if (this.$route.query.SID) {
-          this.ruleForm = res[0].Data.Promotion;
-          this.ruleForm.ProdList = res[0].Data.ItemList;
-          this.prodListArr = res[0].Data.ItemList;
-          this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
-          this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
-          if (this.ruleForm.SpecType === "1") {
-            // 单规格
-            let ProdArr = this.ruleForm.ProdList[0];
-            this.ruleForm.SalePrice = ProdArr.SalePrice;
-            this.ruleForm.StoreQty = ProdArr.StoreQty;
-            let SurplusQty =
-              Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
-            this.ruleForm.SurplusQty = SurplusQty;
-          }
+        this.ruleForm = res[0].Data.Promotion;
+        this.ruleForm.ProdList = res[0].Data.ItemList;
+        this.prodListArr = res[0].Data.ItemList;
+        this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
+        this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
+        this.ruleForm.PayType = this.ruleForm.PayType
+        ? this.ruleForm.PayType.split(",")
+        : [];       
+        // // console.log(ImportantNotes,'获取')
+        // let abc = GetBaseImgUrl();
+        // ImportantNotes = ImportantNotes.replace( /src="Files/g, `src="${abc}${process.env.Prefix}Files`);
+        // // console.log(ImportantNotes,'有图片的时候')
+        // this.$refs.ImportantNotes.setUEContent(ImportantNotes);
+        // console.log(this.$refs.ImportantNotes.setUEContent(ImportantNotes))
+        if (this.ruleForm.SpecType === "1") {
+          // 单规格
+          let ProdArr = this.ruleForm.ProdList[0];
+          this.ruleForm.SalePrice = ProdArr.SalePrice;
+          this.ruleForm.StoreQty = ProdArr.StoreQty;
+          let SurplusQty =
+            Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
+          this.ruleForm.SurplusQty = SurplusQty;
         }
+        let abc = GetBaseImgUrl(); 
+        let ImportantNotes = $.base64.atob( this.ruleForm.ImportantNotes, "utf8");
+        ImportantNotes = ImportantNotes.replace( /src="Files/g, `src="${abc}${process.env.Prefix}Files`);
+        // this.ruleForm.ImportantNotes = ImportantNotes
+        this.$refs.ImportantNotes.setUEContent(ImportantNotes);
+        console.log(this.ruleForm.ImportantNotes)
       } catch (e) {
         this.$message.error(e)
       }
@@ -259,30 +304,52 @@ export default {
       let arr = [];
       this.goodsShow = false;
       // this.ruleForm.ProdList = val;
-      // if(this.$route.query.SID){
-      //   this.ruleForm.ProdList.forEach((item2,index)=>{
-      //     arr = val.filter(item => item2.ProdNo != item.ProdNo);
-      //   })
-      //   this.ruleForm.ProdList = this.ruleForm.ProdList.concat(arr)
-      // }
-      arr = val.map((item,index)=>{
-        return {
-          Name: item.Name,
-          SID:item.SID,
-          OldPrice: item.OldPrice,
-          SalePrice: item.SalePrice,
-          Stock: item.Stock,
-          StockType:item.StockType,
-          StoreQty: item.StoreQty,
-          SurplusQty:item.SurplusQty,
-          MaxBuyCnt:'1',//限购数量
-          ProdSID: item.ProdSID,
-          SpecSID: item.SpecSID,
-          ProdNo: item.ProdNo,
-          SpecType: item.SpecType,
-        }
-      })
-      this.ruleForm.ProdList = arr;
+      if(this.$route.query.SID){
+        this.ruleForm.ProdList.forEach((item2,index)=>{
+          arr = val.filter(item => item2.ProdNo != item.ProdNo);
+        })
+        this.ruleForm.ProdList = this.ruleForm.ProdList.concat(arr)
+      }
+      if(this.$route.query.SID){
+        arr = val.map((item,index)=>{
+          return {
+            Name: item.Name,
+            SID:item.SID,
+            OldPrice: item.OldPrice,
+            SalePrice: item.SalePrice,
+            Stock: item.Stock,
+            StockType:item.StockType,
+            StoreQty: item.StoreQty,
+            // SurplusQty:item.SurplusQty,
+            SurplusQty:item.SurplusQty,
+            MaxBuyCnt:'1',//限购数量
+            ProdSID: item.ProdSID,
+            SpecSID: item.SpecSID,
+            ProdNo: item.ProdNo,
+            SpecType: item.SpecType,
+          }
+        })
+      }else{
+        arr = val.map((item,index)=>{
+          return {
+            Name: item.Name,
+            SID:item.SID,
+            OldPrice: item.OldPrice,
+            SalePrice: item.SalePrice,
+            Stock: item.Stock,
+            StockType:item.StockType,
+            StoreQty: item.StoreQty,
+            // SurplusQty:item.SurplusQty,
+            SurplusQty:item.StoreQty,
+            MaxBuyCnt:'1',//限购数量
+            ProdSID: item.ProdSID,
+            SpecSID: item.SpecSID,
+            ProdNo: item.ProdNo,
+            SpecType: item.SpecType,
+          }
+        })
+      }
+      this.ruleForm.ProdList = arr;      
       // 编辑时点击确定需要遍历数据，否则会覆盖已填写好的数据
       // this.ruleForm.ProdList.forEach((item2,index)=>{
       //   arr = val.filter(item => item2.ProdNo != item.ProdNo);
@@ -341,13 +408,75 @@ export default {
               obj.EndDate = this.activityDate[1];
             }
             if(!this.$route.query.SID){
-              obj.StartTime =this.dateFormat(this.activeTime[0]) ;
-              obj.EndTime = this.dateFormat(this.activeTime[1]);
+              if(this.activeTime){
+                obj.StartTime =this.dateFormat(this.activeTime[0]) ;
+                obj.EndTime = this.dateFormat(this.activeTime[1]);
+              }else{
+                obj.StartTime = '';
+                obj.EndTime = '';
+              }
             }else{
-              obj.StartTime = this.activeTime[0];
-              obj.EndTime = this.activeTime[1];
+                if(this.activeTime){
+                  obj.StartTime = this.activeTime[0];
+                  obj.EndTime = this.activeTime[1];
+                }else{
+                  obj.StartTime = '';
+                  obj.EndTime = '';
+                }
+                
             }
-            obj.ProdList = JSON.stringify(obj.ProdList);
+            obj.PayType =
+              typeof obj.PayType !== "string" && obj.PayType
+                ? obj.PayType.join(",")
+                : obj.PayType;
+             let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
+             ImportantNotes = ImportantNotes.replace(
+              /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
+            console.log(ImportantNotes,'5555')
+            obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+            console.log(obj.ImportantNotes,'555')
+            if(this.$route.query.SID){
+              let arr = obj.ProdList.map((item,index)=>{
+              return {
+                Name: item.Name,
+                SID:item.SID,
+                OldPrice: item.OldPrice,
+                SalePrice: item.SalePrice,
+                Stock: item.Stock,
+                StockType:item.StockType,
+                StoreQty: item.StoreQty,
+                SurplusQty:item.SurplusQty,
+                // SurplusQty:item.StoreQty,
+                MaxBuyCnt:'1',//限购数量
+                ProdSID: item.ProdSID,
+                SpecSID: item.SpecSID,
+                ProdNo: item.ProdNo,
+                SpecType: item.SpecType,
+              }
+            })
+            obj.ProdList = JSON.stringify(arr);
+            }else{
+              let arr = obj.ProdList.map((item,index)=>{
+              return {
+                Name: item.Name,
+                SID:item.SID,
+                OldPrice: item.OldPrice,
+                SalePrice: item.SalePrice,
+                Stock: item.Stock,
+                StockType:item.StockType,
+                StoreQty: item.StoreQty,
+                // SurplusQty:item.SurplusQty,
+                SurplusQty:item.StoreQty,
+                MaxBuyCnt:'1',//限购数量
+                ProdSID: item.ProdSID,
+                SpecSID: item.SpecSID,
+                ProdNo: item.ProdNo,
+                SpecType: item.SpecType,
+              }
+            })
+            obj.ProdList = JSON.stringify(arr);
+            }
+            // obj.ProdList = JSON.stringify(arr);
             obj.Action = "SetPromotionInfo";
             let data = await getLists(obj, "MPromotionOpera");
             setTimeout(() => {

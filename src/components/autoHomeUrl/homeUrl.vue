@@ -39,7 +39,7 @@ export default {
       tableData: [
         {
           Name: "商城首页",
-          url: url + "index.html",
+          url: url,
         },
         {
           Name: "商品列表",
