@@ -186,7 +186,8 @@ export default {
       },
       multipleL: "",
       activityDate: [],
-      activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2030, 12, 31, 21, 40)],//活动时间段范围
+      // activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2030, 12, 31, 21, 40)],//活动时间段范围
+      activeTime:[],
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -408,22 +409,21 @@ export default {
               obj.EndDate = this.activityDate[1];
             }
             if(!this.$route.query.SID){
-              if(this.activeTime){
-                obj.StartTime =this.dateFormat(this.activeTime[0]) ;
-                obj.EndTime = this.dateFormat(this.activeTime[1]);
-              }else{
+              if(this.activeTime.length==0){
                 obj.StartTime = '';
                 obj.EndTime = '';
+              }else{
+                obj.StartTime =this.dateFormat(this.activeTime[0]) ;
+                obj.EndTime = this.dateFormat(this.activeTime[1]);
               }
             }else{
-                if(this.activeTime){
+              if(this.activeTime){
                   obj.StartTime = this.activeTime[0];
                   obj.EndTime = this.activeTime[1];
                 }else{
                   obj.StartTime = '';
                   obj.EndTime = '';
                 }
-                
             }
             obj.PayType =
               typeof obj.PayType !== "string" && obj.PayType

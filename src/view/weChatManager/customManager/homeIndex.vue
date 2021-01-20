@@ -90,10 +90,12 @@ export default {
           "MShopOpera"
         );
         this.tableData = Data.DecorateList;
-        let query={ SID:""}
+        // let query={ SID:""}
         this.tableData.forEach(D => {
-          query.SID = D.SID;
-          D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
+          // query.SID = D.SID;
+          D.codeUrl = this.autoHome+"?SID="+encodeURIComponent(JSON.stringify(D.SID))
+          // D.codeUrl =this.autoHome + "?SID=" + D.SID;
+          console.log(D.codeUrl)
         }); 
         this.loading = false;
       } catch (e) {

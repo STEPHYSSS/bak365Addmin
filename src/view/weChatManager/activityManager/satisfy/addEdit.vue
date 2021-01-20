@@ -17,6 +17,12 @@
                     </el-select>
                </el-form-item>
                <publicFunction ref="formInfo" :chooseType = "chooseType" :editInfo = "editInfo"></publicFunction>
+               <el-form-item label="模板ID">
+                    <el-input v-model="TemplateInfo.WeChatNo"></el-input>
+               </el-form-item>
+               <el-form-item label="模板内容">
+               <el-input v-model="TemplateInfo.TempText" :autosize="autosize" type="textarea"></el-input>
+               </el-form-item>
           </el-form>
           
           <div class="preserveStyle">
@@ -43,6 +49,11 @@ export default {
                     GiveCnt:'',
                     LimitCnt:''
                },
+               TemplateInfo: {
+                    WeChatNo: "",
+                    TempText: ""
+               },
+               autosize: { minRows: 2, maxRows: 6 },
                Name:'',
                PromWhere:'',
                PartTime: [], //开始时间数组
@@ -71,6 +82,10 @@ export default {
                },"MPromotionOpera");
                this.editInfo = data.Data.GiveList[0];
                this.Name = data.Data.Promotion.Name;
+               this.chooseType = data.Data.Promotion.PromWhere;
+               if (data.Data.TemplateList) {
+                    this.TemplateInfo = data.Data.TemplateList[0];
+               }
                this.PromWhere = data.Data.Promotion.PromWhere;
                this.PartTime.push(
                     data.Data.Promotion.StartDate,
@@ -84,6 +99,8 @@ export default {
                          this.EndDate = this.PartTime[1];
                     }
                     let GiveList = [];
+                    let TemplateList = [];
+                    TemplateList.push(this.TemplateInfo);
                     GiveList.push(this.$refs.formInfo.formInfo);                    
                     let data = await getLists({
                          Name: this.Name,
@@ -93,6 +110,7 @@ export default {
                          EndDate: this.EndDate,
                          SID: this.$route.query.SID ? this.$route.query.SID : "",
                          GiveList: JSON.stringify(GiveList),
+                         TemplateList: JSON.stringify(TemplateList),
                          Action: "SetPromotionInfo",
                          },
                          "MPromotionOpera"
@@ -112,7 +130,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.el-input,.el-input__inner,.el-select{
+.el-input,.el-input__inner,.el-select,.el-textarea{
      width: 300px;
 }
 </style>

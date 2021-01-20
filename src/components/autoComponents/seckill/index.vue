@@ -55,8 +55,7 @@
               />
             </div>
             <div class="cap-goods-layout__tag small">
-              <countDown :examInfo="item" :nowTime3 = curTime v-if="item" @autoSubmit="autoHandInExaminationPaper" ref="countDown" class="exam-interval fr"
-          ></countDown>    
+              <countDown :examInfo="item" :nowTime3 = "curTime" v-if="item" @autoSubmit="autoHandInExaminationPaper" ref="countDown" class="exam-interval fr"></countDown>    
             </div>
           </div>
           
@@ -192,28 +191,28 @@ export default {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
           Name: "显示商品名称，最多显示1行",
-          SalePrice: "99",
+          SalePrice: "XX",
           Describe: "显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
           Name: "显示商品名称，最多显示1行",
-          SalePrice: "99",
+          SalePrice: "XX",
           Describe: "显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
           Name: "显示商品名称，最多显示1行",
-          SalePrice: "99",
+          SalePrice: "XX",
           Describe: "显示商品描述，最多显示1行"
         },
         {
           Img:
             "https://img.yzcdn.cn/public_files/2018/01/30/585dae8447d80013ef9344adc973c6ee.png",
           Name: "显示商品名称，最多显示1行",
-          SalePrice: "99",
+          SalePrice: "XX",
           Describe: "显示商品描述，最多显示1行"
         }
       ],

@@ -15,9 +15,9 @@
           label-width="100px"
           class="demo-ruleForm"
         >
-          <el-form-item label="关键词" prop="Name">
+          <!-- <el-form-item label="关键词" prop="Name">
             <el-input v-model="ruleForm.Name" placeholder="关键字最长支持50个字符"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="回复类型" prop="ReplyType">
             <el-select v-model="ruleForm.ReplyType" placeholder="请选择回复类型">
               <el-option label="文本回复" value="1"></el-option>
@@ -97,7 +97,7 @@ export default {
     return {
       activeName: "second",
       ruleForm: {
-        Name: "",
+        // Name: "",
         Type: "2",
         ReplyType: "1",
         Title: "",
@@ -107,7 +107,7 @@ export default {
       },
       fileListUp: [],
       rules: {
-        Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
+        // Name: [{ required: true, message: "请输入关键字", trigger: "blur" }],
         ReplyType: [
           { required: true, message: "请选择回复类型", trigger: "change" }
         ],

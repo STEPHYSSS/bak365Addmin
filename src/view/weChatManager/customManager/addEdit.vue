@@ -135,6 +135,7 @@ import goodGroup from "@/components/autoComponents/goodsGroup/";
 import goodGroupFun from "@/components/autoComponents/goodsGroup/setIndex";
 import draggable from "vuedraggable";
 export default {
+  inject:['reload'],
   name: "HelloWorld",
   components: {
     shopinfoma,
@@ -370,6 +371,7 @@ export default {
               "MShopOpera"
             );
             this.$message.success("添加成功");
+            this.reload();
             this.loadingBtn = false;
           } catch (e) {
             this.$message.error(e);

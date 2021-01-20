@@ -370,7 +370,7 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     sureGood(arr) {
-      console.log(arr,'点击弹窗确定的时候返回的数据')
+      // console.log(arr,'点击弹窗确定的时候返回的数据')
       if (arr.length === 0) {
         return;
       }

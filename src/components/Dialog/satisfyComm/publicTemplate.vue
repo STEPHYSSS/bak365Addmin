@@ -11,11 +11,11 @@
                <el-form-item label="赠送充值" v-show="chooseType!='0'">
                     <el-input v-model="formInfo.GiveMoney"></el-input>
                </el-form-item>
-               <el-form-item label="方案总数">
+               <el-form-item label="发放总量">
                     <el-input v-model="formInfo.GiveCnt"></el-input>
                </el-form-item>
-               <el-form-item label="每人最多参与" v-show="chooseType!='0'">
-                    <el-input v-model="formInfo.LimitCnt"></el-input>
+               <el-form-item label="每人最多参与">
+                    <el-input v-model="formInfo.LimitCnt"></el-input>&nbsp;次
                </el-form-item>
           </el-form>
           <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>

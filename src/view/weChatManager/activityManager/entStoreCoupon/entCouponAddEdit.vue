@@ -54,7 +54,7 @@
       </el-form-item> -->
       <el-form-item label="发放总量">
         <el-input-number v-model="form.GiveCnt" :min="1" controls-position="right"></el-input-number
-        >，每人最多领取 <el-input-number
+        >，每人最多参与 <el-input-number
           v-model="form.LimitCnt"
           controls-position="right"
           :min="1"
@@ -75,7 +75,12 @@
     </el-form>
     <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
     <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="600px">
-      <el-table ref="multipleTable" :data="dataTable" highlight-current-row style="width: 100%" @row-click="chooseData">
+      <el-table ref="multipleTable" :data="dataTable" highlight-current-row style="width: 100%" @row-click="clickItem">
+        <el-table-column label="" width="50">
+          <template slot-scope="scope">
+            <el-radio :label="scope.row.SID" v-model="radio">&nbsp;</el-radio>
+          </template>
+        </el-table-column>
         <el-table-column prop="SID" label="方案编号" align="center"></el-table-column>
         <el-table-column prop="Name" label="方案名称" align="center"></el-table-column>
       </el-table>
@@ -116,6 +121,7 @@ export default {
         WeChatNo: "",
         TempText: "",
       },
+      radio:'',//单选参与条件
       Name: "", //活动名称
       // Start: "1", //状态
       SchemesName: "", //参与条件名
@@ -131,6 +137,7 @@ export default {
       dataTable: [], //选择参与条件方案列表
       number: "",
       singleRow:{},//选中参与条件一行信息
+      isShow:true
       // Audit: "",
     };
   },
@@ -158,10 +165,29 @@ export default {
       this.form.GiveInfo = val;
       // console.log(val,'子组件返回的数据')        
     },
-    Schemes() {
+    Schemes() {//点击展示参与条件弹窗
       this.dialogVisible2 = true;
     },
-    chooseData(row, event, column) { //选中条件
+    getCurrentRow(scope){
+      console.log(scope)
+    },
+    clickItem(row, event, column) { //选中条件
+      if(!this.isShow){
+        this.isShow = true;
+        return;
+      }
+      if(this.radio){
+        if(this.radio == row.SID){
+          this.radio = '';
+          this.isShow = false;
+          setTimeout(()=>{
+            this.isShow = true;
+          },0)
+          return
+        }
+      }
+      this.radio = row.SID;
+      this.SchemesName = row.Name;
       // if(this.SchemesName === row.Name){
       //   this.SchemesName  ='';
       //   this.SchemesSID = '';
@@ -172,11 +198,8 @@ export default {
     /*
       单选表格 也是radio  表格的点击（row-click）选中 之后 判断一下 v-model 有没有值 没有就赋值  有就判断选中的值等不等于 当前的值  不等于就覆盖 等于就置空 
     */ 
-      this.singleRow = row;
     },
     confirmEnd2() { //确定选择参与条件 
-      this.SchemesName = this.singleRow.Name;
-      this.SchemesSID = this.singleRow.SID;
       this.dialogVisible2 = false;
     },
     cancelFunAn(row){//参与条件取消
