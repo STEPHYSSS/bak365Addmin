@@ -88,37 +88,53 @@
       <el-form-item label="每日限购" prop="IsOpenProm">
         <el-radio v-model="ruleForm.IsOpenProm" label="0">关闭</el-radio>
         <el-radio v-model="ruleForm.IsOpenProm" label="1">开启</el-radio>
+        <span class="Spancolor">（开启每日限购，表示用户在活动时间内每天可参与）</span>
+        <!-- 开启每日限购，表示用户在活动时间内每天可参与 -->
+      </el-form-item>
+      <el-form-item label="每日更新" prop="IsOpenStock">
+        <el-radio v-model="ruleForm.IsOpenStock" label="0">关闭</el-radio>
+        <el-radio v-model="ruleForm.IsOpenStock" label="1">开启</el-radio>
+        <span class="Spancolor">（开启每日更新，表示在活动时间内每天更新活动数量）</span>
+        <!-- 开启每日更新，表示在活动时间内每天更新活动数量 -->
       </el-form-item>
       <el-form-item label="活动名称" prop="Name">
-        <el-input v-model="ruleForm.Name" placeholder="请填写活动名称"></el-input>
+        <el-input v-model="ruleForm.Name" maxlength="25" placeholder="请填写活动名称"></el-input>
       </el-form-item>
-      <el-form-item label="活动日期" prop="activityDate" >
-        <el-date-picker style="width:380px"
-          v-model="activityDate"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          value-format="yyyy-MM-dd HH:mm:ss"
-        ></el-date-picker>
+      <el-form-item label="活动日期" prop="activityDate">
+        <el-date-picker v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
+        </el-date-picker> - 
+        <el-date-picker v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="活动时间段" prop="activeTime">
-        <el-time-picker
-        @clearable="clearable"
-          is-range
-          v-model="activeTime"
-          value-format="HH:mm:ss"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          placeholder="选择时间范围"
-        ></el-time-picker>
+        <el-time-picker type="fixed-time" placeholder="起始时间" value-format="HH:ss:mm" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
+        <el-time-picker type="fixed-time" placeholder="结束时间" value-format="HH:ss:mm" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
+      </el-form-item>
+      <el-form-item label="选择星期">
+         <el-checkbox :indeterminate="isIndeterminateWeeks" v-model="checkAllWeeks"
+            @change="handleCheckAllChangeWeeks">全选</el-checkbox>
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="item in optionsWeek" :label="item.value" :key="item.value">{{item.label}}</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+      <el-form-item label="选择日期">
+        <el-checkbox :indeterminate="isIndeterminateDay" v-model="checkAllDay"
+        @change="handleCheckAllChangeDay"
+      >全选</el-checkbox>
+      <div style="margin: 15px 0"></div>
+      <el-checkbox-group v-model="Dates" @change="handleCheckedCitiesChangeDay">
+        <el-checkbox v-for="(item, index) in datesList" :label="item" :key="index">{{ item }}</el-checkbox>
+      </el-checkbox-group>
       </el-form-item>  
       <el-form-item label="支付方式" prop="PayType">
-        <el-checkbox-group v-model="ruleForm.PayType">
-          <el-checkbox label="2">微信支付</el-checkbox>
+        <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
           <el-checkbox label="1">微卡支付</el-checkbox>
+          <el-checkbox label="2">微信支付</el-checkbox>
+          <el-checkbox label="4">券支付</el-checkbox>
         </el-checkbox-group>
+        <span class="Spancolor">（勾选券支付，表示在秒杀活动可以使用电子券）</span>
+        <!-- 勾选券支付，表示在秒杀活动可以使用电子券 -->
+        
       </el-form-item>
       <el-form-item label="待支付订单过期时限" prop="AutoCancelOrder">
         <el-input type="text" v-model="ruleForm.AutoCancelOrder" onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>&nbsp;&nbsp;分钟
@@ -178,16 +194,32 @@ export default {
         ProdList: [],
         SalePrice: 0,
         IsOpenProm:"0",
+        IsOpenStock:'0',
         PayType: ["1", "2"],
-        AutoCancelOrder:'10'
+        AutoCancelOrder:'10',
+        
         // DeliveryType: ["2", "1"],
         // Start: "1",
         // MaxBuyCnt: 0,
       },
+      checkedCities:[],
+      optionsWeek: [
+        { value: "1", label: "星期一" },
+        { value: "2", label: "星期二" },
+        { value: "3", label: "星期三" },
+        { value: "4", label: "星期四" },
+        { value: "5", label: "星期五" },
+        { value: "6", label: "星期六" },
+        { value: "0", label: "星期天" }
+      ],
+      isIndeterminateDay: false,
+      isIndeterminateWeeks:false,
+      checkAllDay: false,
+      checkAllWeeks:false,
+      datesList:[],//天
+      Dates: [],
       multipleL: "",
       activityDate: [],
-      // activeTime:[new Date(2020, 11, 27, 8, 40), new Date(2030, 12, 31, 21, 40)],//活动时间段范围
-      activeTime:[],
       activeUrlGood: activeUrlGood,
       AppNoMy: Cookies.get("AppNo"),
       rules: {
@@ -242,9 +274,14 @@ export default {
     // if(this.$route.query.SID){
       this.getInfo();
     // }
+    let arr = []; //1-31天
+    for (let i = 1; i < 32; i++) {
+      arr.push(i.toString());
+    }
+    this.datesList = arr;
   },
   methods: {
-    async getInfo() {
+    async getInfo() {//获取详情
       try {
         this.loading = true;
         let info = this.$route.query.SID ? getLists(
@@ -259,18 +296,18 @@ export default {
         this.loading = false;
         this.ruleForm = res[0].Data.Promotion;
         this.ruleForm.ProdList = res[0].Data.ItemList;
-        this.prodListArr = res[0].Data.ItemList;
-        this.activityDate = [this.ruleForm.StartDate, this.ruleForm.EndDate];
-        this.activeTime = [this.ruleForm.StartTime,this.ruleForm.EndTime];
+        this.prodListArr = res[0].Data.ItemList;       
         this.ruleForm.PayType = this.ruleForm.PayType
         ? this.ruleForm.PayType.split(",")
-        : [];       
-        // // console.log(ImportantNotes,'获取')
-        // let abc = GetBaseImgUrl();
-        // ImportantNotes = ImportantNotes.replace( /src="Files/g, `src="${abc}${process.env.Prefix}Files`);
-        // // console.log(ImportantNotes,'有图片的时候')
-        // this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-        // console.log(this.$refs.ImportantNotes.setUEContent(ImportantNotes))
+        : []; 
+        if (this.ruleForm.Weeks) {
+          this.checkedCities = this.ruleForm.Weeks.split(",");
+          this.handleCheckedCitiesChange(this.checkedCities)
+        }
+        if (this.ruleForm.Dates) {
+          this.Dates = this.ruleForm.Dates.split(",");
+          this.handleCheckedCitiesChangeDay(this.Dates);
+        }
         if (this.ruleForm.SpecType === "1") {
           // 单规格
           let ProdArr = this.ruleForm.ProdList[0];
@@ -289,6 +326,36 @@ export default {
       } catch (e) {
         this.$message.error(e)
       }
+    },
+    handleCheckAllChangeWeeks(val){
+      if(val){
+        this.checkedCities = [];//先清空数组
+        this.optionsWeek.forEach(item=>{
+          this.checkedCities.push(item.value)
+        })
+      }else{
+        this.checkedCities = []
+      }
+      this.ruleForm.Weeks = this.checkedCities.join(",");
+      this.isIndeterminateWeeks = false;
+    },
+    handleCheckedCitiesChange(value){
+      let checkedCount = value.length;
+      this.checkAllWeeks = checkedCount === this.optionsWeek.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.optionsWeek.length;
+      this.ruleForm.Weeks = this.checkedCities.join(",");
+    },
+    // 选择天数
+    handleCheckAllChangeDay(val) {
+      this.Dates = val ? this.datesList : [];
+      this.isIndeterminateDay = false;
+      this.ruleForm.Dates = this.Dates.join(",");
+    },
+    handleCheckedCitiesChangeDay(value) {
+      let checkedCount = value.length;
+      this.checkAllDay = checkedCount === this.datesList.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.datesList.length;
+      this.ruleForm.Dates = this.Dates.join(",");
     },
     changeNorms() {},
     selectGoods(index) {
@@ -400,31 +467,17 @@ export default {
             return false;
           }
       }
+      if(this.ruleForm.PayType.indexOf("1")===-1||this.ruleForm.PayType.indexOf("2")===-1){
+        return this.$message.error('支付方式必须包含微信或微卡支付')
+      }
       this.$refs["ruleForm"].validate(async(valid) => {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            if (this.activityDate) {
-              obj.StartDate = this.activityDate[0];
-              obj.EndDate = this.activityDate[1];
-            }
-            if(!this.$route.query.SID){
-              if(this.activeTime.length==0){
-                obj.StartTime = '';
-                obj.EndTime = '';
-              }else{
-                obj.StartTime =this.dateFormat(this.activeTime[0]) ;
-                obj.EndTime = this.dateFormat(this.activeTime[1]);
-              }
-            }else{
-              if(this.activeTime){
-                  obj.StartTime = this.activeTime[0];
-                  obj.EndTime = this.activeTime[1];
-                }else{
-                  obj.StartTime = '';
-                  obj.EndTime = '';
-                }
-            }
+            // if (this.activityDate) {
+            //   obj.StartDate = this.activityDate[0];
+            //   obj.EndDate = this.activityDate[1];
+            // }
             obj.PayType =
               typeof obj.PayType !== "string" && obj.PayType
                 ? obj.PayType.join(",")
@@ -432,9 +485,9 @@ export default {
              let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
              ImportantNotes = ImportantNotes.replace(
               /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
-            console.log(ImportantNotes,'5555')
+            // console.log(ImportantNotes,'5555')
             obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
-            console.log(obj.ImportantNotes,'555')
+            // console.log(obj.ImportantNotes,'555')
             if(this.$route.query.SID){
               let arr = obj.ProdList.map((item,index)=>{
               return {

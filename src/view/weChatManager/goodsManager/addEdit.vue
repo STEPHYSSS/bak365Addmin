@@ -42,7 +42,7 @@
         >添加</el-button>
       </el-form-item>
       <el-form-item label="商品名称" prop="Name">
-        <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>
+        <el-input v-model="ruleForm.Name" maxlength="25" placeholder="请填写商品名称"></el-input>
       </el-form-item>
       <span class="goods_normsLabel" v-if="ruleForm.SpecType !== '1'">商品规格</span>
       <fieldset class="goods_norms" v-if="ruleForm.SpecType !== '1'" :key="5">
@@ -71,7 +71,7 @@
               :rules="rules.NameChildren"
               label="规格名称"
             >
-              <el-input v-model="item.Name" placeholder="规格名称"></el-input>
+              <el-input v-model="item.Name" maxlength="25" placeholder="规格名称"></el-input>
             </el-form-item>
             <el-form-item
               :key="index + 3"

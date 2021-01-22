@@ -62,7 +62,7 @@
         次
       </el-form-item>
 
-      <el-form-item label="模板ID">
+      <!-- <el-form-item label="模板ID">
         <el-input v-model="TemplateInfo.WeChatNo"></el-input>
       </el-form-item>
       <el-form-item label="模板内容">
@@ -71,10 +71,10 @@
           :autosize="autosize"
           type="textarea"
         ></el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
     <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
-    <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="600px">
+    <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="900px">
       <el-table ref="multipleTable" :data="dataTable" highlight-current-row style="width: 100%" @row-click="clickItem">
         <el-table-column label="" width="50">
           <template slot-scope="scope">
@@ -83,6 +83,34 @@
         </el-table-column>
         <el-table-column prop="SID" label="方案编号" align="center"></el-table-column>
         <el-table-column prop="Name" label="方案名称" align="center"></el-table-column>
+        <el-table-column prop="StartDate" label="开始时间" align="center"></el-table-column>
+        <el-table-column prop="EndDate" label="结束时间" align="center"></el-table-column>
+        <el-table-column label="查看" align="center">
+        <template slot-scope="scoped">
+          <el-tooltip placement="top">
+            <div slot="content">
+              <span v-show="scoped.row.SetInfo.MemberType">参与人员：{{scoped.row.SetInfo.MemberType|ConditionPerson}}</span>&nbsp;&nbsp;
+              <span v-show="scoped.row.SetInfo.CardType">卡类型：{{scoped.row.SetInfo.CardType|ConditionCard}}</span><br/>
+              <span v-show="scoped.row.SetInfo.OrderCnt">订单笔数：{{scoped.row.SetInfo.OrderCnt}}笔，</span>
+              <span v-show="scoped.row.SetInfo.OrderAmt">订单总额{{scoped.row.SetInfo.OrderAmt}}元，</span>
+              <span v-show="scoped.row.SetInfo.OrderBuyDay">最近{{scoped.row.SetInfo.OrderBuyDay}}天购买过，</span>
+              <span v-show="scoped.row.SetInfo.NotOrderBuyDay">最近{{scoped.row.SetInfo.NotOrderBuyDay}}天未购买过</span><br/>
+              <span v-show="scoped.row.SetInfo.CardOrderCnt">充值笔数：{{scoped.row.SetInfo.CardOrderCnt}}笔，</span>
+              <span v-show="scoped.row.SetInfo.CardOrderAmt">充值金额{{scoped.row.SetInfo.CardOrderAmt}}元，</span>
+              <span v-show="scoped.row.SetInfo.CardDay">最近{{scoped.row.SetInfo.CardDay}}天访问，</span><span v-show="scoped.row.SetInfo.NotCardDay">最近{{scoped.row.SetInfo.NotCardDay}}天未访问</span><br/>
+              <span v-show="scoped.row.SetInfo.BirthdayTime">生日范围：{{scoped.row.SetInfo.BirthdayTime}}，</span>
+              <span v-show="scoped.row.SetInfo.StartAge">年龄{{scoped.row.SetInfo.StartAge}}到{{scoped.row.SetInfo.EndAge}}，</span>
+              <span v-show="scoped.row.SetInfo.LatelyBirthday">最近{{scoped.row.SetInfo.LatelyBirthday}}天生日</span><br/>
+            </div>
+            <img
+              src="@/assets/img/chaxun_icon.png"
+             
+              class="codesty"
+              alt
+            />
+          </el-tooltip>
+        </template>
+      </el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible2 = false">取 消</el-button>
@@ -117,13 +145,13 @@ export default {
         GiveCnt: "",
         LimitCnt: "",
       },
-      TemplateInfo: {
-        WeChatNo: "",
-        TempText: "",
-      },
+      // TemplateInfo: {
+      //   WeChatNo: "",
+      //   TempText: "",
+      // },
       radio:'',//单选参与条件
       Name: "", //活动名称
-      // Start: "1", //状态
+      Start: "0", //状态
       SchemesName: "", //参与条件名
       SchemesSID: "", //参与条件SID
       StartDate: "", //开始时间
@@ -137,8 +165,8 @@ export default {
       dataTable: [], //选择参与条件方案列表
       number: "",
       singleRow:{},//选中参与条件一行信息
-      isShow:true
-      // Audit: "",
+      isShow:true,
+      Audit: "",
     };
   },
   components: {
@@ -168,9 +196,6 @@ export default {
     Schemes() {//点击展示参与条件弹窗
       this.dialogVisible2 = true;
     },
-    getCurrentRow(scope){
-      console.log(scope)
-    },
     clickItem(row, event, column) { //选中条件
       if(!this.isShow){
         this.isShow = true;
@@ -187,19 +212,13 @@ export default {
         }
       }
       this.radio = row.SID;
-      this.SchemesName = row.Name;
-      // if(this.SchemesName === row.Name){
-      //   this.SchemesName  ='';
-      //   this.SchemesSID = '';
-      // }else{
-      //   this.SchemesName  = row.Name;
-      //   this.SchemesSID = row.SID;
-      // }
+      this.singleRow = row;
     /*
       单选表格 也是radio  表格的点击（row-click）选中 之后 判断一下 v-model 有没有值 没有就赋值  有就判断选中的值等不等于 当前的值  不等于就覆盖 等于就置空 
     */ 
     },
-    confirmEnd2() { //确定选择参与条件 
+    confirmEnd2() { //确定选择参与条件       
+      this.SchemesName = this.singleRow.Name;
       this.dialogVisible2 = false;
     },
     cancelFunAn(row){//参与条件取消
@@ -217,6 +236,10 @@ export default {
           "MShopOpera"
         );
         this.dataTable = data.Data.SchemesList;
+        for (const i of this.dataTable) {
+          i.SetInfo = JSON.parse(i.SetInfo)
+        }
+
         this.loading = false;
       } catch (e) {
         this.loading = false;
@@ -238,18 +261,14 @@ export default {
         if (data.Data.GiveList) {
           this.form = data.Data.GiveList[0];
         }
-        if (data.Data.TemplateList) {
-          this.TemplateInfo = data.Data.TemplateList[0];
-        }
-        // let Features = $.base64.atob(data.Data.Promotion.Features, "utf8");
-        // Features = Features.replace(/src="Files/g,`src="${process.env.Prefix}Files`);
-        // setTimeout(() => {
-        // this.$refs.Features.setUEContent(Features)}, 300);
+        // if (data.Data.TemplateList) {
+        //   this.TemplateInfo = data.Data.TemplateList[0];
+        // }
         this.Name = data.Data.Promotion.Name;
-        // this.Start = data.Data.Promotion.Start;
-        // this.Audit = data.Data.Promotion.Audit;
         this.SchemesSID = data.Data.Promotion.SchemesSID;
         this.SchemesName = data.Data.Promotion.SchemesName;
+        this.Start = data.Data.Promotion.Start;
+        this.Audit = data.Data.Promotion.Audit;
         this.PartTime.push(
           data.Data.Promotion.StartDate,
           data.Data.Promotion.EndDate
@@ -267,13 +286,10 @@ export default {
           this.StartDate = this.PartTime[0];
           this.EndDate = this.PartTime[1];
         }
-        //  let Features = this.$refs.Features.getUEContent();
-        //  Features = Features.replace(/src="\.\.\/Files/g, `src="Files`);
-        //  this.Features = $.base64.btoa(Features, "utf8");
         let GiveList = [];
-        let TemplateList = [];
+        // let TemplateList = [];
         GiveList.push(this.form);
-        TemplateList.push(this.TemplateInfo);
+        // TemplateList.push(this.TemplateInfo);
         let data = await getLists(
           {
             Name: this.Name,
@@ -283,7 +299,9 @@ export default {
             SchemesSID: this.SchemesSID,
             SID: this.$route.query.SID ? this.$route.query.SID : "",
             GiveList: JSON.stringify(GiveList),
-            TemplateList: JSON.stringify(TemplateList),
+            Start:this.$route.query.SID?this.Start:'',
+            Audit:this.$route.query.SID?this.Audit:'',
+            // TemplateList: JSON.stringify(TemplateList),
             Action: "SetPromotionInfo",
           },
           "MPromotionOpera"
@@ -296,6 +314,30 @@ export default {
       }
     },
   },
+  filters:{
+    ConditionPerson(val){
+      if(val){
+        if(val==='0'){
+          return '全部粉丝'
+        }else if(val==='1'){
+          return '新粉丝'
+        }else{
+          return '会员'
+        }
+      }else return ''
+    },
+    ConditionCard(val){
+      if(val){
+        if(val==='0'){
+          return '全部粉丝'
+        }else if(val==='1'){
+          return '绑定卡'
+        }else{
+          return '申请卡'
+        }
+      }else return ''
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -317,6 +359,18 @@ export default {
     .chaxun {
       margin-bottom: 10px;
     }
+  }
+  .el-tooltip__popper.is-dark{
+    font-size: 15px !important;
+  }
+  .el-tooltip__popper{
+    max-width: 70%;
+    line-height: 15px !important;
+    font-size: 15px !important;
+    letter-spacing: 2px;
+  }
+  .tooltipFontSize{
+    font-size: 15px !important;
   }
 }
 </style>

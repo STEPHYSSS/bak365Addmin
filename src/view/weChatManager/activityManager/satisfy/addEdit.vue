@@ -17,12 +17,12 @@
                     </el-select>
                </el-form-item>
                <publicFunction ref="formInfo" :chooseType = "chooseType" :editInfo = "editInfo"></publicFunction>
-               <el-form-item label="模板ID">
+               <!-- <el-form-item label="模板ID">
                     <el-input v-model="TemplateInfo.WeChatNo"></el-input>
                </el-form-item>
                <el-form-item label="模板内容">
                <el-input v-model="TemplateInfo.TempText" :autosize="autosize" type="textarea"></el-input>
-               </el-form-item>
+               </el-form-item> -->
           </el-form>
           
           <div class="preserveStyle">
@@ -49,10 +49,10 @@ export default {
                     GiveCnt:'',
                     LimitCnt:''
                },
-               TemplateInfo: {
-                    WeChatNo: "",
-                    TempText: ""
-               },
+               // TemplateInfo: {
+               //      WeChatNo: "",
+               //      TempText: ""
+               // },
                autosize: { minRows: 2, maxRows: 6 },
                Name:'',
                PromWhere:'',
@@ -61,6 +61,9 @@ export default {
                EndDate: "", //结束时间
                chooseType:'',
                editInfo:{},
+               Start: "0", //状态
+               Audit: "",
+               
           }
      },
      components:{publicFunction},
@@ -83,9 +86,11 @@ export default {
                this.editInfo = data.Data.GiveList[0];
                this.Name = data.Data.Promotion.Name;
                this.chooseType = data.Data.Promotion.PromWhere;
-               if (data.Data.TemplateList) {
-                    this.TemplateInfo = data.Data.TemplateList[0];
-               }
+               this.Start = data.Data.Promotion.Start;
+               this.Audit = data.Data.Promotion.Audit;
+               // if (data.Data.TemplateList) {
+               //      this.TemplateInfo = data.Data.TemplateList[0];
+               // }
                this.PromWhere = data.Data.Promotion.PromWhere;
                this.PartTime.push(
                     data.Data.Promotion.StartDate,
@@ -99,8 +104,8 @@ export default {
                          this.EndDate = this.PartTime[1];
                     }
                     let GiveList = [];
-                    let TemplateList = [];
-                    TemplateList.push(this.TemplateInfo);
+                    // let TemplateList = [];
+                    // TemplateList.push(this.TemplateInfo);
                     GiveList.push(this.$refs.formInfo.formInfo);                    
                     let data = await getLists({
                          Name: this.Name,
@@ -110,7 +115,9 @@ export default {
                          EndDate: this.EndDate,
                          SID: this.$route.query.SID ? this.$route.query.SID : "",
                          GiveList: JSON.stringify(GiveList),
-                         TemplateList: JSON.stringify(TemplateList),
+                         Start:this.$route.query.SID?this.Start:'',
+                         Audit:this.$route.query.SID?this.Audit:'',
+                         // TemplateList: JSON.stringify(TemplateList),
                          Action: "SetPromotionInfo",
                          },
                          "MPromotionOpera"

@@ -5,6 +5,10 @@
         <span>卡 号：</span>
         <el-input placeholder="请输入卡号" v-model="CardNo" clearable @clear = "clearN" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
+        </el-input>&nbsp;&nbsp;
+        <span>ID：</span>
+        <el-input placeholder="请输入ID" v-model="OpenID" clearable @clear = "clearI" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
         </el-input>
       </el-col>
     </el-row>
@@ -55,6 +59,7 @@ export default {
       currentPage: 0,
       pageSize:0,
       CardNo:"",//卡号查询
+      OpenID:"",//ID 查询
     };
   },
   created() {
@@ -67,7 +72,8 @@ export default {
           {
             Action: "GetMemberList",
             Page: this.currentPage - 1,
-            CardNo:this.CardNo
+            CardNo:this.CardNo,
+            OpenID:this.OpenID
           },
           "MMemberOpera"
         );
@@ -83,6 +89,10 @@ export default {
     },
     clearN(){
       this.CardNo = '';
+      this.GetOrderTemplate();
+    },
+    clearI(){
+      this.OpenID = '';
       this.GetOrderTemplate();
     },
     handleSizeChange(val) {
