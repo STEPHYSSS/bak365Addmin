@@ -11,7 +11,9 @@
         "
         class="zent-tag"
       >
-        <div class="zent-tag-content" v-if="currentItemObj.id !== 1">{{ currentItemObj.name }}</div>
+        <div class="zent-tag-content" v-if="currentItemObj.id !== 1">
+          {{ currentItemObj.name }}
+        </div>
 
         <el-input
           v-if="currentItemObj.id === 1"
@@ -20,15 +22,23 @@
           @change="changeInput"
         ></el-input>
 
-        <i class="el-icon-close zent-tag-close-btn" @click="clickDropdownDel"></i>
+        <i
+          class="el-icon-close zent-tag-close-btn"
+          @click="clickDropdownDel"
+        ></i>
       </div>
-      <el-dropdown @command="clickDropdown" style="float: right;">
+      <el-dropdown @command="clickDropdown" style="float: right">
         <a class="el-dropdown-link">
           <span v-if="!currentItemObj.name">选择跳转到的页面</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </a>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item :command="item" v-for="(item,index) in list" :key="index">{{item.name}}</el-dropdown-item>
+          <el-dropdown-item
+            :command="item"
+            v-for="(item, index) in list"
+            :key="index"
+            >{{ item.name }}</el-dropdown-item
+          >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -45,11 +55,7 @@
 </template>
 
 <script>
-let url =
-  window.location.protocol +
-  "//" +
-  window.location.host +
-  "/WebApp/Mobile/index.html#/";
+let url = window.location.protocol +"//" + window.location.host + "/WebApp/Mobile/index.html#/";
 // let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/";
 import { GetAppNo } from "@/config/publicFunction";
 export default {
@@ -60,10 +66,10 @@ export default {
       default() {
         return {
           name: "",
-          url: ""
+          url: "",
         };
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -75,15 +81,15 @@ export default {
         { url: "", name: "自定义链接", id: 1 },
         {
           name: "商城首页",
-          url: url
+          url: url,
         },
         {
           name: "商品列表-自定义",
-          url: url + "pages/shoppingMall/list/goodsList"
+          url: url + "pages/shoppingMall/list/goodsList",
         },
         {
           name: "商品列表-点餐",
-          url: url + "pages/shoppingMall/menu_naixue/menu/menu"
+          url: url + "pages/shoppingMall/menu_naixue/menu/menu",
         },
         // {
         //   name: "积分商城",
@@ -99,60 +105,60 @@ export default {
         // },
         {
           name: "购物车",
-          url: url + "pages/shoppingMall/shoppingCart/index"
+          url: url + "pages/shoppingMall/shoppingCart/index",
         },
         {
           name: "个人中心",
-          url: url + "pages/home"
+          url: url + "pages/home",
         },
         {
           name: "我的粉丝",
-          url: url + "pages/vip/myFan"
+          url: url + "pages/vip/myFan",
         },
         {
           Name: "我的足迹",
-          url: url + "pages/vip/FootPrint"
+          url: url + "pages/vip/FootPrint",
         },
         {
           name: "申请团长",
-          url: url + "pages/vip/applyLeader"
+          url: url + "pages/vip/applyLeader",
         },
         {
           name: "付款码",
-          url: url + "pages/vip/payCode"
+          url: url + "pages/vip/payCode",
         },
         {
           name: "微卡充值",
-          url: url + "pages/vip/weiFull"
+          url: url + "pages/vip/weiFull",
         },
         {
           name: "订单列表",
-          url: url + "pages/vip/allMyOrder"
+          url: url + "pages/vip/allMyOrder",
         },
         {
           //pages/packages/index 权益入口
           name: "权益列表",
-          url: url + "pages/packages/index"
+          url: url + "pages/packages/index",
         },
         {
           name: "绑定实体会员卡",
           // url: url + "pages/vip/bind/index",
           url:
             "http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +
-            GetAppNo()
+            GetAppNo(),
         },
         {
           name: "申请会员卡",
           // url: url + "pages/vip/bind/index",
           url:
             "http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +
-            GetAppNo()
+            GetAppNo(),
         },
         {
           name: "地址管理",
-          url: url + "pages/myAddress/myAddress"
-        }
-      ]
+          url: url + "pages/myAddress/myAddress",
+        },
+      ],
     };
   },
   components: {},
@@ -186,13 +192,13 @@ export default {
     changeInput(val) {
       this.currentItemObj.url = val;
       this.$emit("clickDropdown", this.currentItemObj);
-    }
+    },
   },
   watch: {
     currentItem() {
       this.currentItemObj = this.currentItem;
-    }
-  }
+    },
+  },
 };
 </script>
 

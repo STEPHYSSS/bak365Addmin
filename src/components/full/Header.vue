@@ -5,11 +5,17 @@
     <!--    class="valueCity"-->
     <div class="navbar-brand">
       <el-select v-model="valueCity" placeholder="请选择地区" class="navbar-brandBtn">
-        <el-option
+        <!-- <el-option
           v-for="item in optionsCity"
           :key="item.AreaName"
           :label="item.AreaName"
           :value="item.AreaNo">
+        </el-option> -->
+        <el-option
+          v-for="item in optionsCity"
+          :key="item.Name"
+          :label="item.Name"
+          :value="item.SID">
         </el-option>
       </el-select>
       <!--      <el-button icon="el-icon-search" type="text" @click="searchNav">搜索</el-button>-->
@@ -113,7 +119,7 @@
 import navbar from './Navbar'
 import {navSearch} from '../../config/navASearch'
 import {mapGetters} from 'vuex';
-
+import { getLists } from "@/api/vipCard";
 export default {
   components: {
     navbar,
@@ -129,11 +135,14 @@ export default {
   computed: {
     ...mapGetters(['AreaNo', 'AreaList', 'AppNo', 'userName'])
   },
+  created(){
+    this.getAreaList();
+  },
   mounted() {
     this.restaurants = navSearch;
 
-    this.optionsCity = this.AreaList
-    this.valueCity = this.AreaNo.AreaNo
+    // this.optionsCity = this.AreaList
+    // this.valueCity = this.AreaNo.AreaNo
   },
   methods: {
     Logouts(e) {
@@ -184,7 +193,17 @@ export default {
     handleSelect(item) {
       console.log(item);
       this.$router.push(item.url)
-    }
+    },
+    async getAreaList() {
+      // 门店区域
+      try {
+        let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
+        this.optionsCity = Data.AreaList;
+        console.log(this.optionsCity)
+      } catch (e) {
+        this.$message.error(e);
+      }
+    },
   },
   watch: {
     $route() {

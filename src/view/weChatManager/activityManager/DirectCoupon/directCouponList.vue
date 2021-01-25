@@ -2,23 +2,17 @@
   <div class="entStore">
     <div style="margin-bottom: 20px">
       <el-row>
-      <el-col :span="4" style="padding-top:5px">
+      <el-col :span="3" style="padding-top:5px">
         <el-button type="primary" size="small" @click="addCondition">添加直接送券</el-button>
       </el-col>
-      <el-col :span="10">
-          <span>开始时间：</span>
+      <el-col :span="21">
+        <span>名 称：</span>
+        <el-input placeholder="请输入活动名称" v-model="Name" clearable @clear = "clearN" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
+        </el-input>&nbsp;&nbsp;
+          <span>赠送时间：</span>
           <el-date-picker
             v-model="StartTime"
-            type="datetime"
-            placeholder="选择日期时间"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            @change="changeTime">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="10">
-          <span>结束时间：</span>
-          <el-date-picker
-            v-model="EndTime"
             type="datetime"
             placeholder="选择日期时间"
             value-format="yyyy-MM-dd HH:mm:ss"
@@ -58,7 +52,8 @@ export default {
       currentPage: 0,
       pageSize:0,
       StartTime:'',
-      EndTime:''
+      EndTime:'',
+      Name:""
     };
   },
   created() {
@@ -73,8 +68,8 @@ export default {
           {
             Action: "GetTicketList",
             Page: this.currentPage - 1,
-            StartAddTime:this.StartTime,
-            EndAddTime:this.EndTime
+            TicketName:this.Name,
+            StartAddTime:this.StartTime
           },
           "MLogOpera"
         );
@@ -87,6 +82,13 @@ export default {
      addCondition() {
         this.$router.push({ path: "/weChat/manager/activity/directCouponAddEdit" });
      },
+     searchN(){
+       this.getList();
+     },
+     clearN(){
+       this.Name = "";
+       this.getList();
+     },
      changeTime(){
       this.getList();
     },
@@ -94,4 +96,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.el-input{
+  width: 200px;
+}
 </style>

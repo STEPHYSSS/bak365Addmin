@@ -3,6 +3,7 @@
     <div style="margin-bottom: 20px">
       <el-button type="primary" size="small" @click="addCondition">添加进店送礼</el-button>
     </div>
+    <active-search-box ref="activeSearch" @searchList="searchList"></active-search-box>
     <el-table :data="dataTable" v-loading="loading" style="width: 100%">
       <el-table-column prop="Name" label="活动名称" align="center"></el-table-column>
       <el-table-column label="有效时间" align="center" width="290">
@@ -24,7 +25,7 @@
             >删除</el-button
           >
           <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
-          <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
+          <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -32,7 +33,9 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard"; //调用接口引用
+import activeSearchBox from '@/components/Dialog/activeSearchBox/activeSearchBox.vue';
 export default {
+  components: { activeSearchBox },
   name: "",
   data() {
     return {
@@ -40,6 +43,7 @@ export default {
       loading: true,
       current_Status: "", //审核
       current_Open: "", //关闭
+      search:{}
     };
   },
   created() {
@@ -50,18 +54,18 @@ export default {
       //列表
       this.loading = true;
       try {
-        let data = await getLists(
-          {
-            Action: "GetPromotionList",
-            Type: "7",
-          },
-          "MPromotionOpera"
-        );
+        let obj = { Action: "GetPromotionList",Type:7};
+        obj = Object.assign(obj, this.search);
+        let data = await getLists(obj, "MPromotionOpera");
         this.dataTable = data.Data.PromotionList;
         this.loading = false;
       } catch (e) {
         this.loading = false;
       }
+     },
+     searchList(val){//搜索
+       this.search = val;
+       this.getList();
      },
      addCondition() {
         this.$router.push({ path: "/weChat/manager/activity/entCouponAddEdit" });

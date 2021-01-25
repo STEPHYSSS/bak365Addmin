@@ -133,9 +133,9 @@
       </el-form-item>
       <el-form-item label="配送方式" prop="DeliveryType">
         <el-checkbox-group v-model="ruleForm.DeliveryType" @change="changeCheckbox">
-          <el-checkbox label="3" :disabled="disabledLogistics">物流配送</el-checkbox>
-          <el-checkbox label="2" :disabled="disabledTakeout">外卖配送</el-checkbox>
           <el-checkbox label="1">门店自取</el-checkbox>
+          <el-checkbox label="2" :disabled="disabledTakeout">外卖配送</el-checkbox>
+          <el-checkbox label="3" :disabled="disabledLogistics">物流配送</el-checkbox>
         </el-checkbox-group>
         <div style="color: #999">物流与配送冲突</div>
       </el-form-item>
@@ -289,16 +289,6 @@
       </el-form-item>
       <el-form-item label="可购买时间" prop="BuyTime">
         <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
-        <!-- <el-time-picker
-          v-if="assistRuleForm.BuyTimeBool"
-          is-range
-          v-model="ruleForm.BuyTime"
-          value-format="HH:mm:ss"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          placeholder="选择时间范围"
-        ></el-time-picker> -->
         <el-date-picker
           v-if="assistRuleForm.BuyTimeBool" is-range
           v-model="ruleForm.BuyTime"
@@ -592,8 +582,8 @@ export default {
       fileListUpList: [],
       fileListUpMain: [],
       valueCurrent: [],
-      disabledLogistics: true,
-      disabledTakeout: false,
+      disabledLogistics: true,//物流
+      disabledTakeout: false,//外卖
       isAdvanceTime: "1",
       optionsAdvanceTime: [
         {
@@ -685,7 +675,7 @@ export default {
     ChangeOne() {},
     changeCheckbox(val) {
       // 1门店 2外卖 3物流
-      //配送方式
+      //配送方式 点击外卖的时候，物流不可选，选择物流，那么外卖不可选
       if (val.indexOf("3") > -1) {
         //选择了物流
         this.disabledTakeout = true;
@@ -695,6 +685,7 @@ export default {
         this.disabledTakeout = false;
         this.disabledLogistics = false;
       }
+      
     },
     async getList() {
       try {
@@ -744,11 +735,17 @@ export default {
         this.ruleForm.PayType = this.ruleForm.PayType
           ? this.ruleForm.PayType.split(",")
           : [];
+        if(this.ruleForm.DeliveryType.indexOf("3")!=-1){
+          this.disabledTakeout = true;
+          this.disabledLogistics = false;
+        }else if(this.ruleForm.DeliveryType.indexOf("2")!=-1){
+          this.disabledLogistics = true;
+          this.disabledTakeout = false;
+        }
 
         this.ruleForm.DeliveryType = this.ruleForm.DeliveryType
           ? this.ruleForm.DeliveryType.split(",")
-          : [];
-
+          : [];  
         this.ruleForm.SendScore =
           this.ruleForm.SendScore === "0" ? false : true;
 
@@ -815,18 +812,18 @@ export default {
           : [];
 
         let Features = $.base64.atob(this.ruleForm.Features, "utf8");
-        console.log(Features)
+        // console.log(Features)
         let ImportantNotes = $.base64.atob(
           this.ruleForm.ImportantNotes,
           "utf8"
         );
         let abc = GetBaseImgUrl();
-        console.log(abc)
+        // console.log(abc)
         Features = Features.replace(
           /src="Files/g,
           `src="${abc}${process.env.Prefix}Files`
         );
-        console.log(Features,'one')
+        // console.log(Features,'one')
         ImportantNotes = ImportantNotes.replace(
           /src="Files/g,
           `src="${abc}${process.env.Prefix}Files`
@@ -1063,7 +1060,7 @@ export default {
               `src="${process.env.Prefix}Files`
               
             );
-            console.log(Features,ImportantNotes,'5555')
+            // console.log(Features,ImportantNotes,'5555')
             obj.Features = $.base64.btoa(Features, "utf8");
             obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
 

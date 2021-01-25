@@ -4,7 +4,7 @@ import store from "../index";
 import storejs from 'storejs'
 
 import {GetQueryString} from '@/config/publicFunction'
-
+import { getLists } from "@/api/vipCard"; //调用接口引用
 // AppNo和UserMAC存在了 cookie里面
 // 其他页面通用的变量存 localStorage 里面了
 
@@ -64,6 +64,17 @@ const user = {
       commit('SET_TOKEN', AppNo)
     },
     // 获取地区列表
+    // async getArea({commit}) {
+    //   // 门店区域
+    //   try {
+    //     let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
+    //     let AreaLists = Data.AreaList;
+    //     commit('SET_AREA', AreaLists);
+    //     commit('GET_AREALIST', AreaLists);
+    //   } catch (e) {
+    //     this.$message.error(e);
+    //   }
+    // },
     getArea({commit}) {
       return new Promise((resolve, reject) => {
         try {
@@ -76,6 +87,7 @@ const user = {
           reject(e)
         }
       })
+
     },
     setArea({commit}, AreaNo) {
       commit('SET_AREA', AreaNo)

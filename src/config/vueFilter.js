@@ -193,3 +193,10 @@ Vue.filter('setActiveOpen',(val)=>{//是否启用
           return ''
      }
 })
+Vue.filter('startTips',(val)=>{
+     if (val === "0") {
+      return "开启";
+    } else {
+      return "关闭";
+    }
+  })

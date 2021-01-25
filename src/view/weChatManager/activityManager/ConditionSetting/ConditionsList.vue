@@ -5,9 +5,16 @@
         >添加参与条件方案</el-button
       >
     </div>
+    <active-search-box-2 ref="activeSearch" @searchList="searchList"></active-search-box-2>
     <el-table :data="dataTable" v-loading="loading" style="width: 100%">
       <el-table-column label="方案编号" prop="SID" align="center"></el-table-column>
       <el-table-column label="方案名称" prop="Name" align="center"></el-table-column>
+      <el-table-column label="开始时间" prod="StartDate" align="center">
+        <template slot-scope="scoped">{{scoped.row.StartDate}}</template>
+      </el-table-column>
+      <el-table-column label="结束时间" prod="EndDate" align="center">
+        <template slot-scope="scoped">{{scoped.row.EndDate}}</template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
           <el-button type="text" @click="editCondition(scoped.row)"
@@ -23,7 +30,9 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard"; //调用接口引用
+import activeSearchBox2 from '@/components/Dialog/activeSearchBox/activeSearchBox2.vue';
 export default {
+  components: { activeSearchBox2 },
   name: "",
   data() {
     return {
@@ -32,6 +41,7 @@ export default {
           currentPage: 0,
           pageSize:0,
           loading: true,
+          search:{}
     };
   },
   created(){
@@ -41,16 +51,23 @@ export default {
      addCondition() {
       this.$router.push({ path: "/weChat/manager/activity/ConditionsAddEdit" });
      },
+     searchList(val){//搜索
+       this.search = val;
+       this.getList();
+     },
      async getList() {//列表
       this.loading = true;
       try {
-        let data = await getLists(
-          {
-            Action: "GetSchemesList",
-            Type:'1'
-          },
-          "MShopOpera"
-        );
+        // let data = await getLists(
+        //   {
+        //     Action: "GetSchemesList",
+        //     Type:'1'
+        //   },
+        //   "MShopOpera"
+        // );
+        let obj = { Action: "GetSchemesList",Type:1};
+        obj = Object.assign(obj, this.search);
+        let data = await getLists(obj, "MShopOpera");
         this.dataTable = data.Data.SchemesList;
         this.loading = false;
       } catch (e) {

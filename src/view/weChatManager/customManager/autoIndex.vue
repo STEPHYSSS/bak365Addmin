@@ -94,7 +94,7 @@ export default {
   components: { Del ,QRCode},
   mounted() {
     this.getList();
-    console.log(this.autoHome)
+    // console.log(this.autoHome)
   },
   methods: {
     async getList() {
@@ -106,7 +106,7 @@ export default {
         );
         this.tableData = Data.DecorateList;
         let query={ SID:""}
-        console.log(this.autoHome)
+        // console.log(this.autoHome)
         this.tableData.forEach(D => {
           query.SID = D.SID;
           D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))

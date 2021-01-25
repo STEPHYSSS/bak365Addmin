@@ -8,9 +8,9 @@
                     <el-date-picker v-model="PartTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间">
                     </el-date-picker>
                </el-form-item>
-               <el-form-item label="触发类型">
-                    <el-select v-model="PromWhere" @change="changeProm" placeholder="请选择">
-                         <el-option label="请选择触发类型" value=""></el-option>
+               <el-form-item label="参与类型" :rules="[{ required: true, message: '请选择参与类型', trigger: 'blur' }]">
+                    <el-select v-model="PromWhere" @change="changeProm" :disabled="disableProm" placeholder="请选择">
+                         <el-option label="请选择参与类型" value=""></el-option>
                          <el-option label="用户关注" value="0"></el-option>
                          <!-- <el-option label="用户申请卡" value="1"></el-option>
                          <el-option label="用户绑定卡" value="2"></el-option> -->
@@ -32,7 +32,7 @@
           <!-- <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket> -->
      </div>
      
-     <!-- 当触发类型是用户关注时，不展示赠送积分、赠送充值 和 参与次数-->
+     <!-- 当参与类型是用户关注时，不展示赠送积分、赠送充值 和 参与次数-->
 </template>
 <script>
 // import satisfyTicket from "@/components/Dialog/satisfyTicket";
@@ -49,6 +49,7 @@ export default {
                     GiveCnt:'',
                     LimitCnt:''
                },
+               disableProm:false,
                // TemplateInfo: {
                //      WeChatNo: "",
                //      TempText: ""
@@ -69,11 +70,12 @@ export default {
      components:{publicFunction},
      created(){
           if(this.$route.query.SID){
+               this.disableProm = true;
                this.getAddEditInfo();
           }
      },
      methods:{
-          changeProm(){
+          changeProm(){               
                this.chooseType = this.PromWhere;
           },
           async getAddEditInfo(){
@@ -104,6 +106,9 @@ export default {
                          this.EndDate = this.PartTime[1];
                     }
                     let GiveList = [];
+                    if(this.PromWhere===""){
+                         return this.$message.error('请选择参与类型')
+                    }
                     // let TemplateList = [];
                     // TemplateList.push(this.TemplateInfo);
                     GiveList.push(this.$refs.formInfo.formInfo);                    

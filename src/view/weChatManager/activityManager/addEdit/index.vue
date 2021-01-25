@@ -107,8 +107,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="活动时间段" prop="activeTime">
-        <el-time-picker type="fixed-time" placeholder="起始时间" value-format="HH:ss:mm" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
-        <el-time-picker type="fixed-time" placeholder="结束时间" value-format="HH:ss:mm" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
+        <el-time-picker type="fixed-time" placeholder="起始时间" @change = "changeStartTime" value-format="HH:ss:mm" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
+        <el-time-picker type="fixed-time" placeholder="结束时间" @change = "changeStartTime" value-format="HH:ss:mm" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
       </el-form-item>
       <el-form-item label="选择星期">
          <el-checkbox :indeterminate="isIndeterminateWeeks" v-model="checkAllWeeks"
@@ -197,7 +197,8 @@ export default {
         IsOpenStock:'0',
         PayType: ["1", "2"],
         AutoCancelOrder:'10',
-        
+        StartTime:"",
+        EndTime:""
         // DeliveryType: ["2", "1"],
         // Start: "1",
         // MaxBuyCnt: 0,
@@ -445,6 +446,14 @@ export default {
       // 拼接
       return hours+":"+minutes+":"+seconds;
     },
+    changeStartTime(){
+      if(this.ruleForm.StartTime==null){
+        this.ruleForm.StartTime = ''
+      }
+      if(this.ruleForm.EndTime==null){
+        this.ruleForm.EndTime = ''
+      }
+    },
     async preserveFun(formName) {
       for(let i = 0;i<this.ruleForm.ProdList.length;i++){
           if(this.ruleForm.ProdList[i].SalePrice===undefined){
@@ -474,10 +483,11 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
-            // if (this.activityDate) {
-            //   obj.StartDate = this.activityDate[0];
-            //   obj.EndDate = this.activityDate[1];
-            // }
+            if(obj.StartTime&&obj.EndTime==""){
+              return this.$message.error('请填写完整的活动时间段')
+            }else if(obj.StartTime==""&&obj.EndTime){
+              return this.$message.error('请填写完整的活动时间段')
+            }
             obj.PayType =
               typeof obj.PayType !== "string" && obj.PayType
                 ? obj.PayType.join(",")

@@ -10,23 +10,22 @@
           >添加满足赠送活动</el-button
         >
       </el-col>
-      <el-col :span="20">
+      <!-- <el-col :span="20">
         <div style="margin-top: 5px">
-          <!-- 开始时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input>
-          结束时间：<el-input placeholder="请输入商品名称" class="widthW" ></el-input> -->
           开始时间：<el-date-picker v-model="search.StartDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
           </el-date-picker>
           结束时间：<el-date-picker v-model="search.EndDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
           </el-date-picker>
           <el-button slot="append" >查询</el-button>
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
+    <active-search-box ref="activeSearch" @searchList="searchList"></active-search-box> 
     <el-table :data="tableDate" v-loading="loading" style="width: 100%;">
       <el-table-column label="活动名称" prop="Name" align="center"></el-table-column>
       <el-table-column label="开始时间" prop="StartDate" align="center"></el-table-column>
       <el-table-column label="结束时间" prop="EndDate" align="center"></el-table-column>
-      <el-table-column label="触发条件" align="center">
+      <el-table-column label="参与条件" align="center">
         <template slot-scope="scoped">{{scoped.row.PromWhere|PromType}}</template>
       </el-table-column>
       <!-- <el-table-column label="审核状态" align="center">
@@ -41,7 +40,7 @@
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
-          <el-button type="text" @click="changeEnable(scoped.row,'Start')">关闭</el-button>
+          <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
         </template>
       </el-table-column>      
     </el-table>
@@ -61,7 +60,9 @@
 <script>
 import Pagination from "@/components/pagination/index";
 import { getLists } from "@/api/vipCard";
+import activeSearchBox from '@/components/Dialog/activeSearchBox/activeSearchBox.vue';
 export default {
+  components: { activeSearchBox ,Pagination},
   name: "satisfyList",
   data() {
     return {
@@ -79,6 +80,10 @@ export default {
     this.getList();
   },
   methods: {
+      searchList(val){//搜索
+        this.search = val;
+        this.getList();
+      },
      async getList() {//获取列表
       this.loading = true;
       try {
@@ -93,9 +98,9 @@ export default {
       }
       
      },
-     changeTime(){
-      this.getList();
-    },
+    //  changeTime(){
+    //   this.getList();
+    // },
      addSatisfy(){//新增
         this.$router.push({path:'/weChat/manager/activity/satisfyAddEdit'})
      },

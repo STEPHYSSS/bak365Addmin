@@ -157,7 +157,11 @@ export default {
       // }else{
 
         this.ProdList = this.multipleSelection;
-        this.$emit("sureGood", this.ProdList);
+        if(this.ProdList.length>15){
+          return this.$message.error('商品不能超过15个')
+        }else {
+          this.$emit("sureGood", this.ProdList);
+        }
       // }
     }
   },

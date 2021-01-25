@@ -192,6 +192,10 @@ export default {
       this.getList();
     },
     viewRow(val) {
+      // this.$router.push({path:'/weChat/manager/orderList/info',query:{
+      //   SID:val.SID,
+      //   type:val.OrderType
+      // }})
       this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=2');
     },
   },

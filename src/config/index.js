@@ -19,6 +19,6 @@ export const integralUrlGood = HeardUrl + 'pages/shoppingMall/list/infoGood'
 
 export const activeUrlGood = HeardUrl + 'pages/shoppingMall/list/infoGood'
 export const seckill = HeardUrl + 'pages/shoppingMall/seckill/index' //秒杀首页
-    // export const autoHome = PhoneUrl + 'pages/shoppingMall/index'//自定义首页
+    // export const autoHome = HeardUrl + 'pages/shoppingMall/index'//自定义首页
 export const autoHome = HeardUrl //自定义首页
     // http://dingtalk.bak365.cn/WeixinNew/Dist/#/pages/shoppingMall/index

@@ -38,6 +38,7 @@
 <script>
 import imgLoad from "@/components/download/imgLoad";
 import { getLists } from "@/api/vipCard";
+import { GetBaseImgUrl } from "@/config/publicFunction";
 export default {
      name:"customerService",
      data(){
@@ -69,8 +70,10 @@ export default {
                     "MShopOpera"
                );
                this.form = Data.CSRInfo;
-               console.log(Data)
-               this.fileListUp = this.form.Img? [{ url: this.form.Img }]: [];
+               // console.log(Data)
+               if(this.form.Img){
+                    this.fileListUp = GetBaseImgUrl()+this.form.Img ? [{ url: GetBaseImgUrl() + this.form.Img }] : [];  
+               }
                } catch (e) {
                     this.$message.error(e);
                }
