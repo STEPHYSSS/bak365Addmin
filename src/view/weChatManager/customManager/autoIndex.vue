@@ -105,11 +105,12 @@ export default {
           "MShopOpera"
         );
         this.tableData = Data.DecorateList;
-        let query={ SID:""}
+        // let query={ SID:""}
         // console.log(this.autoHome)
         this.tableData.forEach(D => {
-          query.SID = D.SID;
-          D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
+           D.codeUrl = this.autoHome+ "?SID=" + D.SID;
+         // query.SID = D.SID;
+          // D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
           console.log(D.codeUrl,'自定义页面')
         });               
         this.loading = false;

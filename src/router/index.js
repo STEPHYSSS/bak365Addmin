@@ -456,13 +456,13 @@ export const asyncRouterMap = [{
                         },
                         component: activityGoodsAdd
                     },
-                    // {
-                    //     path: 'groupGoodSetting',
-                    //     meta: {
-                    //         label: '拼团活动'
-                    //     },
-                    //     component: groupGoods
-                    // },
+                    {
+                        path: 'groupGoodSetting',
+                        meta: {
+                            label: '拼团活动'
+                        },
+                        component: groupGoods
+                    },
                     {
                         path: 'groupGoodAdd',
                         isHidden: true,
@@ -664,7 +664,7 @@ export const asyncRouterMap = [{
             //     path: '/weChat/manager',
             //     meta: {
             //         label: '客服管理'
-            //     },
+            //     },/WebApp/Mobile
             //     component: {
             //         render(c) {
             //             return c('router-view')
