@@ -53,8 +53,8 @@ export default {
     prodList: Array,
     isEvaluate: [Boolean, String],
     isGroup:{
-      type: String,
-      default:''
+      type:Boolean,
+      default:false
     }
   },
   data() {
@@ -150,19 +150,12 @@ export default {
       }
     },
     sureGood() {
-      // if(this.isGroup == 'group'){
-      //   let current=[];
-      //   current.push(this.currentRow)
-      //   this.$emit("sureGood", current);
-      // }else{
-
-        this.ProdList = this.multipleSelection;
-        if(this.ProdList.length>15){
-          return this.$message.error('商品不能超过15个')
-        }else {
-          this.$emit("sureGood", this.ProdList);
-        }
-      // }
+      this.ProdList = this.multipleSelection;
+      if(this.ProdList.length>15){
+        return this.$message.error('商品不能超过15个')
+      }else {
+        this.$emit("sureGood", this.ProdList);
+      }
     }
   },
   watch: {

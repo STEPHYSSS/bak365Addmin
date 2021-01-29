@@ -193,7 +193,7 @@
         </el-form-item>
       </div>
     </el-form>
-    <seckill-goods ref="seckillAuto" @beforeClose="beforeClose" @sureGood="sureGood" :Type="Type"></seckill-goods>
+    <seckill-goods ref="seckillAuto" @beforeClose="beforeClose" @sureGood="sureGood" :Type = "Type"></seckill-goods>
  
   </div>
 </template>
@@ -229,7 +229,7 @@ export default {
         goodsMaxNum: 6,
         _data: [] //商品弹窗数据
       },
-      Type:'1',//秒杀类型为1
+      Type:'5',//拼团的类型为5
       buttonArr: ["1", "2", "5", "6"],
       buttonArr1: ["3", "4", "7", "8"],
       // 是数组

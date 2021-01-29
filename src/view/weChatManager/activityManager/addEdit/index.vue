@@ -154,7 +154,7 @@
       </el-form-item>
     </el-form>
 
-    <mall-goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood" :prodList="prodListArr" :isGroup="isGroup"></mall-goods>
+    <mall-goods :goodsShow="goodsShow" @changeDig="changeDig" @sureGood="sureGood" :prodList="prodListArr" ></mall-goods>
 
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
@@ -323,7 +323,7 @@ export default {
         ImportantNotes = ImportantNotes.replace( /src="Files/g, `src="${abc}${process.env.Prefix}Files`);
         // this.ruleForm.ImportantNotes = ImportantNotes
         this.$refs.ImportantNotes.setUEContent(ImportantNotes);
-        console.log(this.ruleForm.ImportantNotes)
+        // console.log(this.ruleForm.ImportantNotes)
       } catch (e) {
         this.$message.error(e)
       }
@@ -476,8 +476,8 @@ export default {
             return false;
           }
       }
-      if(this.ruleForm.PayType.indexOf("1")===-1||this.ruleForm.PayType.indexOf("2")===-1){
-        return this.$message.error('支付方式必须包含微信或微卡支付')
+      if(this.ruleForm.PayType.indexOf("4")>-1&&this.ruleForm.PayType.length==1){
+       return this.$message.error('支付方式必须包含微信或微卡支付')
       }
       this.$refs["ruleForm"].validate(async(valid) => {
         if (valid) {
@@ -495,9 +495,7 @@ export default {
              let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
              ImportantNotes = ImportantNotes.replace(
               /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
-            // console.log(ImportantNotes,'5555')
             obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
-            // console.log(obj.ImportantNotes,'555')
             if(this.$route.query.SID){
               let arr = obj.ProdList.map((item,index)=>{
               return {

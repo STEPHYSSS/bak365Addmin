@@ -67,7 +67,7 @@ export default {
         if (data.Data.PromList) {
           this.tableData = data.Data.PromList;
           this.tableData.forEach(D => {
-            D.codeUrl = this.seckill + "?SID=" + D.SID;
+            D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
           });
         }
       } catch (error) {

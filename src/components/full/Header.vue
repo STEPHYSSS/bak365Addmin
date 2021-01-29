@@ -199,7 +199,7 @@ export default {
       try {
         let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
         this.optionsCity = Data.AreaList;
-        console.log(this.optionsCity)
+        // console.log(this.optionsCity)
       } catch (e) {
         this.$message.error(e);
       }

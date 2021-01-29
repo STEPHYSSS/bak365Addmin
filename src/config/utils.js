@@ -126,9 +126,9 @@ export const activeTypeNorms = [
   { label: '秒杀活动', value: '1' }
   // { label: '拼团活动', value: '5' }
 ]
-export const activeTypeNorms2 = [
-  { label: '拼团活动', value: '5' }
-]
+// export const activeTypeNorms2 = [
+//   { label: '拼团活动', value: '5' }
+// ]
 // 参与人员 和 卡类型
 export const ConditionPerson = [
   { value: '0', label: '全部粉丝'},

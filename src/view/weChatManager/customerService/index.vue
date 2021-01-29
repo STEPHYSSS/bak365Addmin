@@ -1,15 +1,6 @@
 <template>
      <div class="customerService">
           <el-form ref="form" :model="form" label-width="150px">
-               <el-form-item label="客服图片：">
-               <imgLoad
-                    style="margin-top:10px"
-                    @upLoadImgs="upLoadImg"
-                    :fileListUp="fileListUp"
-                    folder="ShopImg"
-                    ref="imgLoad"
-               ></imgLoad>
-               </el-form-item>
                <el-form-item label="客服类型：">
                     <el-select v-model="form.Type" placeholder="请选择">
                     <el-option
@@ -19,8 +10,8 @@
                          :value="item.value">
                     </el-option>
                     </el-select>
-               </el-form-item>
-               <el-form-item label="平台编号：" prop="BusinessID">
+               </el-form-item>               
+               <!-- <el-form-item label="平台编号：" prop="BusinessID">
                <el-input v-model="form.BusinessID"></el-input>
                </el-form-item>
                <el-form-item label="分组编号：" prop="GroupID">
@@ -28,6 +19,22 @@
                </el-form-item>
                <el-form-item label="专业编号：" prop="SpecialID">
                <el-input v-model="form.SpecialID"></el-input>
+               </el-form-item> -->
+               <el-form-item label="客服链接：" prop="CsrUrl">
+                    <el-input v-model="form.CsrUrl"></el-input>
+               </el-form-item>
+               <el-form-item label="是否开启" prop="Start">
+                    <el-radio v-model="form.Start" label="0">关闭</el-radio>
+                    <el-radio v-model="form.Start" label="1">开启</el-radio>
+               </el-form-item>
+               <el-form-item label="客服图片：">
+               <imgLoad
+                    style="margin-top:10px"
+                    @upLoadImgs="upLoadImg"
+                    :fileListUp="fileListUp"
+                    folder="ShopImg"
+                    ref="imgLoad"
+               ></imgLoad>
                </el-form-item>
           </el-form>
           <div class="preserveStyle">
@@ -44,7 +51,8 @@ export default {
      data(){
           return{
                form:{
-                    Type: '2'
+                    Type: '2',
+                    Start:'1'
                },
                fileListUp: [],
                btnLoading: false,
@@ -70,7 +78,7 @@ export default {
                     "MShopOpera"
                );
                this.form = Data.CSRInfo;
-               // console.log(Data)
+               this.Start = Data.CSRInfo.Start;
                if(this.form.Img){
                     this.fileListUp = GetBaseImgUrl()+this.form.Img ? [{ url: GetBaseImgUrl() + this.form.Img }] : [];  
                }

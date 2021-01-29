@@ -166,8 +166,9 @@ export default {
         let PromotionList = Data.PromotionList || [];
         if(this.activeTypeShow == '1'){
           PromotionList.forEach((D) => {
-          D.codeUrl =this.seckill + "?SID=" + D.SID;
-          console.log(D.codeUrl,'lianjie')
+             D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
+          // D.codeUrl =this.seckill + "?SID=" + D.SID;
+          console.log(D.codeUrl)
         });
         }
         // PromotionList.forEach((D) => {

@@ -117,6 +117,8 @@ import linkedLinks from "@/components/autoComponents/linkedLinks";
 import linkedLinksFun from "@/components/autoComponents/linkedLinks/setIndex";
 import titleBox from "@/components/autoComponents/titleBox";
 import titleBoxFun from "@/components/autoComponents/titleBox/setIndex";
+import groupActivity from "@/components/autoComponents/groupActivity";//拼团入口
+import groupActivityFun from "@/components/autoComponents/groupActivity/setIndex";//拼团入口
 import seckill from "@/components/autoComponents/seckill";//秒杀
 import seckillFun from "@/components/autoComponents/seckill/setIndex";//秒杀
 import interests from "@/components/autoComponents/interests";//权益
@@ -160,6 +162,8 @@ export default {
     linkedLinksFun,
     titleBox,
     titleBoxFun,
+    groupActivity,
+    groupActivityFun,
     seckill,
     seckillFun,
     interests,
@@ -210,7 +214,6 @@ export default {
             // linkedLinks
             // { id: 18, name: "关联链接", viewComponets: "" },
             { id: 19, name: "标题", viewComponets: "titleBox" },
-            // { id: 20, name: "秒杀", viewComponets: "seckill" }
           ]
         },
         {
@@ -218,7 +221,7 @@ export default {
           name: "营销组件",
           list: [
             // { id: 21, name: "优惠券" },
-            // { id: 22, name: "拼团" },
+            { id: 22, name: "拼团",viewComponets:'groupActivity' },
             // { id: 23, name: "周期购" },
             // { id: 24, name: "限时折扣" },
             { id: 25, name: "秒杀" ,viewComponets: "seckill" },

@@ -1,6 +1,6 @@
  <!-- 自定义页面使用的秒杀活动选择商品 使用到的弹框组件 -->
 <template>
-  <el-dialog title="秒杀商品" :visible.sync="dialogVisible" :before-close="beforeClose" width="900px" :modal-append-to-body="false" class="setDialogGoodsAuto" center>
+  <el-dialog :title="Type==='1'?'秒杀商品':'拼团商品'" :visible.sync="dialogVisible" :before-close="beforeClose" width="900px" :modal-append-to-body="false" class="setDialogGoodsAuto" center>
      <!-- <div class="seckillDiv">
            <span>活动商品名称：</span><el-input placeholder="请输入活动商品名称" v-model="Name" clearable  class="input-with-select">
           <el-button slot="append" icon="el-icon-search" ></el-button>
@@ -43,7 +43,8 @@ import { GetBaseImgUrl } from "@/config/publicFunction";
 export default {
      name:"",
      props:{
-          defaultData:[Array||String]
+          defaultData:[Array||String],
+          Type:String
      },
      data(){
           return{
@@ -58,7 +59,7 @@ export default {
           async getSeckillList(){//获取活动商品列表
                // 暂用商品的接口
                try {
-                    let { Data } = await getLists({ Action: "GetPromProdInfo",Type:'1' }, "MPromotionOpera");
+                    let { Data } = await getLists({ Action: "GetPromProdInfo",Type:this.Type }, "MPromotionOpera");
                     this.dataTree = Data.PromItemList;
                     // this.dataTree.forEach(item=>{
                     //      item.Img = GetBaseImgUrl()+item.Img;

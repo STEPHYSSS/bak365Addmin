@@ -108,7 +108,7 @@ export default {
         // let query={ SID:""}
         // console.log(this.autoHome)
         this.tableData.forEach(D => {
-           D.codeUrl = this.autoHome+ "?SID=" + D.SID;
+           D.codeUrl = this.autoHome+ "?SID=" + D.SID + "&FlagIndex=true";
          // query.SID = D.SID;
           // D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
           console.log(D.codeUrl,'自定义页面')

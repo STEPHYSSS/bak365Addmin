@@ -660,25 +660,25 @@ export const asyncRouterMap = [{
                     component: menmberShipList
                 }]
             },
-            // { //客服管理 customerService
-            //     path: '/weChat/manager',
-            //     meta: {
-            //         label: '客服管理'
-            //     },/WebApp/Mobile
-            //     component: {
-            //         render(c) {
-            //             return c('router-view')
-            //         }
-            //     },
-            //     redirect: '/weChat/manager/customerService',
-            //     children: [{
-            //         path: 'customerService',
-            //         meta: {
-            //             label: '客服设置'
-            //         },
-            //         component: customerService
-            //     }]
-            // }, 
+            { //客服管理 customerService
+                path: '/weChat/manager',
+                meta: {
+                    label: '客服管理'
+                },
+                component: {
+                    render(c) {
+                        return c('router-view')
+                    }
+                },
+                redirect: '/weChat/manager/customerService',
+                children: [{
+                    path: 'customerService',
+                    meta: {
+                        label: '客服设置'
+                    },
+                    component: customerService
+                }]
+            }, 
             { //消息设置 noticeSet
                 path: '/weChat/manager',
                 meta: {
