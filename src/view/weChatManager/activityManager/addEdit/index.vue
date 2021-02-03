@@ -122,7 +122,7 @@
         @change="handleCheckAllChangeDay"
       >全选</el-checkbox>
       <div style="margin: 15px 0"></div>
-      <el-checkbox-group v-model="Dates" @change="handleCheckedCitiesChangeDay">
+      <el-checkbox-group style="width: 50%;" v-model="Dates" @change="handleCheckedCitiesChangeDay">
         <el-checkbox v-for="(item, index) in datesList" :label="item" :key="index">{{ item }}</el-checkbox>
       </el-checkbox-group>
       </el-form-item>  

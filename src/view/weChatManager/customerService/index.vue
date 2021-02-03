@@ -126,6 +126,6 @@ export default {
 </script>
 <style lang="less" scoped>
      .el-input{
-          width: 300px;
+          width: 700px;
      }
 </style>

@@ -75,6 +75,7 @@ const footPrintList = r => require.ensure([], () => r(require('../view/weChatMan
     // 会员列表管理
 const menmberShipList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/Membership/membershipList')), 'menmberShipList')
 const customerService = r => require.ensure([], () => r(require('../view/weChatManager/customerService')), 'customerService')
+const customerServiceUrl = r => require.ensure([], () => r(require('../view/weChatManager/customerService/indexUrl')), 'customerServiceUrl')
 const orderNotification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/orderNotification')), 'orderNotification')
 const ticketNotify = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/ticketNotify')), 'ticketNotify') //电子券订单通知
 const noticeList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/noticeList')), 'noticeList') //回复设置
@@ -677,6 +678,12 @@ export const asyncRouterMap = [{
                         label: '客服设置'
                     },
                     component: customerService
+                },{
+                    path: 'customerServiceUrl',
+                    meta: {
+                        label: '客服登录'
+                    },
+                    component: customerServiceUrl
                 }]
             }, 
             { //消息设置 noticeSet

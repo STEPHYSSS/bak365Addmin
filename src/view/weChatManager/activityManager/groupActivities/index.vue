@@ -5,13 +5,11 @@
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" v-loading="loading">
       <el-form-item label="活动类型" :key="6">
         <el-select v-model="ruleForm.Type" placeholder="请选择"  :disabled="this.$route.query.SID ? true : false"> 
-          <!-- { label: '拼团活动', value: '5' } -->
           <el-option label="拼团活动" value="5"></el-option>
-          <!-- <el-option v-for="item in activeTypeNorms" :key="item.value" :label="item.label" :value="item.value"></el-option> -->
         </el-select>
       </el-form-item>
       <el-form-item label="商品选择">
-        <el-button type="primary" style="margin-left: 10px" size="medium" @click="selectGoods(null)">选择商品</el-button>        
+        <el-button type="primary" size="medium" @click="selectGoods(null)">选择商品</el-button>        
         <!-- 选择商品之后展示的表格 -->
         <el-table style="margin-top: 10px; width: 850px" ref="ProdNoList" :data="ruleForm.ProdList">
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
@@ -89,28 +87,15 @@
       <el-form-item label="活动名称" prop="Name">
         <el-input v-model="ruleForm.Name" maxlength="25" placeholder="请填写活动名称"></el-input>
       </el-form-item>
-      <el-form-item label="提货日期" prop="PickDate">
-        <el-date-picker v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
-        type="daterange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
-      </el-form-item>
       <el-form-item label="活动日期" prop="activityDate">
         <el-date-picker v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
         </el-date-picker> - 
         <el-date-picker v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
         </el-date-picker>
-      </el-form-item>
-      
-      <el-form-item label="支付方式" prop="PayType">
-        <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
-          <el-checkbox label="1">微卡支付</el-checkbox>
-          <el-checkbox label="2">微信支付</el-checkbox>
-          <el-checkbox label="4">券支付</el-checkbox>
-        </el-checkbox-group>
-        <span class="Spancolor">（勾选券支付，表示在秒杀活动可以使用电子券）</span>
-        <!-- 勾选券支付，表示在秒杀活动可以使用电子券 -->
-      </el-form-item>
-      <el-form-item label="待支付订单过期时限" prop="AutoCancelOrder">
-        <el-input type="text" v-model="ruleForm.AutoCancelOrder" onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>&nbsp;&nbsp;分钟
+      </el-form-item>      
+      <el-form-item label="提货日期" prop="PickDate">
+        <el-date-picker v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
+        type="daterange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="团上限" prop="MaxGroupCnt">
         <em class="elText">最多可开</em>
@@ -121,7 +106,7 @@
       <el-form-item label="拼团条件" prop="GroupNum">
         <em class="elText">凑齐</em>
         <p class="Inpwidth">
-          <el-input v-model="ruleForm.GroupNum"></el-input>
+          <el-input v-model="ruleForm.GroupNum" :disabled="isSID"></el-input>
         </p><em class="elText">人可成团</em>
         <span class="fontColor">成团人数只可设置一次，请谨慎填写</span>
       </el-form-item>
@@ -135,8 +120,27 @@
         <el-radio v-model="ruleForm.Virtual" label="0">未开启</el-radio>
         <el-radio v-model="ruleForm.Virtual" label="1">开启</el-radio>
         <span class="fontColor">开启虚拟成团后，活动结束以后，已开团但人数未满的团不进行退款，默认拼团成功</span>
-      </el-form-item>     
-      <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
+      </el-form-item>
+       <el-form-item label="待支付订单过期时限" prop="AutoCancelOrder">
+        <el-input type="text" v-model="ruleForm.AutoCancelOrder" onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>&nbsp;&nbsp;分钟
+      </el-form-item>
+      <el-form-item label="支付方式" prop="PayType">
+        <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
+          <el-checkbox label="1">微卡支付</el-checkbox>
+          <el-checkbox label="2">微信支付</el-checkbox>
+          <el-checkbox label="4">券支付</el-checkbox>
+        </el-checkbox-group>
+        <span class="Spancolor">（勾选券支付，表示在秒杀活动可以使用电子券）</span>
+        <!-- 勾选券支付，表示在秒杀活动可以使用电子券 -->
+      </el-form-item>
+      <el-form-item label="是否支持退货" prop="PayType">
+        <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
+          <el-checkbox label="5">不允许退货</el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>    
+      
+      <template-notice></template-notice>     
+      <!-- <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
         <el-button
           type="text"
           @click="ImportantNotesShow = true"
@@ -148,7 +152,8 @@
           @click="ImportantNotesShow = false"
           v-if="ImportantNotesShow === true"
         >隐藏</el-button>
-      </el-form-item>
+      </el-form-item> -->
+
     </el-form>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
@@ -164,15 +169,16 @@ import ueditor1 from "@/components/ueditor1/";
 import "@/config/jquery.base64.js";
 import _ from "lodash";
 import * as ruleText from "@/view/wechatManager/rulesFrom";
+import TemplateNotice from './templateNotice.vue';
 export default {
   name:"addEditGood",
   data(){
     return{
       isGroup:true,
+      isSID:this.$route.query.SID?true:false,
       ruleForm:{
         Type: "5",
         ProdList: [],
-        SalePrice: 0,
         StartDate:"",//活动日期开始
         EndDate:"",//活动日期结束
         PayType: ["1", "2"],
@@ -217,7 +223,7 @@ export default {
       ImportantNotesShow: true, // 显示隐藏 重要提示
     }
   },
-  components:{mallGoods,ueditor1},
+  components:{mallGoods,ueditor1,TemplateNotice},
   created(){
     if(this.$route.query.SID){
       this.getActiveGoodInfo();
@@ -231,7 +237,8 @@ export default {
           SID: this.$route.query.SID,
           Type:'5'
         },"MPromotionOpera")
-        this.ruleForm = res[0].Data.Promotion;
+          this.ruleForm = res.Data.Promotion;
+          console.log(res.Data)
           const abc = this.ruleForm.PromWhere.split(',')
           this.ruleForm.MaxGroupCnt = this.ruleForm.PromWhere.split(',')[0]//
           this.ruleForm.GroupNum = this.ruleForm.PromWhere.split(',')[1]//
@@ -240,8 +247,8 @@ export default {
           this.ruleForm.PickStartTime=this.ruleForm.PromWhere.split(',')[4]
           this.ruleForm.PickEndTime=this.ruleForm.PromWhere.split(',')[5];//提货时间
           this.PickDate = [this.ruleForm.PickStartTime, this.ruleForm.PickEndTime];//获取提货时间
-          this.ruleForm.ProdList = res[0].Data.ItemList;
-          this.prodListArr = res[0].Data.ItemList;
+          this.ruleForm.ProdList = res.Data.ItemList;
+          this.prodListArr = resData.ItemList;
           this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt ? Number(this.ruleForm.MaxBuyCnt) : 0;
           this.ruleForm.ProdNo = "";
           this.ruleForm.ProdList.forEach(D => {
@@ -311,10 +318,10 @@ export default {
             PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])            
             obj.PromWhere = PromWhere.toString()
             obj.PayType = typeof obj.PayType !== "string" && obj.PayType ? obj.PayType.join(",") : obj.PayType;
-            let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
-            ImportantNotes = ImportantNotes.replace(
-            /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
-            obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
+            // let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
+            // ImportantNotes = ImportantNotes.replace(
+            // /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
+            // obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
             obj.Action = "SetPromotionInfo";
             let data = await getLists(obj, "MPromotionOpera");
             console.log(data)
@@ -329,6 +336,9 @@ export default {
         }
       });
     },
+    delGoodsNorms(index){//删除
+      this.ruleForm.ProdList.splice(index, 1);
+    }
   }
 }
 </script>
