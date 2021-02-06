@@ -3,10 +3,10 @@
      <div class="templateNotice">
           <p>拼团付款成功通知设置</p>
           <el-form-item label="模板ID：">
-               <el-input v-model="form.WeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
           <el-form-item label="模板内容：" prop="TempText">
-               <el-input v-model="form.TempText" placeholder="最长支持500个字符" maxlength="500"  type="textarea" :autosize="{ minRows: 4}"></el-input>
+               <el-input v-model="ruleForm.TempText" placeholder="最长支持500个字符" maxlength="500"  type="textarea" :autosize="{ minRows: 4}"></el-input>
                <el-color-picker v-model="color1"></el-color-picker>
           </el-form-item>
           <el-form-item label="变量说明：">
@@ -17,10 +17,10 @@
           </el-form-item>
           <p>拼团成功通知设置</p>
           <el-form-item label="模板ID：">
-               <el-input v-model="form.ManagWeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
-          <el-form-item label="模板内容：" prop="ManagTempText">
-               <el-input v-model="form.ManagTempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
+          <el-form-item label="模板内容：" prop="TempText">
+               <el-input v-model="ruleForm.TempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
           </el-form-item>
           <el-form-item label="变量说明：">
                <div class="explain">
@@ -30,10 +30,10 @@
           </el-form-item>
           <p>拼团失败退款成功通知设置</p>
           <el-form-item label="模板ID：">
-               <el-input v-model="form.ManagWeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
-          <el-form-item label="模板内容：" prop="ManagTempText">
-               <el-input v-model="form.ManagTempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
+          <el-form-item label="模板内容：" prop="TempText">
+               <el-input v-model="ruleForm.TempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
           </el-form-item>
           <el-form-item label="变量说明：">
                <div class="explain">
@@ -43,10 +43,10 @@
           </el-form-item>
           <p>拼团失败退款失败通知设置</p>
           <el-form-item label="模板ID：">
-               <el-input v-model="form.ManagWeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
-          <el-form-item label="模板内容：" prop="ManagTempText">
-               <el-input v-model="form.ManagTempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
+          <el-form-item label="模板内容：" prop="TempText">
+               <el-input v-model="ruleForm.TempText" type="textarea" placeholder="最长支持500个字符" maxlength="500"  :autosize="{ minRows: 4}"></el-input>
           </el-form-item>
           <el-form-item label="变量说明：">
                <div class="explain">
@@ -57,11 +57,12 @@
           </el-form-item>
           <p>页面分享设置</p>
           <el-form-item label="分享标题：">
-               <el-input v-model="form.WeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
           <el-form-item label="分享描述：">
-               <el-input v-model="form.WeChatNo"></el-input>
+               <el-input v-model="ruleForm.WeChatNo"></el-input>
           </el-form-item>
+          <div class="kong" @click="look">点击一下看看</div>
      </div>
 </template>
 <script>
@@ -69,11 +70,31 @@ export default {
      name:"",
      data(){
           return{
+               ruleForm:{
 
+               },
+               color1:'#409EFF',
+               
+          }
+     },
+     methods:{
+          look(){
+               console.log(this.ruleForm)
           }
      }
 }
 </script>
-<style scoped>
-
+<style  lang="less" scoped>
+.el-textarea,.explain{
+     width: 300px;
+}
+.kong{
+     padding-bottom: 10px;
+}
+.explain{
+     background-color: #cccccc;
+     span{
+          padding-left: 8px;
+     }
+}
 </style>

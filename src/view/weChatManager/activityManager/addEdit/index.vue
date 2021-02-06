@@ -136,8 +136,11 @@
         <!-- 勾选券支付，表示在秒杀活动可以使用电子券 -->
         
       </el-form-item>
-      <el-form-item label="待支付订单过期时限" prop="AutoCancelOrder">
-        <el-input type="text" v-model="ruleForm.AutoCancelOrder" onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>&nbsp;&nbsp;分钟
+      <el-form-item label="订单取消" prop="AutoCancelOrder">
+        买家 
+        <el-input type="number" v-model="ruleForm.AutoCancelOrder" min="5"
+        onkeyup="value=value.replace(/\D/g, '').replace(/^0{1,}/g, '')" class="inputSty"></el-input>
+        &nbsp;&nbsp;分钟未支付订单，订单取消
       </el-form-item>
       <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
         <el-button
@@ -196,7 +199,7 @@ export default {
         IsOpenProm:"0",
         IsOpenStock:'0',
         PayType: ["1", "2"],
-        AutoCancelOrder:'10',
+        AutoCancelOrder:'5',
         StartTime:"",
         EndTime:""
         // DeliveryType: ["2", "1"],
@@ -618,6 +621,12 @@ function setJoin(item) {
       text-align: center;
       padding: 8px;
       color: #409eff;
+    }
+  }
+  .inputSty{
+    width: 150px;
+    .el-input__inner{
+      padding: 0 0 0 15px;
     }
   }
 }

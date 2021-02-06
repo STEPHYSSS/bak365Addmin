@@ -282,7 +282,7 @@ export default {
       this.ruleForm.ProdList = val;
     },
     cancelFun(){//取消
-      this.$router.push("/weChat/manager/activity/goodSetting");
+      this.$router.push("/weChat/manager/activity/groupGoodSetting");
     },
     preserveFun(){
       for(let i = 0;i<this.ruleForm.ProdList.length;i++){

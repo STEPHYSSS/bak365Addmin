@@ -19,7 +19,8 @@
               >
                 <a :style="{'color':currentObj.fontColor}" class="cap-image-ad__link--image-nav cap-image-ad__link">
                   <div class="boxTitle">
-                    <img src="/static/img/quanyi.jpg">
+                    <!-- <img src="/static/img/quanyi.jpg"> -->
+                    <img :src="intereImg">
                     <span>{{item.name}}</span>
                   </div>
                   <div>
@@ -65,7 +66,8 @@ export default {
     return {
       widthBoxHid: "",
       HeightBoxHid: "",
-      widthBox: ""
+      widthBox: "",
+      intereImg:'@/static/img/quanyi.jpg'
     };
   },
   created() {
