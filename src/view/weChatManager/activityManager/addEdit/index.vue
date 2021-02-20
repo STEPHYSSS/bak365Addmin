@@ -285,6 +285,7 @@ export default {
     this.datesList = arr;
   },
   methods: {
+
     async getInfo() {//获取详情
       try {
         this.loading = true;

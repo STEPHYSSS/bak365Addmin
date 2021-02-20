@@ -139,7 +139,7 @@
         </el-checkbox-group>
       </el-form-item>    
       
-      <template-notice></template-notice>     
+      <template-notice ref="temNotice"></template-notice>   
       <!-- <el-form-item label="重要提示" prop="ImportantNotes" class="FeaturesStyle">
         <el-button
           type="text"
@@ -187,7 +187,7 @@ export default {
         MaxGroupCnt:''  ,//最大开团数量
         GroupNum:'' ,//成团人数
         ValidTime:'' ,//有效时间（小时）
-        Virtual:'1' ,//虚拟成团开启（0未开启，1开启）
+        Virtual:'1' ,//虚拟成团开启（0未开启，1开启）        
       },
       activityDate: [],
       PickDate: [],//提货日期
@@ -238,8 +238,21 @@ export default {
           Type:'5'
         },"MPromotionOpera")
           this.ruleForm = res.Data.Promotion;
-          console.log(res.Data)
-          const abc = this.ruleForm.PromWhere.split(',')
+          let cloneTemp = _.cloneDeep(this.$refs.temNotice.ruleForm);
+          let arr = res.Data.TemplateList;
+          let list = arr.reduce((pre,cur)=>{
+            let target = pre.find(ee=>ee.TextType == cur.TextType);
+            if(target){
+              Object.assign(target,cur)
+            }else{
+              pre.push(cur)
+            }
+            return pre
+          },cloneTemp)
+          this.$refs.temNotice.ruleForm = list;//模板消息
+
+          this.ruleForm.PayType = this.ruleForm.PayType ? this.ruleForm.PayType.split(",") : []; 
+          const abc = this.ruleForm.PromWhere.split(',')          
           this.ruleForm.MaxGroupCnt = this.ruleForm.PromWhere.split(',')[0]//
           this.ruleForm.GroupNum = this.ruleForm.PromWhere.split(',')[1]//
           this.ruleForm.ValidTime = this.ruleForm.PromWhere.split(',')[2]//
@@ -260,8 +273,7 @@ export default {
             let ProdArr = this.ruleForm.ProdList[0];
             this.ruleForm.SalePrice = ProdArr.SalePrice;
             this.ruleForm.StoreQty = ProdArr.StoreQty;
-            let SurplusQty =
-              Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
+            let SurplusQty = Number(ProdArr.StoreQty) - Number(ProdArr.SurplusQty);
             this.ruleForm.SurplusQty = SurplusQty;
             // console.log(this.ruleForm, 888);
           }
@@ -313,21 +325,26 @@ export default {
         if (valid) {
           try {
             let obj = _.cloneDeep(this.ruleForm);
+            // obj.TemplateList = this.$refs.temNotice.ruleForm;
+            let temRuleArr = _.cloneDeep(this.$refs.temNotice.ruleForm);
+            let TempArr = []
+            temRuleArr.forEach((item,index)=>{
+              if(item.TempText && item.WeChatNo){
+               TempArr.push(item)
+              }
+            })
+            obj.TemplateList = JSON.stringify(TempArr)
             obj.ProdList = JSON.stringify(obj.ProdList);
             const PromWhere = [];
             PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])            
             obj.PromWhere = PromWhere.toString()
             obj.PayType = typeof obj.PayType !== "string" && obj.PayType ? obj.PayType.join(",") : obj.PayType;
-            // let ImportantNotes = this.$refs.ImportantNotes.getUEContent();               
-            // ImportantNotes = ImportantNotes.replace(
-            // /src="\.\.\/Files/g, `src="${process.env.Prefix}Files` );
-            // obj.ImportantNotes = $.base64.btoa(ImportantNotes, "utf8");
             obj.Action = "SetPromotionInfo";
             let data = await getLists(obj, "MPromotionOpera");
-            console.log(data)
-            // setTimeout(() => {
-            //   this.$router.push("/weChat/manager/activity/goodSetting");
-            // }, 300);
+            setTimeout(() => {
+              this.$router.push("/weChat/manager/activity/groupGoodSetting");
+            }, 300);
+            this.$message.success('操作成功');
           } catch (e) {
             this.$message.error(e);
           }

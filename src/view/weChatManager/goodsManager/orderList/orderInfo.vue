@@ -32,11 +32,12 @@
       </div>
     </div>
     <div class="orderFlex">
-      <div style="width:100px;">购买基本信息：</div>      
+      <div style="width:100px;">基本信息：</div>      
       <el-card class="box-card">
         <el-form ref="form" label-width="100px">
           <el-form-item label="订单状态:">{{OrderInfo.State |orderState}}</el-form-item>
-          
+          <el-form-item label="商城单号:">{{OrderInfo.ExchNo}}</el-form-item>
+          <el-form-item label="微信单号:">{{OrderInfo.SID}}</el-form-item>
           <el-form-item label="退款状态:" v-if="OrderInfo.RefundState!=='1'">{{OrderInfo.RefundState |refundStateList}}</el-form-item>
           <el-form-item label="退款类型:" v-if="OrderInfo.RefundState!=='1'">{{Refund.Type}}</el-form-item>
           <el-form-item label="退款原因:" v-if="OrderInfo.RefundState!=='1'">{{Refund.UserRemark}}</el-form-item>

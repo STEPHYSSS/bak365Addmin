@@ -179,7 +179,7 @@ export default {
     width: 75px;
     height: 75px;
     border: 1px solid #eee;
-
+    margin: 0 auto;
     img {
       width: 100%;
       height: 100%;

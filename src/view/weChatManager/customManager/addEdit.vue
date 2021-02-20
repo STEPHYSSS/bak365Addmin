@@ -373,7 +373,7 @@ export default {
               },
               "MShopOpera"
             );
-            this.$message.success("添加成功");
+            this.$message.success("操作成功");
             this.reload();
             this.loadingBtn = false;
           } catch (e) {
