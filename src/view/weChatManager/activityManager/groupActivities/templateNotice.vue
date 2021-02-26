@@ -2,10 +2,10 @@
      <!-- 拼团通知消息模板 -->
      <div class="templateNotice">
           <div v-for="(item,index) in ruleForm" :key="index">
-               <p v-if="item.TextType==='1'">拼团付款成功通知设置</p>
-               <p v-if="item.TextType==='2'">拼团成功通知设置</p>
-               <p v-if="item.TextType==='3'">拼团失败退款成功通知设置</p>
-               <p v-if="item.TextType==='4'">拼团失败退款失败通知设置</p>
+               <p v-if="item.TextType==='1'" class="templtP">拼团付款成功通知设置</p>
+               <p v-if="item.TextType==='2'" class="templtP">拼团成功通知设置</p>
+               <p v-if="item.TextType==='3'" class="templtP">拼团失败退款成功通知设置</p>
+               <p v-if="item.TextType==='4'" class="templtP">拼团失败退款失败通知设置</p>
                <el-form-item label="模板ID：">
                     <el-input v-model="item.WeChatNo"></el-input>
                </el-form-item>
@@ -84,5 +84,10 @@ export default {
      span{
           padding-left: 8px;
      }
+}
+.templtP{
+     width: 173px;
+     margin-bottom: 10px;
+     text-align: right;
 }
 </style>

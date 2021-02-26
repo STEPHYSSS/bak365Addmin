@@ -85,7 +85,15 @@
       </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
-      <el-table-column prop="ExchNo" label="单号" align="center"></el-table-column>
+      <el-table-column prop="ExchNo" label="单号" align="center" width="200px">
+      </el-table-column>
+      <el-table-column label="订单来源" align="center" width="120"> 
+        <template slot-scope="scope">
+          <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>
+          <p v-else-if="scope.row.PromType==='5'">拼团订单/{{scope.row.PromName}}</p>
+          <p v-else>普通订单</p>
+        </template>
+      </el-table-column>
       <el-table-column label="收货人姓名" align="center">
         <template slot-scope="scoped">
           <span v-if="scoped.row.UserName">{{scoped.row.UserName}}</span>

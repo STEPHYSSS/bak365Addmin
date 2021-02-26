@@ -48,6 +48,13 @@
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column prop="ExchNo" label="商城单号" align="center"></el-table-column>
       <el-table-column prop="SID" label="微信单号" align="center"></el-table-column>
+      <el-table-column label="订单来源" align="center" width="120"> 
+        <template slot-scope="scope">
+          <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>
+          <p v-else-if="scope.row.PromType==='5'">拼团订单/{{scope.row.PromName}}</p>
+          <p v-else>普通订单</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="Name" label="名称" align="center"></el-table-column>
       <el-table-column prop="PayAmt" label="支付金额" align="center">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>

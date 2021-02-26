@@ -49,6 +49,8 @@ const activityGoods = r => require.ensure([], () => r(require('../view/weChatMan
 const activityGoodsAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/addEdit')), 'activityGoodsAdd')
 const groupGoods = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupIndex')), 'groupGoods')
 const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities')), 'groupActivityAdd')
+// index2
+const groupActivityAdd2 = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities/index2')), 'groupActivityAdd2')
 const entStoreCoupon = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entStoreCouponList')), 'entStoreCoupon') //进店送券
 const entCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entCouponAddEdit')), 'entCouponAddEdit') //进店送券编辑和新增
 const ConditionsList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsList')), 'ConditionsList') //参与条件设置
@@ -78,6 +80,7 @@ const customerService = r => require.ensure([], () => r(require('../view/weChatM
 const customerServiceUrl = r => require.ensure([], () => r(require('../view/weChatManager/customerService/indexUrl')), 'customerServiceUrl')
 const orderNotification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/orderNotification')), 'orderNotification')
 const ticketNotify = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/ticketNotify')), 'ticketNotify') //电子券订单通知
+const OrderRefund = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/OrderRefund')), 'OrderRefund') //退款订单通知
 const noticeList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/noticeList')), 'noticeList') //回复设置
 const keyWordReply = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/keyWordReply')), 'keyWordReply') //关键字回复
 const autoReply = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/autoReply')), 'autoReply') //消息托管
@@ -471,6 +474,14 @@ export const asyncRouterMap = [{
                             label: '添加活动方案'
                         },
                         component: groupActivityAdd
+                    },
+                    {
+                        path: 'groupGoodAdd2',
+                        isHidden: true,
+                        meta: {
+                            label: '统计'
+                        },
+                        component: groupActivityAdd2
                     }, {
                         path: 'entStoreCoupon',
                         meta: {
@@ -711,6 +722,13 @@ export const asyncRouterMap = [{
                     },
                     component: ticketNotify
                 }, {
+                    isHidden: true,
+                    path: 'OrderRefund',
+                    meta: {
+                        label: '通知设置'
+                    },
+                    component: OrderRefund
+                },{
                     path: 'noticeList',
                     meta: {
                         label: '回复设置'

@@ -100,20 +100,20 @@
       <el-form-item label="团上限" prop="MaxGroupCnt">
         <em class="elText">最多可开</em>
         <p class="Inpwidth">
-          <el-input v-model="ruleForm.MaxGroupCnt"></el-input>
+          <el-input v-model="ruleForm.MaxGroupCnt" maxlength="6" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ></el-input>
         </p><em class="elText">个团</em>
       </el-form-item>
       <el-form-item label="拼团条件" prop="GroupNum">
         <em class="elText">凑齐</em>
         <p class="Inpwidth">
-          <el-input v-model="ruleForm.GroupNum" :disabled="isSID"></el-input>
+          <el-input v-model="ruleForm.GroupNum" :disabled="isSID" maxlength="2"></el-input>
         </p><em class="elText">人可成团</em>
         <span class="fontColor">成团人数只可设置一次，请谨慎填写</span>
       </el-form-item>
       <el-form-item label="有效期" prop="ValidTime">
         <em class="elText">个人拼团有效期</em>
         <p class="Inpwidth">
-          <el-input v-model="ruleForm.ValidTime"></el-input>
+          <el-input v-model="ruleForm.ValidTime" maxlength="6" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" ></el-input>
         </p><em class="elText">小时</em>
       </el-form-item>
       <el-form-item label="虚拟成团" prop="Virtual">
@@ -184,7 +184,7 @@ export default {
         PayType: ["1", "2"],
         AutoCancelOrder:'10',//自动取消时间
         Name:"",
-        MaxGroupCnt:''  ,//最大开团数量
+        MaxGroupCnt:'',//最大开团数量
         GroupNum:'' ,//成团人数
         ValidTime:'' ,//有效时间（小时）
         Virtual:'1' ,//虚拟成团开启（0未开启，1开启）        
@@ -249,14 +249,25 @@ export default {
             }
             return pre
           },cloneTemp)
-          this.$refs.temNotice.ruleForm = list;//模板消息
-
+          // this.$refs.temNotice.ruleForm = list;//模板消息
+          this.$refs.temNotice.ruleForm=list.map((item,index)=>{
+            return {
+              TempText: item.TempText.replace(/\|/g, '\n'),
+              TextType: item.TextType,
+              Type: item.Type,
+              WeChatNo: item.WeChatNo
+            }
+          })
+          // console.log(this.$refs.temNotice.ruleForm,'111111')
           this.ruleForm.PayType = this.ruleForm.PayType ? this.ruleForm.PayType.split(",") : []; 
-          const abc = this.ruleForm.PromWhere.split(',')          
-          this.ruleForm.MaxGroupCnt = this.ruleForm.PromWhere.split(',')[0]//
+          // this.ruleForm.MaxGroupCnt = this.ruleForm.PromWhere.split(',')[0]//最大团
           this.ruleForm.GroupNum = this.ruleForm.PromWhere.split(',')[1]//
-          this.ruleForm.ValidTime = this.ruleForm.PromWhere.split(',')[2]//
-          this.ruleForm.Virtual = this.ruleForm.PromWhere.split(',')[3]//虚拟成团
+          // this.ruleForm.ValidTime = this.ruleForm.PromWhere.split(',')[2]//
+          // this.ruleForm.Virtual = this.ruleForm.PromWhere.split(',')[3]//虚拟成团
+          this.$set(this.ruleForm,'MaxGroupCnt',this.ruleForm.PromWhere.split(',')[0]);
+          // this.$set(this.ruleForm,'MaxGroupCnt',this.ruleForm.PromWhere.split(',')[1]);
+          this.$set(this.ruleForm,'ValidTime',this.ruleForm.PromWhere.split(',')[2]);
+          this.$set(this.ruleForm,'Virtual',this.ruleForm.PromWhere.split(',')[3]);
           this.ruleForm.PickStartTime=this.ruleForm.PromWhere.split(',')[4]
           this.ruleForm.PickEndTime=this.ruleForm.PromWhere.split(',')[5];//提货时间
           this.PickDate = [this.ruleForm.PickStartTime, this.ruleForm.PickEndTime];//获取提货时间
@@ -290,8 +301,53 @@ export default {
       this.goodsShow = bool;
     },
     sureGood(val) { // 获取的商品的名字和编号
+    console.log(val)
+      let groupArr = []
+      groupArr.push(val)
       this.goodsShow = false;
-      this.ruleForm.ProdList = val;
+      // this.ruleForm.ProdList = val;
+      let arr = [];
+      if(this.$route.query.SID){
+        arr = groupArr.map((item,index)=>{
+          return {
+            Name: item.Name,
+            SID:item.SID,
+            OldPrice: item.OldPrice,
+            SalePrice: item.SalePrice,
+            Stock: item.Stock,
+            StockType:item.StockType,
+            StoreQty: item.StoreQty,
+            // SurplusQty:item.SurplusQty,
+            SurplusQty:item.SurplusQty,
+            MaxBuyCnt:'1',//限购数量
+            ProdSID: item.ProdSID,
+            SpecSID: item.SpecSID,
+            ProdNo: item.ProdNo,
+            SpecType: item.SpecType,
+          }
+        })
+      }else{
+        arr = groupArr.map((item,index)=>{
+          return {
+            Name: item.Name,
+            SID:item.SID,
+            OldPrice: item.OldPrice,
+            SalePrice: item.SalePrice,
+            Stock: item.Stock,
+            StockType:item.StockType,
+            StoreQty: item.StoreQty,
+            // SurplusQty:item.SurplusQty,
+            SurplusQty:item.StoreQty,
+            MaxBuyCnt:'1',//限购数量
+            ProdSID: item.ProdSID,
+            SpecSID: item.SpecSID,
+            ProdNo: item.ProdNo,
+            SpecType: item.SpecType,
+          }
+        })
+      }
+      this.ruleForm.ProdList = arr;  
+      console.log(arr,'看剩余数量和库存')
     },
     cancelFun(){//取消
       this.$router.push("/weChat/manager/activity/groupGoodSetting");
@@ -334,9 +390,50 @@ export default {
               }
             })
             obj.TemplateList = JSON.stringify(TempArr)
-            obj.ProdList = JSON.stringify(obj.ProdList);
-            const PromWhere = [];
-            PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])            
+            // obj.ProdList = JSON.stringify(obj.ProdList);
+            if(this.$route.query.SID){
+              let arr = obj.ProdList.map((item,index)=>{
+              return {
+                Name: item.Name,
+                SID:item.SID,
+                OldPrice: item.OldPrice,
+                SalePrice: item.SalePrice,
+                Stock: item.Stock,
+                StockType:item.StockType,
+                StoreQty: item.StoreQty,
+                SurplusQty:item.SurplusQty,
+                // SurplusQty:item.StoreQty,
+                MaxBuyCnt:'1',//限购数量
+                ProdSID: item.ProdSID,
+                SpecSID: item.SpecSID,
+                ProdNo: item.ProdNo,
+                SpecType: item.SpecType,
+              }
+            })
+            obj.ProdList = JSON.stringify(arr);
+            }else{
+              let arr = obj.ProdList.map((item,index)=>{
+              return {
+                Name: item.Name,
+                SID:item.SID,
+                OldPrice: item.OldPrice,
+                SalePrice: item.SalePrice,
+                Stock: item.Stock,
+                StockType:item.StockType,
+                StoreQty: item.StoreQty,
+                // SurplusQty:item.SurplusQty,
+                SurplusQty:item.StoreQty,
+                MaxBuyCnt:'1',//限购数量
+                ProdSID: item.ProdSID,
+                SpecSID: item.SpecSID,
+                ProdNo: item.ProdNo,
+                SpecType: item.SpecType,
+              }
+            })
+            obj.ProdList = JSON.stringify(arr);
+            }
+            const PromWhere = [];          
+            PromWhere.push(obj.MaxGroupCnt,obj.GroupNum,obj.ValidTime,obj.Virtual,this.PickDate[0],this.PickDate[1])               
             obj.PromWhere = PromWhere.toString()
             obj.PayType = typeof obj.PayType !== "string" && obj.PayType ? obj.PayType.join(",") : obj.PayType;
             obj.Action = "SetPromotionInfo";
@@ -361,6 +458,7 @@ export default {
 </script>
 <style lang="less">
 .addEditGood {
+  padding-bottom: 20px;
   .el-input,.el-range-editor.el-input__inner {
     width: 300px;
   }

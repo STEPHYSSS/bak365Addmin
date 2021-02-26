@@ -13,7 +13,7 @@
         @selection-change="handleSelectionChange"
         @current-change="handleCurrentChange"
         highlight-current-row>
-          <el-table-column type="selection" width="55" :reserve-selection="true"></el-table-column>
+          <el-table-column type="selection" width="55" :reserve-selection="true" v-if="!isGroup"></el-table-column>
           <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
           <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
           <el-table-column prop="Stock" label="商品库存" align="center">
@@ -150,11 +150,17 @@ export default {
       }
     },
     sureGood() {
-      this.ProdList = this.multipleSelection;
+      
+      if(this.isGroup){
+        this.$emit("sureGood", this.currentRow);
+        console.log(this.currentRow,'this.currentRow')
+      }else{
+        this.ProdList = this.multipleSelection;
       if(this.ProdList.length>15){
         return this.$message.error('商品不能超过15个')
       }else {
         this.$emit("sureGood", this.ProdList);
+      }
       }
     }
   },

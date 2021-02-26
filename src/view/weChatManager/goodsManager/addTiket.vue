@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="电子券类型编号">
         <el-input readonly v-model="ruleForm.ProdNo" placeholder="请选择电子券"></el-input>
-        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket" v-if="!$route.query.SID">...</el-button>
+        <el-button type="primary" style="margin-left:10px" size="medium" @click="clickTicket" v-if="!$route.query.SID">添加</el-button>
       </el-form-item>
       <el-form-item label="电子券名称" prop="Name">
         <el-input v-model="ruleForm.Name" placeholder="请填写商品名称"></el-input>

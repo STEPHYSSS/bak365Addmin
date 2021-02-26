@@ -36,29 +36,11 @@
     </el-row>
     <el-table :data="dataList" v-loading="loading" style="width: 100%;">
       <el-table-column label="活动名称" width="250" prop="Name" align="center">
-        <!-- <template slot-scope="scoped">
-          <el-row>
-            <el-col :span="12" class="goodsInfo">
-              <img :src="scoped.row.Img | setImgPrex" />
-            </el-col>
-            <el-col :span="12" class="goodInfoRight">
-              <div>{{scoped.row.Name}}</div>
-            </el-col>
-          </el-row>
-        </template> -->
       </el-table-column>
-      <!-- <el-table-column prop="Type" label="活动类型" align="center">
-        <template slot-scope="scoped">{{setActiveType(scoped.row.Type)}}</template>
-      </el-table-column> -->
-      <!-- <el-table-column prop="StartDate" label="开始时间" align="center"></el-table-column>
-      <el-table-column prop="EndDate" label="结束时间" align="center"></el-table-column> -->
       <el-table-column label="活动时间" align="center" width="300">
         <template slot-scope="scope">{{scope.row.StartDate}} ~ {{scope.row.EndDate}}</template>
       </el-table-column>
       <el-table-column prop="TimeName" label="活动状态" align="center"></el-table-column>
-      <!-- <el-table-column label="审核状态" align="center">
-        <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
-      </el-table-column> -->
       <el-table-column label="是否关闭" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
@@ -70,6 +52,7 @@
             </el-input>
             <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
           </el-popover> -->
+          <el-button type="text" @click="countGoods(scoped.row)" v-if="activeTypeShow==='5'">统计</el-button>
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
@@ -168,8 +151,14 @@ export default {
           PromotionList.forEach((D) => {
              D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
           // D.codeUrl =this.seckill + "?SID=" + D.SID;
-          console.log(D.codeUrl)
-        });
+            console.log(D.codeUrl)
+          });
+        }else{
+          PromotionList.forEach((D) => {
+             D.codeUrl = this.seckill + "?SID=" + D.SID + "&FlagGroup=true";
+          // D.codeUrl =this.seckill + "?SID=" + D.SID;
+            console.log(D.codeUrl)
+          });
         }
         // PromotionList.forEach((D) => {
         //   D.codeUrl =
@@ -280,6 +269,12 @@ export default {
         });
       }
     },
+    countGoods(row){//统计参团人数
+      this.$router.push({
+        path: "/weChat/manager/activity/groupGoodAdd2",
+        query: { PromotionSID: row.SID },
+      });
+    },
     // viewEvaluate() {},
     delRow(row, index) {
       this.show = true;
@@ -298,18 +293,6 @@ export default {
     modifyCateFun() {
       this.cateShow = true;
     },
-    //     // 添加
-    //     addGood() {
-    //       if(this.activeIndex === '0'){
-    //         this.$router.push({
-    //           path: "/weChat/manager/activity/goodAdd"
-    //         });
-    //       }else {
-    //         this.$router.push({
-    //           path: "/weChat/manager/activity/groupGoodAdd"
-    //         });
-    //       }
-    //     },
     delFunction(bool) {
       this.show = bool;
     },
@@ -328,13 +311,6 @@ export default {
         this.$message.error(e);
       }
     },
-    //     handleClick(tab, event) {
-    //       this.activeIndex = tab.index;
-    //       // this.getList();
-    //       //  console.log(this.allData, "this.allData");
-    //        console.log(this.activeType)
-    //       this.dataList = this.allData.filter(item => item.Type == this.activeType || (item.Type == '5'&& this.activeType=='2'));
-    //     }
   },
   filters: {
     setActiveStatus(val) {

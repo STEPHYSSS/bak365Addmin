@@ -1,6 +1,6 @@
 <template>
   <div class="auto-goods">
-    <div class="rc-design-editor-component-title">秒杀</div>
+    <div class="rc-design-editor-component-title">拼团</div>
 
     <el-form ref="form" :model="form" label-width="100px">
       <div class="add-good">

@@ -18,16 +18,22 @@
                </template>
           </el-table-column>
           <el-table-column prop="Name" label="商品名称"></el-table-column>
-          <el-table-column prop="ProdNo" label="商品名称"></el-table-column>
-          <el-table-column label="活动时间" width="280" align="center">
+          <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
+          <el-table-column label="活动时间" width="240" align="center">
                <template slot-scope="scoped">
                     {{scoped.row.StartDate|timeF}} 至 {{scoped.row.EndDate|timeF}}
                </template>
           </el-table-column>
           <el-table-column label="优惠情况">
-               <template slot-scope="scoped">
-                    <span>秒杀价：{{scoped.row.SalePrice}}</span><br/>
-                    <span>秒杀库存：{{scoped.row.SurplusQty}}</span>
+               <template slot-scope="scoped" >
+                    <p v-if="Type==='1'">
+                         <span>秒杀价：{{scoped.row.SalePrice}}</span><br/>
+                         <span>秒杀库存：{{scoped.row.SurplusQty}}</span>
+                    </p>
+                    <p v-else>
+                         <span>拼团价：{{scoped.row.SalePrice}}</span><br/>
+                         <span>拼团库存：{{scoped.row.SurplusQty}}</span>
+                    </p>
                </template>
           </el-table-column>
      </el-table>

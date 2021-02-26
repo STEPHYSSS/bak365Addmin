@@ -28,6 +28,31 @@
                          <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
                     </div>
                </el-tab-pane>
+               <el-tab-pane label="申请退款通知" name="three">
+                    <el-form ref="form" :model="form" label-width="180px">
+                         <el-form-item label="通知类型：">
+                              <el-select v-model="region" placeholder="请选择通知类型">
+                                   <el-option label="微信通知" value="1"></el-option>
+                              </el-select>
+                         </el-form-item>
+                         <el-form-item label="模板ID：">
+                              <el-input v-model="form.WeChatNo"></el-input>
+                         </el-form-item>
+                         <el-form-item label="模板内容：">
+                              <el-input v-model="form.TempText" type="textarea" :autosize="{ minRows: 4}"></el-input>
+                              <el-color-picker v-model="color2"></el-color-picker>
+                         </el-form-item>
+                         <el-form-item label="变量说明：">
+                              <div class="explain">
+                                   <span>{客户昵称}、{商品名称}、{订单号}</span><br/>
+                                   <span>{下单金额}、{获得奖励}</span>
+                              </div>
+                         </el-form-item>
+                    </el-form>
+                    <div class="preserveStyle">
+                         <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
+                    </div>
+               </el-tab-pane>
           </el-tabs>          
      </div>
 </template>
@@ -57,7 +82,10 @@ export default {
      methods:{
           handleClick() {
                if (this.activeName === "first") {
-               this.$router.push({path:'/weChat/manager/orderNotification'})
+                    this.$router.push({path:'/weChat/manager/orderNotification'})
+               }
+               if(this.activeName === "three"){
+                    this.$router.push({path:'/weChat/manager/OrderRefund'})
                }
           },
           async preserveFun(){//保存               
