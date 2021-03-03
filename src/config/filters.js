@@ -30,7 +30,7 @@ export const statusTip = (val)=>{
      }else if(val === '3'){
           return '已提货'
      }else if(val === '4'){
-          return '已作废'
+          return '已退款'
      }
 }
 //退款状态

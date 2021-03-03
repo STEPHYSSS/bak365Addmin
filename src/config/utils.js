@@ -59,7 +59,7 @@ export const sharingStatus = [
   { label: '生产', value: '1' },
   { label: '已送货', value: '2' },
   { label: '已提货', value: '3' },
-  { label: '已作废', value: '4' }
+  { label: '已退款', value: '4' }
 ]
 export const sharingRefund =[
   { label: '订单正常', value: '1' },
@@ -91,7 +91,7 @@ export const stateLists = [
   { label: '生产中', value: '1' },
   { label: '已送货', value: '2' },
   { label: '已提货', value: '3' },
-  { label: '已作废', value: '4' }
+  { label: '已退款', value: '4' }
 ]
 
 export const TickStateList = [

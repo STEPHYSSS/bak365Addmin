@@ -189,45 +189,10 @@ export default {
       this.dialogVisible = true;
     },
     async submitAdopt(val) {
-      console.log(this.formObj)
       if (!this.Reply && val) {
         this.$message("请填写原因");
         return;
-      }
-      // if(this.formObj.PromType === '5' && this.formObj.PromotionSID){
-      //   try {          
-      //     let obj = {Action:"GroupRefund"};
-      //     let type = val ? 4 : 3;
-      //     Object.assign(obj, {
-      //       OrderSID: this.formObj.SID,
-      //       RefundState: type,
-      //       Reply: this.Reply,
-      //       OrderType:this.formObj.OrderType
-      //     });
-      //   } catch (error) {
-      //     this.$message.error(error);
-      //   }
-      // }else{
-      //   let obj = { Action: "DisposeRefund" };
-      //   let type = val ? 4 : 3;
-      //   Object.assign(obj, {
-      //     SID: this.formObj.SID,
-      //     RefundState: type,
-      //     Reply: this.Reply,
-      //     OrderType:this.formObj.OrderType
-      //   });
-      //   try {
-      //     await getLists(obj, "MOrderOpera");
-      //     this.Reply = "";
-      //     this.$message.success("操作成功");
-      //     this.dialogVisible = false;
-      //     setTimeout(() => {
-      //       this.getInfo();
-      //     }, 1000);
-      //   } catch (e) {
-      //     this.$message.error(e);
-      //   }
-      // }
+      }     
       let Action = this.formObj.PromType === '5' && this.formObj.PromotionSID ? 'GroupRefund':'DisposeRefund';
       let obj = { Action: Action };
       let type = val ? 4 : 3;

@@ -19,8 +19,8 @@ Vue.filter('orderState', (num) => {
           case 3:
                return '已提货';
           case 4:
-               return '已作废';
-          default: '已作废'
+               return '已退款';
+          default: '已退款'
      }
 })
 Vue.filter('orderState', (num) => {
@@ -42,8 +42,8 @@ Vue.filter('orderState', (num) => {
           case 3:
                return '已提货';
           case 4:
-               return '已作废';
-          default: '已作废'
+               return '已退款';
+          default: '已退款'
      }
 })
 Vue.filter('orderRefund', (num) => {

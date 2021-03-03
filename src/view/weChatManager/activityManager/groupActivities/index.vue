@@ -106,7 +106,7 @@
       <el-form-item label="拼团条件" prop="GroupNum">
         <em class="elText">凑齐</em>
         <p class="Inpwidth">
-          <el-input v-model="ruleForm.GroupNum" :disabled="isSID" maxlength="2"></el-input>
+          <el-input v-model="ruleForm.GroupNum" :disabled="isSID" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input>
         </p><em class="elText">人可成团</em>
         <span class="fontColor">成团人数只可设置一次，请谨慎填写</span>
       </el-form-item>
@@ -128,10 +128,10 @@
         <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
           <el-checkbox label="1">微卡支付</el-checkbox>
           <el-checkbox label="2">微信支付</el-checkbox>
-          <el-checkbox label="4">券支付</el-checkbox>
+          <el-checkbox label="4" v-if="isTicketType.ProdType !='1' && isStockType != '0'">券支付</el-checkbox>
         </el-checkbox-group>
-        <span class="Spancolor">（勾选券支付，表示在秒杀活动可以使用电子券）</span>
-        <!-- 勾选券支付，表示在秒杀活动可以使用电子券 -->
+        <span class="Spancolor" v-if="isTicketType.ProdType !='1' && isStockType != '0'">（勾选券支付，表示在拼团活动可以使用电子券）</span>
+        <!-- 勾选券支付，表示在拼团活动可以使用电子券 -->
       </el-form-item>
       <el-form-item label="是否支持退货" prop="PayType">
         <el-checkbox-group v-model="ruleForm.PayType" style="display:inline-block">
@@ -191,6 +191,8 @@ export default {
       },
       activityDate: [],
       PickDate: [],//提货日期
+      isTicketType:{},
+      isStockType:"",
       rules: {
         ProdNo: [ruleText.ProdNo(this, "请选择活动商品")],
         Name: [ruleText.Name(this, "请填写活动名称")],
@@ -272,6 +274,7 @@ export default {
           this.ruleForm.PickEndTime=this.ruleForm.PromWhere.split(',')[5];//提货时间
           this.PickDate = [this.ruleForm.PickStartTime, this.ruleForm.PickEndTime];//获取提货时间
           this.ruleForm.ProdList = res.Data.ItemList;
+          this.isStockType = this.ruleForm.ProdList[0].SpecType;
           this.prodListArr = resData.ItemList;
           this.ruleForm.MaxBuyCnt = this.ruleForm.MaxBuyCnt ? Number(this.ruleForm.MaxBuyCnt) : 0;
           this.ruleForm.ProdNo = "";
@@ -301,6 +304,7 @@ export default {
       this.goodsShow = bool;
     },
     sureGood(val) { // 获取的商品的名字和编号
+      this.isTicketType = val
     console.log(val)
       let groupArr = []
       groupArr.push(val)

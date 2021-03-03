@@ -39,9 +39,10 @@
         </el-table-column>
         <el-table-column prop="Name" label="活动名称" align="center"></el-table-column>
         <el-table-column prop="ExchNo" label="订单号" align="center" width="180"></el-table-column>        
-        <el-table-column prop="State" label="状态" align="center" width="80">
+        <el-table-column prop="State" label="状态" align="center">
           <template slot-scope="scope">
             {{scope.row.State|StateTips}}
+            <p v-if="scope.row.State ==='-2'&& scope.row.RefundState ==='4'" style="color:red">(退款失败)</p>
           </template>
         </el-table-column>
         <el-table-column prop="AddTime" label="开团时间" align="center" width="150"></el-table-column>
@@ -116,8 +117,8 @@ export default {
       })
       .then(() => {
         try {
-          let { Data } = getLists({ Action: "GroupRefund",OrderSID:row.OrderSID,PromotionSID:row.PromotionSID}, "MPromotionOpera");
-          this.$message.success('操作成功')
+          let { Data } = getLists({ Action: "GroupRefund",OrderSID:row.OrderSID,PromotionSID:row.PromotionSID,RefundState:'3'}, "MPromotionOpera");
+          // this.$message.success('操作成功')
           this.dialogTableVisible = false;
         } catch (error) {
           this.$message.error(error);
@@ -135,12 +136,12 @@ export default {
     GroupStateTips(val){
       if(val==='0'){
         return '未成团'
-      }else if(val === '4'){
-        return '已退款'
-      }else if(val === '-3'){
-        return '已取消'
-      }else {
+      }else if(val === '1'){
         return '已成团'
+      }else if(val === '3'){
+        return '已退款'
+      }else if(val === '4'){
+        return '退款失败'
       }
     },
     MyGroupTips(val){
@@ -156,6 +157,8 @@ export default {
           return '已退款'
         }else if(val==='-3'){
           return '已取消'
+        }else if(val==='3'){
+          return '退款失败'
         }
       }
     }

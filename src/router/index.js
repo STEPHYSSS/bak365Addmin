@@ -23,7 +23,8 @@ const logisticsSet = r => require.ensure([], () => r(require('../view/weChatMana
 const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
     // 轮播图设置
 const lunboManager = r => require.ensure([], () => r(require('../view/weChatManager/lunboManager/lunboList')), 'lunboList')
-const mainStyle = r => require.ensure([], () => r(require('../view/weChatManager/mainStyle/index')), 'index')
+const mainStyle = r => require.ensure([], () => r(require('../view/weChatManager/mainStyle/index')), 'index')//主题颜色设置
+
     // 门店管理
 const storeSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/storeSet')), 'storeSet')
 const storeInfo = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/storeSet/addEdit')), 'storeInfo')
@@ -53,6 +54,10 @@ const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChat
 const groupActivityAdd2 = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities/index2')), 'groupActivityAdd2')
 const entStoreCoupon = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entStoreCouponList')), 'entStoreCoupon') //进店送券
 const entCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entCouponAddEdit')), 'entCouponAddEdit') //进店送券编辑和新增
+// 扫码领券
+const scanCouponList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/scanCoupon/scanCouponList')), 'scanCouponList') //进店送券
+const scanCouponAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/scanCoupon/scanCouponAddEdit')), 'scanCouponAddEdit') //进店送券编辑和新增
+
 const ConditionsList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsList')), 'ConditionsList') //参与条件设置
 const ConditionsAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/ConditionSetting/ConditionsAddEdit')), 'ConditionsAddEdit') //参与条件设置新增与编辑
 const directCouponList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/DirectCoupon/directCouponList')), 'directCouponList') //直接送券
@@ -86,7 +91,7 @@ const keyWordReply = r => require.ensure([], () => r(require('../view/weChatMana
 const autoReply = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/autoReply')), 'autoReply') //消息托管
 const msgHosting = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/msgHosting')), 'msgHosting') //小尾巴
 const tails = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/tails')), 'tails') //小尾巴
-
+const sign = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/sign')), 'sign') //签到设置
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
     // const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
@@ -175,7 +180,7 @@ export const asyncRouterMap = [{
                             label: '运费设置'
                         },
                         component: logisticsSet
-                    },
+                    }, 
                     // {
                     //   path:'lunboList',
                     //   meta:{
@@ -189,14 +194,19 @@ export const asyncRouterMap = [{
                             label: '主题颜色设置'
                         },
                         component: mainStyle
-                    },
-                    {
+                    },{
                         path: 'menuBar',
                         meta: {
                             label: '自定义菜单栏'
                         },
                         component: menuBar
-                    },
+                    },{
+                        path: 'sign',
+                        meta: {
+                            label: '签到设置'
+                        },
+                        component: sign
+                    }
                 ]
             },
             { //商品管理
@@ -495,7 +505,21 @@ export const asyncRouterMap = [{
                             label: '添加进店送礼'
                         },
                         component: entCouponAddEdit
-                    }, {
+                    },{ //scanCouponList
+                        // scanCouponAddEdit
+                        path: 'scanCouponList',
+                        meta: {
+                            label: '扫码领券',
+                        },
+                        component: scanCouponList
+                    },{
+                        path: 'scanCouponAddEdit',
+                        isHidden: true,
+                        meta: {
+                            label: '扫码领券',
+                        },
+                        component: scanCouponAddEdit
+                    },{
                         path: 'directCouponList',
                         meta: {
                             label: '直接送券'

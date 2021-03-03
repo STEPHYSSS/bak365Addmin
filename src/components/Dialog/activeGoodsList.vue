@@ -155,7 +155,7 @@ export default {
           });
         }else{
           PromotionList.forEach((D) => {
-             D.codeUrl = this.seckill + "?SID=" + D.SID + "&FlagGroup=true";
+             D.codeUrl = this.seckill + "?SID=" + D.SID + "&Group=true";
           // D.codeUrl =this.seckill + "?SID=" + D.SID;
             console.log(D.codeUrl)
           });
