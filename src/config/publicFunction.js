@@ -110,24 +110,23 @@ export function GetQueryString(name) {
   return null;
 }
 export function GetAppNo() {
-  if(window.location.hostname == "localhost" || window.location.hostname == "dingtalk.bak365.cn" ){
-     let AppNo='001';
-     Cookies.set(AppNo,'001')
-     sessionStorage.setItem('AppNo',AppNo)
-     return AppNo;
+  if(window.location.hostname == "localhost"){
+    let AppNo='wx8d4708e1e9895e87';
+    Cookies.set('AppNo','wx8d4708e1e9895e87')
+    sessionStorage.setItem('AppNo',AppNo)
+    return AppNo;
   }else{
     let AppNo=window.location.hostname.substr(0,window.location.hostname.indexOf('.'));
     sessionStorage.setItem('AppNo',AppNo)
-     Cookies.set(AppNo,AppNo)
-        return  AppNo;
+    Cookies.set('AppNo',AppNo)
+    return  AppNo;
   }
 }
-export function GetBaseImgUrl() {//获取当前图片url
-     
+export function GetBaseImgUrl() {//获取当前图片url     
   if(window.location.hostname == "localhost" ){
-          return 'http://dingtalk.bak365.cn/WeixinNew/';
-  }else if( window.location.hostname == "dingtalk.bak365.cn" ){
-     return 'http://dingtalk.bak365.cn/WeixinNew/';
+    return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
+  }else if( window.location.hostname == "wx8d4708e1e9895e87.manage.bak365.cn" ){
+     return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
   }else{
      return 'http://'+window.location.hostname+'/WebApp/';
   }

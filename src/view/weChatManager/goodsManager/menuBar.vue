@@ -220,7 +220,12 @@ export default {
       this.loading = true
       let data = await getLists({Action:'GetMenu'},'MBaseOpera')
       // console.log(data, 1111)
-      this.navigationList = data.Data.MenuInfo.CustomText
+      // this.navigationList = data.Data.MenuInfo.CustomText
+      if(data.Data.MenuInfo!={}){
+        this.navigationList = data.Data.MenuInfo.CustomText
+      }else {
+        this.navigationList = [];
+      }
       let ti = this.navigationList
       for (let i = 0; i < ti.length; i++) {
         let D = ti[i]

@@ -45,6 +45,14 @@ export default {
                type: Boolean,
                default: false
           },
+          info:{
+               type:Array,
+               default:[]
+          },
+          info2:{
+               type:String,
+               default:""
+          }
      },
      data(){
           return{
@@ -79,18 +87,44 @@ export default {
           sureGood() {
                this.loadingBtn = true
                let info = "";
+               let showArr = []
                this.tiketList.forEach((item) => {
                     if (item.number) {
                          info += item.TypeNo + "," + Number(item.number) + ";";
-                    }
+                         showArr.push({
+                              key:item.TypeNo,
+                              val:item.number
+                         })
+                    }                    
                });
                this.giveInfo = info;
-               this.$emit('sureGood',this.giveInfo)               
+               if(this.info2 === 'sign'){
+                    this.$emit('sureGood',showArr,this.giveInfo)     
+               }else{
+                    this.$emit('sureGood',this.giveInfo)               
+               }
           }
      },
      watch: {
-          showTicket(val) {
-               this.dialogVisible = val
+          showTicket(val) {               
+               this.dialogVisible = val;
+               if(this.info2 === 'sign'){
+                    if(!val){
+                         for (const i of this.tiketList) {
+                              i.number = ''
+                         }
+                    }else{
+                         console.log(this.info,'000')
+                         // 回显
+                         this.tiketList.forEach(item => {
+                              this.info.forEach((item2, index2) => {
+                                   if (item.TypeNo === item2.key) {
+                                       item.number=item2.val
+                                   }
+                               })
+                          });
+                    }
+               }
           },
           dialogVisible(bool){
                this.$emit('changeDig', bool)
@@ -105,7 +139,7 @@ export default {
                     this.disabled = false
                }
           }
-     }
+     },
 }
 </script>
 <style lang="less" scoped>

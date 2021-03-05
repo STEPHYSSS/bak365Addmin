@@ -23,16 +23,17 @@
     function GetBaseImgUrl() {//获取当前图片url
      
         if(window.location.hostname == "localhost" ){
-                return 'http://dingtalk.bak365.cn/WeixinNew/';
-        }else if( window.location.hostname == "dingtalk.bak365.cn" ){
-           return 'http://dingtalk.bak365.cn/WeixinNew/';
+            return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/'
+                // return 'http://dingtalk.bak365.cn/WeixinNew/';
+        }else if( window.location.hostname == "wx8d4708e1e9895e87.manage.bak365.cn" ){
+        //    return 'http://dingtalk.bak365.cn/WeixinNew/';
+            return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/'
         }else{
            return 'http://'+window.location.hostname+'/WebApp/';
         }
       }
     // var URL = GetBaseImgUrl || getUEBasePath();
     var URL = GetBaseImgUrl() || getUEBasePath();
-  console.log(URL, 3333)
   // window.UEDITOR_HOME_URL = process.env.BASE_URL
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。

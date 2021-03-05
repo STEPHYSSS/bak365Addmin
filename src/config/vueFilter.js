@@ -148,9 +148,9 @@ Vue.filter('SetImage',(val) => {
 Vue.filter('filterImg',(val) => {     
      if (val) {
           if(window.location.hostname == "localhost" ){
-               return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
-          }else if( window.location.hostname == "dingtalk.bak365.cn" ){
-               return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
+               return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
+          }else if( window.location.hostname == "wx8d4708e1e9895e87.manage.bak365.cn" ){
+               return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
           }else{
                return 'http://'+window.location.hostname+'/WebApp/'+ val;
           }

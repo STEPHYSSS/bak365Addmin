@@ -269,38 +269,38 @@ export const asyncRouterMap = [{
                     //   },
                     //   component: tasteList
                     // },
-                    // ,{
-                    //   path: 'userEvaluate',
-                    //   component: {
-                    //     render(c) {
-                    //       return c('router-view')
-                    //     }
-                    //   },
-                    //   meta: {
-                    //     label: '用户评价',
-                    //     noshow: true
-                    //   },
-                    //   redirect: '/weChat/manager/userEvaluate/index',
-                    //   children: [
-                    //     {
-                    //       path: 'index',
-                    //       isHidden: true,
-                    //       meta: {
-                    //         label: '用户评价列表',
-                    //         labelNoshow: true
-                    //       },
-                    //       component: userEvaluate
-                    //     },
-                    //     {
-                    //       path: 'info',
-                    //       isHidden: true,
-                    //       meta: {
-                    //         label: '用户评价详情'
-                    //       },
-                    //       component: userEvaluateInfo
-                    //     }
-                    //   ]
-                    // }
+                    {
+                      path: 'userEvaluate',
+                      component: {
+                        render(c) {
+                          return c('router-view')
+                        }
+                      },
+                      meta: {
+                        label: '用户评价',
+                        noshow: true
+                      },
+                      redirect: '/weChat/manager/userEvaluate/index',
+                      children: [
+                        {
+                          path: 'index',
+                          isHidden: true,
+                          meta: {
+                            label: '用户评价列表',
+                            labelNoshow: true
+                          },
+                          component: userEvaluate
+                        },
+                        {
+                          path: 'info',
+                          isHidden: true,
+                          meta: {
+                            label: '用户评价详情'
+                          },
+                          component: userEvaluateInfo
+                        }
+                      ]
+                    }
                 ]
             },
             { //门店管理

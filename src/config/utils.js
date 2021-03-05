@@ -32,7 +32,7 @@ export const optionLeves = [
 ]
 
 export const optionsType = [
-  { label: '商品', value: '0' }, { label: '券', value: '1' }, { label: '文章', value: '2' }
+  { label: '商品', value: '0' }, { label: '积分商品', value: '1' }, { label: '券', value: '2' }, { label: '文章', value: '3' }
 ]
 
 export const optionsLabelType = [

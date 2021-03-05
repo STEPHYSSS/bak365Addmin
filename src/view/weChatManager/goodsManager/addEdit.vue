@@ -222,7 +222,7 @@
           step-strictly
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="商品提前" prop="FinHour">
+      <el-form-item label="预留备货时间" prop="FinHour">
         <div class="FinHourInput">
           <el-select v-model="isAdvanceTime" placeholder="请选择" @change="ruleForm.FinHour = ''">
             <el-option

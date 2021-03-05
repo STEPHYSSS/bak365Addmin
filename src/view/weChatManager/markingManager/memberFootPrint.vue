@@ -1,21 +1,28 @@
 <template>
   <div class="memberFootPrint">
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
-      <el-table-column prop="ProdNo" label="商品编号"></el-table-column>
-      <el-table-column prop="Name" label="商品名称"></el-table-column>
-      <el-table-column prop="CateSID" label="分类编号"></el-table-column>
-      <el-table-column prop="SalePrice" label="销售价格"></el-table-column>
-      <el-table-column label="商品图片">
+      <el-table-column prop="ProdNo" label="商品编号" align="center"></el-table-column>
+      <el-table-column prop="Name" label="商品名称" align="center"></el-table-column>
+      <el-table-column prop="CateName" label="分类名称" align="center"></el-table-column>
+      <el-table-column prop="SalePrice" label="销售价格" align="center"></el-table-column>
+      <el-table-column label="商品图片" width="80px" align="center">
         <template slot-scope="scoped">
-          <el-row>
-            <el-col :span="12" class="goodsInfo">
-              <img :src="scoped.row.Img | SetImage" alt />
-            </el-col>
-          </el-row>
+          <img :src="scoped.row.Img | SetImage" alt="" class="imgWidth">
         </template>
       </el-table-column>
-      <el-table-column prop="Count" label="浏览次数"></el-table-column>
+      <el-table-column prop="Count" label="浏览次数" align="center"></el-table-column>
     </el-table>
+    <div class="block" v-if="TotalList">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="TotalList">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -26,7 +33,10 @@ export default {
   data() {
     return {
       tableData: [],
-      loading: false
+      loading: false,
+      TotalList:0,//分页总数
+      currentPage: 0,
+      pageSize:0,
     };
   },
   mounted() {
@@ -39,13 +49,10 @@ export default {
       try {
         let { Data } = await getLists(
           { 
-            Action: "GetFootPrint"},
+            Action: "GetFootPrint",Page: this.currentPage - 1 },
           "MMemberOpera"
         );
         this.tableData = Data.FootPrintList;
-
-        //  console.log(this.data)
-        // let setImg = this.currentGoods ? "Img" : "ImgList";
         
         this.loading = false;
       } catch (e) {
@@ -53,6 +60,13 @@ export default {
         this.loading = false;
       }
     },
+    handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.getFootPrint(val);
+      },
   },
   filters:{
     checkTip(val){
@@ -71,5 +85,12 @@ export default {
     height: 80px;
     border: 1px solid #eee;
   }
+  
 }
+.imgWidth{
+  display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #eee;
+  }
 </style>
