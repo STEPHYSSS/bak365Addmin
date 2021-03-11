@@ -225,7 +225,7 @@ export default {
       }
     },
 //     退款
-    viewRow(val) {
+    viewRow(val) {      
       // this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID);
       this.$router.push({path:'/weChat/manager/orderList/info',query:{
         SID:val.SID,

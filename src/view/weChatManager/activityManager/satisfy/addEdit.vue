@@ -14,7 +14,7 @@
                          <el-option label="用户关注" value="0"></el-option>
                          <!-- <el-option label="用户申请卡" value="1"></el-option>
                          <el-option label="用户绑定卡" value="2"></el-option> -->
-                         <el-option label="用户评价" value="3"></el-option> -->
+                         <el-option label="用户评价" value="3"></el-option>
                     </el-select>
                </el-form-item>
                <publicFunction ref="formInfo" :chooseType = "chooseType" :editInfo = "editInfo"></publicFunction>

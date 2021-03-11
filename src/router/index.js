@@ -19,7 +19,10 @@ const menuBar = r => require.ensure([], () => r(require('../view/weChatManager/g
 const areaList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/area/list')), 'areaList')
 const systemSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet')), 'systemSet')
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
-    // 电子券设置
+// 统计页面 src\view\weChatManager\Statistics
+const Statistics = r => require.ensure([], () => r(require('../view/weChatManager/Statistics')), 'Statistics')
+
+// 电子券设置
 const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
     // 轮播图设置
 const lunboManager = r => require.ensure([], () => r(require('../view/weChatManager/lunboManager/lunboList')), 'lunboList')
@@ -145,7 +148,8 @@ export const asyncRouterMap = [{
                         return c('router-view')
                     }
                 },
-                redirect: '/weChat/manager/systemSet',
+                // redirect: '/weChat/manager/systemSet',
+                redirect:'/weChat/manager/Statistics',
                 children: [
                     // {//券销售设置
                     //   path: 'couponSetting',
@@ -154,6 +158,13 @@ export const asyncRouterMap = [{
                     //   },
                     //   component: goodsManager
                     // },
+                    {//首页统计
+                        path: 'Statistics',
+                        meta: {
+                            label: '商城统计'
+                        },
+                        component: Statistics
+                    },
                     { //优惠券添加
                         path: 'couponAdd',
                         isHidden: true,
