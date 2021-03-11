@@ -269,38 +269,38 @@ export const asyncRouterMap = [{
                     //   },
                     //   component: tasteList
                     // },
-                    {
-                      path: 'userEvaluate',
-                      component: {
-                        render(c) {
-                          return c('router-view')
-                        }
-                      },
-                      meta: {
-                        label: '用户评价',
-                        noshow: true
-                      },
-                      redirect: '/weChat/manager/userEvaluate/index',
-                      children: [
-                        {
-                          path: 'index',
-                          isHidden: true,
-                          meta: {
-                            label: '用户评价列表',
-                            labelNoshow: true
-                          },
-                          component: userEvaluate
-                        },
-                        {
-                          path: 'info',
-                          isHidden: true,
-                          meta: {
-                            label: '用户评价详情'
-                          },
-                          component: userEvaluateInfo
-                        }
-                      ]
-                    }
+                    // {
+                    //   path: 'userEvaluate',
+                    //   component: {
+                    //     render(c) {
+                    //       return c('router-view')
+                    //     }
+                    //   },
+                    //   meta: {
+                    //     label: '用户评价',
+                    //     noshow: true
+                    //   },
+                    //   redirect: '/weChat/manager/userEvaluate/index',
+                    //   children: [
+                    //     {
+                    //       path: 'index',
+                    //       isHidden: true,
+                    //       meta: {
+                    //         label: '用户评价列表',
+                    //         labelNoshow: true
+                    //       },
+                    //       component: userEvaluate
+                    //     },
+                    //     {
+                    //       path: 'info',
+                    //       isHidden: true,
+                    //       meta: {
+                    //         label: '用户评价详情'
+                    //       },
+                    //       component: userEvaluateInfo
+                    //     }
+                    //   ]
+                    // }
                 ]
             },
             { //门店管理
@@ -505,14 +505,16 @@ export const asyncRouterMap = [{
                             label: '添加进店送礼'
                         },
                         component: entCouponAddEdit
-                    },{ //scanCouponList
-                        // scanCouponAddEdit
-                        path: 'scanCouponList',
-                        meta: {
-                            label: '扫码领券',
-                        },
-                        component: scanCouponList
-                    },{
+                    },
+                    // { //scanCouponList
+                    //     // scanCouponAddEdit
+                    //     path: 'scanCouponList',
+                    //     meta: {
+                    //         label: '扫码领券',
+                    //     },
+                    //     component: scanCouponList
+                    // },
+                    {
                         path: 'scanCouponAddEdit',
                         isHidden: true,
                         meta: {
@@ -638,36 +640,37 @@ export const asyncRouterMap = [{
                         return c('router-view')
                     }
                 },
-                redirect: '/weChat/manager/marking/markingList',
-                children: [{ //申请团长列表
-                        path: 'markingList',
-                        meta: {
-                            label: '团长管理'
-                        },
-                        component: markingPage
-                    },
-                    { //推广订单分拥列表
-                        path: 'orderSharingList',
-                        meta: {
-                            label: '推广订单'
-                        },
-                        component: orderSharing
-                    },
-                    { //申请提现列表
-                        path: 'withdrawal',
-                        meta: {
-                            label: '申请提现'
-                        },
-                        component: applicationWithdrawal
-                    },
-                    { //审核佣金提现详情
-                        path: 'commissionDetail',
-                        isHidden: true, //点击进入详情控制子菜单显示
-                        meta: {
-                            label: '佣金审核详情'
-                        },
-                        component: commissionWithdrawal
-                    },
+                redirect: '/weChat/manager/marking/memberFootPrint',
+                children: [
+                    // { //申请团长列表
+                    //     path: 'markingList',
+                    //     meta: {
+                    //         label: '团长管理'
+                    //     },
+                    //     component: markingPage
+                    // },
+                    // { //推广订单分拥列表
+                    //     path: 'orderSharingList',
+                    //     meta: {
+                    //         label: '推广订单'
+                    //     },
+                    //     component: orderSharing
+                    // },
+                    // { //申请提现列表
+                    //     path: 'withdrawal',
+                    //     meta: {
+                    //         label: '申请提现'
+                    //     },
+                    //     component: applicationWithdrawal
+                    // },
+                    // { //审核佣金提现详情
+                    //     path: 'commissionDetail',
+                    //     isHidden: true, //点击进入详情控制子菜单显示
+                    //     meta: {
+                    //         label: '佣金审核详情'
+                    //     },
+                    //     component: commissionWithdrawal
+                    // },
                     { //会员足迹
                         path: 'memberFootPrint',
                         meta: {
@@ -816,98 +819,98 @@ export const asyncRouterMap = [{
                     component: vaccaeParam
                 }]
             },
-            {
-                path: '/wechatCard/vip',
-                meta: {
-                    label: '会员卡管理'
-                },
-                component: {
-                    render(c) {
-                        return c('router-view')
-                    }
-                },
-                redirect: '/wechatCard/vip/list',
-                children: [{
-                        path: 'list',
-                        meta: {
-                            label: '微信卡模板'
-                        },
-                        component: vipList
-                    },
-                    // {
-                    //   path: 'menuBar',
-                    //   meta: {
-                    //     label: '自定义菜单栏'
-                    //   },
-                    //   component: menuBar
-                    // },
-                    {
-                        path: 'grant',
-                        meta: {
-                            label: '发放会员卡'
-                        },
-                        component: vipGrant
-                    },
-                    {
-                        path: 'payment',
-                        meta: {
-                            label: '支付即会员'
-                        },
-                        component: vipPayment
-                    },
-                    {
-                        path: 'rule',
-                        meta: {
-                            label: '支付即会员规则'
-                        },
-                        isHidden: true,
-                        component: vipPaymentRule
-                    },
-                    {
-                        path: 'newlyBuild',
-                        meta: {
-                            label: '新建会员卡'
-                        },
-                        isHidden: true,
-                        component: newlyBuild
-                    }
-                ]
-            },
-            {
-                path: '/wechatCard/Coupon',
-                meta: {
-                    label: '优惠劵管理'
-                },
-                component: {
-                    render(c) {
-                        return c('router-view')
-                    }
-                },
-                redirect: '/wechatCard/Coupon/list',
-                children: [{
-                        path: 'list',
-                        meta: {
-                            label: '优惠劵列表'
-                        },
-                        component: vipList
-                    },
-                    {
-                        path: 'grant',
-                        meta: {
-                            label: '发放优惠劵'
-                        },
-                        component: vipGrant
-                    },
-                    {
-                        path: 'newlyBuild',
-                        meta: {
-                            label: '新建优惠劵'
-                        },
-                        isHidden: true,
-                        component: newlyBuildCoupon
-                    }
-                ]
-            }
+            // {
+            //     path: '/wechatCard/vip',
+            //     meta: {
+            //         label: '会员卡管理'
+            //     },
+            //     component: {
+            //         render(c) {
+            //             return c('router-view')
+            //         }
+            //     },
+            //     redirect: '/wechatCard/vip/list',
+            //     children: [{
+            //             path: 'list',
+            //             meta: {
+            //                 label: '微信卡模板'
+            //             },
+            //             component: vipList
+            //         },
+            //         // {
+            //         //   path: 'menuBar',
+            //         //   meta: {
+            //         //     label: '自定义菜单栏'
+            //         //   },
+            //         //   component: menuBar
+            //         // },
+            //         {
+            //             path: 'grant',
+            //             meta: {
+            //                 label: '发放会员卡'
+            //             },
+            //             component: vipGrant
+            //         },
+            //         {
+            //             path: 'payment',
+            //             meta: {
+            //                 label: '支付即会员'
+            //             },
+            //             component: vipPayment
+            //         },
+            //         {
+            //             path: 'rule',
+            //             meta: {
+            //                 label: '支付即会员规则'
+            //             },
+            //             isHidden: true,
+            //             component: vipPaymentRule
+            //         },
+            //         {
+            //             path: 'newlyBuild',
+            //             meta: {
+            //                 label: '新建会员卡'
+            //             },
+            //             isHidden: true,
+            //             component: newlyBuild
+            //         }
+            //     ]
+            // },
+            // {
+            //     path: '/wechatCard/Coupon',
+            //     meta: {
+            //         label: '优惠劵管理'
+            //     },
+            //     component: {
+            //         render(c) {
+            //             return c('router-view')
+            //         }
+            //     },
+            //     redirect: '/wechatCard/Coupon/list',
+            //     children: [{
+            //             path: 'list',
+            //             meta: {
+            //                 label: '优惠劵列表'
+            //             },
+            //             component: vipList
+            //         },
+            //         {
+            //             path: 'grant',
+            //             meta: {
+            //                 label: '发放优惠劵'
+            //             },
+            //             component: vipGrant
+            //         },
+            //         {
+            //             path: 'newlyBuild',
+            //             meta: {
+            //                 label: '新建优惠劵'
+            //             },
+            //             isHidden: true,
+            //             component: newlyBuildCoupon
+            //         }
+            //     ]
+            // }
         ]
     },
     {

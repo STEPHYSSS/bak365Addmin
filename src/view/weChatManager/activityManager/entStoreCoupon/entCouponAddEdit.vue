@@ -73,19 +73,22 @@
         ></el-input>
       </el-form-item> -->
     </el-form>
-    <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+    <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
     <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="900px">
+      <p class="addBtn">
+        <el-button @click="addConditions">新增参与条件</el-button>
+      </p>
       <el-table ref="multipleTable" :data="dataTable" highlight-current-row style="width: 100%" @row-click="clickItem">
         <el-table-column label="" width="50">
           <template slot-scope="scope">
             <el-radio :label="scope.row.SID" v-model="radio">&nbsp;</el-radio>
           </template>
         </el-table-column>
-        <el-table-column prop="SID" label="方案编号" align="center"></el-table-column>
+        <el-table-column prop="SID" label="方案编号" align="center" width="180"></el-table-column>
         <el-table-column prop="Name" label="方案名称" align="center"></el-table-column>
         <el-table-column prop="StartDate" label="开始时间" align="center"></el-table-column>
         <el-table-column prop="EndDate" label="结束时间" align="center"></el-table-column>
-        <el-table-column label="查看" align="center">
+        <el-table-column label="查看" align="center" width="80">
         <template slot-scope="scoped">
           <el-tooltip placement="top">
             <div slot="content">
@@ -167,6 +170,7 @@ export default {
       singleRow:{},//选中参与条件一行信息
       isShow:true,
       Audit: "",
+      info:[]
     };
   },
   components: {
@@ -184,6 +188,18 @@ export default {
   methods: {
     clickTicket() {// 选择赠送电子券
       this.showTicket = true;
+      let result = []
+      if(this.form.GiveInfo){
+        let strSplit = this.form.GiveInfo.split(';')
+        for (const i of strSplit) {
+          if (i) {
+            result.push(i.split(','))
+          } 
+        }
+      }else{
+        result = []
+      }
+      this.info = result
     },
     changeDig(bool){//用于子组件控制关闭按钮
       this.showTicket = bool;
@@ -224,6 +240,10 @@ export default {
     cancelFunAn(row){//参与条件取消
       // this.$refs.multipleTable.setCurrentRow(row);      
       this.dialogVisible2 = false;
+    },
+    addConditions(){//点击跳转到新增参与条件方案页面
+      // ConditionsAddEdit
+      this.$router.push({ path: "/weChat/manager/activity/ConditionsAddEdit"});
     },
     async getList() {  //选择参与条件方案列表
       this.loading = true;
@@ -344,6 +364,10 @@ export default {
 .entStoreAddEdit {
   margin-bottom: 80px;
   min-width: 1230px;
+  .addBtn{
+    text-align:right;
+    margin-bottom: 15px;
+  }
   .el-input {
     width: 217px;
   }

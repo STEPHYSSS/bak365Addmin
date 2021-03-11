@@ -76,7 +76,7 @@ export default {
       }
      },
      editCondition(row){
-          this.$router.push({ path: "/weChat/manager/activity/ConditionsAddEdit",query:{SID:row.SID} });
+      this.$router.push({ path: "/weChat/manager/activity/ConditionsAddEdit",query:{SID:row.SID} });
      },
      delCondition(row){      
         this.$confirm('是否删除此数据?', '提示', {

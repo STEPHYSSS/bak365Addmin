@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="dialogTicketFa" title="选择电子券" :visible.sync="dialogVisible" width="800px">
+<div>
     <div class="chaxun">
       <span>名称搜索:</span>
       <el-input v-model="tiketName" placeholder="请输入" @keyup.enter="searchName" class="inputSty"></el-input>
@@ -32,19 +32,15 @@
       </el-table-column>
     </el-table>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false" :disabled="disabled">取 消</el-button>
-      <el-button type="primary" @click="sureGood" :disabled="disabled">确 定</el-button>
+      <el-button @click="handleClose">取 消</el-button>
+      <el-button type="primary" @click="sureGood">确 定</el-button>
     </span>
-  </el-dialog>
+  </div>
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
 export default {
      props: {
-          showTicket: {
-               type: Boolean,
-               default: false
-          },
           info:{
                type:Array
           },
@@ -55,7 +51,6 @@ export default {
      },
      data(){
           return{
-               dialogVisible:false,
                loadingBtn: false,
                disabled: false,
                tiketList:[],//电子券列表
@@ -75,15 +70,29 @@ export default {
                          "MProdOpera"
                     );
                     this.tiketList = Data.TicketList;
+                    for (const i of this.tiketList) {
+                         this.$set(i, "number", '');
+                    }
+                    if (this.info && this.info.length) {
+                         this.tiketList.forEach((item, index) => {
+                              this.info.forEach((item2, index2) => {
+                                   if (item.TypeNo === item2[0]) {
+                                        item.number = item2[1]
+                                   }
+                              })
+                         });
+                    }
                } catch (error) {
                     this.$message.error(error);
                }
+          },
+          handleClose() {
+               this.$emit('close')
           },
           searchName(){//按名称搜索
                this.getSatisfy();
           },
           sureGood() {
-               this.loadingBtn = true
                let info = "";
                let showArr = []
                this.tiketList.forEach((item) => {                    
@@ -102,63 +111,7 @@ export default {
                     this.$emit('sureGood',this.giveInfo)               
                }
           }
-     },
-     watch: {
-          showTicket(val) { 
-               for (const i of this.tiketList) {
-                    this.$set(i, "number", '');
-               }   
-               if (val && this.info.length) {
-                    this.tiketList.forEach((item, index) => {
-                         this.info.forEach((item2, index2) => {
-                              if (item.TypeNo === item2[0]) {
-                                   item.number = item2[1]
-                              }
-                         })
-                    });
-               }
-               // if (val && this.info.length) {
-               //      this.tiketList.forEach((item, index) => {
-               //           this.info.forEach((item2, index2) => {
-               //                if (item.TypeNo === item2[0]) {
-               //                     item.number = item2[1]
-               //                }
-               //           })
-               //      });
-               // }    
-               this.dialogVisible = val;
-               // if(this.info2 === 'sign'){
-               //      if(!val){
-               //           for (const i of this.tiketList) {
-               //                i.number = ''
-               //           }
-               //      }else{
-               //           console.log(this.info,'000')
-               //           // 回显
-               //           this.tiketList.forEach(item => {
-               //                this.info.forEach(item2 => {
-               //                     if (item.TypeNo === item2.key) {
-               //                         item.number=item2.val
-               //                     }
-               //                 })
-               //            });
-               //      }
-               // }
-          },
-          dialogVisible(bool){
-               this.$emit('changeDig', bool)
-               if(this.loadingBtn){
-                    this.loadingBtn = bool
-               }
-          },
-          loadingBtn(val){
-               if(val){
-                    this.disabled = true
-               }else{
-                    this.disabled = false
-               }
-          }
-     },
+     }
 }
 </script>
 <style lang="less" scoped>

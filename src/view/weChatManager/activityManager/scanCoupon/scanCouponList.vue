@@ -1,7 +1,7 @@
 <template>
   <div class="entStore">
     <div style="margin-bottom: 20px">
-      <el-button type="primary" size="small" @click="addCondition">添加进店送礼</el-button>
+      <el-button type="primary" size="small" @click="addCondition">添加扫码领券</el-button>
     </div>
     <active-search-box ref="activeSearch" @searchList="searchList"></active-search-box>
     <el-table :data="dataTable" v-loading="loading" style="width: 100%">
@@ -33,7 +33,6 @@
               </div>
               <a id="downloadImg"></a>
               <a
-                v-if="!scoped.row.Audit"
                 class="smallRoutineUpDown"
                 @click="upDownUrl(scoped.row.Name)"
               >可下载小程序码</a>
@@ -55,6 +54,7 @@
 import { getLists } from "@/api/vipCard"; //调用接口引用
 import { seckill } from "@/config/index";
 import Cookies from "js-cookie";
+import { DownUrlFunCode } from "@/config/publicFunction";
 import QRCode from "@/components/qrcodejs/qrcodejs";
 import activeSearchBox from '@/components/Dialog/activeSearchBox/activeSearchBox.vue';
 export default {
@@ -94,6 +94,9 @@ export default {
         this.loading = false;
       }
      },
+     upDownUrl(Name) {
+      DownUrlFunCode(Name);
+    },
      searchList(val){//搜索
        this.search = val;
        this.getList();

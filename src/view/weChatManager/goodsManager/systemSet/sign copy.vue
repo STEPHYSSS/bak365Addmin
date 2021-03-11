@@ -36,7 +36,10 @@
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
       </el-form-item>
     </el-form>
-    <satisfyTicket :info="info" :info2 = "info2" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
+  <el-dialog class="dialogTicketFa" title="选择电子券" :visible.sync="showTicket" width="800px" v-if="showTicket">
+    <satisfyTicket :info="info" :info2 = "info2" @close="showTicket = false" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
+    
+  </el-dialog>
   </div>
 </template>
 
@@ -72,7 +75,6 @@ export default {
   methods: {
     clickTicket(index) {
       // 选择赠送电子券
-      this.showTicket = true;
       this.goodsNormsIndex = index;
       let result = []
       if (this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo) {
@@ -86,6 +88,7 @@ export default {
         result = []
       }
       this.info = result
+      this.showTicket = true;
       
       // console.log(this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo)
       // if(!this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo){
@@ -178,16 +181,7 @@ export default {
       //   alert(error)
       //   this.$message.error(error)
       // }
-      for (const i of giveList) {
-        if(i.MeetCnt == ''){          
-          this.$message.error('连续签到天数不能为空')
-          return false;
-        }
-        if(i.GiveInfo == '' && i.GiveScore == '') {
-          this.$message.error('请填写赠送方式')
-          return false;
-        }
-      }
+      
       try {
         let data = await getLists(
           {
@@ -199,7 +193,7 @@ export default {
           },
           "MMemberOpera"
         );
-        this.$message.success('操作成功')
+        console.log(data,'000')
       } catch (error) {
          this.$message.error(error)
       }

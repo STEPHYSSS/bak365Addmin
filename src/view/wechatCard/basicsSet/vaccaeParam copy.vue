@@ -25,12 +25,10 @@
       </el-switch>
     </el-form-item> -->
     <el-form-item label="会员卡说明" class="ueditor-style">
-      <ueditor1 v-if="!loading" ref="ueditorDom"></ueditor1>
-      <!-- <ueditor1 v-if="!loading" ref="ueditorDom" :valText="ueditorDomText"></ueditor1> -->
+      <ueditor1 v-if="!loading" ref="ueditorDom" :valText="ueditorDomText"></ueditor1>
     </el-form-item>
     <el-form-item label="条款" class="ueditor-style">
-      <ueditor1 v-if="!loading" ref="ueditorClause"></ueditor1>
-      <!-- <ueditor1 v-if="!loading" ref="ueditorClause" :valText="ueditorClauseText"></ueditor1> -->
+      <ueditor1 v-if="!loading" ref="ueditorClause" :valText="ueditorClauseText"></ueditor1>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitFun">提交</el-button>
@@ -41,12 +39,11 @@
 <script>
 import imgLoad from '@/components/download/imgLoad'
 // import ueditor from '@/components/ueditor/index'
-// import ueditor1 from '@/components/ueditor1/index'
-import ueditor1 from "@/components/ueditor1/";
+import ueditor1 from '@/components/ueditor1/index'
 // import cardCategory from '@/components/selector/cardCategory'
 import {getLists} from '@/api/vipCard'
 import _ from 'lodash'
-import "@/config/jquery.base64.js";
+import '@/config/jquery.base64.js'
 import {bindList} from '@/config/utils'
 import {replacePre} from '@/config/publicFunction'
 
@@ -58,11 +55,11 @@ export default {
       form: {
         Name:'',
         // 条款
-        // Clause: '',
+        Clause: '',
         // 图片
         CardImg: '',
         // 说明
-        // Explain: '',
+        Explain: '',
         // 微卡申请信息
         // ApplyMsg: [],
         // IsPass: 0
@@ -90,17 +87,13 @@ export default {
         if (typeof this.form.ApplyMsg === 'string' && this.form.ApplyMsg) {
           this.form.ApplyMsg = this.form.ApplyMsg.split(',')
         }
-        setTimeout(() => {
-          let Explain = $.base64.atob( this.form.Explain, "utf8");//说明
-          // console.log(Explain)
-          this.$refs.ueditorDom.setUEContent(Explain);
-          let tiaokuan = $.base64.atob( this.form.Clause, "utf8");//条款
-          this.$refs.ueditorClause.setUEContent(tiaokuan);
-        }, 1000);
         // if (this.form.TypeNo) {
         //   this.$refs.cardCategory.value = this.form.TypeNo
-        // }        
-        
+        // }
+        // console.log(this.form, 666)
+        this.ueditorDomText = $.base64.atob(this.form.Explain, 'utf8')
+
+        this.ueditorClauseText = $.base64.atob(this.form.Clause, 'utf8')
         if (this.form.CardImg) {
           this.fileListUp = [{url: process.env.Prefix + this.form.CardImg}]
         }
@@ -118,16 +111,13 @@ export default {
     },
     async submitFun() {
       let newForm = _.clone(this.form)
-      // // 条款
-      // let newClause = $.base64.btoa(this.$refs.ueditorClause.getUEContent(), 'utf8');
-      // // 说明
-      // let newExplain = $.base64.btoa(this.$refs.ueditorDom.getUEContent(), 'utf8');
-      // newForm.Clause = newClause
-      // newForm.Explain = newExplain
-      let tiaokuan = this.$refs.ueditorClause.getUEContent();
-      let Explain = this.$refs.ueditorDom.getUEContent();
-      newForm.Clause = $.base64.btoa(tiaokuan,"utf8");
-      newForm.Clause = $.base64.btoa(Explain,"utf8");
+      // 条款
+      let newClause = $.base64.btoa(this.$refs.ueditorClause.getUEContent(), 'utf8');
+      // 说明
+      let newExplain = $.base64.btoa(this.$refs.ueditorDom.getUEContent(), 'utf8');
+      newForm.Clause = newClause
+      newForm.Explain = newExplain
+
       if (newForm.ApplyMsg) {
         newForm.ApplyMsg = newForm.ApplyMsg.join(',')
       }

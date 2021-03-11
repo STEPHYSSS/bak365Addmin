@@ -538,9 +538,9 @@ export default {
         OldPrice: [
           { required: true, message: "请输入商品原价", trigger: "blur" }
         ],
-        Describe: [
-          { required: true, message: "请输入商品描述", trigger: "blur" }
-        ],
+        // Describe: [
+        //   { required: true, message: "请输入商品描述", trigger: "blur" }
+        // ],
         SalePrice: [
           { required: true, message: "请输入商品售价", trigger: "blur" }
         ]
@@ -1460,7 +1460,7 @@ function setData(data, label, id) {
   }
 
   .goods_normsLabel {
-    display: inline-block;
+    // display: inline-block;
     text-align: right;
     padding-right: 12px;
     font-size: 14px;

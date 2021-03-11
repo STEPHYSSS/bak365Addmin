@@ -109,7 +109,7 @@ export default {
         },
         {
           Name: "付款码",
-          url: url + "pages/vip/payCode"
+          url:"http://manage.bak365.cn/WebApp/WXCard/?Type=PayCode&AppNo=" + GetAppNo(),
         },
         {
           Name: "微卡充值",

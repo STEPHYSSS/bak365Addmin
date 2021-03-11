@@ -29,7 +29,7 @@
           </el-dropdown-item>
           <el-dropdown-item>
             <router-link tag="div" to='/wechatCard' class="nav-link">
-              <span> 微信卡券 </span>
+              <span> 微卡设置 </span>
             </router-link>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -51,7 +51,7 @@
       </li>
       <li class="nav-item header-item">
         <router-link tag="div" to='/wechatCard' class="nav-link">
-          <p style="color:white"> 微信卡券 </p>
+          <p style="color:white"> 微卡设置 </p>
         </router-link>
       </li>
       <!--      <li class="nav-item header-item">-->
