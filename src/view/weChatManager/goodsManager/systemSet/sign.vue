@@ -86,35 +86,6 @@ export default {
         result = []
       }
       this.info = result
-      
-      // console.log(this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo)
-      // if(!this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo){
-      //   this.info = []//这个是我之前想通过如果input框中有这个值的话，就把这个值用props传给子组件
-      // }
-      // 编辑的时候要把拿到的数据进行操作
-      // let str = '0101,1;0102,2;0103,3;0104,4;';
-      // let strSplit = str.split(';');
-      // for (const i of strSplit) {
-      //   if (i) {
-      //     i = i.split(',')
-      //   } 
-      // }
-      // console.log(strSplit)
-      /* 
-        [
-          [0101, 1],
-          [0102, 2],
-          [0103, 3],
-          [0104, 4]
-        ]
-        遍历strSplit  item[0] === 编号 就把item[1] 放到number
-        现在的情况是，我调用详情的接口的时候，后台返回的str这样的格式，然后我点击弹窗的时候
-        想要把数据转一下 然后在弹窗中对比
-
-        点击添加的时候  遍历电子券列表 this.$set(item, 'number', '')
-        要不我演示一下你看看
-
-      */
     },
     changeDig(bool) {
       //用于子组件控制关闭按钮
@@ -157,6 +128,7 @@ export default {
           this.$set(this.ruleForm, 'GiveList', [])
         }
         this.ruleForm.SID = Data.SignIn.SID?Data.SignIn.SID:''
+        console.log(this.ruleForm.SID,'this.ruleForm.SID')
         this.ruleForm.Score = Data.SignIn.Score?Data.SignIn.Score:'';
         this.ruleForm.Explain = Data.SignIn.Explain?Data.SignIn.Explain:'';
       } catch (error) {
@@ -199,7 +171,8 @@ export default {
           },
           "MMemberOpera"
         );
-        this.$message.success('操作成功')
+        this.$message.success('操作成功');
+        this.GetSignIn();
       } catch (error) {
          this.$message.error(error)
       }

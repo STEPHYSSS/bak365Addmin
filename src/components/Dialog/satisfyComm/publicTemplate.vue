@@ -8,7 +8,7 @@
                <el-form-item label="赠送积分" v-show="chooseType!='0'">
                     <el-input v-model="formInfo.GiveScore"></el-input>
                </el-form-item>
-               <el-form-item label="赠送充值" v-show="chooseType!='0'">
+               <el-form-item label="赠送充值" v-show="chooseType!='0'&&chooseType!='3'">
                     <el-input v-model="formInfo.GiveMoney"></el-input>
                </el-form-item>
                <el-form-item label="发放总量">
@@ -18,7 +18,7 @@
                     <el-input v-model="formInfo.LimitCnt"></el-input>&nbsp;次
                </el-form-item>
           </el-form>
-          <satisfyTicket :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+          <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
      </div>
 </template>
 <script>
@@ -35,6 +35,7 @@ export default {
                     LimitCnt:''
                },
                showTicket:false,//显示与隐藏电子券弹窗
+               info:[]
           }
      },
      props:{
@@ -45,6 +46,19 @@ export default {
      methods:{
           clickTicket(){//赠送电子券
                this.showTicket = true;
+               // this.formInfo.
+               let result = []
+               if (this.formInfo.GiveInfo) {
+               let strSplit = this.formInfo.GiveInfo.split(';')
+                    for (const i of strSplit) {
+                         if (i) {
+                              result.push(i.split(','))
+                         } 
+                    }
+               }else {
+                    result = []
+               }
+               this.info = result
           },
           changeDig(bool){//用于子组件控制关闭按钮
                this.showTicket = bool;

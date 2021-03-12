@@ -94,14 +94,19 @@ export default {
                               val:item.number
                          })
                     }                    
-               });
+               });             
+               let count = getCharCount(info,';');
+               if(count>30){
+                    this.$message.error('电子券类型不能超过30种');
+                    return false
+               }
                this.giveInfo = info;
                if(this.info2 === 'sign'){
                     this.$emit('sureGood',showArr,this.giveInfo)     
                }else{
                     this.$emit('sureGood',this.giveInfo)               
                }
-          }
+          },          
      },
      watch: {
           showTicket(val) { 
@@ -116,16 +121,7 @@ export default {
                               }
                          })
                     });
-               }
-               // if (val && this.info.length) {
-               //      this.tiketList.forEach((item, index) => {
-               //           this.info.forEach((item2, index2) => {
-               //                if (item.TypeNo === item2[0]) {
-               //                     item.number = item2[1]
-               //                }
-               //           })
-               //      });
-               // }    
+               }   
                this.dialogVisible = val;
                // if(this.info2 === 'sign'){
                //      if(!val){
@@ -159,6 +155,14 @@ export default {
                }
           }
      },
+     
+     
+}
+function getCharCount(info,char) {
+     let regex = new RegExp(char,'g');
+     let result = info.match(regex);
+     let count = !result ? 0:result.length;
+     return count;
 }
 </script>
 <style lang="less" scoped>

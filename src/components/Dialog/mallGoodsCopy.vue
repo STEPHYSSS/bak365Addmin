@@ -111,10 +111,7 @@ export default {
       type: Boolean,
       default: false
     },
-    prodList: {
-      type: Array,
-      default: []
-    },
+    prodList: Array,
     isEvaluate: [Boolean, String]
   },
   data() {

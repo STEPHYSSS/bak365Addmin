@@ -15,32 +15,31 @@
       <el-form-item label="商品名称：" v-if="!current_add">
         <span>{{form.Name?form.Name:'--'}}</span>
       </el-form-item>
-      <el-form-item label="商品ID：" prop="GoodsId">
-        <el-input v-model="form.GoodsId" placeholder="请添加商品ID" v-if="current_add"></el-input>
-        <span v-else>{{form.GoodsId?form.GoodsId:'--'}}</span>
-
+      <el-form-item label="商品名称：" prop="Name" v-if="current_add">
+        <el-input v-model="form.Name" placeholder="请添加商品" v-if="current_add"></el-input>
+        <span v-else>{{form.Name?form.Name:'--'}}</span>
         <el-button
           v-if="current_add"
           type="primary"
           style="margin-left:10px"
           size="medium"
           @click="selectGoods"
-        >...</el-button>
+        >添加</el-button>
       </el-form-item>
-      <el-form-item label="操作人ID：" v-if="!current_add">
-        <span v-if="form.OperatorID">{{form.OperatorID}}</span>
-        <span v-else>--</span>
+      <el-form-item label="评论人：" v-if="!current_add">
+        <span v-if="form.UserName">{{form.UserName}}</span>
+        <span v-else>无</span>
       </el-form-item>
       <el-form-item label="添加时间：" v-if="!current_add">{{form.AddTime}}</el-form-item>
       <el-form-item label="评价内容：" prop="Details">
         <div v-if="!current_add">
           <span v-if="form.Details">{{form.Details}}</span>
           <br />
-          <div v-if="form.ImgList.length>0">
+          <!-- <div v-if="form.ImgList.length>0"> -->
           <div class="DetailsImg" v-for="img in form.ImgList" :key="img">
             <img :src="setImg(img)" alt onclick="window.open()" />
           </div>
-          </div>
+          <!-- </div> -->
         </div>
         <div v-else>
           <el-input
@@ -52,7 +51,6 @@
           ></el-input>
           <imgLoad style="margin-top:10px" @upLoadImgs="upLoadImg" folder="TicketImg" ref="imgLoad"></imgLoad>
         </div>
-        <!--        <img src="../../../../assets/img/pin1.jpg" alt="">-->
       </el-form-item>
       <el-form-item label="星级：" style="vertical-align: middle">
         <el-rate
@@ -89,12 +87,12 @@
       </el-form-item>
     </el-form>
 
-    <mall-goods
+    <mall-goods-copy
       :goodsShow="goodsShow"
       @changeDig="changeDig"
       @sureGood="sureGood"
       :isEvaluate="true"
-    ></mall-goods>
+    ></mall-goods-copy>
   </div>
 </template>
 
@@ -103,10 +101,11 @@ import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import mallGoods from "@/components/Dialog/mallGoods";
 import { optionLeves, optionsType } from "@/config/utils";
+import MallGoodsCopy from '@/components/Dialog/mallGoodsCopy.vue';
 
 export default {
   name: "evaluateInfo",
-  components: { imgLoad, mallGoods },
+  components: { imgLoad, mallGoods,MallGoodsCopy },
   data() {
     return {
       loading: false,
@@ -124,7 +123,7 @@ export default {
         Type: [
           { required: true, message: "请选择评价类型", trigger: "change" }
         ],
-        GoodsId: [{ required: true, message: "请选择商品ID", trigger: "blur" }],
+        Name: [{ required: true, message: "请选择商品", trigger: "blur" }],
         Details: [{ required: true, message: "请填写评价", trigger: "blur" }]
       },
       goodsShow: false
@@ -223,7 +222,8 @@ export default {
       this.goodsShow = bool;
     },
     sureGood(row) {
-      this.form.GoodsId = row.SID;
+      this.form.GoodsSID = row.SID;
+      this.form.Name = row.Name;
     }
   }
 };
