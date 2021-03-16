@@ -10,18 +10,9 @@
                          :value="item.value">
                     </el-option>
                     </el-select>
-               </el-form-item>               
-               <!-- <el-form-item label="平台编号：" prop="BusinessID">
-               <el-input v-model="form.BusinessID"></el-input>
                </el-form-item>
-               <el-form-item label="分组编号：" prop="GroupID">
-               <el-input v-model="form.GroupID"></el-input>
-               </el-form-item>
-               <el-form-item label="专业编号：" prop="SpecialID">
-               <el-input v-model="form.SpecialID"></el-input>
-               </el-form-item> -->
                <el-form-item label="客服链接：" prop="CsrUrl">
-                    <el-input v-model="form.CsrUrl"></el-input>
+                    <el-input v-model="form.CsrUrl" maxlength="200"></el-input>
                </el-form-item>
                <el-form-item label="是否开启" prop="Start">
                     <el-radio v-model="form.Start" label="0">关闭</el-radio>
@@ -97,6 +88,10 @@ export default {
           async preserveFun(){
                let obj = {Action: "SetCSRInfo"};
                Object.assign(obj, this.form);
+               if(obj.CsrUrl == ''){
+                    this.$message.error('链接不能为空')
+                    return false
+               }
                if(obj.Img){
                obj.Img = obj.Img.indexOf(process.env.Prefix) !== -1
                          ? obj.Img.replace(process.env.Prefix, "")

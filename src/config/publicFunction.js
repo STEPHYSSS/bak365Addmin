@@ -111,8 +111,9 @@ export function GetQueryString(name) {
 }
 export function GetAppNo() {
   if(window.location.hostname == "localhost"){
-    let AppNo='wx8d4708e1e9895e87';
-    Cookies.set('AppNo','wx8d4708e1e9895e87')
+    let AppNo='wx8d4708e1e9895e87';//本地测试
+    // let AppNo = 'wx93845e0d72e5a025'//阿芒迪麦
+    Cookies.set('AppNo',AppNo)
     sessionStorage.setItem('AppNo',AppNo)
     return AppNo;
   }else{
@@ -124,9 +125,11 @@ export function GetAppNo() {
 }
 export function GetBaseImgUrl() {//获取当前图片url     
   if(window.location.hostname == "localhost" ){
-    return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
+    // return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
+    return 'http://'+GetAppNo()+'.manage.bak365.cn/WebApp/';
   }else if( window.location.hostname == "wx8d4708e1e9895e87.manage.bak365.cn" ){
-     return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
+    //  return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp/';
+    return 'http://'+GetAppNo()+'.manage.bak365.cn/WebApp/';
   }else{
      return 'http://'+window.location.hostname+'/WebApp/';
   }

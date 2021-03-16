@@ -80,7 +80,7 @@ export default {
         msg3 = `<p>销售订单申请退款数量：${this.Summary.SummaryApplyRefCnt}，请前往<span class="four" style="color:#0066ff;cursor:pointer">查看</span></p>`;
       }
       let Msg = msg + msg1 + msg2 + msg3;
-      let  notify ;
+      let notify ;
       if(Msg!=''){
         notify = this.$notify({
           title: "通知消息",

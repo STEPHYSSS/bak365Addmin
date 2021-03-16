@@ -8,20 +8,6 @@
         <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
         <el-button size="small" type="primary" style="margin-left:10px;margin-top:10px" @click="modifyCateFun">添加/修改 类别</el-button>
       </el-col>
-      <!-- <el-col :span="17">        
-        <div style="margin-top:5px">
-          名称：<el-input v-model="search.Name" clearable @clear="clearName" placeholder="请输入商品名称" class="widthW"></el-input>
-          编号：<el-input v-model="search.ProdNo" clearable @clear="clearName" placeholder="请输入商品编号" class="widthW"></el-input>
-          类别：<goodType style="display: inline-block" @changeGoodType="changeGoodType" :multiple="false" placeholderProp="请选择商品类别" class="widthW"></goodType>
-          类型：<el-select v-model="search.ProdType" placeholder="请选择商品类型" class="widthW">
-                  <el-option v-for="item in ProdTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-          规格：<el-select v-model="search.SpecType" placeholder="请选择商品规格" class="widthW">
-                  <el-option v-for="item in SpecTypeList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-          <el-button slot="append" @click="searchName">查询</el-button>
-        </div>
-      </el-col> -->
     </el-row>
     <el-row v-if="currentGoods" class="showStopGood">
       <el-col :span="4">
@@ -47,8 +33,10 @@
         <el-button  @click="searchName">查询</el-button>
       </el-col>
     </el-row>
-
+    <!-- <el-button @click="batch" :disabled="multipleSelection.length=='0'" class="marbtn">批量上架</el-button> -->
+     <!-- tooltip-effect="dark" ref="multipleTable" @selection-change="handleSelectionChange" -->
     <el-table :data="data" v-loading="loading" style="width: 100%;">
+      <!-- <el-table-column type="selection" width="55"></el-table-column> -->
       <el-table-column label="商品名称" width="260" align="center">
         <template slot-scope="scoped">
           <el-row>
@@ -83,8 +71,7 @@
       </el-table-column>
       <el-table-column label="下架" align="center">
         <template slot-scope="scoped">
-          <el-switch v-model="scoped.row.State" active-text="上架" inactive-text="下架" :disabled="isDisabled" @change="changeEnable($event,scoped.row)"></el-switch>
-          <!-- <el-checkbox v-model="scoped.row.State" @change="changeEnable($event,scoped.row)"></el-checkbox> -->
+          <el-switch v-model="scoped.row.State" active-text="上架" inactive-text="下架" :disabled="isDisabled" @change="changeEnable($event,scoped.row)"></el-switch>         
         </template>
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
@@ -189,6 +176,9 @@ export default {
       current_SID: "",
       
       data: [],
+      multipleSelection:[],//多选
+      splitSID:'',//多选id
+      State:'',
       ProdTypeList: [
         {
           value: '0',
@@ -230,7 +220,7 @@ export default {
       return this.$route.path === "/weChat/manager/goodSetting";
     }
   },
-  methods: {
+  methods: {    
     handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -295,6 +285,7 @@ export default {
             SID:val.SID
           }, "MProdOpera")
         console.log(data,'888')
+        this.$message.success(data.Message);
       } catch (e) {
         this.$message.error(e)
       }
@@ -304,7 +295,7 @@ export default {
 				setTimeout(() => {
 				  this.isDisabled = false;
 				}, 1000)
-      // 是否启用 bool = true 为下架
+      // 是否启用 bool = true 为下架 SetProdState上/下架
       let State = bool === true ? 1 : 0;
       try {
         let httpApi = this.currentGoods ? "SetProdState" : "SetSaleState";
@@ -321,6 +312,40 @@ export default {
         this.$message.error(e);
       }
     },
+    // async batch(){//批量上架
+    //   this.multipleSelection.forEach((item,index)=>{
+    //     // splitSID
+    //     this.splitSID+=item.SID+','
+    //     this.State = item.State
+    //   })
+    //   let SID = this.splitSID.substr(0,this.splitSID.length-1)
+    //   let State = '';
+    //   console.log(this.splitSID,State)
+    //   if(this.State == '1'){
+    //     State = '0'
+    //   }else if(this.State == '0'){
+    //     State = '1'
+    //   }
+    //   try {
+    //     let data = await getLists(
+    //       {
+    //         Action: "SetProdState",
+    //         State:State,
+    //         SID:SID
+    //       }, "MProdOpera")
+    //       console.log(data,'kandaying')
+    //     this.$message.success(data.Message);
+    //     setTimeout(() => {
+    //       this.getList()
+    //     }, 500);
+    //   } catch (e) {
+    //     this.$message.error(e)
+    //   }
+    // },
+    // handleSelectionChange(val) {
+    //   this.multipleSelection = val;      
+    //   console.log(this.multipleSelection,'66666')
+    // },
     searchName() {// 名称搜索
       // this.page.current_page = 1;
       this.getList();
@@ -441,7 +466,9 @@ export default {
 
 <style lang="less">
 @import "../../../assets/css/index.less";
-
+.marbtn{
+  margin-bottom: 20px;
+}
 .container-fluid {
   min-width: 1035px;
 }

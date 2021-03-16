@@ -107,8 +107,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="活动时间段" prop="activeTime">
-        <el-time-picker type="fixed-time" placeholder="起始时间" @change = "changeStartTime" value-format="HH:ss:mm" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
-        <el-time-picker type="fixed-time" placeholder="结束时间" @change = "changeStartTime" value-format="HH:ss:mm" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
+        <el-time-picker type="fixed-time" placeholder="起始时间" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
+        <el-time-picker type="fixed-time" placeholder="结束时间" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
       </el-form-item>
       <el-form-item label="选择星期">
          <el-checkbox :indeterminate="isIndeterminateWeeks" v-model="checkAllWeeks"
@@ -395,7 +395,7 @@ export default {
             StoreQty: item.StoreQty,
             // SurplusQty:item.SurplusQty,
             SurplusQty:item.SurplusQty,
-            MaxBuyCnt:'1',//限购数量
+            MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
             ProdSID: item.ProdSID,
             SpecSID: item.SpecSID,
             ProdNo: item.ProdNo,
@@ -414,7 +414,7 @@ export default {
             StoreQty: item.StoreQty,
             // SurplusQty:item.SurplusQty,
             SurplusQty:item.StoreQty,
-            MaxBuyCnt:'1',//限购数量
+            MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
             ProdSID: item.ProdSID,
             SpecSID: item.SpecSID,
             ProdNo: item.ProdNo,
@@ -512,7 +512,7 @@ export default {
                 StoreQty: item.StoreQty,
                 SurplusQty:item.SurplusQty,
                 // SurplusQty:item.StoreQty,
-                MaxBuyCnt:'1',//限购数量
+                MaxBuyCnt:item.MaxBuyCnt,//限购数量
                 ProdSID: item.ProdSID,
                 SpecSID: item.SpecSID,
                 ProdNo: item.ProdNo,
@@ -532,7 +532,7 @@ export default {
                 StoreQty: item.StoreQty,
                 // SurplusQty:item.SurplusQty,
                 SurplusQty:item.StoreQty,
-                MaxBuyCnt:'1',//限购数量
+                MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
                 ProdSID: item.ProdSID,
                 SpecSID: item.SpecSID,
                 ProdNo: item.ProdNo,

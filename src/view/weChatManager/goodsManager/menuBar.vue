@@ -269,7 +269,8 @@ export default {
     }catch(e){
       this.loading = false
       this.navigationList = []
-      this.$message.error(typeof e === 'string'?e:'信息获取失败')
+      this.$message.error(e)
+      // this.$message.error(typeof e === 'string'?e:'信息获取失败')
     }
     this.ruleForm = {
       arr: this.navigationList

@@ -47,7 +47,8 @@ axios.interceptors.response.use(
     // console.log(error.search('Error:') ,55)
     let errors = ''
     if (error.toString().search('TypeError') || error.toString().search('500')) {
-      errors = '获取请求失败'
+      // errors = '获取请求失败'
+      errors = 'Error: Request failed with status code 500'
     } else {
       errors = error
     }

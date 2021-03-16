@@ -90,13 +90,16 @@ export default {
         if (typeof this.form.ApplyMsg === 'string' && this.form.ApplyMsg) {
           this.form.ApplyMsg = this.form.ApplyMsg.split(',')
         }
-        setTimeout(() => {
-          let Explain = $.base64.atob( this.form.Explain, "utf8");//说明
-          // console.log(Explain)
-          this.$refs.ueditorDom.setUEContent(Explain);
-          let tiaokuan = $.base64.atob( this.form.Clause, "utf8");//条款
-          this.$refs.ueditorClause.setUEContent(tiaokuan);
-        }, 1000);
+        if(this.form.Explain||this.form.Clause){
+          setTimeout(() => {
+            let Explain = $.base64.atob( this.form.Explain, "utf8");//说明
+            // console.log(Explain)
+            this.$refs.ueditorDom.setUEContent(Explain);
+            let tiaokuan = $.base64.atob( this.form.Clause, "utf8");//条款
+            this.$refs.ueditorClause.setUEContent(tiaokuan);
+          }, 1000);
+        }
+       
         // if (this.form.TypeNo) {
         //   this.$refs.cardCategory.value = this.form.TypeNo
         // }        
@@ -127,7 +130,7 @@ export default {
       let tiaokuan = this.$refs.ueditorClause.getUEContent();
       let Explain = this.$refs.ueditorDom.getUEContent();
       newForm.Clause = $.base64.btoa(tiaokuan,"utf8");
-      newForm.Clause = $.base64.btoa(Explain,"utf8");
+      newForm.Explain = $.base64.btoa(Explain,"utf8");
       if (newForm.ApplyMsg) {
         newForm.ApplyMsg = newForm.ApplyMsg.join(',')
       }

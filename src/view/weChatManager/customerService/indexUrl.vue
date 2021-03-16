@@ -32,7 +32,9 @@ export default {
                     { Action: "GetBase",Type: '4'},
                     "MShopOpera"
                );
-               this.form = Data.ShopBase.SetInfo;
+               if(Data.ShopBase.SetInfo){
+                    this.form = Data.ShopBase.SetInfo;
+               }
                } catch (e) {
                     this.$message.error(e);
                }

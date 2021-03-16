@@ -59,6 +59,10 @@
             <el-radio v-model="form.IsOpenRecharge" label="0">关闭</el-radio>
             <el-radio v-model="form.IsOpenRecharge" label="1">开启</el-radio>
           </el-form-item>
+          <el-form-item label="会员支付密码">
+            <el-radio v-model="form.IsCardPass" label="0">关闭</el-radio>
+            <el-radio v-model="form.IsCardPass" label="1">开启</el-radio>
+          </el-form-item>
           <!-- <el-form-item label="支付方式">
             <el-checkbox-group v-model="form.BenePayMode">
               <el-checkbox label="1">微卡支付</el-checkbox>
@@ -151,6 +155,7 @@ export default {
       form: {
         ShopRadio:"1",
         IsOpenRecharge:'1',//自定义充值
+        IsCardPass:'0',
         // BenePayMode: ["1", "2"],//权益
         ScopeDay:'7',
         StartTime:'',

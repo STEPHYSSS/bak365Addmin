@@ -165,14 +165,15 @@ export default {
         msg1 = `<p>充值订单待支付数量：${this.RechargeInfo.UnpaidCnt}，请前往<span class="two" style="color:#0066ff;cursor:pointer">查看</span></p>`;
       }
       if (Number(this.MemberInfo.NetCnt) > 0) {
-        msg2 = `<p>申请微卡数量：${this.MemberInfo.NetCnt}，请前往<span class="three" style="color:#0066ff;cursor:pointer">查看</span></p>`;
+        msg2 = `<p>申请微卡数量：${this.MemberInfo.NetCnt}，请前往<span class="card" style="color:#0066ff;cursor:pointer">查看</span></p>`;
       }
       if (Number(this.Summary.SummaryApplyRefCnt) > 0) {
         msg3 = `<p>销售订单申请退款数量：${this.Summary.SummaryApplyRefCnt}，请前往<span class="four" style="color:#0066ff;cursor:pointer">查看</span></p>`;
-      }
+      }      
       let Msg = msg + msg1 + msg2 + msg3;
+      let notify ;
       if(Msg!=''){
-        const notify = this.$notify({
+        notify = this.$notify({
           title: "通知消息",
           dangerouslyUseHTMLString: true,
           message: Msg,
@@ -180,7 +181,6 @@ export default {
           duration: 60000,
         });
       }
-      
       if (msg != "") {
         notify.$el.querySelector(".one").onclick = () => {
           //销售订单待支付
@@ -202,7 +202,7 @@ export default {
         };
       }
       if (msg3 != "") {
-        notify.$el.querySelector(".three").onclick = () => {
+        notify.$el.querySelector(".card").onclick = () => {
           //会员卡
           this.$router.push({ path: "/weChat/manager/menmberShipList" });
         };

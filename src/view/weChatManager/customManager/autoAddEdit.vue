@@ -117,6 +117,12 @@ import linkedLinks from "@/components/autoComponents/linkedLinks";
 import linkedLinksFun from "@/components/autoComponents/linkedLinks/setIndex";
 import titleBox from "@/components/autoComponents/titleBox";
 import titleBoxFun from "@/components/autoComponents/titleBox/setIndex";
+import groupActivity from "@/components/autoComponents/groupActivity";//拼团入口
+import groupActivityFun from "@/components/autoComponents/groupActivity/setIndex";//拼团入口
+import seckill from "@/components/autoComponents/seckill";//秒杀
+import seckillFun from "@/components/autoComponents/seckill/setIndex";//秒杀
+import interests from "@/components/autoComponents/interests";//权益
+import interestsFun from "@/components/autoComponents/interests/setIndex";//权益
 import imgNav from "@/components/autoComponents/imgNav";
 import imgNavFun from "@/components/autoComponents/imgNav/setIndex";
 import magicCube from "@/components/autoComponents/magicCube";
@@ -131,6 +137,7 @@ import goodGroup from "@/components/autoComponents/goodsGroup/";
 import goodGroupFun from "@/components/autoComponents/goodsGroup/setIndex";
 import draggable from "vuedraggable";
 export default {
+  inject:['reload'],
   name: "HelloWorld",
   components: {
     shopinfoma,
@@ -155,6 +162,12 @@ export default {
     linkedLinksFun,
     titleBox,
     titleBoxFun,
+    groupActivity,
+    groupActivityFun,
+    seckill,
+    seckillFun,
+    interests,
+    interestsFun,
     imgNav,
     imgNavFun,
     magicCube,
@@ -167,7 +180,8 @@ export default {
     richTextFun,
     goodGroup,
     goodGroupFun,
-    draggable
+    draggable,
+
   },
   data() {
     return {
@@ -199,23 +213,24 @@ export default {
             { id: 17, name: "文本", viewComponets: "textBox" },
             // linkedLinks
             // { id: 18, name: "关联链接", viewComponets: "" },
-            { id: 19, name: "标题", viewComponets: "titleBox" }
+            { id: 19, name: "标题", viewComponets: "titleBox" },
           ]
         },
         {
-          // id: 2,
-          // name: "营销组件",
-          // list: [
-          //   { id: 21, name: "优惠券" },
-          //   { id: 22, name: "拼团" },
-          //   { id: 23, name: "周期购" },
-          //   { id: 24, name: "限时折扣" },
-          //   { id: 25, name: "秒杀" },
-          //   { id: 26, name: "知识内容" },
-          //   { id: 27, name: "知识专栏" },
-          //   { id: 28, name: "积分商城" },
-          //   { id: 29, name: "个性化推荐" }
-          // ]
+          id: 2,
+          name: "营销组件",
+          list: [
+            // { id: 21, name: "优惠券" },
+            { id: 22, name: "拼团",viewComponets:'groupActivity' },
+            // { id: 23, name: "周期购" },
+            // { id: 24, name: "限时折扣" },
+            { id: 25, name: "秒杀" ,viewComponets: "seckill" },
+            { id: 26, name: "会员权益" ,viewComponets: "interests" },
+            // { id: 26, name: "知识内容" },
+            // { id: 27, name: "知识专栏" },
+            // { id: 28, name: "积分商城" },
+            // { id: 29, name: "个性化推荐" }
+          ]
         },
         {
           id: 3,
@@ -257,8 +272,8 @@ export default {
   updated() {},
   methods: {
     getdata (evt) {
-      console.log(evt)
-      console.log(evt.draggedContext.element.props)
+      // console.log(evt)
+      // console.log(evt.draggedContext.element.props)
     },
 
     findModeKay(arr,key){
@@ -321,7 +336,7 @@ export default {
 
      for(let kay in autoArr) {
         let D = autoArr[kay];
-        console.log(D)
+        // console.log(D)
         if (D._data && D._data instanceof Array) {
           //商品data
           D._data = D._data.join(",");
@@ -334,6 +349,7 @@ export default {
           let contentRichStr = replacePre(contentRichObj, "img");
           D.contentRich = $.base64.btoa(contentRichStr, "utf8");
         }
+        // console.log(D.contentRich)
         // this.findModeKay(arr,kay).props = D;
       };
 
@@ -353,11 +369,12 @@ export default {
                 Name: this.ruleForm.name,
                 SID: this.ruleForm.SID,
                 IsDefault: this.ruleForm.IsDefault,
-                Type:'2'
+                Type:'0'
               },
               "MShopOpera"
             );
             this.$message.success("操作成功");
+            this.reload();
             this.loadingBtn = false;
           } catch (e) {
             this.$message.error(e);
@@ -398,6 +415,7 @@ export default {
       this.$set(itemChild,"key",key);
 
       this.setHeight();
+      
       let temp = JSON.parse(JSON.stringify(itemChild));
       this.currentModeArr.push(temp);
       this.currentIndexCot = key;
@@ -457,7 +475,8 @@ export default {
       }
     },
     cancelFun() {
-      this.$router.push("/weChat/manager/custom/customList");
+      // this.$router.push("/weChat/manager/custom/homeIndex");
+      this.$router.push("/weChat/manager/custom/customAutoPage");  
     }
   }
 };

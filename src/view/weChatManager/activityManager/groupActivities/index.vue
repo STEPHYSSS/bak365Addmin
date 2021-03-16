@@ -323,7 +323,7 @@ export default {
             StoreQty: item.StoreQty,
             // SurplusQty:item.SurplusQty,
             SurplusQty:item.SurplusQty,
-            MaxBuyCnt:'1',//限购数量
+            MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
             ProdSID: item.ProdSID,
             SpecSID: item.SpecSID,
             ProdNo: item.ProdNo,
@@ -342,7 +342,7 @@ export default {
             StoreQty: item.StoreQty,
             // SurplusQty:item.SurplusQty,
             SurplusQty:item.StoreQty,
-            MaxBuyCnt:'1',//限购数量
+            MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
             ProdSID: item.ProdSID,
             SpecSID: item.SpecSID,
             ProdNo: item.ProdNo,
@@ -407,7 +407,7 @@ export default {
                 StoreQty: item.StoreQty,
                 SurplusQty:item.SurplusQty,
                 // SurplusQty:item.StoreQty,
-                MaxBuyCnt:'1',//限购数量
+                MaxBuyCnt:item.MaxBuyCnt,//限购数量
                 ProdSID: item.ProdSID,
                 SpecSID: item.SpecSID,
                 ProdNo: item.ProdNo,
@@ -427,7 +427,7 @@ export default {
                 StoreQty: item.StoreQty,
                 // SurplusQty:item.SurplusQty,
                 SurplusQty:item.StoreQty,
-                MaxBuyCnt:'1',//限购数量
+                MaxBuyCnt:item.MaxBuyCnt?item.MaxBuyCnt:'1',//限购数量
                 ProdSID: item.ProdSID,
                 SpecSID: item.SpecSID,
                 ProdNo: item.ProdNo,
