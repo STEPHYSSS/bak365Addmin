@@ -28,7 +28,7 @@ export const bindList = [
 ]
 
 export const optionLeves = [
-  { name: '一级显示', leves: '1' }, { name: '二级显示', leves: '2' }, { name: '顶级显示', leves: '3' }
+  { name: '默认', leves: '0' }, { name: '一级显示', leves: '1' }, { name: '二级显示', leves: '2' }, { name: '顶级显示', leves: '3' }
 ]
 
 export const optionsType = [

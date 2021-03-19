@@ -67,7 +67,7 @@
           <div>{{ scoped.row.Name }}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="UserID" label="操作人ID" align="center">
+      <el-table-column prop="UserName" label="操作人" align="center">
       </el-table-column>
       <el-table-column prop="OrderSID" label="订单ID" align="center">
         <template slot-scope="scoped">

@@ -257,7 +257,8 @@ export default {
               TempText: item.TempText.replace(/\|/g, '\n'),
               TextType: item.TextType,
               Type: item.Type,
-              WeChatNo: item.WeChatNo
+              WeChatNo: item.WeChatNo,
+              SID:item.SID
             }
           })
           // console.log(this.$refs.temNotice.ruleForm,'111111')

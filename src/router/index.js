@@ -559,13 +559,13 @@ export const asyncRouterMap = [{
                         },
                         component: satisfyAddEdit
                     },
-                    // {//Act_SuctionPowder Act_addEdit
-                    //   path:"Act_SuctionPowder",
-                    //   meta:{
-                    //     label:'全民吸粉'
-                    //   },
-                    //   component:Act_SuctionPowder
-                    // },
+                    {//Act_SuctionPowder Act_addEdit
+                      path:"Act_SuctionPowder",
+                      meta:{
+                        label:'全民吸粉'
+                      },
+                      component:Act_SuctionPowder
+                    },
                     {
                         path: "Act_addEdit",
                         isHidden: true,

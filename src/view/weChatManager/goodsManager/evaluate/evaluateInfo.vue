@@ -36,9 +36,9 @@
           <span v-if="form.Details">{{form.Details}}</span>
           <br />
           <!-- <div v-if="form.ImgList.length>0"> -->
-          <div class="DetailsImg" v-for="img in form.ImgList" :key="img">
+          <!-- <div class="DetailsImg" v-for="img in form.ImgList" :key="img">
             <img :src="setImg(img)" alt onclick="window.open()" />
-          </div>
+          </div> -->
           <!-- </div> -->
         </div>
         <div v-else>

@@ -166,8 +166,8 @@ Vue.filter('PromType',(val)=>{
                return '用户申请卡'
           }else if(val==='2'){
                return '用户绑定卡'
-          }else{
-               return ''
+          }else if(val==='3'){
+               return '用户评价'
           }
      }else{
           return ''

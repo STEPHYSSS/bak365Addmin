@@ -154,59 +154,59 @@ export default {
       this.RechargeInfo = data.Data.RechargeInfo ? data.Data.RechargeInfo : {};
       this.Summary = data.Data.Summary ? data.Data.Summary : {};
       this.MemberInfo = data.Data.MemberInfo ? data.Data.MemberInfo : {};
-      let msg = "",
-        msg1 = "",
-        msg2 = "",
-        msg3 = "";
-      if (Number(this.OrderInfo.UnpaidCnt) > 0) {
-        msg = `<p>销售订单待支付数量：${this.OrderInfo.UnpaidCnt}，请前往<span class="one" style="color:#0066ff;cursor:pointer">查看</span></p>`;
-      }
-      if (Number(this.RechargeInfo.UnpaidCnt) > 0) {
-        msg1 = `<p>充值订单待支付数量：${this.RechargeInfo.UnpaidCnt}，请前往<span class="two" style="color:#0066ff;cursor:pointer">查看</span></p>`;
-      }
-      if (Number(this.MemberInfo.NetCnt) > 0) {
-        msg2 = `<p>申请微卡数量：${this.MemberInfo.NetCnt}，请前往<span class="card" style="color:#0066ff;cursor:pointer">查看</span></p>`;
-      }
-      if (Number(this.Summary.SummaryApplyRefCnt) > 0) {
-        msg3 = `<p>销售订单申请退款数量：${this.Summary.SummaryApplyRefCnt}，请前往<span class="four" style="color:#0066ff;cursor:pointer">查看</span></p>`;
-      }      
-      let Msg = msg + msg1 + msg2 + msg3;
-      let notify ;
-      if(Msg!=''){
-        notify = this.$notify({
-          title: "通知消息",
-          dangerouslyUseHTMLString: true,
-          message: Msg,
-          position: "bottom-right",
-          duration: 60000,
-        });
-      }
-      if (msg != "") {
-        notify.$el.querySelector(".one").onclick = () => {
-          //销售订单待支付
-          this.$router.push({ path: "/weChat/manager/orderList/index" });
-        };
-      }
-      if (msg1 != "") {
-        notify.$el.querySelector(".two").onclick = () => {
-          //充值订单待支付
-          this.$router.push({ path: "/weChat/manager/orderList/wellFuIndex" });
-        };
-      }
-      if (msg2 != "") {
-        notify.$el.querySelector(".four").onclick = () => {
-          //退款
-          this.$router.push({
-            path: "/weChat/manager/RefundManage/orderRefund",
-          });
-        };
-      }
-      if (msg3 != "") {
-        notify.$el.querySelector(".card").onclick = () => {
-          //会员卡
-          this.$router.push({ path: "/weChat/manager/menmberShipList" });
-        };
-      }
+      // let msg = "",
+      //   msg1 = "",
+      //   msg2 = "",
+      //   msg3 = "";
+      // if (Number(this.OrderInfo.UnpaidCnt) > 0) {
+      //   msg = `<p>销售订单待支付数量：${this.OrderInfo.UnpaidCnt}，请前往<span class="one" style="color:#0066ff;cursor:pointer">查看</span></p>`;
+      // }
+      // if (Number(this.RechargeInfo.UnpaidCnt) > 0) {
+      //   msg1 = `<p>充值订单待支付数量：${this.RechargeInfo.UnpaidCnt}，请前往<span class="two" style="color:#0066ff;cursor:pointer">查看</span></p>`;
+      // }
+      // if (Number(this.MemberInfo.NetCnt) > 0) {
+      //   msg2 = `<p>申请微卡数量：${this.MemberInfo.NetCnt}，请前往<span class="card" style="color:#0066ff;cursor:pointer">查看</span></p>`;
+      // }
+      // if (Number(this.Summary.SummaryApplyRefCnt) > 0) {
+      //   msg3 = `<p>销售订单申请退款数量：${this.Summary.SummaryApplyRefCnt}，请前往<span class="four" style="color:#0066ff;cursor:pointer">查看</span></p>`;
+      // }      
+      // let Msg = msg + msg1 + msg2 + msg3;
+      // let notify ;
+      // if(Msg!=''){
+      //   notify = this.$notify({
+      //     title: "通知消息",
+      //     dangerouslyUseHTMLString: true,
+      //     message: Msg,
+      //     position: "bottom-right",
+      //     duration: 60000,
+      //   });
+      // }
+      // if (msg != "") {
+      //   notify.$el.querySelector(".one").onclick = () => {
+      //     //销售订单待支付
+      //     this.$router.push({ path: "/weChat/manager/orderList/index" });
+      //   };
+      // }
+      // if (msg1 != "") {
+      //   notify.$el.querySelector(".two").onclick = () => {
+      //     //充值订单待支付
+      //     this.$router.push({ path: "/weChat/manager/orderList/wellFuIndex" });
+      //   };
+      // }
+      // if (msg2 != "") {
+      //   notify.$el.querySelector(".four").onclick = () => {
+      //     //退款
+      //     this.$router.push({
+      //       path: "/weChat/manager/RefundManage/orderRefund",
+      //     });
+      //   };
+      // }
+      // if (msg3 != "") {
+      //   notify.$el.querySelector(".card").onclick = () => {
+      //     //会员卡
+      //     this.$router.push({ path: "/weChat/manager/menmberShipList" });
+      //   };
+      // }
     },
   },
 };
@@ -217,8 +217,16 @@ export default {
     background: #fff;
     padding: 20px;
     height: 77vh;
-    .summary,.orderInfo,.RechargeInfo,.memberInfo {
-    
-    }
+  }
+  .summary,
+  .orderInfo,
+  .RechargeInfo,
+  .memberInfo{
+    margin-bottom: 15px;
+    // font-size: 16px;
+  }
+  p{
+    margin-bottom: 15px;
+    font-size: 16px;
   }
 </style>

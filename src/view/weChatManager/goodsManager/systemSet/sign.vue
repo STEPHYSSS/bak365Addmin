@@ -25,7 +25,6 @@
                <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket(index)" >添加</el-button>
           </el-form-item>
           <p class="addInfo"><el-button @click.prevent="removeDomain(index)">删除</el-button></p>
-          
      </div>
      <p @click="addDomain" class="addInfo">增加一条</p>
       <!-- 增加一条结束 -->
@@ -33,7 +32,7 @@
           <el-input type="textarea" v-model="ruleForm.Explain" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
           </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
       </el-form-item>
     </el-form>
     <satisfyTicket :info="info" :info2 = "info2" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
@@ -52,7 +51,7 @@ export default {
     return {
      ruleForm: {
       SID:'',
-      Score:'',//每次签到积分数
+      Score:'1',//每次签到积分数
       Explain:'',
       GiveList:[]//签到赠送
      },
@@ -150,6 +149,10 @@ export default {
       //   alert(error)
       //   this.$message.error(error)
       // }
+      if(this.ruleForm.Score==''){
+        this.$message.error('签到积分不能为空')
+          return false;
+      }
       for (const i of giveList) {
         if(i.MeetCnt == ''){          
           this.$message.error('连续签到天数不能为空')
