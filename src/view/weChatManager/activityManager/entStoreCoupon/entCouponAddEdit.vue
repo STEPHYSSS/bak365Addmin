@@ -54,14 +54,16 @@
       </el-form-item> -->
       <el-form-item label="发放总量">
         <el-input-number v-model="form.GiveCnt" :min="1" controls-position="right"></el-input-number
-        >，每人最多参与 <el-input-number
+        >
+      </el-form-item>
+      <el-form-item label="每人最多参与">
+         <el-input-number
           v-model="form.LimitCnt"
           controls-position="right"
           :min="1"
         ></el-input-number>
         次
       </el-form-item>
-
       <!-- <el-form-item label="模板ID">
         <el-input v-model="TemplateInfo.WeChatNo"></el-input>
       </el-form-item>
@@ -146,7 +148,7 @@ export default {
         GiveMoney: "",
         GiveScore: "",
         GiveCnt: "",
-        LimitCnt: "",
+        LimitCnt: "1",
       },
       // TemplateInfo: {
       //   WeChatNo: "",

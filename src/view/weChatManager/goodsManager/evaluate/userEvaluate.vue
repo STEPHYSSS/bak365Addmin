@@ -69,12 +69,12 @@
       </el-table-column>
       <el-table-column prop="UserName" label="操作人" align="center">
       </el-table-column>
-      <el-table-column prop="OrderSID" label="订单ID" align="center">
+      <!-- <el-table-column prop="OrderSID" label="订单ID" align="center">
         <template slot-scope="scoped">
           <div v-if="scoped.row.OrderSID">{{ scoped.row.OrderSID }}</div>
           <div v-else>--</div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column width="180" label="星级" align="center">
         <template slot-scope="scoped">
           <el-rate v-model="scoped.row.StarClass" disabled text-color="#ff9900">

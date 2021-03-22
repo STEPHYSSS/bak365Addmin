@@ -42,8 +42,8 @@
                     <el-form-item :key="index + 1"  :prop="'GiveList.' + index + '.Name'" label="奖品名称">
                          <el-input v-model="item.Name" class="inputwith"></el-input>
                     </el-form-item>
-                    <el-form-item :key="index + 2"  :prop="'GiveList.' + index + '.GiveCnt'" label="奖品数量">
-                         <el-input v-model="item.GiveCnt" class="inputwith" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input> 个
+                    <el-form-item :key="index + 2"  :prop="'GiveList.' + index + '.GiveCnt'" label="发放总量">
+                         <el-input v-model="item.GiveCnt" class="inputwith" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input> 
                     </el-form-item>
                     <el-form-item :key="index + 3"  :prop="'GiveList.' + index + '.MeetCnt'" label="邀请人数">
                          <el-input v-model="item.MeetCnt" class="inputwith" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input> 人
@@ -51,10 +51,10 @@
                     <el-form-item :key="index + 4"  :prop="'GiveList.' + index + '.LimitCnt'" label="每人限领">
                          <el-input v-model="item.LimitCnt" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input> 次
                     </el-form-item>
-                    <el-form-item :key="index + 5"  :prop="'GiveList.' + index + '.GiveScore'" label="送积分：">
-                         <el-input v-model="item.GiveScore" class="inputwith" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input>个积分
+                    <el-form-item :key="index + 5"  :prop="'GiveList.' + index + '.GiveScore'" label="赠送积分：">
+                         <el-input v-model="item.GiveScore" class="inputwith" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"></el-input>
                     </el-form-item>
-                    <el-form-item :key="index + 6"  :prop="'GiveList.' + index + '.GiveInfo'" label="赠送券：">
+                    <el-form-item :key="index + 6"  :prop="'GiveList.' + index + '.GiveInfo'" label="赠送电子券：">
                          <el-input v-model="item.GiveInfo" readonly :disabled="true"></el-input>
                          <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket(index)" >添加</el-button>
                     </el-form-item>
@@ -63,7 +63,7 @@
                <p @click="addDomain" class="addInfo">增加一条</p>
                <p>个性化</p>
                <el-form-item label="背景图片" prop="Img">
-                   <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="ProdImg"></imgLoad>
+                   <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="PromImg"></imgLoad>
                     <span class="tips">(建议:使用自定义背景图片必须按照范例图片制作；大小，位置必须一样
                     二维码尺寸：宽214像素，高214像素
                     二维码位置：距离图片顶部225像素，距离图片左部105像素;格式:JPG,PNG,JPEG)
@@ -84,7 +84,7 @@
 import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import satisfyTicket from "@/components/Dialog/satisfyTicket";
-import { addScroll, ImgList, replacePre,GetBaseImgUrl } from "@/config/publicFunction";
+import {replacePre } from "@/config/publicFunction";
 import _ from "lodash";
 export default {
      name:"xifenAddEdit",     
@@ -98,6 +98,7 @@ export default {
                     TemplateList:[{
                          TempText:"",
                          WeChatNo:"",
+                         Type:'9'
                     }],
                     GiveList:[]//赠送信息
                },
@@ -139,14 +140,21 @@ export default {
                if (data.Data.GiveList) {
                     this.form.GiveList = data.Data.GiveList;
                }
-               if(data.Data.TemplateList){
+               if(data.Data.TemplateList.length>0){
                     this.form.TemplateList=data.Data.TemplateList.map((item,index)=>{
                          return {
                               TempText: item.TempText.replace(/\|/g, '\n'),
                               WeChatNo: item.WeChatNo,
-                              SID:item.SID
+                              SID:item.SID,
+                              Type:item.Type
                          }
                     })
+               }else{
+                    this.form.TemplateList=[{
+                         TempText:"",
+                         WeChatNo:"",
+                         Type:'9'
+                    }]
                }
                
                this.form.Name = data.Data.Promotion.Name;
@@ -161,17 +169,11 @@ export default {
                     data.Data.Promotion.StartDate,
                     data.Data.Promotion.EndDate
                );
-               // if(data.Data.Promotion.Img!=''){
-               //      let imgobj = {
-               //           url:process.env.Prefix+data.Data.Promotion.Img
-               //      }
-               //      let list = []
-               //      this.fileListUpMain = list.push(imgobj)
-               // }else{
-               //      this.fileListUpMain = []
-               // }
                if (data.Data.Promotion) {
-                    this.fileListUp = [{url: process.env.Prefix + data.Data.Promotion.Img}]
+                    this.fileListUp = [{url: process.env.Prefix + data.Data.Promotion.Img}]                    
+                    this.form.Img = this.fileListUp[0].url 
+               }else {
+                    this.fileListUp = []
                }
                
           },
@@ -242,7 +244,11 @@ export default {
                          this.$message.error('请填写赠送方式')
                          return false;
                     }
-               }
+               } 
+               if(this.form.Img==''){
+                    this.$message.error('请上传背景图片')
+                    return false;
+               }             
                try {
                     if (this.PartTime) {
                          this.form.StartDate = this.PartTime[0];
@@ -254,15 +260,18 @@ export default {
                          obj.Start=this.Start;
                          obj.Audit=this.Audit;
                     }
-                    // let TemplateList = [];
-                    // if(this.TemplateList.WeChatNo!=''&&this.TemplateList.Template!=''){
-                         // TemplateList.push(this.TemplateList) 
-                    // }
                     if (obj.Img) {
                          obj.Img = replacePre(obj, 'Img')
-                    }console.log(obj.Img)
-                    obj. PromWhere = this.acType + ',' + this.Key;
-                    obj.TemplateList = JSON.stringify(obj.TemplateList)
+                    }
+                    obj.TemplateList.forEach((item,index)=>{
+                         if(item.TempText==''|| item.WeChatNo==''){
+                              obj.TemplateList = []
+                         }else {
+                              obj.TemplateList = JSON.stringify(obj.TemplateList)
+                         }
+                    })
+
+                    obj. PromWhere = this.acType + ',' + this.Key;                    
                     obj.GiveList  = JSON.stringify(obj.GiveList)
                     obj.Action = "SetPromotionInfo";   
                     obj.Type="9";

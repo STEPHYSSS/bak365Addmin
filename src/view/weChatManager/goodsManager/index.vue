@@ -3,7 +3,7 @@
     <!-- 商品列表 -->
     <el-row class="showStopGood" v-if="currentGoods">
       <el-col style="line-height: 50px;">
-        <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button>
+        <!-- <el-button type="primary" size="small" @click="clickTest">下载商品信息</el-button> -->
         <el-button type="primary" size="small" @click="addGood">添加商品</el-button>
         <el-button type="primary" size="small" @click="AddTiket">添加电子券</el-button>
         <el-button size="small" type="primary" style="margin-left:10px;margin-top:10px" @click="modifyCateFun">添加/修改 类别</el-button>

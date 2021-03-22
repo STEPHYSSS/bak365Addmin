@@ -33,7 +33,8 @@
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
-        <template slot-scope="scoped">         
+        <template slot-scope="scoped">
+          <el-button type="text" @click="countGoods(scoped.row)">统计</el-button>         
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>          
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
@@ -138,6 +139,12 @@ export default {
           } catch (e) {
             this.$message.error(e);
         }
+      },
+      countGoods(row){//统计
+        this.$router.push({          
+          path: "/weChat/manager/activity/Act_Statistics",
+          query: { PromotionSID: row.SID },
+        });
       },
       async changeEnable(row, val) {
       this.current_Status = row.Audit === "1" ? "0" : "1";

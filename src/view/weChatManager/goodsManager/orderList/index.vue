@@ -4,13 +4,13 @@
     <div style="margin-bottom:20px;">
       <el-row :gutter="20">
         <el-col :span="6">
-          <span>订单编号：</span>
-          <el-input placeholder="查询订单编号" v-model="search.ExchNo" class="input-with-select">
+          <span class="spanWidth">商城单号：</span>
+          <el-input placeholder="查询商城单号" v-model="search.ExchNo" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
-        </el-col>
+        </el-col>        
         <el-col :span="6">
-          <span>订单状态：</span>
+          <span class="spanWidth">订单状态：</span>
           <el-select
             v-model="search.State"
             placeholder="请选择订单状态"
@@ -27,7 +27,7 @@
           </el-select>
         </el-col>
         <el-col :span="6">
-          <span>支付类型：</span>
+          <span class="spanWidth">支付类型：</span>
           <el-select
             v-model="search.PayType"
             placeholder="请选择支付类型"
@@ -44,7 +44,7 @@
           </el-select>
         </el-col>
         <el-col :span="6">
-          <span>配送方式：</span>
+          <span class="spanWidth">配送方式：</span>
           <el-select
             v-model="search.DeliveryType"
             placeholder="请选择配送方式"
@@ -63,7 +63,13 @@
       </el-row>
       <el-row :gutter="20">
         <el-col :span="6">
-          <span>开始时间：</span>
+          <span class="spanWidth">微信单号：</span>
+          <el-input placeholder="查询微信单号" v-model="search.SID" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="6">
+          <span class="spanWidth">开始时间：</span>
           <el-date-picker
             v-model="search.StartAddTime"
             type="datetime"
@@ -73,7 +79,7 @@
           </el-date-picker>
         </el-col>
         <el-col :span="6">
-          <span>结束时间：</span>
+          <span class="spanWidth">结束时间：</span>
           <el-date-picker
             v-model="search.EndAddTime"
             type="datetime"
@@ -81,11 +87,13 @@
             value-format="yyyy-MM-dd HH:mm:ss"
             @change="changeTime">
           </el-date-picker>
-        </el-col>
+        </el-col>        
       </el-row>
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
-      <el-table-column prop="ExchNo" label="单号" align="center" width="200px">
+      <el-table-column prop="ExchNo" label="商城单号" align="center" width="200px">
+      </el-table-column>
+      <el-table-column prop="SID" label="微信单号" align="center" width="200px">
       </el-table-column>
       <el-table-column label="订单来源" align="center" width="120"> 
         <template slot-scope="scope">

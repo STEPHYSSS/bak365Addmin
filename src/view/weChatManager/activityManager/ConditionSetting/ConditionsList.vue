@@ -7,7 +7,7 @@
     </div>
     <active-search-box-2 ref="activeSearch" @searchList="searchList"></active-search-box-2>
     <el-table :data="dataTable" v-loading="loading" style="width: 100%">
-      <el-table-column label="方案编号" prop="SID" align="center"></el-table-column>
+      <!-- <el-table-column label="方案编号" prop="SID" align="center"></el-table-column> -->
       <el-table-column label="方案名称" prop="Name" align="center"></el-table-column>
       <el-table-column label="开始时间" prod="StartDate" align="center">
         <template slot-scope="scoped">{{scoped.row.StartDate}}</template>

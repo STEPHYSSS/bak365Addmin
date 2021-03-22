@@ -85,7 +85,6 @@ export default {
           Action:'GetGroupStatistics',
           PromotionSID: this.$route.query.PromotionSID
         },"MPromotionOpera")
-        console.log(res.Data)
         this.dataTable = res.Data.PromotionList||[]
       } catch (error) {
         this.$message.error(error)

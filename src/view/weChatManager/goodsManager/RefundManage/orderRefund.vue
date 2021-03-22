@@ -53,9 +53,15 @@
           </el-date-picker>
         </el-col>
       </el-row>
-      <el-row :gutter="20">        
+      <el-row :gutter="20">  
         <el-col :span="6">
-          <span style="padding-right:10px">结束时间：</span>
+          <span class="spanWidth">微信单号：</span>
+          <el-input placeholder="查询微信单号" v-model="search.SID" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
+          </el-input>
+        </el-col>      
+        <el-col :span="6">
+          <span>结束时间：</span>
           <el-date-picker
             v-model="search.EndRefundTime"
             type="datetime"
@@ -67,12 +73,13 @@
       </el-row>
     </div>
     <el-table :data="dataList" v-loading="loading">
-      <el-table-column prop="ExchNo" label="单号" align="center" width="200"></el-table-column>
-      <el-table-column prop="UserName" label="收货人姓名" align="center" width="160"></el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额" align="center" width="100">
+      <el-table-column prop="ExchNo" label="商城单号" align="center" width="180"></el-table-column>
+      <el-table-column prop="SID" label="微信单号" align="center" width="180"></el-table-column>
+      <el-table-column prop="UserName" label="收货人姓名" align="center" width="120"></el-table-column>
+      <el-table-column prop="PayAmt" label="支付金额" align="center" width="80">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>      
-      <el-table-column prop="PayType" label="支付方式" align="center" width="150">
+      <el-table-column prop="PayType" label="支付方式" align="center" width="100">
          <template slot-scope="scope">{{scope.row.PayType|PayType}}</template>
       </el-table-column>
       <el-table-column label="订单来源" align="center" width="120"> 
@@ -166,7 +173,7 @@ export default {
      },
     async getInfo() {
       try {
-        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',ExchNo:this.search.ExchNo };
+        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',ExchNo:this.search.ExchNo,SID:this.search.SID };
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
         this.TotalList = Data.DataCount;

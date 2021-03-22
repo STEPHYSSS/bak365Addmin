@@ -175,7 +175,9 @@ export default {
           "MMemberOpera"
         );
         this.$message.success('操作成功');
-        this.GetSignIn();
+        setTimeout(() => {
+          this.GetSignIn();
+        }, 200);
       } catch (error) {
          this.$message.error(error)
       }

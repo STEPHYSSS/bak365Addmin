@@ -3,13 +3,19 @@
   <div class="orderList-style">    
     <div style="margin-bottom:20px;">
       <el-row :gutter="20">
-        <el-col :span="8">
-          <span>订单编号：</span>
-          <el-input placeholder="查询订单编号" v-model="search.ExchNo" class="input-with-select">
+        <el-col :span="6">
+          <span>商城单号：</span>
+          <el-input placeholder="查询商城单号" v-model="search.ExchNo" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
+          <span class="spanWidth">微信单号：</span>
+          <el-input placeholder="查询微信单号" v-model="search.SID" class="input-with-select">
+            <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="6">
           <span>订单状态：</span>
           <el-select
             v-model="search.State"
@@ -26,7 +32,7 @@
             ></el-option>
           </el-select>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <span>支付类型：</span>
           <el-select
             v-model="search.PayType"

@@ -68,7 +68,8 @@ const directCouponAddEdit = r => require.ensure([], () => r(require('../view/weC
 const satisfyList = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/satisfy')), 'satisfyList') //满足赠送
 const satisfyAddEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/satisfy/addEdit')), 'satisfyAddEdit') //满足赠送新增编辑
 const Act_SuctionPowder = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet')), 'Act_SuctionPowder') //全民吸粉
-const Act_addEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet/addEdit')), 'Act_addEdit') //满足赠送
+const Act_addEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet/addEdit')), 'Act_addEdit') //全民吸粉新增编辑
+const Act_Statistics = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet/Act_Statistics')), 'Act_Statistics') //全民吸粉统计与详情
     // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage') //自定义首页
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd') //自定义首页编辑
@@ -573,7 +574,14 @@ export const asyncRouterMap = [{
                             label: '全民吸粉'
                         },
                         component: Act_addEdit
-                    }, {
+                    },{
+                        path:"Act_Statistics",
+                        isHidden:true,
+                        meta:{
+                            label:'统计',
+                        },
+                        component:Act_Statistics
+                    },{
                         path: 'ConditionsList',
                         meta: {
                             label: '参与条件设置'
