@@ -132,15 +132,19 @@ Vue.filter('setImgPrex', (val) => {
   } */
 })
 Vue.filter('SetImage',(val) => {     
+     // if (val) {
+     //      return process.env.Prefix + val
+     //      // return process.env.BASE_URL + val; 
+     // } else {
+     //      return '';
+     // }
      if (val) {
-     //      if(window.location.hostname == "localhost" ){
-     //           return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
-     //   }else if( window.location.hostname == "dingtalk.bak365.cn" ){
-     //      return 'http://dingtalk.bak365.cn/WeixinNew/'+ val;
-     //   }else{
-     //      return 'http://'+window.location.hostname+'/WebApp/'+ val;
-     //   }
-          return process.env.BASE_URL + val; 
+          console.log(val,'5555')
+          if(window.location.hostname == "localhost" ){
+               return 'http://192.168.0.19:8001/'+ val;
+          }else{
+               return 'http://'+window.location.hostname+'/WebApp/'+ val;
+          }
      } else {
           return '';
      }
@@ -148,8 +152,6 @@ Vue.filter('SetImage',(val) => {
 Vue.filter('filterImg',(val) => {     
      if (val) {
           if(window.location.hostname == "localhost" ){
-               return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
-          }else if( window.location.hostname == "wx8d4708e1e9895e87.manage.bak365.cn" ){
                return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
           }else{
                return 'http://'+window.location.hostname+'/WebApp/'+ val;

@@ -20,8 +20,8 @@
           <div>
             <p>设置开启条件</p>
             <el-form-item label="分时段开启">
-              <el-time-picker v-model="TimeStart" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker> 至 
-              <el-time-picker v-model="TimeEnd" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker>
+              <el-time-picker v-model="TimeStart" :editable="false" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker> 至 
+              <el-time-picker v-model="TimeEnd" :editable="false" :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="任意时间点" value-format="HH:mm:ss"></el-time-picker>
             </el-form-item>
             <el-form-item label="周几生效">
               <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">

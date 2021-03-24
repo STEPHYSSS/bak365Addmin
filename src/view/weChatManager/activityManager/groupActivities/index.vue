@@ -88,13 +88,13 @@
         <el-input v-model="ruleForm.Name" maxlength="25" placeholder="请填写活动名称"></el-input>
       </el-form-item>
       <el-form-item label="活动日期" prop="activityDate">
-        <el-date-picker v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
+        <el-date-picker :editable="false" v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
         </el-date-picker> - 
-        <el-date-picker v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
+        <el-date-picker :editable="false" v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
         </el-date-picker>
       </el-form-item>      
       <el-form-item label="提货日期" prop="PickDate">
-        <el-date-picker v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
+        <el-date-picker :editable="false" v-model="PickDate" value-format="yyyy-MM-dd HH:mm:ss"
         type="daterange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"></el-date-picker>
       </el-form-item>
       <el-form-item label="团上限" prop="MaxGroupCnt">

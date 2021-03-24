@@ -5,7 +5,7 @@
                     <el-input v-model="form.Name"></el-input>
                </el-form-item>
                <el-form-item label="时间">
-                    <el-date-picker style="width:400px" v-model="PartTime" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间">
+                    <el-date-picker style="width:400px" v-model="PartTime" :editable="false" value-format="yyyy-MM-dd HH:mm:ss" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间">
                     </el-date-picker>
                </el-form-item>
                <p>限制条件</p>
@@ -13,13 +13,15 @@
                     <el-input v-model="Key" maxlength="20"></el-input>
                </el-form-item>
                <el-form-item label="活动类型">
-                    <el-select v-model="acType" placeholder="请选择活动区域">
+                    <el-select v-model="acType" placeholder="请选择活动区域" :disabled="disabled">
                          <el-option label="用户关注" value="0"></el-option>
                          <!-- <el-option label="申请微卡" value="1"></el-option>
                          <el-option label="绑定实体卡" value="2"></el-option> -->
                          <el-option label="邀请充值" value="3"></el-option>
+                         <el-option label="营销推广" value="4"></el-option>
                     </el-select>
                </el-form-item>
+              <div v-if="acType ==0">
                <p>消息通知</p>
                <div v-for="(item) in form.TemplateList" :key="item.SID">
                     <el-form-item label="模板ID">
@@ -61,6 +63,7 @@
                     <p class="addInfo"><el-button @click.prevent="removeDomain(index)">删除</el-button></p>
                </div>
                <p @click="addDomain" class="addInfo">增加一条</p>
+              </div>
                <p>个性化</p>
                <el-form-item label="背景图片" prop="Img">
                    <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="PromImg"></imgLoad>
@@ -113,7 +116,8 @@ export default {
                showTicket: false, //控制电子劵信息弹框显示
                info:[],
                info2:'sign',
-               imgUrl:require("@/assets/img/defaultBerweima.png")
+               imgUrl:require("@/assets/img/defaultBerweima.png"),
+               disabled:false
           }
      },
      components:{
@@ -123,6 +127,7 @@ export default {
      },
      created(){
           if(this.$route.query.SID){
+               this.disabled = true
                this.getInfo();
           }
      },
@@ -235,6 +240,10 @@ export default {
           },
           async preserveFun(){
                let giveList = this.form.GiveList;
+               if(giveList.length==0 && this.acType == 0){
+                   this.$message.error('请添加奖项说明') 
+                   return false;
+               }
                if(this.Key==''){
                     this.$message.error('关键字不能为空')
                     return false;

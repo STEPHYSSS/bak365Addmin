@@ -7,6 +7,7 @@
       <el-form-item label="时间">
         <el-date-picker
           type="datetimerange"
+          :editable="false"
           v-model="PartTime"
           value-format="yyyy-MM-dd HH:mm:ss"
           range-separator="至"

@@ -11,6 +11,7 @@
         <el-date-picker
           v-model="ruleForm.allTime"
           type="daterange"
+          :editable="false"
           :picker-options="pickerOptions"
           value-format="yyyy-MM-dd"
           range-separator="至"

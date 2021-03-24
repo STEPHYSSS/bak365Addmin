@@ -95,6 +95,7 @@
         <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
         <el-time-picker
           is-range
+          :editable="false"
           v-model="ruleForm.BuyTime"
           value-format="HH:mm:ss"
           range-separator="至"

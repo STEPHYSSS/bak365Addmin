@@ -258,7 +258,7 @@ export default {
 }
 img {
   position: relative;
-  height: auto;
+  height: 100%;
   max-width: 100%;
   vertical-align: middle;
   border: 0;

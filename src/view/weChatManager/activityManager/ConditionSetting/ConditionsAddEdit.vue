@@ -6,6 +6,7 @@
       </el-form-item>
       <el-form-item label="参与时间" prop="PartTime">
         <el-date-picker
+        :editable="false"
           type="datetimerange"
           v-model="PartTime"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -65,6 +66,7 @@
       </div>
       <el-form-item label="生日范围" prop="BirthdayTime">
         <el-date-picker
+          :editable="false" 
           type="daterange"
           v-model="BirthdayTime"
           value-format="MM-dd"

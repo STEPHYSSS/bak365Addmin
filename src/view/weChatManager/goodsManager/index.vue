@@ -33,10 +33,11 @@
         <el-button  @click="searchName">查询</el-button>
       </el-col>
     </el-row>
-    <!-- <el-button @click="batch" :disabled="multipleSelection.length=='0'" class="marbtn">批量上架</el-button> -->
+    <el-button @click="goodsUpOrdown('up')" :disabled="multipleSelection.length=='0'" class="marbtn">批量上架</el-button>
+    <el-button @click="goodsUpOrdown('down')" :disabled="multipleSelection.length=='0'" class="marbtn">批量下架</el-button>
      <!-- tooltip-effect="dark" ref="multipleTable" @selection-change="handleSelectionChange" -->
-    <el-table :data="data" v-loading="loading" style="width: 100%;">
-      <!-- <el-table-column type="selection" width="55"></el-table-column> -->
+    <el-table :data="data" v-loading="loading" style="width: 100%;" tooltip-effect="dark" ref="multipleTable" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column label="商品名称" width="260" align="center">
         <template slot-scope="scoped">
           <el-row>
@@ -126,8 +127,8 @@
         :total="TotalList">
       </el-pagination>
     </div>
+    
     <!-- <QRCode :newWidth="newWidth" :newText="code"></QRCode> -->
-
     <!--    <Pagination :page="page" @change_page="get_list" style="float: right;margin-top:30px"></Pagination>-->
     <Del :show="show" @delFunction="delFunction" @confirmEnd="confirmEnd"></Del>
     <ModifyCate :cateShow="cateShow" @cateFunction="cateFunction"></ModifyCate>
@@ -174,7 +175,7 @@ export default {
       // 点击当前行的index
       current_index: "",
       current_SID: "",
-      
+      msg:"",
       data: [],
       multipleSelection:[],//多选
       splitSID:'',//多选id
@@ -312,40 +313,57 @@ export default {
         this.$message.error(e);
       }
     },
-    // async batch(){//批量上架
-    //   this.multipleSelection.forEach((item,index)=>{
-    //     // splitSID
-    //     this.splitSID+=item.SID+','
-    //     this.State = item.State
-    //   })
-    //   let SID = this.splitSID.substr(0,this.splitSID.length-1)
-    //   let State = '';
-    //   console.log(this.splitSID,State)
-    //   if(this.State == '1'){
-    //     State = '0'
-    //   }else if(this.State == '0'){
-    //     State = '1'
-    //   }
-    //   try {
-    //     let data = await getLists(
-    //       {
-    //         Action: "SetProdState",
-    //         State:State,
-    //         SID:SID
-    //       }, "MProdOpera")
-    //       console.log(data,'kandaying')
-    //     this.$message.success(data.Message);
-    //     setTimeout(() => {
-    //       this.getList()
-    //     }, 500);
-    //   } catch (e) {
-    //     this.$message.error(e)
-    //   }
-    // },
-    // handleSelectionChange(val) {
-    //   this.multipleSelection = val;      
-    //   console.log(this.multipleSelection,'66666')
-    // },
+    goodsUpOrdown(flag){//上架
+      if(flag == 'up'){
+        this.msg = '是否批量上架'
+      }else{
+        this.msg = '是否批量下架'
+      }
+      this.$confirm(this.msg, '提示', {
+              confirmButtonText: '是',
+              cancelButtonText: '否',
+              type: 'warning'
+        }).then(() => {
+              this.goodsUpOrdownFun(flag);
+        }).catch(() => {
+              this.$message({
+              type: 'info',
+              message: '已取消'
+              });          
+        });
+    },
+    async goodsUpOrdownFun(flag){
+      this.multipleSelection.forEach((item,index)=>{
+        this.splitSID+=item.SID+','
+        this.State = item.State
+      })
+      let SID = this.splitSID.substr(0,this.splitSID.length-1)
+      let State = '';
+      if(flag == 'up'){
+        State = '1'
+      }else{
+        State = '0'
+      }
+      try {
+        let data = await getLists(
+          {
+            Action: "SetProdState",
+            State:State,
+            SID:SID
+          }, "MProdOpera")
+        this.dialogVisibleUp = false
+        this.$message.success(data.Message);
+        setTimeout(() => {
+          this.getList()
+        }, 200);
+      } catch (e) {
+        this.$message.error(e)
+      }
+    },
+    
+    handleSelectionChange(val) {
+      this.multipleSelection = val; 
+    },
     searchName() {// 名称搜索
       // this.page.current_page = 1;
       this.getList();

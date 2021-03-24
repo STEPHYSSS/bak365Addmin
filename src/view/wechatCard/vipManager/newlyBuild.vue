@@ -149,6 +149,7 @@
                   :picker-options="pickerOptions"
                   value-format="yyyy-MM-dd"
                   type="daterange"
+                  :editable="false"
                   :clearable="false"
                   range-separator="至"
                   start-placeholder="开始日期"

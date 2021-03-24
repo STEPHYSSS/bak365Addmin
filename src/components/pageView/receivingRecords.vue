@@ -6,6 +6,7 @@
         <el-date-picker
           v-model="daterange"
           type="daterange"
+          :editable="false"
           value-format="yyyy-MM-dd HH:mm:ss"
           :default-time="['00:00:00', '23:59:59']"
           range-separator="至"

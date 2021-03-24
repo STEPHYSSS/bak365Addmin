@@ -141,6 +141,7 @@
               <div v-if="validData === 0">
                 时间:&nbsp;&nbsp;&nbsp;
                 <el-date-picker
+                  :editable="false"
                   v-model="validDataFIX"
                   :picker-options="pickerOptions"
                   value-format="timestamp"
@@ -181,6 +182,7 @@
                 <div style="height:15px;"></div>
                 时间：&nbsp;&nbsp;<el-time-picker
                 is-range
+                :editable="false"
                 v-model="time_limit"
                 range-separator="至"
                 start-placeholder="开始时间"

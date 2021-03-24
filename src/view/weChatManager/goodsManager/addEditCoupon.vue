@@ -44,6 +44,7 @@
         <el-checkbox v-model="ruleForm.Start">启用</el-checkbox>
         <el-date-picker
           v-if="ruleForm.Start"
+          :editable="false"
           v-model="assistRuleForm.BuyTime"
           type="datetimerange"
           value-format="yyyy-MM-dd HH:mm:ss"

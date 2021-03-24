@@ -101,14 +101,14 @@
         <el-input v-model="ruleForm.Name" maxlength="25" placeholder="请填写活动名称"></el-input>
       </el-form-item>
       <el-form-item label="活动日期" prop="activityDate">
-        <el-date-picker v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
+        <el-date-picker :editable="false" v-model="ruleForm.StartDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="开始日期" style="width: 200px;">
         </el-date-picker> - 
-        <el-date-picker v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
+        <el-date-picker :editable="false" v-model="ruleForm.EndDate" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="结束日期" style="width: 200px;">
         </el-date-picker>
       </el-form-item>
       <el-form-item label="活动时间段" prop="activeTime">
-        <el-time-picker type="fixed-time" placeholder="起始时间" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
-        <el-time-picker type="fixed-time" placeholder="结束时间" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
+        <el-time-picker type="fixed-time" placeholder="起始时间" :editable="false" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.StartTime" style="width: 150px;"></el-time-picker> -
+        <el-time-picker type="fixed-time" placeholder="结束时间" :editable="false" @change = "changeStartTime" value-format="HH:mm:ss" v-model="ruleForm.EndTime" style="width: 150px;"></el-time-picker>
       </el-form-item>
       <el-form-item label="选择星期">
          <el-checkbox :indeterminate="isIndeterminateWeeks" v-model="checkAllWeeks"

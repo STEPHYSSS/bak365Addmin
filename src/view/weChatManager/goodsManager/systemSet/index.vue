@@ -17,12 +17,14 @@
           </el-form-item>
           <el-form-item label="营业时间段(取货,送货)">
             <el-time-picker
+              :editable="false"
               v-model="form.StartTime"
               value-format="HH:mm:ss"
               placeholder="开始时间"
             ></el-time-picker>
             <span style="padding: 0 10px">至</span>
             <el-time-picker
+              :editable="false"
               v-model="form.EndTime"
               value-format="HH:mm:ss"
               placeholder="结束时间"

@@ -112,6 +112,7 @@
             imgWidth="80px"
             imgHeight="80px"
           ></imgLoad>
+          
         </div>
         <div class="add-img-right">
           <el-form ref="form" label-width="80px">
@@ -294,6 +295,7 @@ export default {
         "https://img.yzcdn.cn/upload_files/2014/12/05/043cc31769494d3d570543b893c9bce9.png!large.webp";
     },
     upLoadImgsMain(img) {
+      // console.log(img,'2222')
       this.form.layoutIndex = this.layoutIndex || 0;
       if (!this.form.imgList[this.layoutIndex]) {
         this.form.imgList[this.layoutIndex] = {};
@@ -302,16 +304,15 @@ export default {
         process.env.Prefix,
         ""
       );
-
       this.form.imgList = this.form.imgList.slice();
-      this.layoutList = this.layoutList.slice();
-      if (!this.currentImg) {
-        this.currentImg = {
-          img: img
-        };
-      }else{
-        this.currentImg.img = img
-      }
+      // this.layoutList = this.layoutList.slice();
+      // if (!this.currentImg) {
+      //   this.currentImg = {
+      //     img: img
+      //   };
+      // }else{
+      //   this.currentImg.img = img
+      // }
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val) {

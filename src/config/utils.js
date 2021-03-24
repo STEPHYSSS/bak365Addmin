@@ -162,6 +162,10 @@ export const seckillType = [
   { value: '1', label: '进行中'}, 
   { value: '2', label: '已结束 '}
 ]
+export const activeStatus = [
+  { value: '0', label: '已停用'}, 
+  { value: '1', label: '已启用'}
+]
 export const optionsWeek= [//按星期
   { value: "1", label: "星期一" },
   { value: "2", label: "星期二" },

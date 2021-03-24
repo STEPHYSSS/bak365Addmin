@@ -13,6 +13,7 @@
           <span>赠送时间：</span>
           <el-date-picker
             v-model="StartTime"
+            :editable="false"
             type="datetime"
             placeholder="选择日期时间"
             value-format="yyyy-MM-dd HH:mm:ss"

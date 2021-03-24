@@ -10,15 +10,8 @@
           >添加全民吸粉活动</el-button
         >
       </el-col>
-     <el-col :span="20">
-           <div style="margin-top: 5px">
-          开始时间：<el-date-picker v-model="search.StartDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
-          </el-date-picker>
-          结束时间：<el-date-picker v-model="search.EndDate" type="datetime" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm:ss" @change="changeTime">
-          </el-date-picker>
-        </div>
-     </el-col>
     </el-row>
+    <active-search-box ref="activeSearch" @searchList="searchList"></active-search-box> 
     <el-table :data="tableDate" style="width: 100%;">
       <el-table-column label="活动名称" prop="Name" align="center"></el-table-column>
       <el-table-column label="开始时间" prop="StartDate" align="center"></el-table-column>
@@ -28,8 +21,13 @@
           {{scope.row.PromWhere.split(',')[0]|tips}}
         </template>
       </el-table-column>
-      <el-table-column label="活动状态" prop="TimeName" align="center"></el-table-column>
-      <el-table-column label="是否关闭" align="center">
+      <el-table-column label="关键词" align="center">
+        <template slot-scope="scope">
+          {{scope.row.PromWhere.split(',')[1]}}
+        </template>
+      </el-table-column>
+      <el-table-column label="活动周期" prop="TimeName" align="center"></el-table-column>
+      <el-table-column label="活动状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
@@ -56,6 +54,7 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
+import activeSearchBox from '@/components/Dialog/activeSearchBox/activeSearchBox.vue';
 export default {
   name: "satisfyList",
   data() {
@@ -68,6 +67,7 @@ export default {
       search:{}
     };
   },
+  components:{activeSearchBox},
   created(){
     this.getList();
   },
@@ -77,6 +77,8 @@ export default {
         return '用户关注'
       }else if(val == '3'){
         return '邀请充值'
+      }else if(val == '4'){
+         return '营销推广'
       }
     }
   },
@@ -84,16 +86,19 @@ export default {
      async getList() {//获取列表
       this.loading = true;
       try {
-        let data = await getLists(
-          {
-            Action: "GetPromotionList",
-            Page: this.currentPage - 1,
-            StartDate:this.search.StartDate,
-            EndDate:this.search.EndDate,
-            Type:'9'
-          },
-          "MPromotionOpera"
-        );
+        let obj = { Action: "GetPromotionList",Type:'9',Page: this.currentPage - 1,};
+        obj = Object.assign(obj, this.search);
+        let data = await getLists(obj, "MPromotionOpera");
+        // let data = await getLists(
+        //   {
+        //     Action: "GetPromotionList",
+        //     Page: this.currentPage - 1,
+        //     StartDate:this.search.StartDate,
+        //     EndDate:this.search.EndDate,
+        //     Type:'9'
+        //   },
+        //   "MPromotionOpera"
+        // );
         this.tableDate = data.Data.PromotionList;
         this.TotalList = data.Data.DataCount;
         this.pageSize = data.Data.PageSize;
@@ -103,6 +108,10 @@ export default {
         this.loading = false;
       }
      },
+     searchList(val){//搜索
+        this.search = val;
+        this.getList();
+      },
      changeTime(){
        this.getList();
      },

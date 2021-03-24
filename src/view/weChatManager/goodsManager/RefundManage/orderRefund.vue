@@ -45,6 +45,7 @@
         <el-col :span="6">
           <span>开始时间：</span>
           <el-date-picker
+            :editable="false"
             v-model="search.StartRefundTime"
             type="datetime"
             placeholder="选择日期时间"
@@ -63,6 +64,7 @@
         <el-col :span="6">
           <span>结束时间：</span>
           <el-date-picker
+            :editable="false"
             v-model="search.EndRefundTime"
             type="datetime"
             placeholder="选择日期时间"

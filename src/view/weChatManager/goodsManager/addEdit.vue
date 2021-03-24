@@ -267,6 +267,7 @@
           v-if="assistRuleForm.TakeDateBool"
           v-model="ruleForm.PickDate"
           type="daterange"
+          :editable="false"
           value-format="yyyy-MM-dd"
           range-separator="至"
           start-placeholder="开始日期"
@@ -280,6 +281,7 @@
           v-if="assistRuleForm.TakeDateTimeBool"
           is-range
           v-model="ruleForm.PickTime"
+          :editable="false"
           value-format="HH:mm:ss"
           range-separator="至"
           start-placeholder="开始时间"
@@ -290,6 +292,7 @@
       <el-form-item label="可购买时间" prop="BuyTime">
         <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
         <el-date-picker
+          :editable="false"
           v-if="assistRuleForm.BuyTimeBool" is-range
           v-model="ruleForm.BuyTime"
           value-format="yyyy-MM-DD HH:mm:ss"
@@ -768,7 +771,7 @@ export default {
             ? this.ruleForm.BuyTime.split(",")
             : [];
         }
-
+        console.log(this.ruleForm.BuyTime)
         // this.$refs.labelRef.value = this.ruleForm.Tag;
         this.$refs.AccessoriesList.value = this.ruleForm.AccessoriesInfo
           ? this.ruleForm.AccessoriesInfo.split(",")
@@ -810,7 +813,7 @@ export default {
         this.fileListUpMain = this.ruleForm.Img
           ? ImgList(this.ruleForm.Img)
           : [];
-
+        
         let Features = $.base64.atob(this.ruleForm.Features, "utf8");
         // console.log(Features)
         let ImportantNotes = $.base64.atob(

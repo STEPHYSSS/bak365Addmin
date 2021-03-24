@@ -41,6 +41,7 @@
         <div class="styleFlex">
           <el-form-item label="日期:">
             <el-date-picker
+              :editable="false"
               v-model="form.dataTitle"
               type="date"
               placeholder="选择日期"

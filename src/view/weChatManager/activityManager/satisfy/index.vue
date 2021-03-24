@@ -31,10 +31,10 @@
       <!-- <el-table-column label="审核状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Audit | setActiveStatus}}</template>
       </el-table-column> -->
-      <el-table-column label="是否关闭" align="center">
+      <el-table-column label="活动周期" prop="TimeName" align="center"></el-table-column>
+      <el-table-column label="活动状态" align="center">
         <template slot-scope="scoped">{{scoped.row.Start | setActiveOpen}}</template>
       </el-table-column>
-      <el-table-column label="活动状态" prop="TimeName" align="center"></el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">         
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
