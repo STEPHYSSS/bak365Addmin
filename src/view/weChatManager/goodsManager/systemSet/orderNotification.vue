@@ -9,7 +9,7 @@
                               </el-select>
                          </el-form-item>
                          <el-form-item label="商户微信ID：">
-                              <el-input v-model="form.ManagUsers"></el-input>
+                              <el-input type="textarea" :rows="5" style="width:500px" v-model="form.ManagUsers"></el-input>
                               <!-- <span style="color:red">（多个微信号请用英文 , 分开）</span> -->
                               <el-button type="primary" style="margin-left:10px" size="medium" @click="addMemberShip">添加</el-button>
                          </el-form-item>
@@ -64,7 +64,7 @@
                     </el-input>
                     </el-col>
                </el-row>
-               <el-table :row-key="getRowKey" ref="multipleTable" :data="gridData" tooltip-effect="dark" style="width: 100%;height:500px;overflow-y: scroll;" @selection-change="handleSelectionChange">
+               <el-table :row-key="getRowKey" @select="shoudong" ref="multipleTable" :data="gridData" tooltip-effect="dark" style="width: 100%;height:500px;overflow-y: scroll;" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="55" align="center" :reserve-selection="true"></el-table-column>
                     <!-- <el-table-column property="OpenID" label="ID" width="300" align="center"></el-table-column> -->
                     <el-table-column property="NickName" label="用户名" width="200" align="center"></el-table-column>
@@ -115,6 +115,7 @@ export default {
                multipleSelection:[],//用做接收选中
                CardNo:"",//卡号查询
                phoneNum:"",//手机号 查询
+               newArr:[],//用来手动添加的
           }
      },
      created(){
@@ -141,6 +142,7 @@ export default {
                     this.$message.error(error);
                }
           },
+          
           async GetOrderTemplate() {
                let { Data } = await getLists(
                {
@@ -155,7 +157,17 @@ export default {
           },
           addMemberShip(){ //打开会员弹窗
                // this.dialogTableVisible = true;
+               this.CardNo = "";
+               this.phoneNum = "";  
+               if(this.form.ManagUsers){
+                    let arr = this.form.ManagUsers.split(',')
+                    this.newArr = arr;
+               }            
                this.GetMemberList();
+          },
+          shoudong(){
+                
+               // this.GetMemberList();
           },
           async GetMemberList() {
                let { Data } = await getLists({Action: "GetMemberList",CardNo:this.CardNo,Page: this.currentPage - 1,
@@ -165,19 +177,27 @@ export default {
 
                this.TotalList = Data.DataCount;
                this.pageSize = Data.PageSize;
-
-               this.$nextTick(() => {
-                    if (this.form.ManagUsers) {
-                         let arr = this.form.ManagUsers.split(',')
-                         for (const i of arr) {
-                              for (const y of this.gridData) {
-                                   if (i == y.OpenID) {
-                                        this.$refs.multipleTable.toggleRowSelection(y);
-                                   }
+               this.$nextTick(()=>{
+                    for (const i of this.newArr) {
+                         for (const y of this.gridData) {
+                              if (i == y.OpenID) {
+                                   this.$refs.multipleTable.toggleRowSelection(y);
                               }
                          }
                     }
                })
+               // this.$nextTick(() => {
+               //      if (this.form.ManagUsers) {
+               //           let arr = this.form.ManagUsers.split(',')
+               //           for (const i of arr) {
+               //                for (const y of this.gridData) {
+               //                     if (i == y.OpenID) {
+               //                          this.$refs.multipleTable.toggleRowSelection(y);
+               //                     }
+               //                }
+               //           }
+               //      }
+               // })
                // 如果form中和Data返回的数据有相同的就回显
                // let list = [];
                // let arr = this.form.ManagUsers.split(',')
@@ -210,6 +230,7 @@ export default {
           }, 
           searchN(){//卡号查询
                this.GetMemberList();
+               // this.gridData = this.gridData.filter(D=>D.CardNo == this.CardNo)
           },
           clearN(){
                this.CardNo = '';

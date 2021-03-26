@@ -518,14 +518,14 @@ export const asyncRouterMap = [{
                         },
                         component: entCouponAddEdit
                     },
-                    // { //scanCouponList
-                    //     // scanCouponAddEdit
-                    //     path: 'scanCouponList',
-                    //     meta: {
-                    //         label: '扫码领券',
-                    //     },
-                    //     component: scanCouponList
-                    // },
+                    { //scanCouponList
+                        // scanCouponAddEdit
+                        path: 'scanCouponList',
+                        meta: {
+                            label: '扫码领券',
+                        },
+                        component: scanCouponList
+                    },
                     {
                         path: 'scanCouponAddEdit',
                         isHidden: true,

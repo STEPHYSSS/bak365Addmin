@@ -11,7 +11,7 @@
             <div class="customBoxHead">
               <div class="customBoxHeadTitle">模板名称</div>
             </div>
-            <div>
+            <div style="height:auto">
               <draggable v-model="currentModeArr" :move="getdata" @update="datadragEnd">
                  <div class="preview-item clearfix drag" v-for="(item,index) in currentModeArr" :key="index">
                   <div @click.stop="clickCurrentCot(item.key)" @mouseenter.stop="clickCurrentFun(item.key)" @mouseleave.stop="clickCurrentoutFun(item.key)" 

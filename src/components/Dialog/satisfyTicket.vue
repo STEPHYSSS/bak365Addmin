@@ -85,7 +85,8 @@ export default {
           sureGood() {
                this.loadingBtn = true
                let info = "";
-               let showArr = []
+               let showArr = [];
+               let ticketName = ''
                this.tiketList.forEach((item) => {                    
                     if (item.number) {
                          info += item.TypeNo + "," + Number(item.number) + ";";
@@ -93,6 +94,7 @@ export default {
                               key:item.TypeNo,
                               val:item.number
                          })
+                         ticketName += item.TypeName + ",";
                     }                    
                });             
                let count = getCharCount(info,';');
@@ -102,9 +104,9 @@ export default {
                }
                this.giveInfo = info;
                if(this.info2 === 'sign'){
-                    this.$emit('sureGood',showArr,this.giveInfo)     
+                    this.$emit('sureGood',showArr,this.giveInfo,ticketName)     
                }else{
-                    this.$emit('sureGood',this.giveInfo)               
+                    this.$emit('sureGood',this.giveInfo,ticketName)               
                }
           },          
      },

@@ -291,7 +291,7 @@
       </el-form-item>
       <el-form-item label="可购买时间" prop="BuyTime">
         <el-checkbox v-model="assistRuleForm.BuyTimeBool">启用</el-checkbox>&nbsp;&nbsp;
-        <el-date-picker
+        <!-- <el-date-picker
           :editable="false"
           v-if="assistRuleForm.BuyTimeBool" is-range
           v-model="ruleForm.BuyTime"
@@ -300,6 +300,16 @@
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期" placeholder="选择日期时间范围">
+        </el-date-picker> -->
+        <el-date-picker
+          :editable="false"
+          v-if="assistRuleForm.BuyTimeBool" is-range
+          v-model="ruleForm.BuyTime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期">
         </el-date-picker>
         <br/>
         <el-select

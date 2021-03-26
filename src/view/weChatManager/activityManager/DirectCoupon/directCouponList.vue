@@ -7,7 +7,7 @@
       </el-col>
       <el-col :span="21">
         <span>名 称：</span>
-        <el-input placeholder="请输入活动名称" v-model="Name" clearable @clear = "clearN" class="input-with-select">
+        <el-input placeholder="请输入券名称" v-model="Name" clearable @clear = "clearN" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
         </el-input>&nbsp;&nbsp;
           <span>赠送时间：</span>

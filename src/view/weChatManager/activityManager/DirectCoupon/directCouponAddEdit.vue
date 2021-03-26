@@ -1,8 +1,11 @@
 <template>
   <div class="entStoreAddEdit">
     <el-form ref="form" :model="form" label-width="120px">
+      <el-form-item label="券名称" v-if="TypeName!=''">
+        <el-input type="textarea" v-model="TypeName" readonly :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="赠送券">
-        <el-input v-model="form.TicketNo" readonly></el-input>
+        <el-input type="textarea" v-model="form.TicketNo" readonly></el-input>
         <el-button
           type="primary"
           style="margin-left: 10px"
@@ -111,6 +114,7 @@ export default {
       dialogVisible: false, //控制电子劵信息弹框显示
       tiketList: [], //电子券列表
       tiketName: "", //电子券搜索名称
+      TypeName:""//用来接收电子券名称
     };
   },
   components: {
@@ -145,12 +149,15 @@ export default {
     confirmEnd() {
       //电子券确定
       let info = "";
+      let name = ""
       this.tiketList.forEach((item) => {
         if (item.number) {
           info += item.TypeNo + "," + Number(item.number) + ";";
+          name += item.TypeName + ",";
         }
       });
       this.form.TicketNo = info;
+      this.TypeName = name.substring(0,name.length-1)
       this.dialogVisible = false;
     },
     
@@ -178,10 +185,10 @@ export default {
   margin-bottom: 80px;
   min-width: 1230px;
   .el-input {
-    width: 217px;
+    width: 250px;
   }
-  .el-textarea {
-    width: 400px;
+  .el-textarea,.el-select {
+    width: 250px;
   }
   .FeaturesStyle {
     .el-form-item__content {

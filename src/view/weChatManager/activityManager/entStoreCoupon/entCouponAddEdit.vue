@@ -37,8 +37,11 @@
           </el-option>
         </el-select>
       </el-form-item> -->
+      <el-form-item label="券名称" v-if="TypeName!=''">
+        <el-input type="textarea" v-model="TypeName" readonly :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="赠送券">
-        <el-input v-model="form.GiveInfo" readonly :disabled="true"></el-input>
+        <el-input type="textarea" v-model="form.GiveInfo" readonly :disabled="true"></el-input>
         <el-button
           type="primary"
           style="margin-left: 10px"
@@ -76,7 +79,7 @@
         ></el-input>
       </el-form-item> -->
     </el-form>
-    <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+    <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
     <el-dialog title="选择参与条件方案" :visible.sync="dialogVisible2" width="900px">
       <p class="addBtn">
         <el-button @click="addConditions">新增参与条件</el-button>
@@ -173,7 +176,8 @@ export default {
       singleRow:{},//选中参与条件一行信息
       isShow:true,
       Audit: "",
-      info:[]
+      info:[],
+      TypeName:""//用来接收电子券名称
     };
   },
   components: {
@@ -208,8 +212,9 @@ export default {
       this.showTicket = bool;
     },
     sureGood(val){//电子券弹窗确定按钮  
+      this.TypeName = val[1].substring(0,val[1].length-1);
       this.showTicket = false;     
-      this.form.GiveInfo = val;
+      this.form.GiveInfo = val[0];
       // console.log(val,'子组件返回的数据')        
     },
     Schemes() {//点击展示参与条件弹窗
@@ -375,7 +380,7 @@ export default {
     width: 217px;
   }
   .el-textarea {
-    width: 400px;
+    width: 250px;
   }
   .FeaturesStyle {
     .el-form-item__content {

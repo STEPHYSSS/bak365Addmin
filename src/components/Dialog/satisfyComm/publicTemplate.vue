@@ -1,8 +1,11 @@
 <template>
      <div class="public">
           <el-form ref="formInfo" :model="formInfo" label-width="120px">
-               <el-form-item label="赠送电子券">
-                    <el-input :disabled="true" v-model="formInfo.GiveInfo"></el-input>
+               <el-form-item label="券名称" v-if="TypeName!=''">
+                    <el-input type="textarea" v-model="TypeName" readonly :disabled="true"></el-input>
+               </el-form-item>
+               <el-form-item label="赠送券">
+                    <el-input type="textarea" :disabled="true" v-model="formInfo.GiveInfo" :rows="2"></el-input>
                     <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket" >添加</el-button>
                </el-form-item>
                <el-form-item label="赠送积分" v-show="chooseType!='0'">
@@ -18,7 +21,7 @@
                     <el-input v-model="formInfo.LimitCnt"></el-input>&nbsp;次
                </el-form-item>
           </el-form>
-          <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+          <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
      </div>
 </template>
 <script>
@@ -35,7 +38,8 @@ export default {
                     LimitCnt:''
                },
                showTicket:false,//显示与隐藏电子券弹窗
-               info:[]
+               info:[],
+               TypeName:''
           }
      },
      props:{
@@ -63,9 +67,10 @@ export default {
           changeDig(bool){//用于子组件控制关闭按钮
                this.showTicket = bool;
           },
-          sureGood(val){//电子券弹窗确定按钮  
+          sureGood(val){//电子券弹窗确定按钮 
                this.showTicket = false;     
-               this.formInfo.GiveInfo = val;
+               this.formInfo.GiveInfo = val[0];
+               this.TypeName = val[1].substring(0,val[1].length-1);
                // console.log(val,'子组件返回的数据')        
           },
      },
@@ -80,7 +85,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.el-input,.el-input__inner,.el-select{
+.el-input,.el-input__inner,.el-select,.el-textarea{
      width: 300px;
 }
 </style>

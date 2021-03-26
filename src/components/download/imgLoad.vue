@@ -17,7 +17,7 @@
       v-if="showFileList"
       :show-file-list="showFileList"
     >
-      <img style="width: 100%; height: 100%;" v-if="imageUrl||fileListUrl" :src="fileListUrl?fileListUrl:imageUrl" class="avatar" />
+      <img style="width:100%;height:100%" v-if="imageUrl||fileListUrl" :src="fileListUrl?fileListUrl:imageUrl" class="avatar" :class="{activeSty:coverImg=='isCover'}"/>
       <i
         v-else
         class="el-icon-plus avatar-uploader-icon"
@@ -169,6 +169,10 @@ export default {
       //用户头像上传时imgWidth
       type: String,
       default: "120px"
+    },
+    coverImg:{
+      type:String,
+      default:""
     }
   },
   data() {
@@ -389,7 +393,9 @@ function dataURLtoFile(dataurl) {
   .el-upload__tip {
     margin-top: 15px;
   }
-
+  .activeSty{
+    height: 80px !important;
+  }
   .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;

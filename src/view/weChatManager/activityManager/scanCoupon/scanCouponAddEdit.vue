@@ -15,8 +15,11 @@
           end-placeholder="结束日期"
         ></el-date-picker>
       </el-form-item>
+      <el-form-item label="券名称" v-if="TypeName!=''">
+        <el-input type="textarea" v-model="TypeName" readonly :disabled="true"></el-input>
+      </el-form-item>
       <el-form-item label="赠送券">
-        <el-input v-model="form.GiveInfo" readonly :disabled="true"></el-input>
+        <el-input type="textarea" v-model="form.GiveInfo" readonly :disabled="true"></el-input>
         <el-button
           type="primary"
           style="margin-left: 10px"
@@ -27,7 +30,9 @@
       </el-form-item>
       <el-form-item label="发放总量">
         <el-input-number v-model="form.GiveCnt" :min="1" controls-position="right"></el-input-number
-        >，每人最多参与 <el-input-number
+        ></el-form-item>
+      <el-form-item label="每人最多参与">
+         <el-input-number
           v-model="form.LimitCnt"
           controls-position="right"
           :min="1"
@@ -35,7 +40,7 @@
         次
       </el-form-item>
     </el-form>
-    <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood"></satisfyTicket>
+    <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left: 20px" @click="preserveFun">保存</el-button>
@@ -64,6 +69,7 @@ export default {
         GiveCnt: "",
         LimitCnt: "",
       },
+      TypeName:'',
       radio:'',//单选参与条件
       Name: "", //活动名称
       Start: "0", //状态
@@ -117,7 +123,8 @@ export default {
     },
     sureGood(val){//电子券弹窗确定按钮  
       this.showTicket = false;     
-      this.form.GiveInfo = val;
+      this.form.GiveInfo = val[0];
+      this.TypeName = val[1].substring(0,val[1].length-1);
       // console.log(val,'子组件返回的数据')        
     },
     // 获取详情

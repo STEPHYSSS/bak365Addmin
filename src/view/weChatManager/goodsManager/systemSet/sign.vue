@@ -92,10 +92,8 @@ export default {
     },
     sureGood(val) {
       //电子券弹窗确定按钮
-      console.log(val[0])
      this.showTicket = false;
      this.info = val[0];
-     console.log(val[0],this.info)
      this.ruleForm.GiveList[this.goodsNormsIndex].GiveInfo = val[1];
      //  this.form.GiveInfo = val;
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="orderNotify">
-    <el-row class="marginBottom">
+    <!-- <el-row class="marginBottom">
       <el-col :span="24">
         <span>卡 号：</span>
         <el-input
@@ -41,6 +41,68 @@
           </el-option>
         </el-select>
         <span>卡状态：</span>
+        <el-select
+          v-model="CardState"
+          @change="changeCard"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in CardStateList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-col>
+    </el-row> -->
+    <el-row class="marginBottom">
+      <el-col :span="6">
+        <span>卡 号：</span>
+        <el-input
+          placeholder="请输入卡号"
+          v-model="CardNo"
+          clearable
+          @clear="clearN"
+          class="input-with-select"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchN"
+          ></el-button> </el-input
+        >
+      </el-col> 
+      <el-col :span="6">
+        <span>手机号：</span>
+        <el-input
+          placeholder="请输入手机号"
+          v-model="Mobile"
+          clearable
+          @clear="clearI"
+          class="input-with-select"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchN"
+          ></el-button>
+        </el-input>
+      </el-col>
+      <el-col :span="6">
+        <span>卡来源：</span>
+        <el-select v-model="BindType" @change="changeCard" placeholder="请选择">
+          <el-option
+            v-for="item in BindTypeList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-col>
+      <el-col :span="6">
+         <span>卡状态：</span>
         <el-select
           v-model="CardState"
           @change="changeCard"
@@ -245,7 +307,7 @@ export default {
       currentPage: 0,
       pageSize: 0,
       CardNo: "", //卡号查询
-      OpenID: "", //ID 查询
+      Mobile: "", //ID 查询
       BindTypeList: [
         {
           value: "",
@@ -311,7 +373,7 @@ export default {
           },
           "MMemberOpera"
         );
-        console.log("我是你要查询的Data", Data);
+        // console.log("我是你要查询的Data", Data);
         console.log("111");
         this.$message.success("操作成功");
         this.dialogFormVisible = false;
@@ -331,7 +393,7 @@ export default {
         }).catch(() => {
               this.$message({
               type: 'info',
-              message: '已取消删除'
+              message: '已取消解绑'
               });          
         });
     },
@@ -349,10 +411,10 @@ export default {
     },    
 
     reNewCode(row) {
-      console.log("点击打开修改密码弹框");
+      // console.log("点击打开修改密码弹框");
       this.dialogFormVisible = true;
       this.ruleForm = row;
-      console.log("我是你要的row", row);
+      // console.log("我是你要的row", row);
     },
 
     async GetOrderTemplate() {
@@ -362,7 +424,7 @@ export default {
             Action: "GetMemberList",
             Page: this.currentPage - 1,
             CardNo: this.CardNo,
-            Mobile: this.OpenID,
+            Mobile: this.Mobile,
             BindType: this.BindType,
             CardState: this.CardState
           },
@@ -453,7 +515,7 @@ export default {
   height: 60px;
 }
 .input-with-select {
-  width: 250px;
+  width: 250px !important;
 }
 .marginBottom {
   margin-bottom: 15px;

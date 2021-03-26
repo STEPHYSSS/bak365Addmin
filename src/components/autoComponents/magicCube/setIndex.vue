@@ -111,6 +111,7 @@
             :showFileList="true"
             imgWidth="80px"
             imgHeight="80px"
+            :coverImg = "coverImg"
           ></imgLoad>
           
         </div>
@@ -155,6 +156,7 @@ export default {
         // 页面间距
         pageGap: 0
       },
+      coverImg:'isCover',
       selectTemplates: [
         {
           title: "1行1个",

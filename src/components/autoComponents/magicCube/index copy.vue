@@ -10,18 +10,19 @@
       <div class="cap-cube-wrap" v-else>
         <div
           class="cap-cube"
-          :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH+'px','width':bigBoxW+'px'}"
+          :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH === 'auto'?'100%': bigBoxH+'px','width':bigBoxW+'px'}"
         >
           <div
             v-for="(item,index) in listBox"
             :key="index"
             class="cap-cube__item"
-            :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.heightImg === 0 ? '100%': item.Dheight + 'px','width': item.Dwidth+'px',
+            :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.Dheight === 'auto' ? '100%' : item.Dheight + 'px','width': item.Dwidth+'px',
               'margin': (currentObj.imgGap/2).toFixed(2)+'px','background-size':'cover'
-            ,'background-image':`url(${SetImage(item.img)})`}"
+            }"
             @click="clickLink(item.url)"
           >
-            <!-- <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" /> -->
+          <!-- 'background-image':`url(${SetImage(item.img)})` -->
+            <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" />
           </div>
         </div>
       </div>
@@ -112,8 +113,8 @@ export default {
          switch (m) {
            case 1:
             arr = [
-              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 1.72,heightImg:0},
-              { pageX: 0, pageY: 0, pWidth: 0, pHeight: 0 }
+              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 1.72},
+              { pageX: 0, pageY: 0, pWidth: 0, pHeight: 1.72 }
             ];
             break;
           case 2:
