@@ -48,7 +48,7 @@
       <fieldset class="goods_norms" v-if="ruleForm.SpecType !== '1'" :key="5">
         <legend style="margin-left: 20px">规格项目</legend>
         <span>可拖动移动位置</span>
-        <vuedraggable v-model="ruleForm.SpecList" @change="changeDrag">
+        <vuedraggable v-model="ruleForm.SpecList" @change="changeDrag" >
           <div
             v-for="(item, index) in ruleForm.SpecList"
             class="goods_norms_row"
@@ -680,6 +680,9 @@ export default {
         }
       }
     },
+    updated() {
+      console.log(this.ruleForm.SpecList,'5555')
+    },
     // 确认选中商品
     confirmSys (data) {
       this.comfirmSelectTast = data
@@ -781,7 +784,6 @@ export default {
             ? this.ruleForm.BuyTime.split(",")
             : [];
         }
-        console.log(this.ruleForm.BuyTime)
         // this.$refs.labelRef.value = this.ruleForm.Tag;
         this.$refs.AccessoriesList.value = this.ruleForm.AccessoriesInfo
           ? this.ruleForm.AccessoriesInfo.split(",")
@@ -891,12 +893,13 @@ export default {
       });
     },
     changeDrag(e) {
-      this.isCoverCurrentImgs = true;
-
+      this.isCoverCurrentImgs = true;      
       this.ruleForm.SpecList[e.moved.newIndex].Img = this.ruleForm.SpecList[
         e.moved.newIndex
       ].showImg;
-
+      this.ruleForm.SpecList.forEach((item,index)=>{
+        item.Sort = index
+      })
       // this.$refs.tasteList.forEach((D, index) => {
       //   this.$refs.tasteList[index].value = this.ruleForm.SpecList[index]
       //     .TastName
@@ -1125,8 +1128,14 @@ export default {
             // return;
             // 获取电子券列表
             await getLists(obj, "MProdOpera");
-            this.$router.push("/weChat/manager/goodSetting");
-            this.$message.success("操作成功");
+            this.$message.success("操作成功");          
+            // this.$router.push("/weChat/manager/goodSetting");
+            this.$router.push({
+              path: "/weChat/manager/goodSetting",
+              query: {
+                page:this.$route.query.page
+              }
+            });
           } catch (e) {
             this.$message.error(e)
           }
@@ -1275,7 +1284,7 @@ export default {
       if (arr.length > 0) {
         this.ruleForm.Img = arr[0].url;
       } else {
-        this.ruleForm.Img = "";
+        this.ruleForm.Img = [];
       }
     },
     clickCityNo() {
@@ -1348,9 +1357,14 @@ export default {
           ProdNo: "",
           Name: "",
           SalePrice: "",
-          Img: []
+          Img: [],
+          Sort:""
           // TastName: []
         });
+        this.ruleForm.SpecList.forEach((item,index) => {
+          item.Sort = index
+        }); 
+        console.log(this.ruleForm.SpecList,'----------')
       });
     },
     GoodsNorms() {

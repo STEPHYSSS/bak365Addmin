@@ -200,8 +200,6 @@ export default {
       if(this.ruleForm.ImgList){
         this.ruleForm.ImgList = replacePre(this.ruleForm,'ImgList')
       }
-      // console.log(this.$refs.Features.getUEContent(), 5555)
-      // console.log(this.$refs.ImportantNotes.getUEContent(), 5555)
       if (this.ruleForm.Start && this.assistRuleForm.BuyTime.length === 0) {
         this.$message.info('请选择购买时间')
         return

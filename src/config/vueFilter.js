@@ -139,9 +139,9 @@ Vue.filter('SetImage',(val) => {
      //      return '';
      // }
      if (val) {
-          console.log(val,'5555')
           if(window.location.hostname == "localhost" ){
                return 'http://192.168.0.19:8001/'+ val;
+               // return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
           }else{
                return 'http://'+window.location.hostname+'/WebApp/'+ val;
           }

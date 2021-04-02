@@ -68,6 +68,7 @@
               :showFileList="true"
               imgWidth="80px"
               imgHeight="80px"
+              :coverImg = "coverImg"
             ></imgLoad>
           </div>
           <div class="add-img-right">
@@ -76,7 +77,8 @@
                 <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
               </el-form-item>
               <el-form-item label="链接：">
-                <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+                <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
+                <dropMenu :currentObj="item.urlObj" @clickDropdown="clickDropdown($event,index)"></dropMenu>
               </el-form-item>
             </el-form>
           </div>
@@ -106,13 +108,15 @@ import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
 import draggable from "vuedraggable";
+import dropMenu from "../a-dropdwn-link/dropLink"
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink,draggable},
+  components: { imgLoad, aDropdwnLink,draggable,dropMenu},
   data() {
     return {
       drag:false,
       currentIndex: 0,
+      coverImg:"isCover",
       selectTemplates: [
         {
           title: "图片导航",
@@ -131,8 +135,7 @@ export default {
         // 是否滚动0否，1是
         isScroll: "0",
         backGColor: "rgb(255,255,255)",
-        fontColor: "rgb(0,0,0)", //rgb(0,0,0)
-        // { img: "", name: "", urlObj: { name: "", url: "" } }
+        fontColor: "rgb(0,0,0)", 
         listNav: [
           {name:'导航一', url: ''},
           {name:'导航二', url: ''},
@@ -154,6 +157,7 @@ export default {
   },
   mounted() {
     this.form.pageShowNum = Number(this.form.pageShowNum);
+    console.log(this.form.listNav,'000000')
   },
   methods: {
     onstart(e){

@@ -27,7 +27,7 @@
       </el-table-column>
     </el-table>
     <el-dialog title="商品类别" :visible.sync="dialogTableVisible">
-      <el-table :data="CateData">
+      <el-table :data="CateData" style="height:600px;overflow-y: scroll;">
         <el-table-column property="Name" label="网址名称"></el-table-column>
         <el-table-column label="网址链接">
           <template slot-scope="scoped">

@@ -71,7 +71,7 @@ export default {
     };
   },
   created() {
-    console.log(this.propsObj,'propsObj')
+    // console.log(this.propsObj,'propsObj')
   },
   mounted() {
     this.setWidth();

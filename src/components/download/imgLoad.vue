@@ -394,6 +394,7 @@ function dataURLtoFile(dataurl) {
     margin-top: 15px;
   }
   .activeSty{
+    width: 80px !important;
     height: 80px !important;
   }
   .avatar-uploader-icon {

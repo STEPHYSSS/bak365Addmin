@@ -96,7 +96,6 @@ export default {
           // D.codeUrl = this.autoHome+"?SID="+encodeURIComponent(JSON.stringify(D.SID))
           // D.codeUrl =this.autoHome + "?SID=" + D.SID;
           D.codeUrl = this.autoHome+ "?SID=" + D.SID + "&FlagIndex=true";
-          console.log(D.codeUrl)
         }); 
         this.loading = false;
       } catch (e) {

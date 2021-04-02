@@ -374,6 +374,9 @@ export default {
               "MShopOpera"
             );
             this.$message.success("操作成功");
+            this.$router.push({
+              path: "/weChat/manager/custom/homeIndex"
+            });
             this.reload();
             this.loadingBtn = false;
           } catch (e) {

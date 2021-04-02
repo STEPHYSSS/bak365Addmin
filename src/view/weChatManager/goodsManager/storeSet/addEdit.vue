@@ -198,7 +198,13 @@ export default {
           try {
             await getLists(obj, "MShopOpera");
             this.$message.success("提交成功");
-            this.$router.push("/weChat/manager/storeSet/index");
+            // this.$router.push("/weChat/manager/storeSet/index");
+            this.$router.push({
+              path: "/weChat/manager/storeSet/index",
+              query: {
+                page:this.$route.query.page
+              }
+            });
             this.btnLoading = false;
           } catch (e) {
             this.btnLoading = false;

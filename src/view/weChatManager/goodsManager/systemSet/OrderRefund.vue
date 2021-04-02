@@ -35,46 +35,12 @@
                     </div>
                </el-tab-pane>
           </el-tabs> 
-          <el-dialog title="会员列表" :visible.sync="dialogTableVisible">
-               <el-row class="marginBottom">
-                    <el-col :span="24">
-                    <span>卡 号：</span>
-                    <el-input placeholder="请输入卡号" v-model="CardNo" clearable @clear = "clearN" class="input-with-select">
-                         <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
-                    </el-input>&nbsp;&nbsp;
-                    <span>手机号：</span>
-                    <el-input placeholder="请输入手机号" v-model="phoneNum" clearable @clear = "clearI" class="input-with-select">
-                         <el-button slot="append" icon="el-icon-search" @click="searchN"></el-button>
-                    </el-input>
-                    </el-col>
-               </el-row>
-               <el-table :row-key="getRowKey" ref="multipleTable" :data="gridData" tooltip-effect="dark" style="width: 100%;height:500px;overflow-y: scroll;" @selection-change="handleSelectionChange">
-                    <el-table-column type="selection" width="55" align="center" :reserve-selection="true"></el-table-column>
-                    <!-- <el-table-column property="OpenID" label="ID" width="300" align="center"></el-table-column> -->
-                    <el-table-column property="NickName" label="用户名" width="200" align="center"></el-table-column>
-                    <el-table-column property="CardNo" label="卡号" align="center"></el-table-column>
-                    <el-table-column property="Mobile" label="手机号" align="center"></el-table-column>                    
-               </el-table>
-               <div class="block" v-if="TotalList">
-                    <el-pagination
-                    background
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage"
-                    :page-size="pageSize"
-                    layout="total, prev, pager, next"
-                    :total="TotalList">
-                    </el-pagination>
-               </div>
-               <div class="dialogSty">
-                    <el-button @click="dialogTableVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="SureDialog">确 定</el-button>
-               </div>
-          </el-dialog>         
+          <MemberShipDia :info="newArr" :showMemberDia="showMemberDia" @changeDig="changeDig" @sureMember="sureMember"></MemberShipDia>
      </div>
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
+import MemberShipDia from '@/components/Dialog/memberShipDia.vue';
 import _ from "lodash";
 export default {
      name:'',
@@ -91,16 +57,11 @@ export default {
                     WeChatNo:'',
                     TempText:''
                },
-               TotalList:0,//分页总数
-               currentPage: 0,
-               pageSize:0,
-               gridData:[],//会员列表
-               dialogTableVisible:false,
-               multipleSelection:[],//用做接收选中
-               CardNo:"",//卡号查询
-               phoneNum:"",//手机号 查询
+               showMemberDia:false,//显示与隐藏会员弹窗
+               newArr:[],//用来手动添加的
           }
      },
+     components:{ MemberShipDia},
      created(){
           this.GetOrderTemplate()
      },
@@ -137,65 +98,18 @@ export default {
                this.form.TempText = this.form.TempText.replace(/\|/g, '\n');
           },
           addMemberShip(){ //打开会员弹窗
-               // this.dialogTableVisible = true;
-               this.GetMemberList();
+               if(this.form.ManagUsers){
+                    let arr = this.form.ManagUsers.split(',')
+                    this.newArr = arr;
+               }
+               this.showMemberDia = true;
           },
-          async GetMemberList() {
-               let { Data } = await getLists({Action: "GetMemberList",CardNo:this.CardNo,Page: this.currentPage - 1,
-               Mobile:this.phoneNum,Subscribe:'1'},"MMemberOpera");
-               this.gridData = Data.UserList;
-               this.dialogTableVisible = true;
-               this.TotalList = Data.DataCount;
-               this.pageSize = Data.PageSize;
-               this.$nextTick(() => {
-                    if (this.form.ManagUsers) {
-                         let arr = this.form.ManagUsers.split(',')
-                         for (const i of arr) {
-                              for (const y of this.gridData) {
-                                   if (i == y.OpenID) {
-                                        this.$refs.multipleTable.toggleRowSelection(y);
-                                   }
-                              }
-                         }
-                    }
-               })
+          changeDig(bool){//用于子组件控制关闭按钮
+               this.showMemberDia = bool;
           },
-          handleSelectionChange(val){
-              this.multipleSelection = val;
-          },
-          SureDialog(){
-               let info = "";
-               this.multipleSelection.forEach((item,index) => {
-                    // console.log(item,'----')
-                    if(index===0){
-                         info +=item.OpenID;
-                    }else{
-                         info +=`,${item.OpenID}`
-                    }
-               });
-               this.dialogTableVisible = false;
-               this.form.ManagUsers = info;
-          },
-          getRowKey(row){
-               return row.OpenID;
-          }, 
-          searchN(){//卡号查询
-               this.GetMemberList();
-          },
-          clearN(){
-               this.CardNo = '';
-               this.GetMemberList();
-          },
-          clearI(){
-               this.phoneNum = '';
-               this.GetMemberList();
-          },   
-          handleSizeChange(val) {
-               console.log(`每页 ${val} 条`);
-          },
-          handleCurrentChange(val) {
-               this.currentPage = val;
-               this.GetMemberList(val);
+          sureMember(val){//会员弹窗确定按钮 
+               this.showMemberDia = false;
+               this.form.ManagUsers = val  
           },
      }
 }

@@ -111,7 +111,7 @@ export default {
            D.codeUrl = this.autoHome+ "?SID=" + D.SID + "&FlagIndex=true";
          // query.SID = D.SID;
           // D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
-          console.log(D.codeUrl,'自定义页面')
+          // console.log(D.codeUrl,'自定义页面')
         });               
         this.loading = false;
       } catch (e) {

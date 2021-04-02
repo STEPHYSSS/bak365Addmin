@@ -135,6 +135,10 @@ export function GetBaseImgUrl() {//获取当前图片url
   }
 }
 
+export function autoUrl(){//自定义链接
+  let url = window.location.protocol + "//" + window.location.host + "/WebApp/Mobile/index.html#/";
+  return url
+}
 
 export function ImgList(list) {
   // 判断是否是数组，然后换成 [{url:图片地址}]

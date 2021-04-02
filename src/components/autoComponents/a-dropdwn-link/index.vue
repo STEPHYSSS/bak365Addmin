@@ -4,12 +4,7 @@
     <div style="display: flex; align-items: center">
       <div
         v-if="currentItemObj.name"
-        style="
-          border: 1px solid rgba(51, 136, 255, 0.3);
-          background: rgb(226, 243, 255);
-          color: rgb(102, 102, 102);
-        "
-        class="zent-tag"
+        class="LinkStyle"
       >
         <div class="zent-tag-content" v-if="currentItemObj.id !== 1">
           {{ currentItemObj.name }}
@@ -37,26 +32,19 @@
             :command="item"
             v-for="(item, index) in list"
             :key="index"
-            >{{ item.name }}</el-dropdown-item
+            >{{ item.name }}
+            </el-dropdown-item
           >
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-
-    <!-- <el-dialog title="选择链接" :visible.sync="dialogVisible" width="800px"  :modal="false">
-        <el-table :data="list" style="width: 100%" ref="singleTable" highlight-current-row @current-change="handleCurrentChange">
-          <el-table-column prop="name" label="网址名称" align="center" width="300">
-          </el-table-column>
-          <el-table-column prop="url" label="网址链接" align="center">
-          </el-table-column>
-        </el-table>
-    </el-dialog>-->
   </div>
 </template>
 
 <script>
+import { getLists } from "@/api/vipCard";
 let url = window.location.protocol +"//" + window.location.host + "/WebApp/Mobile/index.html#/";
-// let url = "http://dingtalk.bak365.cn/WeixinNew/Dist/index.html#/";
+
 import { GetAppNo } from "@/config/publicFunction";
 export default {
   name: "",
@@ -73,24 +61,16 @@ export default {
   },
   data() {
     return {
-      currentItemObj: this.currentItem,
+      currentItemObj:'',
       dialogVisible: false,
       currentRow: "",
+      CateData: [],
       //链接列表
       list: [
         { url: "", name: "自定义链接", id: 1 },
-        {
-          name: "商城首页",
-          url: url,
-        },
-        {
-          name: "商品列表-自定义",
-          url: url + "pages/shoppingMall/list/goodsList",
-        },
-        {
-          name: "商品列表-点餐",
-          url: url + "pages/shoppingMall/menu_naixue/menu/menu",
-        },
+        { name: "商城首页",url: url},
+        { name: "商品列表-自定义", url: url + "pages/shoppingMall/list/goodsList"},
+        {name: "商品列表-点餐",url: url + "pages/shoppingMall/menu_naixue/menu/menu"},
         // {
         //   name: "积分商城",
         //   url: url + "pages/integralMall/index",
@@ -103,67 +83,25 @@ export default {
         //   name: "拼团活动",
         //   url: url + "pages/shoppingMall/makeGroup/makeGroup",
         // },
-        {
-          name: "购物车",
-          url: url + "pages/shoppingMall/shoppingCart/index",
-        },
-        {
-          name: "个人中心",
-          url: url + "pages/home",
-        },
-        {
-          name: "我的粉丝",
-          url: url + "pages/vip/myFan",
-        },
-        {
-          Name: "我的足迹",
-          url: url + "pages/vip/FootPrint",
-        },
-        {
-          name: "申请团长",
-          url: url + "pages/vip/applyLeader",
-        },
-        {
-          name: "付款码",
-          url:"http://manage.bak365.cn/WebApp/WXCard/?Type=PayCode&AppNo=" + GetAppNo(),
-        },
-        {
-          name: "微卡充值",
-          url: url + "pages/vip/weiFull",
-        },
-        {
-          name: "订单列表",
-          url: url + "pages/vip/allMyOrder",
-        },
-        {
-          //pages/packages/index 权益入口
-          name: "权益列表",
-          url: url + "pages/packages/index",
-        },
-        {
-          name: "绑定实体会员卡",
-          // url: url + "pages/vip/bind/index",
-          url:
-            "http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +
-            GetAppNo(),
-        },
-        {
-          name: "申请会员卡",
-          // url: url + "pages/vip/bind/index",
-          url:
-            "http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +
-            GetAppNo(),
-        },
-        {
-          name: "地址管理",
-          url: url + "pages/myAddress/myAddress",
-        },
+        {name: "购物车",url: url + "pages/shoppingMall/shoppingCart/index",},
+        {name: "个人中心",url: url + "pages/home"},
+        {name: "我的粉丝",url: url + "pages/vip/myFan"},
+        {Name: "我的足迹",url: url + "pages/vip/FootPrint"},
+        {name: "申请团长",url: url + "pages/vip/applyLeader"},
+        {name: "付款码",url:"http://manage.bak365.cn/WebApp/WXCard/?Type=PayCode&AppNo=" + GetAppNo()},
+        {name: "微卡充值",url: url + "pages/vip/weiFull"},
+        {name: "订单列表",url: url + "pages/vip/allMyOrder"},
+        {name: "权益列表",url: url + "pages/packages/index"},
+        {name: "绑定实体会员卡",url:"http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" + GetAppNo()},
+        {name: "申请会员卡",url:"http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +GetAppNo()},
+        {name: "地址管理",url: url + "pages/myAddress/myAddress"},
       ],
     };
   },
   components: {},
   mounted() {
     this.currentItemObj = this.currentItem;
+    this.getCateList();
   },
   computed: {
     //     currentI(val) {
@@ -193,6 +131,25 @@ export default {
       this.currentItemObj.url = val;
       this.$emit("clickDropdown", this.currentItemObj);
     },
+    async getCateList() {
+      //获取分类列表
+      try {
+        let { Data } = await getLists({ Action: "GetCateList" }, "MProdOpera");
+        this.CateData = Data.ProdCateList || [];
+        let query = { SID: "" };
+        this.CateData.forEach(item => {
+          query.SID = item.SID;
+          item.codeUrl =
+            url +
+            "pages/shoppingMall/list/goodsList" +
+            "?query=" +
+            encodeURIComponent(JSON.stringify(query));
+        });
+        console.log(this.CateData)
+      } catch (e) {
+        this.$message.error(e);
+      }
+    },
   },
   watch: {
     currentItem() {
@@ -203,6 +160,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.LinkStyle{
+  border: 1px solid rgba(51, 136, 255, 0.3);
+  background: rgb(226, 243, 255);
+  color: rgb(102, 102, 102);
+}
 .zent-tag-content {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -65,6 +65,11 @@
             <el-radio v-model="form.IsCardPass" label="0">关闭</el-radio>
             <el-radio v-model="form.IsCardPass" label="1">开启</el-radio>
           </el-form-item>
+          <el-form-item label="发送退款门店通知">
+            <el-radio v-model="form.SendRefundShopInform" label="0">关闭</el-radio>
+            <el-radio v-model="form.SendRefundShopInform" label="1">开启</el-radio>
+          </el-form-item>
+          
           <!-- <el-form-item label="支付方式">
             <el-checkbox-group v-model="form.BenePayMode">
               <el-checkbox label="1">微卡支付</el-checkbox>
@@ -157,6 +162,7 @@ export default {
       form: {
         ShopRadio:"1",
         IsOpenRecharge:'1',//自定义充值
+        SendRefundShopInform:'0',// 发送退款门店通知 0 不发送 1 已发送
         IsCardPass:'0',
         // BenePayMode: ["1", "2"],//权益
         ScopeDay:'7',
@@ -223,7 +229,19 @@ export default {
       this.btnLoading = true; 
       if(this.form.ScoreDeduction==undefined||this.form.MoneyDeduction==undefined||this.form.ScoreRatio==undefined){
         return this.$message.error("请输入积分抵扣规则")
-      }     
+      }
+      if(this.form.ShopRadio==undefined){
+        this.form.ShopRadio = '2'
+      }
+      if(this.form.IsOpenRecharge==undefined){
+        this.form.IsOpenRecharge = '1'
+      }
+      if(this.form.IsCardPass==undefined){
+        this.form.IsCardPass = '0'
+      }
+      if(this.form.SendRefundShopInform == undefined){
+        this.form.SendRefundShopInform = '0'
+      }   
       try {
         let obj = {};
         this.form.BenePayMode =

@@ -369,12 +369,15 @@ export default {
                 Name: this.ruleForm.name,
                 SID: this.ruleForm.SID,
                 IsDefault: this.ruleForm.IsDefault,
-                Type:'0'
+                Type:'2'
               },
               "MShopOpera"
             );
             this.$message.success("操作成功");
             this.reload();
+            this.$router.push({
+              path: "/weChat/manager/custom/customAutoPage"
+            });
             this.loadingBtn = false;
           } catch (e) {
             this.$message.error(e);

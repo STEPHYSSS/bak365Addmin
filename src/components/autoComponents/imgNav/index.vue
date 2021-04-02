@@ -90,7 +90,7 @@ export default {
     };
   },
   created() {
-    console.log(this.currentObj.listNav,'currentObj.listNav')
+    // console.log(this.currentObj.listNav,'currentObj.listNav')
   },
   mounted() {
     this.setWidth();

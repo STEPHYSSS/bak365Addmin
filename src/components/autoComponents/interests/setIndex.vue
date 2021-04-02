@@ -22,6 +22,7 @@
               :showFileList="true"
               imgWidth="80px"
               imgHeight="80px"
+              :coverImg = "coverImg"
             ></imgLoad>
           </div>
           <div class="add-img-right">
@@ -30,7 +31,8 @@
                 <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
               </el-form-item>
               <el-form-item label="链接：">
-                <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+                <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
+                  <dropMenu :currentItem="currentImg" @clickDropdown="clickDropdown($event,index)"></dropMenu>
               </el-form-item>
             </el-form>
           </div>
@@ -50,9 +52,10 @@ import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
 import draggable from "vuedraggable";
+import dropMenu from "../a-dropdwn-link/dropLink"
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink,draggable},
+  components: { imgLoad, aDropdwnLink,draggable,dropMenu},
   data() {
     return {
       drag:false,
@@ -69,14 +72,18 @@ export default {
             "https://img.yzcdn.cn/public_files/2018/03/05/570bc12622847a5a100e4697c88065ef.png"
         }
       ],
+      coverImg:"isCover",
+      currentImg: {
+        img: "",
+        urlObj:''
+      },
       form: {
         // text,image
         navStyle: "image",
         // 是否滚动0否，1是
         isScroll: "0",
         backGColor: "rgb(255,255,255)",
-        fontColor: "rgb(0,0,0)", //rgb(0,0,0)
-        // { img: "", name: "", urlObj: { name: "", url: "" } }
+        fontColor: "rgb(0,0,0)",
         listNav: [
           {name:'权益一', url: ''}
         ],
@@ -87,37 +94,21 @@ export default {
     };
   },
   created() {
+    // console.log(this.form,'creatererdfd')
     if (this.form.navStyle === "image") {
       this.currentIndex = 0;
     } else {
       this.currentIndex = 1;
     }
+    
   },
   mounted() {
     this.form.pageShowNum = Number(this.form.pageShowNum);
+    this.form.listNav.forEach((item,index)=>{
+      this.currentImg = item
+    });
   },
   methods: {
-    onstart(e){
-      this.drag = true
-    },
-    onEnd(e){
-      this.drag = false;
-      this.$emit("setModeVal", this.form);
-    },
-    changeMode(index) {
-      if (index !== this.currentIndex) {
-        this.form.navStyle = index === 0 ? "image" : "text";
-        this.$emit("setModeVal", this.form);
-      }
-      this.currentIndex = index;
-    },
-    changeStyleSearch() {
-      this.$emit("setModeVal", this.form);
-    },
-    colorReset(params, color) {
-      this.form[params] = color;
-      this.$emit("setModeVal", this.form);
-    },
     upLoadImgsMain(url, row) {
       // 图片
       row.url = url.replace(process.env.Prefix, "");
@@ -131,16 +122,6 @@ export default {
     clickEdlete(index) {
       this.form.listNav.splice(index, 1);
     },
-    addImg() {
-      if (!this.form.listNav || this.form.listNav == "") {
-        this.form.listNav = [];
-      }
-      this.form.listNav.push({});
-      this.$emit("setModeVal", this.form);
-    },
-    changeNavNum() {
-      this.$emit("setModeVal", this.form);
-    }
   },
   watch: {
     "form.navStyle"() {
@@ -201,7 +182,7 @@ export default {
 }
 img {
   position: relative;
-  height: auto;
+  // height: auto;
   max-width: 100%;
   vertical-align: middle;
   border: 0;

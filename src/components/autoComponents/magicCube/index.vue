@@ -1,6 +1,6 @@
 <template>
-  <div style="height:auto">
-    <div style="background-color: rgb(249, 249, 249);" :style="{'height':bigBoxH === 'auto'?'100%': bigBoxH+'px'}">
+  <div class="magicCube">
+    <div style="background-color: rgb(249, 249, 249)">
       <div
         v-if="currentObj.imgList.length===0"
         class="rc-design-react-preview rc-design-component-default-preview"
@@ -8,20 +8,15 @@
         <div class="rc-design-component-default-preview__text">点击编辑魔方</div>
       </div>
       <div class="cap-cube-wrap" v-else>
-        <div
-          class="cap-cube"
-          :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH+'px','width':bigBoxW+'px'}"
+        <div class="cap-cube" :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH === 'auto'?'100%': '100%','width':bigBoxW+'px','display':bigBoxH != 'auto'?'flex':'','flex-wrap':bigBoxH != 'auto'? 'wrap':''}"
         >
-          <div
-            v-for="(item,index) in listBox"
-            :key="index"
-            class="cap-cube__item"
-            :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.heightImg === 0 ? '100%': item.Dheight + 'px','width': item.Dwidth+'px',
-              'margin': (currentObj.imgGap/2).toFixed(2)+'px','background-size':'cover'
-            ,'background-image':`url(${SetImage(item.img)})`}"
-            @click="clickLink(item.url)"
+            <!-- ,'background-image':`url(${SetImage(item.img)})`,'background-size': '100%' -->
+          <div v-for="(item,index) in listBox" :key="index" :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.Dheight === 'auto' ? '100%' : item.Dheight + 'px','width': item.Dwidth+'px',
+              'margin': (currentObj.imgGap/2).toFixed(2)+'px'}"
+            @click="clickLink(item.url)" :class="{'posRight':item.right==0}"
           >
-            <!-- <img class="cap-cube__table-image--invisible" :src="item.img |SetImage" /> -->
+          <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible imgStyle"  />
+            <!-- <img class="cap-cube__table-image--active-invisible" :src="item.img |SetImage" /> -->
           </div>
         </div>
       </div>
@@ -99,126 +94,130 @@ export default {
       }
     },
     changeBox() {
-      this.listBox = this.currentObj.imgList || this.propsObj.imgList;
-      if (this.listBox.length === 0) {
-        return;
-      }
-      //手机端记得把320删除
-      let clientWidth = 320 || document.body.clientWidth;
+				this.listBox = this.currentObj.imgList;
+				if (this.listBox.length === 0) {
+					return;
+				}
+				//手机端记得把320删除
+				let clientWidth = 320 || document.body.clientWidth;
       let m = Number(this.currentObj.changeMode);
       this.currentObj.pageGap = Number(this.currentObj.pageGap);
-      if (m !== 8) {
-        let arr = [];
-         switch (m) {
-           case 1:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 1.72,heightImg:0},
-              { pageX: 0, pageY: 0, pWidth: 0, pHeight: 0 }
-            ];
-            break;
-          case 2:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 3:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
-              { pageX: 1.33, pageY: 0, pWidth: 1.33, pHeight: 1.33 },
-              { pageX: 2.66, pageY: 0, pWidth: 1.33, pHeight: 1.33 }
-            ];
-            break;
-          case 4:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 1, pHeight: 1 },
-              { pageX: 1, pageY: 0, pWidth: 1, pHeight: 1 },
-              { pageX: 2, pageY: 0, pWidth: 1, pHeight: 1 },
-              { pageX: 3, pageY: 0, pWidth: 1, pHeight: 1 }
-            ];
-            break;
-          case 5:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 6:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 7:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 2 },
-              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
-            ];
-            break;
-          case 8:
-            arr = [
-              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
-              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
-              { pageX: 2, pageY: 2, pWidth: 1, pHeight: 2 },
-              { pageX: 3, pageY: 2, pWidth: 1, pHeight: 2 }
-            ];
-            break;
-        }
-       
-        this.listBox.forEach((D, index) => {
-          if (arr[index]) {
-            this.$set(arr[index], "img", D.img);
-          }
-        });
-        this.listBox = arr;
-      }
+				if (m !== 8) {
+					let arr = [];
+					switch (m) {
+					           case 1:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 1.72}
+					            ];
+					            break;
+					          case 2:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 }
+					            ];
+					            break;
+					          case 3:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 1.32, pHeight: 1.33 },
+					              { pageX: 1.33, pageY: 0, pWidth: 1.32, pHeight: 1.33 },
+					              { pageX: 2.66, pageY: 0, pWidth: 1.33, pHeight: 1.33 }
+					            ];
+					            break;
+					          case 4:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 1, pHeight: 1 },
+					              { pageX: 1, pageY: 0, pWidth: 1, pHeight: 1 },
+					              { pageX: 2, pageY: 0, pWidth: 1, pHeight: 1 },
+					              { pageX: 3, pageY: 0, pWidth: 1, pHeight: 1 }
+					            ];
+					            break;
+					          case 5:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+					              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+					            ];
+					            break;
+					          case 6:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+					              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 ,right:0}
+					            ];
+					            break;
+					          case 7:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 4, pHeight: 4 },
+					              { pageX: 0, pageY: 2, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 2, pWidth: 2, pHeight: 2 }
+					            ];
+					            break;
+					          case 8:
+					            arr = [
+					              { pageX: 0, pageY: 0, pWidth: 2, pHeight: 4 },
+					              { pageX: 2, pageY: 0, pWidth: 2, pHeight: 2 },
+					              { pageX: 2, pageY: 2, pWidth: 1, pHeight: 2 },
+					              { pageX: 3, pageY: 2, pWidth: 1, pHeight: 2 }
+					            ];
+					            break;
+					        }
+					this.listBox.forEach((D, index) => {
+						
+						if (arr[index]) {
+							Object.assign(arr[index],D)
+						}
+					});
+					this.listBox = arr;
+				}
+				
 
-      let imgGap = Math.ceil(this.currentObj.imgGap / 2);
-      this.currentObj.imgGap;
-      //每个盒子的平均宽度;
-      let averageW = Math.ceil(
-        (
-          clientWidth +
-          this.currentObj.imgGap -
-          this.currentObj.pageGap * 2
-        ).toFixed(2) / Number(this.currentObj.densityMode)
-      );
-      let newList = JSON.parse(JSON.stringify(this.listBox));
-      //求最多的height盒子的个数
-      let mostH = newList.reduce((D, D2) => {
-        let a =
-          parseFloat(D).toString() == "NaN"
-            ? Number(D.pHeight) + Number(D.pageY)
-            : D;
-        let b = Number(D2.pHeight) + Number(D2.pageY);
-        return a > b ? a : b;
-      });
-      let mostW = newList.reduce((D, D2) => {
-        let a =
-          parseFloat(D).toString() == "NaN"
-            ? Number(D.pWidth) + Number(D.pageX)
-            : D;
-        let b = Number(D2.pWidth) + Number(D2.pageX);
-        return a > b ? a : b;
-      });
-      // this.bigBoxH = (mostH * averageW).toFixed();
-      this.bigBoxH = m === 1 ? 'auto' : (mostH * averageW).toFixed();
-      this.bigBoxW = (mostW * averageW).toFixed();
+				let imgGap = Math.ceil(this.currentObj.imgGap / 2);
+				//每个盒子的平均宽度;
+				let averageW = Math.ceil(
+					(
+						clientWidth +
+						(this.currentObj.imgGap -
+							this.currentObj.pageGap * 2)
+					).toFixed(2) / Number(this.currentObj.densityMode)
+				);
 
-      newList.forEach((D, index) => {
-        let Dheight = Number(D.pHeight) * averageW  - this.currentObj.imgGap;
+
+				let newList = JSON.parse(JSON.stringify(this.listBox));
+
+				//求最多的height盒子的个数
+				let mostH = newList.reduce((D, D2) => {
+					let a =
+						parseFloat(D).toString() == "NaN" ?
+						Number(D.pHeight) + Number(D.pageY) :
+						D;
+					let b = Number(D2.pHeight) + Number(D2.pageY);
+					return a > b ? a : b;
+				});
+				let mostW = newList.reduce((D, D2) => {
+					let a =
+						parseFloat(D).toString() == "NaN" ?
+						Number(D.pWidth) + Number(D.pageX) :
+						D;
+					let b = Number(D2.pWidth) + Number(D2.pageX);
+					return a > b ? a : b;
+				});
+				// this.bigBoxH = (mostH * averageW).toFixed();
+				this.bigBoxH = m === 1 ? 'auto' : (mostH * averageW).toFixed();
+				this.bigBoxW = (mostW * averageW).toFixed();
+				
+				newList.forEach((D, index) => {
+					let Dheight = Number(D.pHeight) * averageW  - this.currentObj.imgGap;
 					if(m===1) Dheight = 'auto'
+					
 					this.listBox[index].Dwidth = Number(D.pWidth) * averageW - this.currentObj.imgGap;
 					// this.listBox[index].Dheight = Number(D.pHeight) * averageW - this.currentObj.imgGap;
 					this.listBox[index].Dheight = Dheight
 					this.listBox[index].Dleft = Number(D.pageX) * averageW + this.currentObj.pageGap;
 					this.listBox[index].Dtop = Number(D.pageY) * averageW;
-      });
-    },
+				});
+
+			},
     reportErrorsFun() {
       if (this.currentObj.imgList.length === 0) {
         return "请选择魔方图片";
@@ -267,8 +266,9 @@ export default {
 };
 </script>
 
-<style scoped>
-.rc-design-component-default-preview__text {
+<style lang="less" scoped>
+.magicCube{
+  .rc-design-component-default-preview__text {
   line-height: 136px;
   font-size: 14px;
 }
@@ -282,29 +282,45 @@ export default {
   text-align: center;
   color: #88c4dc;
 }
+
 .cap-cube-wrap {
-  user-select: none;
-  width: 100%;
-  overflow: hidden;
+		/* user-select: none; */
+		width: 100%;
+		height: 100%;
+		/* overflow: hidden; */
+	}
+
+	.cap-cube {
+		box-sizing: border-box;
+		position: relative;
+		/* display: flex; */
+	}
+
+	.cap-cube__item {
+		/* box-sizing: border-box;
+		position: absolute;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: 50%;
+		overflow: hidden; */
+	}
+
+	.cap-cube__table-image--active-invisible {
+		/* position: absolute;
+		left: 0;
+		top: 0; */
+		height: 100%;
+    // height: auto;
+		flex-wrap:wrap;
+		width: 100%;
+		/* height: 100%; */
+		/* opacity: 0; */
+	}
+	.posRight{
+		position: absolute;
+		right: 0;
+		bottom: 0;
+	}
 }
-.cap-cube {
-  position: relative;
-}
-.cap-cube__item {
-  box-sizing: border-box;
-  /* border: 1px solid rgb(209, 207, 207); */
-  position: absolute;
-  background-repeat: no-repeat;
-  /* background-size: cover; */
-  background-position: 50%;
-  overflow: hidden;
-}
-.cap-cube__table-image--invisible {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
+
 </style>

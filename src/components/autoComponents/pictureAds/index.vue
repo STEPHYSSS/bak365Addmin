@@ -22,7 +22,7 @@
           <ul v-if="currentObj.changeMode==1" class="cap-image-ad__top2end">
             <li
               class="cap-image-ad__content"
-              :style="{'height': changeClientWidth+'px', 'margin-bottom': currentObj.imgGap+'px'}"
+              :style="{'margin-bottom': currentObj.imgGap+'px'}"
               v-for="(item,index) in currentObj.imgList"
               :key="index"
             >
@@ -36,7 +36,7 @@
           <van-swipe
             v-if="currentObj.changeMode==2"
             class="cap-image-ad__image_swipe"
-            :style="{'height':changeClientWidth+'px','width':changeClientWidth+'px'}"
+            :style="{'width':changeClientWidth+'px'}"
             @change="onChange"
             :autoplay="2100"
           >
@@ -70,7 +70,7 @@
               v-for="(image, index) in currentObj.imgList"
               :key="index"
               class="cap-image-ad__image-wrapper"
-              :style="{'width':boxWidth+'px','height':boxWidth+'px',
+              :style="{'width':boxWidth+'px',
               'margin-right': currentObj.imgGap+'px'}"
             >
               <!-- {{image.urlObj.url}} 商品链接-->

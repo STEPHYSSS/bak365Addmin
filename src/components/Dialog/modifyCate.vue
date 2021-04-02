@@ -167,8 +167,6 @@ export default {
     },
     preserve() {
       // 保存
-      // console.log(this.ruleForm, 5555)
-      // clearData(this)
       this.SubmitData();
     },
     upLoadImgs(imgs) {

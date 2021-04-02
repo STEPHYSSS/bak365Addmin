@@ -21,7 +21,8 @@ const systemSet = r => require.ensure([], () => r(require('../view/weChatManager
 const logisticsSet = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/logisticsSet')), 'logisticsSet')
 // 统计页面 src\view\weChatManager\Statistics
 const Statistics = r => require.ensure([], () => r(require('../view/weChatManager/Statistics')), 'Statistics')
-
+// 商品修改商品
+const batchModification = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/batchModification')), 'batchModification')
 // 电子券设置
 const addTiket = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/addTiket')), 'addTiket')
     // 轮播图设置
@@ -259,8 +260,13 @@ export const asyncRouterMap = [{
                             label: '电子券'
                         },
                         component: addTiket
-                    },
-                    {
+                    },{//批量修改商品
+                        path:'batchModification',
+                        meta:{
+                            label:'批量修改商品'
+                        },
+                        component:batchModification
+                    },{
                         path: 'newTaste',
                         meta: {
                             label: '属性管理'

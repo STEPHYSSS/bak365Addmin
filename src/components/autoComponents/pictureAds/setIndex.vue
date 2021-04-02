@@ -41,6 +41,7 @@
             :showFileList="true"
             imgWidth="80px"
             imgHeight="80px"
+            :coverImg = "coverImg"
           ></imgLoad>
         </div>
         <div class="add-img-right">
@@ -49,7 +50,8 @@
               <el-input v-model="item.name" placeholder="建议10个字以内，可不填"></el-input>
             </el-form-item>
             <el-form-item label="跳转路径：">
-              <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+              <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
+              <dropMenu :currentObj="item.urlObj" @clickDropdown="clickDropdown($event,index)"></dropMenu>
             </el-form-item>
           </el-form>
         </div>
@@ -154,9 +156,10 @@ import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
 import draggable from "vuedraggable";
+import dropMenu from "../a-dropdwn-link/dropLink"
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink, draggable },
+  components: { imgLoad, aDropdwnLink, draggable,dropMenu },
   data() {
     return {
       currentIndex: 0,
@@ -193,6 +196,7 @@ export default {
         // }
       ],
       currentIEel: null,
+      coverImg:"isCover",
       form: {
         changeMode: "1",
         // 图片间隙
@@ -207,16 +211,7 @@ export default {
         indicator: "4",
         //图片
         imgList: [
-          // {
-          //   img:
-          //     "https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1713396441,1487163637&fm=26&gp=0.jpg",
-          //   name: "333",
-          //   //关联的链接，名称和url
-          //   urlObj: {
-          //     name: "商品",
-          //     url: "54545665"
-          //   }
-          // }
+          
         ]
       }
     };

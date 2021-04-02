@@ -56,14 +56,17 @@
           <span style="margin:0 10px">运费规则{{index+1}}：</span>
           <div class="province_fa">
             <div class="inputWitdh">
-              <el-input-number v-model="item.StartingKM" controls-position="right" :min="0"></el-input-number>公里以内
-              <el-input-number v-model="item.StartingPrice" controls-position="right" :min="0"></el-input-number>元， 超出起送公里后每
-              <el-input-number v-model="item.BeyondKM" controls-position="right" :min="0"></el-input-number>公里加收
-              <el-input-number v-model="item.BeyondPrice" controls-position="right" :min="0"></el-input-number>元，
+              <el-input v-model="item.StartingKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里以内
+              <el-input v-model="item.StartingPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元， 每超出
+              <el-input v-model="item.BeyondKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里，加收
+              <el-input v-model="item.BeyondPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
               运费上限
-              <el-input-number v-model="item.UpPrice" controls-position="right" :min="0"></el-input-number>元， 超出
-              <el-input-number v-model="item.NodeliveryKM" controls-position="right" :min="0"></el-input-number>公里不配送,
-              订单满<el-input-number v-model="item.SatisfyMoney" controls-position="right" :min="0"></el-input-number>元免运费
+              <el-input v-model="item.UpPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元， 超出
+              <el-input v-model="item.NodeliveryKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里不配送<br/>
+              订单满 <el-input v-model="item.OrderSatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
+              <el-input v-model="item.OrderKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里内免运费，
+              订单满 <el-input v-model="item.SatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元免运费
+             
             </div>
             <el-button
               style="margin-left:40px"
@@ -265,6 +268,8 @@ export default {
           UpPrice: "",
           NodeliveryKM: "",
           SatisfyMoney:"",
+          OrderSatisfyMoney:"",
+          OrderKM:"",
           Defaults: false
         });
       }
@@ -353,6 +358,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.inputWitdh .el-input{
+  width: 80px;
+  padding-bottom: 10px;
+
+}
 .province_style {
   .textarea-style {
     width: 300px;

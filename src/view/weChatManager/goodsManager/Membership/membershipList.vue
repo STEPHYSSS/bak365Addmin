@@ -1,6 +1,6 @@
 <template>
   <div class="orderNotify">
-    <!-- <el-row class="marginBottom">
+    <el-row class="marginBottom">
       <el-col :span="24">
         <span>卡 号：</span>
         <el-input
@@ -18,8 +18,8 @@
         >&nbsp;&nbsp;
         <span>手机号：</span>
         <el-input
-          placeholder="请输入ID"
-          v-model="OpenID"
+          placeholder="请输入手机号"
+          v-model="Mobile"
           clearable
           @clear="clearI"
           class="input-with-select"
@@ -55,77 +55,11 @@
           </el-option>
         </el-select>
       </el-col>
-    </el-row> -->
-    <el-row class="marginBottom">
-      <el-col :span="6">
-        <span>卡 号：</span>
-        <el-input
-          placeholder="请输入卡号"
-          v-model="CardNo"
-          clearable
-          @clear="clearN"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="searchN"
-          ></el-button> </el-input
-        >
-      </el-col> 
-      <el-col :span="6">
-        <span>手机号：</span>
-        <el-input
-          placeholder="请输入手机号"
-          v-model="Mobile"
-          clearable
-          @clear="clearI"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="searchN"
-          ></el-button>
-        </el-input>
-      </el-col>
-      <el-col :span="6">
-        <span>卡来源：</span>
-        <el-select v-model="BindType" @change="changeCard" placeholder="请选择">
-          <el-option
-            v-for="item in BindTypeList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-col>
-      <el-col :span="6">
-         <span>卡状态：</span>
-        <el-select
-          v-model="CardState"
-          @change="changeCard"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in CardStateList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-col>
     </el-row>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="头像" width="80px" align="center">
         <template slot-scope="scope">
-          <img
-            :src="scope.row.Headimgurl ? scope.row.Headimgurl : defaultImg"
-            alt=""
-            class="imgWidth"
-          />
+          <img :src="scope.row.Headimgurl ? scope.row.Headimgurl : defaultImg" class="imgWidth"/>
         </template>
       </el-table-column>
       <el-table-column
@@ -195,11 +129,9 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope" v-if="scope.row.CardNo!=''">
           <el-button type="text" @click="Unbund(scope.row, scope.$index)"
-            >解绑</el-button
-          >
-          <!-- <el-button type="text" @click="reNewCode(scope.row, scope.$index)"
-            >修改卡密码</el-button
-          > -->
+            >解绑</el-button>
+          <el-button type="text" @click="reNewCode(scope.row, scope.$index)"
+            >修改卡密码</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -249,41 +181,6 @@
       >
       </el-pagination>
     </div>
-
-    <!-- <el-dialog
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>请问是否解绑？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureJieBang">确 定</el-button>
-      </span>
-    </el-dialog> -->
-
-    <!-- <el-dialog
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>修改密码</span>
-      <el-form :model="form">
-        <el-form-item label="卡号" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="refreshGood">确 定</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -411,10 +308,10 @@ export default {
     },    
 
     reNewCode(row) {
-      // console.log("点击打开修改密码弹框");
+      this.ruleForm.CardPass = "";
+      this.ruleForm.VerifyCardPass = "";
       this.dialogFormVisible = true;
       this.ruleForm = row;
-      // console.log("我是你要的row", row);
     },
 
     async GetOrderTemplate() {

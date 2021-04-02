@@ -1,7 +1,7 @@
 <template>
   <!--      商品类别-->
   <div>
-    <el-select
+    <el-select v-if="!isBatch"
       v-model="value"
       :multiple="multiple"
       :placeholder="placeholderProp"
@@ -10,6 +10,10 @@
     >
       <el-option v-for="item in listGood" :key="item.SID" :label="item.Name" :value="item.SID"></el-option>
     </el-select>
+    <el-select v-model="value" placeholder="请选择" v-if="isBatch" @change="changeGood" clearable>
+    <el-option v-for="item in listGood" :key="item.SID" :label="item.Name" :value="item.SID">
+    </el-option>
+  </el-select>
   </div>
 </template>
 <script>
@@ -17,6 +21,7 @@ import { getLists } from "@/api/vipCard";
 
 export default {
   props: {
+    isBatch:String,
     multiple: {
       type: Boolean,
       default: true
@@ -41,12 +46,14 @@ export default {
       let Opera = this.isIntegral?'MIntegralOpera':'MProdOpera'
 
       let { Data } = await getLists({ Action: "GetCateList" }, Opera);
-      // console.log(Data)
       this.listGood = Data.ProdCateList;
     } catch (e) {}
   },
   methods: {
     changeGoodType(id) {
+      this.$emit("changeGoodType", id);
+    },
+    changeGood(id){
       this.$emit("changeGoodType", id);
     }
   }

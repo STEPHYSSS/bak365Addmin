@@ -10,12 +10,13 @@
     >
 
     <el-button type="primary" size="small" @click="renewGood">更新门店</el-button>
-
+    <el-button @click="storeUpOrdown('up')" :disabled="multipleSelection.length=='0'" class="marbtn">批量启用</el-button>
+    <el-button @click="storeUpOrdown('down')" :disabled="multipleSelection.length=='0'" class="marbtn">批量关闭</el-button>
     <span style="margin-left: 20px">门店名称</span>
     <el-input style="width: 188px" placeholder="请输入内容" v-model="search.Name" @clear="clearN"></el-input>
 
     <span style="margin-left: 20px">状态：</span>
-    <el-select placeholder="请选择" v-model="search.State">
+    <el-select placeholder="请选择" v-model="search.State" clearable> 
       <el-option label="开启" value="1"></el-option>
       <el-option label="关闭" value="0"></el-option>
     </el-select>
@@ -27,35 +28,9 @@
       >搜索
     </el-button>
 
-    <!-- <span>商品名称：</span>
-    <el-input
-      style="width: 188px"
-      v-model="search.Name"
-      placeholder="请输入内容"
-      clearable
-      @clear="clearN"
-    ></el-input>
-
-    <span style="margin-left: 20px">评价显示：</span>
-    <el-select v-model="search.IsShow" placeholder="请选择">
-      <el-option label="全部" value=""></el-option>
-      <el-option label="显示" value="1"></el-option>
-      <el-option label="不显示" value="0"></el-option>
-    </el-select>
-
-    <div style="margin-top: 15px">
-      <el-button
-        type="primary"
-        size="small"
-        @click="searchReply"
-        class="marginBottom"
-        :disabled="loading"
-        >搜索
-      </el-button>
-    </div> -->
-
-    <el-table :data="listData" v-loading="loading" style="width: 100%">
-      <el-table-column label="门店图片">
+    <el-table :data="listData" v-loading="loading" tooltip-effect="dark" ref="multipleTable" @selection-change="handleSelectionChange" style="width: 100%">
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
+      <el-table-column label="门店图片" align="center" width="120">
         <template slot-scope="scoped">
           <div class="goodsInfo">
             <img
@@ -65,16 +40,16 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="SID" label="门店编号"></el-table-column>
-      <el-table-column prop="Name" label="门店名称"></el-table-column>
-      <el-table-column prop="Address" label="门店地址"></el-table-column>
-      <el-table-column label="门店电话">
+      <el-table-column prop="SID" label="门店编号" align="center" width="100"></el-table-column>
+      <el-table-column prop="Name" label="门店名称" align="center"></el-table-column>
+      <el-table-column prop="Address" label="门店地址" align="center"></el-table-column>
+      <el-table-column label="门店电话" align="center" width="110">
         <template slot-scope="scoped">
           <div v-if="scoped.row.Tel">{{ scoped.row.Tel }}</div>
           <div v-else>无</div>
         </template>
       </el-table-column>
-      <el-table-column label="启用">
+      <el-table-column label="启用" align="center" width="55">
         <template slot-scope="scoped">
           <el-checkbox
             v-model="scoped.row.State"
@@ -82,13 +57,13 @@
           ></el-checkbox>
         </template>
       </el-table-column>
-      <el-table-column label="经纬度">
+      <el-table-column label="经纬度" align="center">
         <template slot-scope="scoped">
           <div>经度：{{ scoped.row.Longitude }}</div>
           <div>纬度：{{ scoped.row.Latitude }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center" width="100">
         <template slot-scope="scoped">
           <el-button type="text" @click="editRowGoods(scoped.row)"
             >编辑</el-button
@@ -99,18 +74,16 @@
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- <el-dialog
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <span>请问是否需要更新门店？</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="refreshGood">确 定</el-button>
-      </span>
-    </el-dialog> -->
+    <div class="block" v-if="TotalList">
+        <el-pagination  background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="TotalList">
+        </el-pagination>
+    </div>
 
     <Del :show="show" @delFunction="delFunction" @confirmEnd="confirmEnd"></Del>
   </div>
@@ -132,7 +105,13 @@ export default {
       listData: [],
       show: false,
       current_index: null,
-      current_SID: null
+      current_SID: null,
+      multipleSelection:[],//多选
+      splitSID:'',//多选id
+      State:'',
+      TotalList:0,//分页总数
+      currentPage: 0,
+      pageSize:0,
       // dialogVisible: false
     };
   },
@@ -142,19 +121,12 @@ export default {
   methods: {
     //更新门店
     async renewGood(suibian){
-      console.log(suibian,"我是你要找的suibian");
       this.$confirm("是否需要更新门店","提示",{
         confirmButtonText:"是",
         cancelButtonText:"否",
         type:"warning"
       }).then(()=>{
-        let{Data}=getLists(
-          {
-            Action:"SetShopSynchronous"
-          },
-          "MShopOpera"
-        );
-        this.$message.success("更新成功");
+        this.setShop();
       }).catch(()=>{
         this.$message({
           type:"info",
@@ -162,13 +134,26 @@ export default {
         })
       })
     },
-
+    async setShop(){
+      try {
+         let{Data}=await getLists(
+          {
+            Action:"SetShopSynchronous"
+          },
+          "MShopOpera"
+        );
+        this.$message.success("更新成功");
+        this.getList();
+      } catch (error) {
+        this.$message.error(error)
+      }
+    },
     async getList() {
       try {
-        let { Data } = await getLists({ Action: "GetShopList" ,Name:this.search.Name,State:this.search.State}, "MShopOpera");
-        // console.log(Data)
+        let { Data } = await getLists({ Action: "GetShopList" ,Name:this.search.Name,State:this.search.State,Page: this.$route.query.page?this.$route.query.page:this.currentPage - 1}, "MShopOpera");        
         this.listData = Data.ShopInfoList;
-        console.log("我肯定一定确定是你要找的",this.listData)
+        this.TotalList = Data.DataCount;
+        this.pageSize = Data.PageSize;
         this.listData.forEach(D => {
           D.Img = D.Img.split(",");
           D.State = D.State === "0" ? false : true;
@@ -176,6 +161,68 @@ export default {
       } catch (e) {
         this.$message.error(e);
       }
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getList(val);
+    }, 
+    storeUpOrdown(flag){//上架
+
+      if(flag == 'up'){
+        this.msg = '是否批量启用'
+      }else{
+        this.msg = '是否批量关闭'
+      }
+      this.$confirm(this.msg, '提示', {
+              confirmButtonText: '是',
+              cancelButtonText: '否',
+              type: 'warning'
+        }).then(() => {
+              this.goodsUpOrdownFun(flag);
+        }).catch(() => {
+              this.$message({
+              type: 'info',
+              message: '已取消'
+              });          
+        });
+    },
+    async goodsUpOrdownFun(flag){
+      let SID = ''
+      this.multipleSelection.forEach((item,index)=>{
+        this.splitSID+=item.SID+','
+        this.State = item.State
+        SID = this.splitSID.substr(0,this.splitSID.length-1)
+        console.log(SID,'SID')
+      })
+      // let SID = 
+      let State = '';
+      if(flag == 'up'){
+        State = '1'
+      }else{
+        State = '0'
+      }
+      try {
+        let data = await getLists(
+          {
+            Action: "SetShopState",
+            State:State,
+            SID:SID
+          }, "MShopOpera")
+        this.dialogVisibleUp = false;
+        this.$message.success(data.Message);
+        setTimeout(() => {
+          this.getList()
+        }, 200);
+      } catch (e) {
+        this.$message.error(e)
+      }
+    },
+    
+    handleSelectionChange(val) {//多选
+      this.multipleSelection = val;
     },
     async changeEnable(bool, row) {
       // 是否启用 bool = true 为启用
@@ -196,7 +243,7 @@ export default {
     editRowGoods(row) {
       this.$router.push({
         path: "/weChat/manager/storeSet/info",
-        query: { sid: row.SID }
+        query: { sid: row.SID ,page:Number(this.currentPage-1)}
       });
     },
     addGood() {
@@ -242,14 +289,24 @@ export default {
     }
   }
 };
+ function quchongstr(str){
+    var a = str.match(/\S+/g);//等价于str.split(/\s+/g)// \s空白符，\S非空白符
+    a.sort();
+    for(var i=a.length-1;i>0;i--){
+      if(a[i]==a[i-1]){
+        a.splice(i,1);
+      }
+    }
+    return a.join(" ");
+  }
 </script>
 
 <style scoped lang="less">
 .goodsInfo {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   border: 1px solid #eee;
-
+  margin: 0 auto;
   img {
     width: 100%;
     height: 100%;

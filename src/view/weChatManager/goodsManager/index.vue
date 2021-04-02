@@ -226,7 +226,6 @@ export default {
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(typeof(val))
         this.currentPage = val;
         this.getList(val);
       },
@@ -253,7 +252,7 @@ export default {
             ProdNo:this.search.ProdNo,
             ProdType:this.search.ProdType,
             SpecType:this.search.SpecType,
-            Page: this.currentPage - 1           
+            Page: this.$route.query.page?this.$route.query.page:this.currentPage - 1
           }, "MProdOpera")
         this.data = data.Data.Prod_InfoList;
         let setImg = this.currentGoods ? "Img" : "ImgList";
@@ -385,7 +384,10 @@ export default {
         if(row.ProdType == '0'){
           this.$router.push({
             path: "/weChat/manager/goodEdit",
-            query: { SID: row.SID }
+            query: {
+              SID: row.SID,
+              page:Number(this.currentPage-1)
+            }
           });
         }else{
           this.$router.push({

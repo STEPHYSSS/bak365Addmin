@@ -19,15 +19,10 @@
       <el-form-item label="布局:" prop="changeMode">
         <div class="rc-design-component-cube clearfix">
           <ul class="cube-row" v-for="(item,index) in layoutList[currentIndex]" :key="index">
-            <li
-              class="cube-item item-selected"
-              :style="{'width': item.width+'px', 
-            'height': item.height+'px'}"
-            ></li>
+            <li class="cube-item item-selected" :style="{'width': item.width+'px', 'height': item.height+'px'}"></li>
           </ul>
           <div
-            v-for="(item,i) in layoutList[currentIndex]"
-            :key="i+'1'"
+            v-for="(item,i) in layoutList[currentIndex]" :key="i+'1'"
             :class="['cube-selected',i === layoutIndex?'cube-selected-click':'']"
             :style="{'width': item.width+'px', 'height': item.height+'px',
              'top': item.top+'px', 'left': item.left+'px'}"
@@ -36,6 +31,7 @@
             <img
               v-if="form.imgList[i]&&form.imgList[i].hasOwnProperty('img')"
               :src="form.imgList[i].img |SetImage"
+              :style="{'object-fit':currentIndex===0?'contain':'cover'}"
               alt
             />
             <div v-else class="cube-selected-text">
@@ -118,7 +114,8 @@
         <div class="add-img-right">
           <el-form ref="form" label-width="80px">
             <el-form-item label="跳转路径：">
-              <aDropdwnLink :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></aDropdwnLink>
+              <!-- <aDropdwnLink :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></aDropdwnLink> -->
+              <dropMenu :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></dropMenu>
             </el-form-item>
           </el-form>
         </div>
@@ -131,9 +128,10 @@
 import Mixins from "../publicFun";
 import imgLoad from "@/components/download/imgLoad";
 import aDropdwnLink from "../a-dropdwn-link/index";
+import dropMenu from "../a-dropdwn-link/dropLink"
 export default {
   mixins: [Mixins],
-  components: { imgLoad, aDropdwnLink },
+  components: { imgLoad, aDropdwnLink ,dropMenu},
   data() {
     return {
       form: {
@@ -186,10 +184,10 @@ export default {
           title: "1上2下",
           url:"https://img.yzcdn.cn/public_files/2017/11/09/7b4cdf2cc81d386c2ec316cde4d7c419.png"
         },
-        {
-          title: "1左3右",
-          url:"https://img.yzcdn.cn/public_files/2017/11/09/baf20bd9462316851c81e47f8ae2cadf.png"
-        }
+        // {
+        //   title: "1左3右",
+        //   url:"https://img.yzcdn.cn/public_files/2017/11/09/baf20bd9462316851c81e47f8ae2cadf.png"
+        // }
         // {
         //   title: "自定义",
         //   url:
@@ -205,13 +203,13 @@ export default {
           { width: "323", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375},
         ],
         [
-          { width: "161", height: "161", left: 0, top: 0, widthImg: 375 },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 375 }
+          { width: "161", height: "161", left: 0, top: 0, widthImg: 161 },
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 161 }
         ],
         [
-          { width: "107", height: "107", left: 0, top: 0, widthImg: 250 },
-          { width: "107", height: "107", left: 108, top: 0, widthImg: 250 },
-          { width: "107", height: "107", left: 216, top: 0, widthImg: 250 }
+          { width: "100", height: "107", left: 0, top: 0, widthImg: 250 },
+          { width: "100", height: "107", left: 108, top: 0, widthImg: 250 },
+          { width: "100", height: "107", left: 216, top: 0, widthImg: 250 }
         ],
         [
           { width: "80", height: "80", left: 0, top: 0, widthImg: 180 },
@@ -219,21 +217,21 @@ export default {
           { width: "80", height: "80", left: 162, top: 0, widthImg: 180 },
           { width: "80", height: "80", left: 243, top: 0, widthImg: 180 }
         ],
-        [{ width: "161", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375
+        [{ width: "161", height: "161", left: 0, top: 0, widthImg: 161, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 161, heightImg: 375
           },
-          { width: "161", height: "161", left: 0, top: 162, widthImg: 375, heightImg: 375
+          { width: "161", height: "161", left: 0, top: 162, widthImg: 161, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 161, heightImg: 375
           }
         ],
         [
-          { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
+          { width: "161", height: "323", left: 0, top: 0, widthImg: 161, heightImg: 750
           },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 161, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 161, heightImg: 375
           }
         ],
         [
@@ -244,20 +242,22 @@ export default {
           { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
-        [
-          { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
-          },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
-          },
-          { width: "80", height: "161", left: 162, top: 162, widthImg: 188, heightImg: 375
-          },
-          { width: "80", height: "161", left: 243, top: 162, widthImg: 188, heightImg: 375
-          }
-        ]
+        // [
+        //   { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
+        //   },
+        //   { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
+        //   },
+        //   { width: "80", height: "161", left: 162, top: 162, widthImg: 188, heightImg: 375
+        //   },
+        //   { width: "80", height: "161", left: 243, top: 162, widthImg: 188, heightImg: 375
+        //   }
+        // ]
       ],
       currentImg: {
-        img: ""
-      }
+        img: "",
+        urlObj:''
+      },
+      activeIndex:''
     };
   },
   created() {
@@ -266,26 +266,35 @@ export default {
     this.changeImg();
     this.currentImg = this.form.imgList[0] || "";
     this.currentIndex = Number(this.form.changeMode)- 1;
+    if(this.currentIndex == 0){
+      this.activeIndex = 'true'
+    }else {
+      this.activeIndex = 'false'
+    }
   },
   methods: {
     changeMode(index) {
-      console.log(index,'点击模板的时候index')
       if (index !== this.currentIndex) {
         this.form.changeMode = Number(index) + 1;
         this.form.changeMode = this.form.changeMode.toString();
         this.$emit("magicCubeFun", this.form, "magicCube");
       }
       this.currentIndex = index;
-      console.log(this.currentIndex,'把index赋值给currentIndexd')
       this.$emit("setModeVal", this.form);
     },
     clickLayout(i) {
       this.layoutIndex = i;
+      // console.log(this.layoutIndex,'000',this.form.imgList)
       if (this.form.imgList[i]) {
         this.currentImg = this.form.imgList[i];
       } else {
+        // console.log('走这里')
         this.currentImg = {
-          img: null
+          img: '',
+          urlObj:{
+            name: "",
+            url: ""
+          }
         };
       }
     },
@@ -297,29 +306,28 @@ export default {
         "https://img.yzcdn.cn/upload_files/2014/12/05/043cc31769494d3d570543b893c9bce9.png!large.webp";
     },
     upLoadImgsMain(img) {
-      // console.log(img,'2222')
       this.form.layoutIndex = this.layoutIndex || 0;
       if (!this.form.imgList[this.layoutIndex]) {
         this.form.imgList[this.layoutIndex] = {};
       }
-      this.form.imgList[this.layoutIndex].img = img.replace(
-        process.env.Prefix,
-        ""
-      );
+      this.form.imgList[this.layoutIndex].img = img.replace(process.env.Prefix,"");
       this.form.imgList = this.form.imgList.slice();
+      console.log(this.form.imgList,'this.form.imgList')
       // this.layoutList = this.layoutList.slice();
-      // if (!this.currentImg) {
-      //   this.currentImg = {
-      //     img: img
-      //   };
-      // }else{
-      //   this.currentImg.img = img
-      // }
+      if (!this.currentImg) {
+        this.currentImg = {
+          img: this.form.imgList[this.layoutIndex].img
+        };
+        // console.log(this.currentImg.img,'*******')
+      }else{
+        this.currentImg.img = img.replace(process.env.Prefix,"");
+        // console.log(this.currentImg.img,'222222222222222')
+      }
+      
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val) {
       this.form.layoutIndex = this.layoutIndex || 0;
-
       this.form.imgList[this.layoutIndex].urlObj = val;
       this.$emit("setModeVal", this.form);
     },
