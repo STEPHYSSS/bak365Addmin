@@ -31,8 +31,8 @@
                 <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
               </el-form-item>
               <el-form-item label="链接：">
-                <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
-                  <dropMenu :currentItem="currentImg" @clickDropdown="clickDropdown($event,index)"></dropMenu>
+                <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+                  <!-- <dropMenu :currentItem="currentImg" @clickDropdown="clickDropdown($event,index)"></dropMenu> -->
               </el-form-item>
             </el-form>
           </div>

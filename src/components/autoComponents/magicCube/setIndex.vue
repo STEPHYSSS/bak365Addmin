@@ -111,11 +111,18 @@
           ></imgLoad>
           
         </div>
+        <!-- <div class="add-img-right">
+          <el-form ref="form" label-width="80px">
+            <el-form-item label="跳转路径：">
+              <aDropdwnLink :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></aDropdwnLink>
+              <dropMenu :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></dropMenu>
+            </el-form-item>
+          </el-form>
+        </div> -->
         <div class="add-img-right">
           <el-form ref="form" label-width="80px">
             <el-form-item label="跳转路径：">
-              <!-- <aDropdwnLink :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></aDropdwnLink> -->
-              <dropMenu :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></dropMenu>
+              <aDropdwnLink :currentItem="currentImg.urlObj" @clickDropdown="clickDropdown"></aDropdwnLink>
             </el-form-item>
           </el-form>
         </div>
@@ -203,8 +210,8 @@ export default {
           { width: "323", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375},
         ],
         [
-          { width: "161", height: "161", left: 0, top: 0, widthImg: 161 },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 161 }
+          { width: "161", height: "161", left: 0, top: 0, widthImg: 375},
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375 }
         ],
         [
           { width: "100", height: "107", left: 0, top: 0, widthImg: 250 },
@@ -217,21 +224,21 @@ export default {
           { width: "80", height: "80", left: 162, top: 0, widthImg: 180 },
           { width: "80", height: "80", left: 243, top: 0, widthImg: 180 }
         ],
-        [{ width: "161", height: "161", left: 0, top: 0, widthImg: 161, heightImg: 375
+        [{ width: "161", height: "161", left: 0, top: 0, widthImg: 375, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 161, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
           },
-          { width: "161", height: "161", left: 0, top: 162, widthImg: 161, heightImg: 375
+          { width: "161", height: "161", left: 0, top: 162, widthImg: 375, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 162, widthImg: 161, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
         [
-          { width: "161", height: "323", left: 0, top: 0, widthImg: 161, heightImg: 750
+          { width: "161", height: "323", left: 0, top: 0, widthImg: 375, heightImg: 750
           },
-          { width: "161", height: "161", left: 162, top: 0, widthImg: 161, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 0, widthImg: 375, heightImg: 375
           },
-          { width: "161", height: "161", left: 162, top: 162, widthImg: 161, heightImg: 375
+          { width: "161", height: "161", left: 162, top: 162, widthImg: 375, heightImg: 375
           }
         ],
         [
@@ -283,12 +290,12 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     clickLayout(i) {
+      console.log(i,this.form,'*****')
       this.layoutIndex = i;
-      // console.log(this.layoutIndex,'000',this.form.imgList)
       if (this.form.imgList[i]) {
+        console.log(this.form.imgList[i],'12121212')
         this.currentImg = this.form.imgList[i];
       } else {
-        // console.log('走这里')
         this.currentImg = {
           img: '',
           urlObj:{
@@ -318,17 +325,17 @@ export default {
         this.currentImg = {
           img: this.form.imgList[this.layoutIndex].img
         };
-        // console.log(this.currentImg.img,'*******')
       }else{
         this.currentImg.img = img.replace(process.env.Prefix,"");
-        // console.log(this.currentImg.img,'222222222222222')
       }
       
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val) {
-      this.form.layoutIndex = this.layoutIndex || 0;
+      console.log(val,'000')
+      this.form.layoutIndex = this.layoutIndex;
       this.form.imgList[this.layoutIndex].urlObj = val;
+      console.log(this.form.imgList[this.layoutIndex].urlObj,'000',this.form.layoutIndex)
       this.$emit("setModeVal", this.form);
     },
     touchstart(e) {

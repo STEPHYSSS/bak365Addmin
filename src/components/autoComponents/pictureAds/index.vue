@@ -6,7 +6,7 @@
     >
       <div class="rc-design-react-preview">
         <div
-          v-if="currentObj.imgList.length===0 && currentObj.imgList.length ===0"
+          v-if="currentObj.imgList.length===0"
           class="rc-design-component-default-preview"
         >
           <div class="rc-design-component-default-preview__title">点击编辑图片广告</div>
@@ -59,8 +59,7 @@
             </template>
           </van-swipe>
           <!-- 'height':boxWidth+'px', -->
-          <div
-            v-if="currentObj.changeMode==3||currentObj.changeMode==4||currentObj.changeMode==5"
+          <div v-if="currentObj.changeMode==3||currentObj.changeMode==4||currentObj.changeMode==5"
             :style="{
             'padding-right':currentObj.pageGap+'px',
            'padding-left': currentObj.pageGap+'px'}"
@@ -171,7 +170,6 @@ export default {
   },
   watch: {
     "currentObj.pageGap"(n) {
-      // console.log(n,'图文广告')
       n = Number(n);
       this.changeClientWidth = (this.clientWidth - n * 2).toFixed(2);
     }
@@ -231,8 +229,9 @@ export default {
   margin: 0;
 }
 .cap-image-ad__slide {
-  width: 100%;
-  overflow-x: scroll;
+  /* width: 100%; */
+  height: 100%;
+  /* overflow-x: scroll; */
   overflow-y: hidden;
   white-space: nowrap;
   /* padding-bottom: 10px;

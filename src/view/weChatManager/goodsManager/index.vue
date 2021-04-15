@@ -126,6 +126,14 @@
         layout="total, prev, pager, next"
         :total="TotalList">
       </el-pagination>
+      <!-- <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage1"
+      :page-size="100"
+      layout="total, prev, pager, next"
+      :total="1000">
+    </el-pagination> -->
     </div>
     
     <!-- <QRCode :newWidth="newWidth" :newText="code"></QRCode> -->
@@ -385,8 +393,7 @@ export default {
           this.$router.push({
             path: "/weChat/manager/goodEdit",
             query: {
-              SID: row.SID,
-              page:Number(this.currentPage-1)
+              SID: row.SID
             }
           });
         }else{

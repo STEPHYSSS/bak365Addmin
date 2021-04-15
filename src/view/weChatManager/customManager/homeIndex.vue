@@ -96,7 +96,7 @@ export default {
           // D.codeUrl = this.autoHome+"?SID="+encodeURIComponent(JSON.stringify(D.SID))
           // D.codeUrl =this.autoHome + "?SID=" + D.SID;
           D.codeUrl = this.autoHome+ "?SID=" + D.SID + "&FlagIndex=true";
-        }); 
+        });
         this.loading = false;
       } catch (e) {
         this.$message.error(e);
@@ -151,11 +151,10 @@ export default {
               { Action: "SetDefault", SID: row.SID, IsDefault: val, Type: "0" },
               "MShopOpera"
             );
-            this.$message.success('操作成功')
             setTimeout(() => {
               this.getList();
             }, 500);
-            this.$message.success("操作成功");
+            // this.$message.success("操作成功");
             
           } catch (error) {
             this.$message.error(error);

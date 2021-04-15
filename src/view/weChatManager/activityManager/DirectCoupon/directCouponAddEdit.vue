@@ -28,12 +28,12 @@
       <el-form-item label="微卡卡号" prop="Data" v-if="form.SendType==='0'">
         <el-input v-model="form.Data" placeholder="请输入"></el-input>
         <br>
-        <span style="color:red">(多个微卡卡号请用','分开)</span>
+        <span style="color:red">(多个微卡卡号请用英文','分开)</span>
       </el-form-item>
       <el-form-item label="订单号" prop="Data" v-else-if="form.SendType!=='5'&&form.SendType!=='6'">
         <el-input v-model="form.Data" placeholder="请输入"></el-input>
         <br>
-        <span style="color:red">(多个订单号请用','分开)</span>
+        <span style="color:red">(多个订单号请用英文','分开)</span>
       </el-form-item>
     </el-form>
     <el-dialog
@@ -86,7 +86,7 @@
     <div class="preserveStyle">
       <el-button @click="cancelFun">取消</el-button>
       <el-button type="primary" style="margin-left: 20px" @click="preserveFun"
-        >保存</el-button
+        >赠送</el-button
       >
     </div>
   </div>

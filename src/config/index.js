@@ -21,4 +21,5 @@ export const activeUrlGood = HeardUrl + 'pages/shoppingMall/list/infoGood'
 export const seckill = HeardUrl + 'pages/shoppingMall/seckill/index' //秒杀首页
     // export const autoHome = HeardUrl + 'pages/shoppingMall/index'//自定义首页
 export const autoHome = HeardUrl //自定义首页
-    // http://dingtalk.bak365.cn/WeixinNew/Dist/#/pages/shoppingMall/index
+export const autoLinkIndex = HeardUrl + 'pages/shoppingMall/autoLinkIndex/autoLinkIndex' //自定义页面
+export const scanCoupon = HeardUrl + 'pages/scanCoupons/scanCoupons' //扫码领券

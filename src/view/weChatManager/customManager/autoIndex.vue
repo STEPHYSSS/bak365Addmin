@@ -9,32 +9,14 @@
       :disabled="loading"
       >新建自定义页面模块</el-button
     >
-    <el-table :data="tableData" style="width: 100%" v-loading="loading">
+    <el-table :data="tableData" style="width: 300" v-loading="loading">
       <el-table-column
         prop="Name"
         label="名称"
         align="center"
       ></el-table-column>
-      <!-- <el-table-column
-        prop="Name"
-        label="最近应用在"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="Name"
-        label="共应用次数"
-        align="center"
-      ></el-table-column> -->
-      <el-table-column prop="IsDefault" label="默认" align="center">
-        <template slot-scope="scope">
-          <span v-if="scope.row.IsDefault === '0'">否</span>
-          <span v-else style="color:#2d8cf0">是</span>
-        </template>
-      </el-table-column>
       <el-table-column prop="Name" label="操作" width="300" align="center">
         <template slot-scope="scoped">
-          <el-button type="text" v-if="scoped.row.IsDefault === '0'" @click="changeDef(1, scoped.row)">开启</el-button>
-          <el-button type="text" v-else @click="changeDef(0, scoped.row)">关闭</el-button>
           <el-button type="text" @click="editRowGoods(scoped.row)"
             >编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
@@ -75,7 +57,7 @@
 <script>
 import QRCode from "@/components/qrcodejs/qrcodejs";
 import { getLists } from "@/api/vipCard";
-import { autoHome } from "@/config/index";
+import { autoLinkIndex } from "@/config/index";
 import Del from "@/components/Dialog/del";
 export default {
   name: "",
@@ -87,7 +69,7 @@ export default {
       current_SID: "",
       // 控制删除弹框
       show: false,
-      autoHome: autoHome,
+      autoLinkIndex: autoLinkIndex,
       currentIndexCode: "", 
     };
   },
@@ -105,11 +87,9 @@ export default {
           "MShopOpera"
         );
         this.tableData = Data.DecorateList;
-        // let query={ SID:""}
-        // console.log(this.autoHome)
         this.tableData.forEach(D => {
-           D.codeUrl = this.autoHome+ "?SID=" + D.SID + "&FlagIndex=true";
-         // query.SID = D.SID;
+          D.codeUrl = this.autoLinkIndex+ "?SID=" + D.SID + "&FlagAutoIndex=true";
+          // query.SID = D.SID;
           // D.codeUrl = this.autoHome+"?query="+encodeURIComponent(JSON.stringify(query))
           // console.log(D.codeUrl,'自定义页面')
         });               

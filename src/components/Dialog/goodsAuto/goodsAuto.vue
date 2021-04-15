@@ -8,6 +8,7 @@
     :modal-append-to-body="false"
     class="setDialogGoodsAuto"
     center
+    append-to-body
   >
     <el-table
       ref="multipleTable"
@@ -16,6 +17,7 @@
       @selection-change="handleSelectionChange"
       @current-change="handleCurrentChange"
       :highlight-current-row="isGroup"
+      max-height="450"
     >
       <el-table-column v-if="!isGroup" type="selection" width="55"></el-table-column>
       <el-table-column label="图片" width="120" v-if="!isGroup">

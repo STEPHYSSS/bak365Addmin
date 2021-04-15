@@ -8,18 +8,74 @@
         <div class="rc-design-component-default-preview__text">点击编辑魔方</div>
       </div>
       <div class="cap-cube-wrap" v-else>
+        <!-- 一行一个 -->
+        <div v-if="currentObj.changeMode === '1'">
+          <ul>
+            <li v-for="(item,index) in listBox" :key="index">
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+        <!-- 一行二个 -->
+        <div v-if="currentObj.changeMode === '2'">
+          <ul style="width:100%">
+            <li v-for="(item,index) in listBox" :key="index" style="width:50%;float:left">
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+        <!-- 一行三个 -->
+        <div v-if="currentObj.changeMode === '3'">
+          <ul style="width:100%">
+            <li v-for="(item,index) in listBox" :key="index" style="width:33%;float:left">
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+        <!-- 一行四个 -->
+        <div v-if="currentObj.changeMode === '4'">
+          <ul style="width:100%">
+            <li v-for="(item,index) in listBox" :key="index" style="width:25%;float:left">
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+        <!-- 两左两右 -->
+        <div v-if="currentObj.changeMode === '5'" class="modeDiv5">
+          <ul style="">
+            <li v-for="(item,index) in listBox" :key="index" >
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+        <!-- 一左两右 -->
+        <div v-if="currentObj.changeMode === '6'" class="modeDiv6">
+         <ul style="width:100%">
+           <li v-for="(item,index) in listBox" :key="index" class="right">
+             <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+           </li>
+         </ul>
+        </div>
+        <!-- 一上两下 -->
+        <div v-if="currentObj.changeMode === '7'" class="modeDiv7">
+          <ul style="width:100%">
+            <li v-for="(item,index) in listBox" :key="index" class="bottom">
+              <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- <div class="cap-cube-wrap" >
         <div class="cap-cube" :style="{'margin': -(currentObj.imgGap/2).toFixed(2)+'px','height': bigBoxH === 'auto'?'100%': '100%','width':bigBoxW+'px','display':bigBoxH != 'auto'?'flex':'','flex-wrap':bigBoxH != 'auto'? 'wrap':''}"
         >
-            <!-- ,'background-image':`url(${SetImage(item.img)})`,'background-size': '100%' -->
           <div v-for="(item,index) in listBox" :key="index" :style="{'left': item.Dleft+'px','top': item.Dtop+'px','height': item.Dheight === 'auto' ? '100%' : item.Dheight + 'px','width': item.Dwidth+'px',
               'margin': (currentObj.imgGap/2).toFixed(2)+'px'}"
             @click="clickLink(item.url)" :class="{'posRight':item.right==0}"
           >
-          <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible imgStyle"  />
-            <!-- <img class="cap-cube__table-image--active-invisible" :src="item.img |SetImage" /> -->
+          <img :src="item.img | SetImage" class="cap-cube__table-image--active-invisible"  />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -69,7 +125,7 @@ export default {
       listBox: [],
       bigBoxM: 0,
       bigBoxH: 0,
-      bigBoxW: 0
+      bigBoxW: 0,
     };
   },
   mounted() {
@@ -95,11 +151,12 @@ export default {
     },
     changeBox() {
 				this.listBox = this.currentObj.imgList;
+        console.log(this.currentObj,'imgList')
 				if (this.listBox.length === 0) {
 					return;
 				}
 				//手机端记得把320删除
-				let clientWidth = 320 || document.body.clientWidth;
+			let clientWidth = 320 || document.body.clientWidth;
       let m = Number(this.currentObj.changeMode);
       this.currentObj.pageGap = Number(this.currentObj.pageGap);
 				if (m !== 8) {
@@ -321,6 +378,56 @@ export default {
 		right: 0;
 		bottom: 0;
 	}
+  .modeDiv6{
+    height: 324px;
+  }
+  .modeDiv6 ul>:first-child{
+    max-height: 324px;
+    min-height: 180px;
+    width: 160px;
+    // background: #88c4dc;
+    overflow: hidden;
+    float: left;
+    .cap-cube__table-image--active-invisible{
+      height: 100%;
+    }
+  }
+  // .right{
+  //   float: left;
+  //   width: 160px;
+  // }
+  .modeDiv6 ul>:nth-child(2),.modeDiv6 ul>:nth-child(3){
+    width: 160px;
+    float: left;
+    // height: 160px;
+  }
+  .modeDiv7 ul>:first-child{
+    max-height: 320px;
+    width: 320px;
+    overflow: hidden;
+
+  }
+  .bottom{
+    float: left;
+    width: 160px;
+  }
+  .modeDiv5 ul>:first-child{
+    width: 160px;
+    float: left;
+  }
+  .modeDiv5 ul>:nth-child(2){
+    width: 160px;
+    float: left;
+  }
+  .modeDiv5 ul>:nth-child(3){
+    width: 160px;
+    clear: both;
+    float: left;
+  }
+  .modeDiv5 ul>:nth-child(4){
+    width: 160px;
+    float: left;
+  }
 }
 
 </style>

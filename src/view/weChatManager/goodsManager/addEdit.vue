@@ -1131,10 +1131,7 @@ export default {
             this.$message.success("操作成功");          
             // this.$router.push("/weChat/manager/goodSetting");
             this.$router.push({
-              path: "/weChat/manager/goodSetting",
-              query: {
-                page:this.$route.query.page
-              }
+              path: "/weChat/manager/goodSetting"
             });
           } catch (e) {
             this.$message.error(e)

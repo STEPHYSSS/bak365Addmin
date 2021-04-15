@@ -71,17 +71,27 @@
               :coverImg = "coverImg"
             ></imgLoad>
           </div>
-          <div class="add-img-right">
+          <!-- <div class="add-img-right">
             <el-form ref="form" :model="item" label-width="80px">
               <el-form-item label="标题：" style="margin-bottom: 5px !important;">
                 <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
               </el-form-item>
               <el-form-item label="链接：">
-                <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
+                <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
                 <dropMenu :currentObj="item.urlObj" @clickDropdown="clickDropdown($event,index)"></dropMenu>
               </el-form-item>
             </el-form>
-          </div>
+          </div> -->
+          <div class="add-img-right">
+          <el-form ref="form" :model="item" label-width="80px">
+            <el-form-item label="标题：" style="margin-bottom: 5px !important;">
+              <el-input v-model="item.name" placeholder="建议10个字以内"></el-input>
+            </el-form-item>
+            <el-form-item label="链接：">
+              <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
+            </el-form-item>
+          </el-form>
+        </div>
           <i
             v-if="currentIEel === index"
             @click="clickEdlete(index)"
@@ -187,7 +197,6 @@ export default {
       this.$emit("setModeVal", this.form);
     },
     clickDropdown(val, index) {
-      // console.log(val,index)
       this.form.listNav[index].urlObj = val;
       this.$emit("setModeVal", this.form);
     },

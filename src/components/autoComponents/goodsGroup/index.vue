@@ -441,6 +441,7 @@ export default {
       }
     },
     clickMenu(index, item) {
+      console.log(index,item)
       this.currentMenuIndex = index;
       if (index === "0") {
         //全部
@@ -459,7 +460,9 @@ export default {
         ).toFixed(2);
         if (item.groupId) {
           // this.getList(item.groupId);
-          this.Prod_InfoList = this.Prod_InfoList.filter(D=>D.CateSID === item.SID)
+          // this.Prod_InfoList = this.Prod_InfoList.filter(D=>D.CateSID === item.SID)
+          this.getList(item.groupId);
+          console.log(this.Prod_InfoList,'this.Prod_InfoList')
         }
       }
       // if (index === "0") {//全部

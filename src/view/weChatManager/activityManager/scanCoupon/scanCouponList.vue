@@ -18,6 +18,12 @@
           <el-button type="text" @click="editCondition(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delCondition(scoped.row)">删除</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
+          <el-popover placement="left" v-model="scoped.row.visibleUrl">
+            <el-input v-model="scoped.row.codeUrl" readonly placeholder="活动链接" style="width:500px">
+              <el-button slot="append" @click="copyUrl(scoped.row)">复制</el-button>
+            </el-input>
+            <el-button type="text" slot="reference">链接</el-button>
+          </el-popover>
           <el-popover placement="left" v-model="scoped.row.visible">
             <div class="smallRoutine">
               <div class="smallRoutineTop">
@@ -52,7 +58,7 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard"; //调用接口引用
-import { seckill } from "@/config/index";
+import { scanCoupon } from "@/config/index";
 import Cookies from "js-cookie";
 import { DownUrlFunCode } from "@/config/publicFunction";
 import QRCode from "@/components/qrcodejs/qrcodejs";
@@ -68,7 +74,7 @@ export default {
       current_Open: "", //关闭
       search:{},
       currentIndexCode: "",
-      seckill:seckill,//秒杀链接
+      scanCoupon:scanCoupon,//秒杀链接
     };
   },
   created() {
@@ -83,19 +89,24 @@ export default {
         obj = Object.assign(obj, this.search);
         let data = await getLists(obj, "MPromotionOpera");
         let PromotionList = data.Data.PromotionList
-        PromotionList.forEach((D) => {
-             D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
-          // D.codeUrl =this.seckill + "?SID=" + D.SID;
-            console.log(D.codeUrl)
-          });
+        PromotionList.forEach((D) => { D.codeUrl = this.scanCoupon + "?SID=" + D.SID + "&FlagScan=true";
+          console.log(D.codeUrl)
+        });
         this.dataTable = PromotionList;
         this.loading = false;
-      } catch (e) {
+      } catch (e) {        
         this.loading = false;
       }
      },
      upDownUrl(Name) {
       DownUrlFunCode(Name);
+    },
+    copyUrl(val) {//复制
+     let index = $(".el-popover").length - 1;
+      let input = $($(".el-popover")[index]).find("input");
+      input.select();
+      document.execCommand("Copy");
+      this.$Message.info("复制成功");
     },
      searchList(val){//搜索
        this.search = val;

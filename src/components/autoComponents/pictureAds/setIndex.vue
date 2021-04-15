@@ -18,7 +18,8 @@
       <!-- //添加图片 -->
 
       <el-form-item label="添加图片:" style="margin-bottom:0 !important">
-        <span style="margin-bottom: 5px;color: #999;">最多添加10个广告，鼠标拖拽调整广告顺序</span>
+        <span style="margin-bottom: 5px;color: #999;">最多添加10个广告，鼠标拖拽调整广告顺序</span><br/>
+        <span style="margin-bottom: 5px;color: #999;">添加轮播海报时，建议比例为1000*650</span>
       </el-form-item>
       <draggable v-model="form.imgList" @change="changeDrag">
       <div
@@ -44,14 +45,13 @@
             :coverImg = "coverImg"
           ></imgLoad>
         </div>
-        <div class="add-img-right">
+       <div class="add-img-right">
           <el-form ref="form" :model="item" label-width="80px">
             <el-form-item label="图片标题：" style="margin-bottom: 5px !important;">
               <el-input v-model="item.name" placeholder="建议10个字以内，可不填"></el-input>
             </el-form-item>
             <el-form-item label="跳转路径：">
-              <!-- <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink> -->
-              <dropMenu :currentObj="item.urlObj" @clickDropdown="clickDropdown($event,index)"></dropMenu>
+              <aDropdwnLink :currentItem="item.urlObj" @clickDropdown="clickDropdown($event,index)"></aDropdwnLink>
             </el-form-item>
           </el-form>
         </div>

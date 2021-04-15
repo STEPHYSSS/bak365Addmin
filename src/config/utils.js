@@ -93,6 +93,17 @@ export const stateLists = [
   { label: '已提货', value: '3' },
   { label: '已退款', value: '4' }
 ]
+export const stateLists1 = [
+  { label: '已取消', value: '-3' },
+  { label: '待付款', value: '-1' }
+]
+export const stateLists2 = [
+  { label: '已预定', value: '0' },
+  { label: '生产中', value: '1' },
+  { label: '已送货', value: '2' },
+  { label: '已提货', value: '3' },
+  { label: '已退款', value: '4' }
+]
 
 export const TickStateList = [
   { label: '已取消', value: '-3' },
@@ -109,12 +120,13 @@ export const refundStateTypeLists = [
   { label: '暂无申请', value: '1' },
   { label: '申请退款中', value: '2' },
   { label: '退款成功', value: '3' },
-  { label: '退款失败', value: '4' }
+  { label: '驳回退款', value: '4' }
 ]
 export const refundState = [
+  { label: '暂无申请', value: '1' },
   { label: '申请退款中', value: '2' },
   { label: '退款成功', value: '3' },
-  { label: '退款失败', value: '4' }
+  { label: '驳回退款', value: '4' }
 ]
 export const integralStateList = [
   { label: '下架', value: '0' },
@@ -174,4 +186,16 @@ export const optionsWeek= [//按星期
   { value: "5", label: "星期五" },
   { value: "6", label: "星期六" },
   { value: "0", label: "星期天" }
+]
+export const addverStatus=[
+  {value:"0",label:"关闭"},
+  {value:"1",label:"开启"}
+]
+export const addverType=[
+  {value:"0",label:"活动"},
+  {value:"1",label:"商品"},
+  {value:"2",label:"文章"}
+]
+export const commonOrder=[
+  {value:"2",label:"普通订单"}
 ]

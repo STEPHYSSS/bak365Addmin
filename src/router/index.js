@@ -79,11 +79,19 @@ const autoAddEdit = r => require.ensure([], () => r(require('../view/weChatManag
 const autoHomeUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/autoHomeUrl')), 'autoHomeUrl') //商城链接
 const activedUrl = r => require.ensure([], () => r(require('../view/weChatManager/customManager/activedUrl')), 'activedUrl') //活动链接
     // 营销管理
-const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/index')), 'markingPage')
-const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/orderSharingList')), 'orderSharingList')
-const commissionWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/commissionDetail')), 'commissionDetail')
-const applicationWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/withdrawal')), 'applicationWithdrawal')
+// const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/index')), 'markingPage')
+// const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/orderSharingList')), 'orderSharingList')
+// const commissionWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/commissionDetail')), 'commissionDetail')
+// const applicationWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/withdrawal')), 'applicationWithdrawal')
 const footPrintList = r => require.ensure([], () => r(require('../view/weChatManager/markingManager/memberFootPrint')), 'footPrintList')
+
+//分销管理
+const markingPage = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/index')), 'markingPage')
+const orderSharing = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/orderSharingList')), 'orderSharingList')
+const commissionWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/commissionDetail')), 'commissionDetail')
+const applicationWithdrawal = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/withdrawal')), 'applicationWithdrawal')
+const tzList = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/tuanzhangList')), 'tzList')
+const checkFanslist = r => require.ensure([], () => r(require('../view/weChatManager/retailManager/tuanzhangLieBiao')), 'tuanzhangLieBiao')
     // 会员列表管理
 const menmberShipList = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/Membership/membershipList')), 'menmberShipList')
 const customerService = r => require.ensure([], () => r(require('../view/weChatManager/customerService')), 'customerService')
@@ -416,7 +424,7 @@ export const asyncRouterMap = [{
                 children: [{
                         path: 'orderRefund',
                         meta: {
-                            label: '销售订单退款审核',
+                            label: '销售退款',
                         },
                         component: orderRefund
                     }
@@ -705,6 +713,65 @@ export const asyncRouterMap = [{
                     },
                 ]
             },
+             {//分销管理
+                path: '/weChat/manager/retail',
+                meta: {
+                    label: '分销管理'
+                },
+                component: {
+                    render(c) {
+                        return c('router-view');
+                    }
+                },
+                redirect: '/weChat/manager/retail/markingList',
+                children: [
+                    //申请团长列表开始
+                    { //申请团长列表
+                        path: 'markingList',
+                        meta: {
+                            label: '审核团长'
+                        },
+                        component: markingPage
+                    },
+                    { //推广订单分拥列表
+                        path: 'orderSharingList',
+                        meta: {
+                            label: '推广订单'
+                        },
+                        component: orderSharing
+                    },
+                    { //申请提现列表
+                        path: 'withdrawal',
+                        meta: {
+                            label: '申请提现'
+                        },
+                        component: applicationWithdrawal
+                    },
+                    { //审核佣金提现详情
+                        path: 'commissionDetail',
+                        isHidden: true, //点击进入详情控制子菜单显示
+                        meta: {
+                            label: '佣金审核详情'
+                        },
+                        component: commissionWithdrawal
+                    },
+                    {//团长列表
+                        path: "tuanzhangList",
+                        meta: {
+                            label: '团长列表'
+                        },
+                        component: tzList
+                    },
+                    {//查看团长粉丝列表
+                        path: "tuanzhangLieBiao",
+                        isHidden: true,
+                        meta: {
+                            label: "查看团长粉丝列表"
+                        },
+                        component: checkFanslist
+                    },
+                ]
+            },
             { //会员管理列表
                 path: '/weChat/manager',
                 meta: {
@@ -815,7 +882,8 @@ export const asyncRouterMap = [{
                     },
                     component: tails
                 }]
-            }
+            },
+           
         ]
     },
     { //微信卡券(点击导航栏，右边展示栏)

@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <span>退款编号：</span>
-          <el-input placeholder="查询退款编号" v-model="search.ExchNo" class="input-with-select">
+          <el-input placeholder="查询退款编号" v-model="search.ExchNo" clearable @clear = "changeState" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
@@ -56,8 +56,8 @@
       </el-row>
       <el-row :gutter="20">  
         <el-col :span="6">
-          <span class="spanWidth">微信单号：</span>
-          <el-input placeholder="查询微信单号" v-model="search.SID" class="input-with-select">
+          <span class="spanWidth">商户单号：</span>
+          <el-input placeholder="查询商户单号" v-model="search.SID" clearable @clear = "changeState" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>      
@@ -75,21 +75,25 @@
       </el-row>
     </div>
     <el-table :data="dataList" v-loading="loading">
-      <el-table-column prop="ExchNo" label="商城单号" align="center" width="180"></el-table-column>
-      <el-table-column prop="SID" label="微信单号" align="center" width="180"></el-table-column>
-      <el-table-column prop="UserName" label="收货人姓名" align="center" width="120"></el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额" align="center" width="80">
-        <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
-      </el-table-column>      
-      <el-table-column prop="PayType" label="支付方式" align="center" width="100">
-         <template slot-scope="scope">{{scope.row.PayType|PayType}}</template>
+      <el-table-column label="单号" align="left" width="250px">
+        <template slot-scope="scoped">
+          <span>商城单号：{{scoped.row.ExchNo}}</span><br/>
+          <span>商户单号：{{scoped.row.SID}}</span><br/>
+        </template>
       </el-table-column>
-      <el-table-column label="订单来源" align="center" width="120"> 
+      <el-table-column label="订单来源" align="center" width="250"> 
         <template slot-scope="scope">
           <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>
           <p v-else-if="scope.row.PromType==='5'">拼团订单/{{scope.row.PromName}}</p>
           <p v-else>普通订单</p>
         </template>
+      </el-table-column>
+      <el-table-column prop="UserName" label="收货人姓名" align="center" width="90"></el-table-column>
+      <el-table-column prop="PayAmt" label="支付金额" align="center" width="80">
+        <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
+      </el-table-column>      
+      <el-table-column prop="PayType" label="支付方式" align="center" width="100">
+         <template slot-scope="scope">{{scope.row.PayType|PayType}}</template>
       </el-table-column>
       <el-table-column prop="DeliveryType" label="用户手机号码" align="center" >
         <template slot-scope="scope">{{scope.row.Mobile}}</template>
@@ -175,7 +179,10 @@ export default {
      },
     async getInfo() {
       try {
-        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',ExchNo:this.search.ExchNo,SID:this.search.SID };
+        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',
+        StartRefundTime:this.search.StartRefundTime,
+        EndRefundTime:this.search.EndRefundTime,
+        ExchNo:this.search.ExchNo,SID:this.search.SID };
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
         this.TotalList = Data.DataCount;

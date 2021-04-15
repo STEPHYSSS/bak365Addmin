@@ -11,7 +11,7 @@
         </el-col>
         <el-col :span="6">
           <span class="spanWidth">微信单号：</span>
-          <el-input placeholder="查询微信单号" v-model="search.SID" class="input-with-select">
+          <el-input placeholder="查询微信商户单号" v-model="search.SID" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
@@ -53,7 +53,7 @@
     </div>
     <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column prop="ExchNo" label="商城单号" align="center"></el-table-column>
-      <el-table-column prop="SID" label="微信单号" align="center"></el-table-column>
+      <el-table-column prop="SID" label="微信商户订单号" align="center"></el-table-column>
       <el-table-column label="订单来源" align="center" width="120"> 
         <template slot-scope="scope">
           <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>

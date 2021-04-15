@@ -1,43 +1,32 @@
 <template>
   <div class>
-    <!-- 选择链接，自定义链接, -->
-    <div style="display: flex; align-items: center">
+    <!-- 选择链接，自定义链接 -->
+    <div style="display:flex;align-items: center;">
       <div
         v-if="currentItemObj.name"
-        class="LinkStyle"
-      >
-        <div class="zent-tag-content" v-if="currentItemObj.id !== 1">
-          {{ currentItemObj.name }}
-        </div>
-
-        <el-input
-          v-if="currentItemObj.id === 1"
-          v-model="currentItemObj.url"
-          placeholder="请输入链接"
-          @change="changeInput"
-        ></el-input>
-
-        <i
-          class="el-icon-close zent-tag-close-btn"
-          @click="clickDropdownDel"
-        ></i>
+        style="border:1px solid rgba(51, 136, 255, 0.3); background: rgb(226, 243, 255); color: rgb(102, 102, 102);"
+        class="zent-tag">
+        <div class="zent-tag-content" v-if="currentItemObj.id!==1">{{currentItemObj.name}}</div>
+        <el-input v-if="currentItemObj.id===1" v-model="currentItemObj.url" placeholder="请输入链接" @change="changeInput"></el-input>
+        <i class="el-icon-close zent-tag-close-btn" @click="clickDropdownDel"></i>
       </div>
-      <el-dropdown @command="clickDropdown" style="float: right">
+      <el-dropdown @command="clickDropdown" style="float: right;">
         <a class="el-dropdown-link">
           <span v-if="!currentItemObj.name">选择跳转到的页面</span>
           <i class="el-icon-arrow-down el-icon--right"></i>
         </a>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
-            :command="item"
-            v-for="(item, index) in list"
-            :key="index"
-            >{{ item.name }}
-            </el-dropdown-item
-          >
+          <el-dropdown-item :command="item" v-for="(item,index) in list" :key="index">{{item.name}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <el-dialog title="商品类别" :visible.sync="dialogTableVisible"  append-to-body>
+      <el-table :data="CateData" max-height="450" style="width: 100%;" highlight-current-row ref="singleTable" @current-change="handleCurrentChange2">
+        <el-table-column property="Name" label="网址名称" width="120"></el-table-column>
+        <el-table-column label="网址链接" prop="codeUrl">
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -64,7 +53,6 @@ export default {
       currentItemObj:'',
       dialogVisible: false,
       currentRow: "",
-      CateData: [],
       //链接列表
       list: [
         { url: "", name: "自定义链接", id: 1 },
@@ -96,6 +84,9 @@ export default {
         {name: "申请会员卡",url:"http://manage.bak365.cn/WebApp/WXCard/?Type=ApplyCard&AppNo=" +GetAppNo()},
         {name: "地址管理",url: url + "pages/myAddress/myAddress"},
       ],
+      CateData: [],
+      dialogTableVisible: false,
+      currentRow2:""
     };
   },
   components: {},
@@ -116,9 +107,23 @@ export default {
     showDal() {
       this.dialogVisible = true;
     },
+    handleCurrentChange2(val) {
+      this.currentRow2 = val;
+      this.dialogTableVisible = false;
+      let varl = {
+        name:val.Name,
+        url:val.codeUrl
+      }
+      this.currentItemObj = varl;
+      this.$emit("clickDropdown", varl);
+    },
     clickDropdown(val) {
-      this.currentItemObj = val;
-      this.$emit("clickDropdown", val);
+      if(val.name == "商品列表-自定义"){
+        this.dialogTableVisible = true
+      }else{
+        this.currentItemObj = val;
+        this.$emit("clickDropdown", val);
+      }
     },
     clickDropdownDel() {
       // 清空
@@ -139,13 +144,8 @@ export default {
         let query = { SID: "" };
         this.CateData.forEach(item => {
           query.SID = item.SID;
-          item.codeUrl =
-            url +
-            "pages/shoppingMall/list/goodsList" +
-            "?query=" +
-            encodeURIComponent(JSON.stringify(query));
+          item.codeUrl = url + "pages/shoppingMall/list/goodsList" +"?query=" + encodeURIComponent(JSON.stringify(query));
         });
-        console.log(this.CateData)
       } catch (e) {
         this.$message.error(e);
       }

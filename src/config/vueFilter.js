@@ -23,7 +23,7 @@ Vue.filter('orderState', (num) => {
           default: '已退款'
      }
 })
-Vue.filter('orderState', (num) => {
+Vue.filter('orderState2', (num) => {
      if (num === '') {
           return '--'
      }
@@ -34,7 +34,7 @@ Vue.filter('orderState', (num) => {
           case -1:
                return '待付款';
           case 0:
-               return '已付款';
+               return '已预定';
           case 1:
                return '生产中';
           case 2:
@@ -52,12 +52,14 @@ Vue.filter('orderRefund', (num) => {
      }
      num = Number(num)
      switch (num) {
+          case 1:
+               return '暂无申请';
           case 2:
                return '申请退款中';
           case 3:
                return '退款成功';
           case 4:
-               return '退款失败';
+               return '驳回退款';
      }
 })
 Vue.filter('TickOrderState', (num) => {
@@ -87,7 +89,7 @@ Vue.filter('refundStateList', (num) => {
           case 3:
                return '退款成功';
           case 4:
-               return '退款失败';
+               return '驳回退款';
      }
 })
 
@@ -131,13 +133,7 @@ Vue.filter('setImgPrex', (val) => {
        return ''
   } */
 })
-Vue.filter('SetImage',(val) => {     
-     // if (val) {
-     //      return process.env.Prefix + val
-     //      // return process.env.BASE_URL + val; 
-     // } else {
-     //      return '';
-     // }
+Vue.filter('SetImage',(val) => { 
      if (val) {
           if(window.location.hostname == "localhost" ){
                return 'http://192.168.0.19:8001/'+ val;

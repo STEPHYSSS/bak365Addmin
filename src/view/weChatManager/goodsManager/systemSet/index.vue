@@ -11,9 +11,7 @@
               :min="1"
               :max="30"
             ></el-input-number>
-            <span style="color: #999"
-              >天</span
-            >
+            <span style="color: #999">天</span>
           </el-form-item>
           <el-form-item label="营业时间段(取货,送货)">
             <el-time-picker
@@ -41,7 +39,11 @@
             >&nbsp;分钟
           </el-form-item>
           <el-form-item label="待支付订单过期时限">
-            <el-input onkeyup="this.value=this.value.replace(/\D/g,'')" v-model="form.AutoCancelOrder"></el-input>&nbsp;分钟
+            <el-input
+              onkeyup="this.value=this.value.replace(/\D/g,'')"
+              v-model="form.AutoCancelOrder"
+            ></el-input
+            >&nbsp;分钟
           </el-form-item>
           <el-form-item label="是否可退款">
             <el-select v-model="form.IsRefund" placeholder="请选择">
@@ -66,10 +68,14 @@
             <el-radio v-model="form.IsCardPass" label="1">开启</el-radio>
           </el-form-item>
           <el-form-item label="发送退款门店通知">
-            <el-radio v-model="form.SendRefundShopInform" label="0">关闭</el-radio>
-            <el-radio v-model="form.SendRefundShopInform" label="1">开启</el-radio>
+            <el-radio v-model="form.SendRefundShopInform" label="0"
+              >关闭</el-radio
+            >
+            <el-radio v-model="form.SendRefundShopInform" label="1"
+              >开启</el-radio
+            >
           </el-form-item>
-          
+
           <!-- <el-form-item label="支付方式">
             <el-checkbox-group v-model="form.BenePayMode">
               <el-checkbox label="1">微卡支付</el-checkbox>
@@ -105,31 +111,43 @@
       <el-tab-pane label="分销设置" name="2">
         <el-form ref="form2" :model="form2" :rules="rules" label-width="200px">
           <el-form-item label="提现日期">
-            每月 <el-input v-model="form2.DrawingsStartDate" placeholder="请输入开始日期" style="width:80px"></el-input> ~
-            <el-input v-model="form2.DrawingsEndDate" placeholder="请输入结束日期" style="width:80px"></el-input> 号
+            每月
+            <el-input
+              v-model="form2.DrawingsStartDate"
+              style="width: 80px"
+            ></el-input>
+            ~
+            <el-input
+              v-model="form2.DrawingsEndDate"
+              style="width: 80px"
+            ></el-input>
+            号
           </el-form-item>
-          <el-form-item label="提现方式" prop="DrawingsType">
+          <!-- <el-form-item label="提现方式" prop="DrawingsType">
             <el-radio v-model="form2.DrawingsType" label="1">微卡</el-radio>
             <el-radio v-model="form2.DrawingsType" label="2">支付宝</el-radio>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="佣金比例">
             <el-input
               v-model="form2.Ratio"
+              max="100"
+              min="1"
               placeholder="推广订单金额 * 提现比例 =实际返佣金额"
-            ></el-input> % 
+            ></el-input>
+            %
             <span style="color: #999"
               >推广订单金额 * 提现比例 =实际返佣金额</span
             >
           </el-form-item>
-          <el-form-item label="分销有效期">
-            <!-- 有效期（0表示永久粉丝） -->
-            <el-input v-model="form2.ValidDay"></el-input>&nbsp;天 
+          <el-form-item label="分销推广">
+            <el-radio v-model="IsOpenSpread" label="1">开启</el-radio>
+            <el-radio v-model="IsOpenSpread" label="0">关闭</el-radio>
           </el-form-item>
-          <el-form-item label="返佣核算方式" prop="RatioWay">
-            <!-- RatioWay 返佣核算方式  1订单金额核算  2支付金额核算  -->
+          <!-- RatioWay 返佣核算方式  1订单金额核算  2支付金额核算  -->
+          <!-- <el-form-item label="返佣核算方式" prop="RatioWay">
             <el-radio v-model="form2.RatioWay" label="1">订单金额</el-radio>
             <el-radio v-model="form2.RatioWay" label="2">支付金额</el-radio>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"
@@ -156,37 +174,36 @@ export default {
   data() {
     return {
       activeName: "1",
-      rules: {       
-      },
-      
+      rules: {},
+      IsOpenSpread: "0",
       form: {
-        ShopRadio:"1",
-        IsOpenRecharge:'1',//自定义充值
-        SendRefundShopInform:'0',// 发送退款门店通知 0 不发送 1 已发送
-        IsCardPass:'0',
+        ShopRadio: "1",
+        IsOpenRecharge: "1", //自定义充值
+        SendRefundShopInform: "0", // 发送退款门店通知 0 不发送 1 已发送
+        IsCardPass: "0",
         // BenePayMode: ["1", "2"],//权益
-        ScopeDay:'7',
-        StartTime:'',
-        EndTime:'',
-        AutoCancelOrder:'',
-        IsDeduction:'2',
-        ScoreDeduction:'',
-        MoneyDeduction:'',
-        ScoreRatio:'',
-        IsRefund:'3',
+        ScopeDay: "7",
+        StartTime: "",
+        EndTime: "",
+        AutoCancelOrder: "",
+        IsDeduction: "2",
+        ScoreDeduction: "",
+        MoneyDeduction: "",
+        ScoreRatio: "",
+        IsRefund: "3",
       }, //商城设置
       btnLoading: false,
       options: [15, 20, 30, 60],
       optionsRetreat: optionsRetreat,
-      DrawingsDate:[],
+      DrawingsDate: [],
       form2: {
-        DrawingsStartDate:'',
-        DrawingsEndDate:'',
-        DrawingsType: "1", //提现方式
-        RatioWay: "1", //返佣核算方式
-        ValidDay: "", //有效期
+        DrawingsStartDate: "",
+        DrawingsEndDate: "",
+        Ratio:''
+        // DrawingsType: "1", //提现方式
+        // RatioWay: "1", //返佣核算方式
+        // ValidDay: "", //有效期
       }, //分销设置
-      
     };
   },
   created() {
@@ -194,7 +211,7 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-     this.getInfo();
+      this.getInfo();
     },
     change(val) {
       this.form2.DrawingsStartDate = val[0];
@@ -202,60 +219,76 @@ export default {
     },
     async getInfo() {
       try {
-        if(this.activeName == '1'){
+        if (this.activeName == "1") {
           let { Data } = await getLists(
-          { Action: "GetBase", Type: 1 },
-          "MShopOpera"
-          ); 
-          if(Data.ShopBase.SetInfo){            
+            { Action: "GetBase", Type: 1 },
+            "MShopOpera"
+          );
+          if (Data.ShopBase.SetInfo) {
             this.form = Data.ShopBase.SetInfo;
             this.form.BenePayMode = this.form.BenePayMode
-          ? this.form.BenePayMode.split(",")
-          : [];
+              ? this.form.BenePayMode.split(",")
+              : [];
           }
-        }else{
-        let { Data } = await getLists(
-          { Action: "GetBase", Type: 2 },
-          "MShopOpera"
+        } else {
+          let { Data } = await getLists(
+            { Action: "GetBase", Type: 2 },
+            "MShopOpera"
           );
-          this.form2 = Data.ShopBase.SetInfo;
-          this.DrawingsDate.push(this.form2.DrawingsStartDate,this.form2.DrawingsEndDate)
+          if(Data.ShopBase.SetInfo){
+            this.form2 = Data.ShopBase.SetInfo
+            this.IsOpenSpread =  this.form2.IsOpenSpread;           
+            this.DrawingsDate.push(
+              this.form2.DrawingsStartDate,
+              this.form2.DrawingsEndDate
+            );
+          }
+          // this.form2 = Data.ShopBase.SetInfo;
+          // this.IsOpenSpread = this.form2.IsOpenSpread;
+          // this.DrawingsDate.push(
+          //   this.form2.DrawingsStartDate,
+          //   this.form2.DrawingsEndDate
+          // );
         }
       } catch (e) {
         this.$message.error(e);
       }
     },
     async submitSystem() {
-      this.btnLoading = true; 
-      if(this.form.ScoreDeduction==undefined||this.form.MoneyDeduction==undefined||this.form.ScoreRatio==undefined){
-        return this.$message.error("请输入积分抵扣规则")
+      this.btnLoading = true;
+      if (
+        this.form.ScoreDeduction == undefined ||
+        this.form.MoneyDeduction == undefined ||
+        this.form.ScoreRatio == undefined
+      ) {
+        return this.$message.error("请输入积分抵扣规则");
       }
-      if(this.form.ShopRadio==undefined){
-        this.form.ShopRadio = '2'
+      if (this.form.ShopRadio == undefined) {
+        this.form.ShopRadio = "2";
       }
-      if(this.form.IsOpenRecharge==undefined){
-        this.form.IsOpenRecharge = '1'
+      if (this.form.IsOpenRecharge == undefined) {
+        this.form.IsOpenRecharge = "1";
       }
-      if(this.form.IsCardPass==undefined){
-        this.form.IsCardPass = '0'
+      if (this.form.IsCardPass == undefined) {
+        this.form.IsCardPass = "0";
       }
-      if(this.form.SendRefundShopInform == undefined){
-        this.form.SendRefundShopInform = '0'
-      }   
+      if (this.form.SendRefundShopInform == undefined) {
+        this.form.SendRefundShopInform = "0";
+      }
       try {
         let obj = {};
         this.form.BenePayMode =
-              typeof this.form.BenePayMode !== "string" && this.form.BenePayMode
-                ? this.form.BenePayMode.join(",")
-                : this.form.BenePayMode;
-        if (this.activeName == "1") {          
+          typeof this.form.BenePayMode !== "string" && this.form.BenePayMode
+            ? this.form.BenePayMode.join(",")
+            : this.form.BenePayMode;
+        if (this.activeName == "1") {
           obj = {
             Action: "SetBase",
             SetInfo: JSON.stringify(this.form),
             Type: this.activeName,
           };
-          
         } else if (this.activeName == "2") {
+          this.form2.IsOpenSpread = this.IsOpenSpread;
           obj = {
             Action: "SetBase",
             SetInfo: JSON.stringify(this.form2),
@@ -281,7 +314,7 @@ export default {
 .el-input {
   width: 300px;
 }
-.inputWidth{
+.inputWidth {
   width: 85px;
   margin: 0 5px;
 }
