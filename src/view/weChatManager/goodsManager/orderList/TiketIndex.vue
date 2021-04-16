@@ -10,8 +10,8 @@
           </el-input>
         </el-col>
         <el-col :span="6">
-          <span class="spanWidth">微信单号：</span>
-          <el-input placeholder="查询微信商户单号" v-model="search.SID" class="input-with-select">
+          <span class="spanWidth">商户单号：</span>
+          <el-input placeholder="查询商户单号" v-model="search.SID" class="input-with-select">
             <el-button slot="append" icon="el-icon-search" @click="changeState"></el-button>
           </el-input>
         </el-col>
@@ -50,8 +50,21 @@
           </el-select>
         </el-col>
       </el-row>
+      <el-row :gutter="20" style="margin-top:5px">
+        <el-col :span="6">
+          <span class="spanWidth">门店列表：</span>
+          <el-select v-model="search.ShopSID" filterable placeholder="请选择" clearable @change="changeState">
+            <el-option
+              v-for="item in storeList"
+              :key="item.SID"
+              :label="item.Name"
+              :value="item.SID">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     </div>
-    <el-table :data="dataList" style="width: 100%" v-loading="loading">
+    <!-- <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column prop="ExchNo" label="商城单号" align="center"></el-table-column>
       <el-table-column prop="SID" label="微信商户订单号" align="center"></el-table-column>
       <el-table-column label="订单来源" align="center" width="120"> 
@@ -70,13 +83,40 @@
       </el-table-column>
       <el-table-column prop="State" label="订单状态" align="center">
         <template slot-scope="scope">{{scope.row.State |TickOrderState}}</template>
-      </el-table-column>
-      <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
+      </el-table-column> -->
       <!-- <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="viewRow(scope.row)">查看</el-button>
         </template>
       </el-table-column> -->
+    <!-- </el-table> -->
+    <el-table :data="dataList" style="width: 100%" v-loading="loading">
+      <el-table-column prop="ExchNo" label="商城单号" align="center"></el-table-column>
+      <el-table-column prop="SID" label="商户单号" align="center"></el-table-column>
+      <el-table-column label="订单来源" align="center" width="250"> 
+        <template slot-scope="scope">
+          <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>
+          <p v-else-if="scope.row.PromType==='5'">拼团订单/{{scope.row.PromName}}</p>
+          <p v-else>普通订单</p>
+        </template>
+      </el-table-column>
+       <el-table-column label="门店信息" align="left" width="250">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.ShopSID">{{filterFun(scoped.row.ShopSID)}}</span><br/>
+          <span v-if="scoped.row.ShopSID">{{filterFun2(scoped.row.ShopSID)}}</span><br/>
+          <span v-if="scoped.row.ShopSID">{{filterFun3(scoped.row.ShopSID)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="PayAmt" label="支付金额" align="center" width="90">
+        <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
+      </el-table-column>
+       <el-table-column prop="PayType" label="支付状态" align="center">
+         <template slot-scope="scope">{{scope.row.PayType|PayTypeTip}}</template>
+      </el-table-column>
+      <el-table-column prop="State" label="订单状态" align="center">
+        <template slot-scope="scope">{{scope.row.State |TickOrderState}}</template>
+      </el-table-column>
+      <el-table-column prop="AddTime" label="下单时间" align="center" width="150"></el-table-column>      
     </el-table>
     <div class="block" v-if="TotalList">
       <el-pagination
@@ -112,10 +152,12 @@ export default {
       TotalList:0,//分页总数
       currentPage: 0,
       pageSize:0,
+      storeList:[]
     };
   },
   components: {},
   mounted() {
+    this.getStoreList();
     this.getList();
   },
   methods: {
@@ -153,6 +195,40 @@ export default {
     },
     changeState() {
       this.getList();
+    },
+    filterFun(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `名称：${item.Name}`;
+        }
+      }
+      return obj;
+    },
+    filterFun2(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `地址：${item.Address}`;
+        }
+      }
+      return obj;
+    },filterFun3(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `电话：${item.Tel}`;
+        }
+      }
+      return obj;
+    },
+    async getStoreList() {
+      try {
+        let { Data } = await getLists({ Action: "GetShopList" }, "MShopOpera");
+        this.storeList = Data.ShopInfoList;
+      } catch (e) {
+        this.$message.error(e);
+      }
     },
     // viewRow(val) {
     //   this.$router.push("/weChat/manager/orderList/info?SID=" + val.SID+'&type=3');

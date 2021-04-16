@@ -6,7 +6,7 @@
         <!--        ，当菜单类型为小程序时，必须开通小程序，否则菜单创建无效-->
       </span>
     </div>
-    <div v-loading="loading">
+    <div v-loading="loading" style="display:flex">
       <div class="menuBarLeft">
         <div class="menuBarLeftTop"></div>
         <div class="menuBarLeftCenter">
@@ -64,20 +64,19 @@
                 </el-select>
               </el-form-item>
               <!-- :rules="rules.urlCilck" -->
-              <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.url`" 
+              <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.key`" 
                             v-if="!item.sub_button.length>0&&item.type === 'click'">
-                <el-input v-model="item.url" maxlength="128"></el-input>
+                <el-input v-model="item.key" maxlength="128"></el-input>
               </el-form-item>
               <!-- :rules="rules.url" -->
               <el-form-item label="链接地址" style="margin-bottom:20px" :prop="`arr.${index}.url`" 
                             v-if="!item.sub_button.length>0&&item.type === 'view'">
-                <el-input v-model="item.url" :disabled="item.disabled" maxlength="1024" @input="changeView($event)"></el-input>
+                <el-input v-model="item.url" :disabled="item.disabled" maxlength="1024" style="width:550px" @input="changeView($event)"></el-input>
                 <el-dropdown @command="handleCommand($event,item)">
                   <span class="el-dropdown-link">
                     修改链接地址
                   </span>
                   <el-dropdown-menu slot="dropdown">
-                    <!--                    <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>-->
                     <el-dropdown-item command="customUrl" >自定义链接</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -106,22 +105,21 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.sub_button.${indexChild}.url`"
-                              :rules="rules.url"
+                <el-form-item label="关键字" style="margin-bottom:20px" :prop="`arr.${index}.sub_button.${indexChild}.key`"
+                              :rules="rules.key"
                               v-if="itemChild.type === 'click'">
-                  <el-input v-model="itemChild.url"></el-input>
+                  <el-input v-model="itemChild.key"></el-input>
                 </el-form-item>
                 <el-form-item label="链接地址" style="margin-bottom:20px"
                               :prop="`arr.${index}.sub_button.${indexChild}.url`" :rules="rules.url"
                               v-if="itemChild.type === 'view'">
-                  <el-input v-model="itemChild.url" :disabled="itemChild.disabled"></el-input>
+                  <el-input v-model="itemChild.url" :disabled="itemChild.disabled" style="width:550px"></el-input>
 
                   <el-dropdown @command="handleCommand($event,itemChild)">
                   <span class="el-dropdown-link">
                     修改链接地址
                   </span>
                     <el-dropdown-menu slot="dropdown">
-<!--                      <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>-->
                       <el-dropdown-item command="customUrl">自定义链接</el-dropdown-item>
                     </el-dropdown-menu>
                   </el-dropdown>
@@ -140,13 +138,11 @@
           <div class="AddList" @click="AddList"><i class="el-icon-circle-plus"></i><span
             style="margin-left:8px">添加一级导航</span></div>
         </el-form>
-      </div>
-
-      <div style="text-align: center;margin:20px 0;clear:both">
+      </div>     
+    </div>
+     <div style="text-align: center;margin:20px 0;clear:both">
         <el-button type="primary" style="margin-top:20px" @click="submitForm" :loading="loadingBtn">提交</el-button>
       </div>
-    </div>
-
   </div>
 </template>
 
@@ -423,16 +419,16 @@ export default {
 
     .menuBarLeft {
       min-height: 200px;
-      width: 342px;
+      width: 300px;
+      height: 100%;
       border-radius: 20px;
       border: 1px solid #e5e5e5;
       background: #fff;
       margin-bottom: 30px;
       float: left;
-
       .menuBarLeftTop {
         background: url(../../../assets/img/iphone_head.png) no-repeat center center;
-        height: 70px;
+        height: 70px;        
       }
 
       .menuBarLeftCenter {
@@ -444,6 +440,7 @@ export default {
         .CenterTop {
           background: url(../../../assets/img/titlebar.png) no-repeat;
           height: 64px;
+          background-size: 100%;
         }
 
         .CenterBottom {
@@ -510,7 +507,8 @@ export default {
       border: 1px solid #e5e5e5;
       margin-left: 25px;
       float: left;
-      width: 60%;
+      width: 80%;
+      max-width: 80%;
       padding: 25px;
       background: #ffffff;
       border-radius: 20px;

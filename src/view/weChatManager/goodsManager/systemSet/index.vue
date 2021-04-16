@@ -130,8 +130,7 @@
           <el-form-item label="佣金比例">
             <el-input
               v-model="form2.Ratio"
-              max="100"
-              min="1"
+              maxlength="3"
               placeholder="推广订单金额 * 提现比例 =实际返佣金额"
             ></el-input>
             %

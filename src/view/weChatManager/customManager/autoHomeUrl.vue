@@ -76,6 +76,10 @@ export default {
           url: url + "pages/shoppingMall/menu_naixue/menu/menu"
           // id:'2'
         },
+        {
+          Name: "门店列表",
+          url: url + "pages/myAddress/myAddress?flag="+encodeURIComponent('shopAuto')
+        },
         // {
         //   Name: "积分商城",
         //   url: url + "pages/integralMall/index",
@@ -144,10 +148,6 @@ export default {
           Name: "地址管理",
           url: url + "pages/myAddress/myAddress"
         }
-        // {
-        //   Name: "活动管理",
-        //   url: url + "pages/myAddress/myAddress",
-        // }
       ],
       CateData: [],
       dialogTableVisible: false

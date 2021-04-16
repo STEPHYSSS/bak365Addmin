@@ -71,8 +71,8 @@
                     二维码尺寸：宽214像素，高214像素
                     二维码位置：距离图片顶部225像素，距离图片左部105像素;格式:JPG,PNG,JPEG)
                     </span>
-                    <!-- <img :src="imgUrl"><img> -->
-                    <!-- <el-button @click="defaultImg">范例(默认)</el-button> -->
+                    <!-- <img src="../../../../assets/img/defaultBerweima.png"><img> -->
+                    <el-button @click="defaultImg">范例(默认)</el-button>
                </el-form-item>
                
           </el-form>
@@ -87,7 +87,7 @@
 import { getLists } from "@/api/vipCard";
 import imgLoad from "@/components/download/imgLoad";
 import satisfyTicket from "@/components/Dialog/satisfyTicket";
-import {replacePre } from "@/config/publicFunction";
+import {replacePre,GetBaseImgUrl } from "@/config/publicFunction";
 import _ from "lodash";
 export default {
      name:"xifenAddEdit",     
@@ -116,7 +116,10 @@ export default {
                showTicket: false, //控制电子劵信息弹框显示
                info:[],
                info2:'sign',
-               imgUrl:require("@/assets/img/defaultBerweima.png"),
+               // imgUrl:require("../../../../assets/img/defaultBerweima.png"),
+               imgUrl:require("../../../../assets/img/extensionBg.jpg"),//营销推广
+               imgUrl2:require("../../../../assets/img/followBg.jpg"),//邀请关注
+               imgUrl3:require("../../../../assets/img/invitationBg.jpg"),//邀请充值
                disabled:false
           }
      },
@@ -292,13 +295,21 @@ export default {
                }
           },
           defaultImg(){
-               window.open(process.env.BASE_URL + this.imgUrl)
+               // 用户关注（imgUrl2） 0 邀请充值（imgUrl3） 3  营销推广4（imgUrl）
+               if(this.acType == '0'){
+
+               }
+               // window.open(process.env.BASE_URL + this.imgUrl)
+               // const url = GetBaseImgUrl()+'Admin/'+this.imgUrl
+               // console.log(url,'0000')
           },
           cancelFun(){
                this.$router.push({path:'/weChat/manager/activity/Act_SuctionPowder'})
           }
+          
      }
 }
+
 </script>
 <style lang="less" scoped>
 .explan{

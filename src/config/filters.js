@@ -22,9 +22,9 @@ export const statusTip = (val)=>{
      }else if(val === '-3'){
           return '订单取消'
      }else if(val === '0'){
-          return '预定'
+          return '已预定'
      }else if(val === '1'){
-          return '生产'
+          return '生产中'
      }else if(val === '2'){
           return '已送货'
      }else if(val === '3'){

@@ -305,6 +305,13 @@ export default {
         };
       }
     },
+    clickDropdown(val) {
+      console.log(val,'000')
+      this.form.layoutIndex = this.layoutIndex;
+      this.form.imgList[this.layoutIndex].urlObj = val;
+      console.log(this.form.imgList[this.layoutIndex].urlObj,'000',this.form.layoutIndex)
+      this.$emit("setModeVal", this.form);
+    },
     changeStyleSearch(e) {
       this.$emit("setModeVal", this.form);
     },
@@ -331,13 +338,7 @@ export default {
       
       this.$emit("setModeVal", this.form);
     },
-    clickDropdown(val) {
-      console.log(val,'000')
-      this.form.layoutIndex = this.layoutIndex;
-      this.form.imgList[this.layoutIndex].urlObj = val;
-      console.log(this.form.imgList[this.layoutIndex].urlObj,'000',this.form.layoutIndex)
-      this.$emit("setModeVal", this.form);
-    },
+    
     touchstart(e) {
       // 求div到左边浏览器的距离 this.$refs.test.getBoundingClientRect().left
       //求div得width  this.$refs.test.offsetWidth

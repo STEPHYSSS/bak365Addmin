@@ -199,3 +199,7 @@ export const addverType=[
 export const commonOrder=[
   {value:"2",label:"普通订单"}
 ]
+export const AddRebateState=[
+  { label: '未申请', value: '0' },
+  { label: '申请返佣', value: '1' }
+]

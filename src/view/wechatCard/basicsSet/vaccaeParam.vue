@@ -2,6 +2,7 @@
   <el-form ref="form" :model="form" label-width="180px" class="vaccaeParamn" v-loading="loading">
     <el-form-item label="微卡背景图片">
       <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="CardImg"></imgLoad>
+      <span style="color:red">（建议：尺寸为1026*598 背景为纯色背景）</span>
       <!--      默认200kb-->
     </el-form-item>
     <!-- <el-form-item label="卡类别">

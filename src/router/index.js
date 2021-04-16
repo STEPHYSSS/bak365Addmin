@@ -726,6 +726,13 @@ export const asyncRouterMap = [{
                 redirect: '/weChat/manager/retail/markingList',
                 children: [
                     //申请团长列表开始
+                     {//团长列表
+                        path: "tuanzhangList",
+                        meta: {
+                            label: '团长列表'
+                        },
+                        component: tzList
+                    },
                     { //申请团长列表
                         path: 'markingList',
                         meta: {
@@ -754,14 +761,7 @@ export const asyncRouterMap = [{
                             label: '佣金审核详情'
                         },
                         component: commissionWithdrawal
-                    },
-                    {//团长列表
-                        path: "tuanzhangList",
-                        meta: {
-                            label: '团长列表'
-                        },
-                        component: tzList
-                    },
+                    },                   
                     {//查看团长粉丝列表
                         path: "tuanzhangLieBiao",
                         isHidden: true,

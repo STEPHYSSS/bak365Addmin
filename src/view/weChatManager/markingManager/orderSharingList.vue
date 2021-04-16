@@ -74,7 +74,7 @@ export default {
       try {
         let { Data } = await getLists(
           { 
-            Action: "GetLeaderOrderList",
+            Action: "GetOrderSpread",
             State:this.search.State,
             RefundState:this.search.RefundState
           },

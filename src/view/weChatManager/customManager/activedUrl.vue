@@ -7,19 +7,25 @@
       </el-table-column>
       <el-table-column label="操作" width="150" align="center">
         <template slot-scope="scoped">
-          <el-button type="text" @click="copyUrl(scoped.row)">活动商品链接</el-button>
+          <el-button type="text" @click="copyUrl(scoped.row)" v-if="scoped.row.ItemList">活动商品链接</el-button>
+         <el-popover placement="left" v-model="scoped.row.visibleUrl" v-else>
+          <el-input v-model="scoped.row.codeUrl" readonly placeholder="商品链接" style="width:500px">
+              <el-button slot="append" @click="copyUrl2(scoped.row)">复制</el-button>
+          </el-input>
+          <el-button type="text" slot="reference" style="margin-right:10px;">链接</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog title="活动商品" :visible.sync="dialogTableVisible">
       <el-table :data="urlList">
-        <el-table-column property="Name" label="网址名称"></el-table-column>
+        <el-table-column property="Name" label="网址名称" width="180px"></el-table-column>
         <el-table-column label="网址链接">
           <template slot-scope="scoped">
           <el-input v-model="scoped.row.goodsUrl" readonly></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" align="center" width="80px">
           <template slot-scope="scope">
           <el-popover placement="left" v-model="scope.row.visibleUrl">
           <el-input v-model="scope.row.goodsUrl" readonly placeholder="商品链接" style="width:500px">

@@ -1,10 +1,14 @@
 <template>
   <div class="withdrawal">
-    返佣状态：<el-select
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <span>返佣状态：</span>
+        <el-select
       v-model="search.status"
       placeholder="请选择"
       clearable
       class="marginBottom"
+      @change="searchName"
     >
       <el-option
         v-for="item in withStatus"
@@ -13,16 +17,15 @@
         :key="item.value"
       ></el-option>
     </el-select>
-    <el-button
-      slot="append"
-      icon="el-icon-search"
-      @click="searchName"
-    ></el-button>
-    是否返佣：<el-select
+      </el-col>
+      <el-col :span="6">
+        <span>是否返佣：</span>
+        <el-select
       v-model="search.IsRebate"
       placeholder="请选择"
       clearable
       class="marginBottom"
+      @change="searchName"
     >
       <el-option
         v-for="item in withRebated"
@@ -31,17 +34,15 @@
         :key="item.value"
       ></el-option>
     </el-select>
-    <el-button
-      slot="append"
-      icon="el-icon-search"
-      @click="searchName"
-    ></el-button>
-
+      </el-col>
+    </el-row>
+    
+    
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
       <el-table-column label="团长">
         <template slot-scope="scope">
-          昵称：{{scope.row.NickName}}<br>
-          头像：<img
+          {{scope.row.NickName}}<br>
+          <img
             :src="scope.row.Headimgurl"
             alt=""
             class="imgWidth"

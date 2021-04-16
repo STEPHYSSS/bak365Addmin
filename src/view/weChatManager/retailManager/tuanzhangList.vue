@@ -78,7 +78,7 @@
             >审核</el-button
           > -->
           <el-button type="text" @click="chakan(scoped.row, scoped.$index)"
-            >粉丝列表</el-button
+            >查看</el-button
           >
         </template>
       </el-table-column>

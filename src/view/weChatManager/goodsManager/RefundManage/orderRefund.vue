@@ -72,35 +72,60 @@
             @change="changeTime">
           </el-date-picker>
         </el-col>
+        <el-col :span="6">
+          <span class="spanWidth">门店列表：</span>
+          <el-select v-model="search.ShopSID" filterable placeholder="请选择" clearable @change="changeState">
+            <el-option
+              v-for="item in storeList"
+              :key="item.SID"
+              :label="item.Name"
+              :value="item.SID">
+            </el-option>
+          </el-select>
+        </el-col>
       </el-row>
     </div>
-    <el-table :data="dataList" v-loading="loading">
+    <el-table :data="dataList" style="width: 100%" v-loading="loading">
       <el-table-column label="单号" align="left" width="250px">
         <template slot-scope="scoped">
           <span>商城单号：{{scoped.row.ExchNo}}</span><br/>
           <span>商户单号：{{scoped.row.SID}}</span><br/>
         </template>
       </el-table-column>
-      <el-table-column label="订单来源" align="center" width="250"> 
+      <el-table-column label="订单来源" align="center" width="180"> 
         <template slot-scope="scope">
           <p v-if="scope.row.PromType==='1'">秒杀订单/{{scope.row.PromName}}</p>
           <p v-else-if="scope.row.PromType==='5'">拼团订单/{{scope.row.PromName}}</p>
           <p v-else>普通订单</p>
         </template>
+      </el-table-column>           
+      <el-table-column label="用户信息" align="left" width="200">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.UserName">用户名：{{scoped.row.UserName}}</span>
+          <span v-else>--</span><br/>
+          <span v-if="scoped.row.Mobile">手机号：{{scoped.row.Mobile}}</span><br/>
+          <span v-if="scoped.row.Address">地址：{{scoped.row.Address}}</span>
+        </template>
       </el-table-column>
-      <el-table-column prop="UserName" label="收货人姓名" align="center" width="90"></el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额" align="center" width="80">
+      <el-table-column label="门店信息" align="left" width="220">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.ShopSID">{{filterFun(scoped.row.ShopSID)}}</span><br/>
+          <span v-if="scoped.row.ShopSID">{{filterFun2(scoped.row.ShopSID)}}</span><br/>
+          <span v-if="scoped.row.ShopSID">{{filterFun3(scoped.row.ShopSID)}}</span>
+        </template>
+      </el-table-column>
+       <el-table-column prop="PayAmt" label="支付金额" align="center" width="80">
         <template slot-scope="scope">{{scope.row.PayAmt}}&nbsp;元</template>
       </el-table-column>      
       <el-table-column prop="PayType" label="支付方式" align="center" width="100">
          <template slot-scope="scope">{{scope.row.PayType|PayType}}</template>
-      </el-table-column>
-      <el-table-column prop="DeliveryType" label="用户手机号码" align="center" >
-        <template slot-scope="scope">{{scope.row.Mobile}}</template>
+      </el-table-column>      
+      <el-table-column prop="State" label="订单状态" align="center" width="90">
+        <template slot-scope="scope">{{scope.row.State|orderState2}}</template>
       </el-table-column>
       <el-table-column prop="RefundTime" label="申请退款时间" align="center" ></el-table-column>
       <el-table-column prop="RefCompleteTime" label="退款完成时间" align="center" ></el-table-column>
-      <el-table-column prop="AddTime" label="添加时间" align="center" ></el-table-column>
+      <el-table-column prop="AddTime" label="下单时间" align="center" ></el-table-column>
       <el-table-column prop="RefundState" label="退款状态" align="center" >
         <template slot-scope="scope">{{scope.row.RefundState |orderRefund}}</template>
       </el-table-column>
@@ -164,10 +189,12 @@ export default {
       TotalList:0,//分页总数
       currentPage: 0,
       pageSize:0,
+      storeList:[]
     };
   },
   components: {},
   mounted() {
+    this.getStoreList();
     this.getInfo();
   },
   methods: {
@@ -179,10 +206,12 @@ export default {
      },
     async getInfo() {
       try {
-        let obj = { Action: "GetOrderList", RefundState: this.search.State,OrderType:'2',
+        let obj = { Action: "GetOrderList",
+        RefundState: this.search.State,OrderType:'2',
         StartRefundTime:this.search.StartRefundTime,
         EndRefundTime:this.search.EndRefundTime,
-        ExchNo:this.search.ExchNo,SID:this.search.SID };
+        ExchNo:this.search.ExchNo,SID:this.search.SID ,
+        ShopSID:this.search.ShopSID};
         let { Data } = await getLists(obj, "MOrderOpera");
         this.dataList = Data.OrderList;
         this.TotalList = Data.DataCount;
@@ -191,6 +220,40 @@ export default {
       } catch (e) {
         this.$message.error(e);
         this.loading = false;
+      }
+    },
+    filterFun(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `名称：${item.Name}`;
+        }
+      }
+      return obj;
+    },
+    filterFun2(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `地址：${item.Address}`;
+        }
+      }
+      return obj;
+    },filterFun3(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `电话：${item.Tel}`;
+        }
+      }
+      return obj;
+    },
+    async getStoreList() {
+      try {
+        let { Data } = await getLists({ Action: "GetShopList" }, "MShopOpera");
+        this.storeList = Data.ShopInfoList;
+      } catch (e) {
+        this.$message.error(e);
       }
     },
     handleSizeChange(val) {

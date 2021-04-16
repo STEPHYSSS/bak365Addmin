@@ -40,6 +40,8 @@
       icon="el-icon-search"
       @click="searchName"
     ></el-button>
+
+    
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
       <!-- <el-table-column prop="OpenID" label="微信ID"></el-table-column> -->
       <el-table-column width="80px" align="center" label="头像">

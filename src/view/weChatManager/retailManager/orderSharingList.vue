@@ -12,7 +12,11 @@
       icon="el-icon-search"
       @click="searchName"
     ></el-button> -->
-    退款状态：<el-select
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <span>退款状态：</span>
+        <el-select
       v-model="search.RefundState"
       placeholder="请选择"
       clearable
@@ -30,8 +34,8 @@
       icon="el-icon-search"
       @click="searchName"
     ></el-button>
-
-    <el-col :span="6">
+      </el-col>
+      <el-col :span="6">
       <span class="spanWidth">开始时间：</span>
       <el-date-picker
         v-model="search.StartAddTime"
@@ -42,7 +46,7 @@
       >
       </el-date-picker>
     </el-col>
-    <el-col :span="6">
+      <el-col :span="6">
       <span class="spanWidth">结束时间：</span>
       <el-date-picker
         v-model="search.EndAddTime"
@@ -53,8 +57,7 @@
       >
       </el-date-picker>
     </el-col>
-
-    <el-col :span="6">
+      <el-col :span="6">
       <span class="spanWidth">支付类型：</span>
       <el-select
         v-model="search.PayType"
@@ -71,7 +74,28 @@
         ></el-option>
       </el-select>
     </el-col>
-
+    </el-row>
+    <el-row :gutter="20">
+     <el-col :span="6">
+      <span class="spanWidth">返佣状态：</span>
+      <el-select
+        v-model="search.RebateState"
+        placeholder="请选择返佣状态"
+        clearable
+        @change="changeRebateState"
+        style="margin-left:5px"
+      >
+        <el-option
+          v-for="item in AddRebateState"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        ></el-option>
+      </el-select>
+    </el-col>
+    </el-row>
+  </div>
+  <div style="margin-bottom:20px;"></div>
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
       <el-table-column prop="OrderSID" label="单号" width="260px">
         <template slot-scope="scope">
@@ -79,10 +103,15 @@
           商户单号：{{ scope.row.SID }}
         </template>
       </el-table-column>
-      <el-table-column prop="OrderType" label="订单来源">
-        <!-- commonOrder -->
+      <el-table-column label="订单来源">
         <template slot-scope="scope">
-          {{ scope.row.OrderType | OrderSource }}
+          <p v-if="scope.row.PromType === '1'">
+            秒杀订单/{{ scope.row.PromName }}
+          </p>
+          <p v-else-if="scope.row.PromType === '5'">
+            拼团订单/{{ scope.row.PromName }}
+          </p>
+          <p v-else>普通订单</p>
         </template>
       </el-table-column>
       <el-table-column label="用户信息" prop="Img" width="200px">
@@ -91,25 +120,18 @@
           手机号：{{ scope.row.Mobile }}
         </template>
       </el-table-column>
-      <el-table-column label="门店信息" width="200px">
-        <template slot-scope="scope">
-          <!-- 名称：{{scope.row.}}<br />
-            电话：{{scope.row.}}<br />
-            地址：{{scope.row.}} -->
-        </template>
-      </el-table-column>
       <el-table-column label="配送方式">
         <template slot-scope="scope">
           {{ scope.row.DeliveryType | peiSongWay }}
         </template>
       </el-table-column>
-      <el-table-column prop="PayAmt" label="支付金额"></el-table-column>
-      <el-table-column label="支付状态">
+      <el-table-column prop="PayAmt" label="支付金额" align="center"></el-table-column>
+      <el-table-column label="支付状态" align="center">
         <template slot-scope="scope">
           {{ scope.row.PayType | payZhuangTai }}
         </template>
       </el-table-column>
-      <el-table-column label="订单状态">
+      <el-table-column label="订单状态" align="center">
         <template slot-scope="scope">{{
           scope.row.State | statusTip
         }}</template>
@@ -118,6 +140,7 @@
         prop="AddTime"
         label="下单时间"
         width="150px"
+        align="center"
       ></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -147,8 +170,9 @@ import {
   sharingStatus,
   sharingRefund,
   payTypeLists,
-  deliveryTypeLists,
-  commonOrder
+  AddRebateState,
+  deliveryTypeLists
+  // commonOrder
 } from "@/config/utils";
 export default {
   name: "",
@@ -163,13 +187,14 @@ export default {
       sharingStatus: sharingStatus,
       sharingRefund: sharingRefund,
       PayTypeList: payTypeLists,
+      AddRebateState:AddRebateState,
       current_Audit: "",
       current_SID: "",
       show: false, // 控制审核弹框
       TotalList: 0,
       currentPage: 0,
-      pageSize: 0,
-      commonOrder: commonOrder
+      pageSize: 0
+      // commonOrder: commonOrder
     };
   },
   created() {
@@ -190,22 +215,23 @@ export default {
     changeState() {
       this.getSharingList();
     },
+    changeRebateState(){
+      this.getSharingList();
+    },
     // 获取列表
     async getSharingList() {
       this.loading = true;
       try {
         let { Data } = await getLists(
           {
-            Action: "GetLeaderOrderList",
+            Action: "GetOrderSpread",
             State: this.search.State,
             RefundState: this.search.RefundState,
             PayType: this.search.PayType,
-
-
-            // Action: "GetLeaderOrderList",
-            // State: "",
-            // RefundState: "",
-            OrderType: "2",
+            StartAddTime: this.search.StartAddTime,
+            EndAddTime: this.search.EndAddTime,
+            RebateState: this.search.RebateState,
+            Page: this.currentPage - 1,
           },
           "MOrderOpera"
         );
@@ -218,7 +244,12 @@ export default {
         this.loading = false;
       }
     },
-    viewRow(val) {},
+    viewRow(val) {
+      // console.log("我是你要找的val",val);
+      this.$router.push(
+        "/weChat/manager/orderList/info?SID=" + val.SID + "&type=2"
+      );
+    },
     // 查询
     searchName() {
       // 名称搜索
@@ -247,12 +278,12 @@ export default {
       } else if (val === "2") {
         return "微信支付";
       }
-    },
-    OrderSource(val) {
-      if (val === "2") {
-        return "普通订单";
-      }
     }
+    // OrderSource(val) {
+    //   if (val === "2") {
+    //     return "普通订单";
+    //   }
+    // }
   }
 };
 </script>

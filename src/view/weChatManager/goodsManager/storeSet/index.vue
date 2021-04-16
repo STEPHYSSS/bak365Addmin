@@ -63,7 +63,7 @@
           <div>纬度：{{ scoped.row.Latitude }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="100">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
           <el-button type="text" @click="editRowGoods(scoped.row)"
             >编辑</el-button
@@ -71,6 +71,27 @@
           <el-button type="text" @click="delRow(scoped.row, scoped.$index)"
             >删除</el-button
           >
+          <el-popover placement="left" v-model="scoped.row.visible">
+            <div class="smallRoutine">
+              <div class="smallRoutineTop">
+                <span>扫码预览</span>
+                <span class="close" @click="scoped.row.visible = false">×</span>
+              </div>
+              <div style="width:200px;height:200px;border: 1px solid #efefef;">
+                <QRCode
+                  :newWidth="200"
+                  :newText="scoped.row.codeUrl"
+                  v-if="currentIndexCode === scoped.$index"
+                ></QRCode>
+              </div>
+            </div>
+            <el-button
+              type="text"
+              slot="reference"
+              style="margin-left:8px;"
+              @click="clicCode(scoped.$index)"
+            >扫码预览</el-button>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
@@ -92,14 +113,17 @@
 <script>
 import { getLists } from "@/api/vipCard";
 import Del from "@/components/Dialog/del";
-
+import { ShopList } from "@/config/index";//链接前缀
+import QRCode from "@/components/qrcodejs/qrcodejs";
 export default {
   name: "index",
   components: {
-    Del
+    Del,
+    QRCode
   },
   data() {
     return {
+      ShopList: ShopList, //秒杀链接
       search:{},
       loading: false,
       listData: [],
@@ -111,7 +135,8 @@ export default {
       State:'',
       TotalList:0,//分页总数
       currentPage: 0,
-      pageSize:0,
+      pageSize:0,      
+      currentIndexCode: "", 
       // dialogVisible: false
     };
   },
@@ -157,10 +182,14 @@ export default {
         this.listData.forEach(D => {
           D.Img = D.Img.split(",");
           D.State = D.State === "0" ? false : true;
+          D.codeUrl = this.ShopList + "?SID=" + D.SID + "&flag=shopAuto";
         });
       } catch (e) {
         this.$message.error(e);
       }
+    },
+    clicCode(index) {
+      this.currentIndexCode = index;
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);

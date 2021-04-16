@@ -137,7 +137,6 @@
           <span v-if="scoped.row.ShopSID">{{filterFun(scoped.row.ShopSID)}}</span><br/>
           <span v-if="scoped.row.ShopSID">{{filterFun2(scoped.row.ShopSID)}}</span><br/>
           <span v-if="scoped.row.ShopSID">{{filterFun3(scoped.row.ShopSID)}}</span>
-          <span v-else>--</span>
         </template>
       </el-table-column>
        <el-table-column prop="PayType" label="配送方式" align="center" width="90">

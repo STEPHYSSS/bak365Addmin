@@ -31,6 +31,8 @@ Vue.filter('orderState2', (num) => {
      switch (num) {
           case -3:
                return '已取消';
+          case -2:
+               return '已预定';
           case -1:
                return '待付款';
           case 0:
