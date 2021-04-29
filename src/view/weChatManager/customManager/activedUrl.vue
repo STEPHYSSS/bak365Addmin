@@ -42,7 +42,7 @@
 </template>
 <script>
 import { getLists } from "@/api/vipCard";
-import { seckill,activeUrlGood } from "@/config/index";//链接前缀
+import { seckill,activeUrlGood,scanCoupon } from "@/config/index";//链接前缀
 import goodsUrl from "@/components/Dialog/goodsUrl.vue"//弹窗
 export default {
   name: "",
@@ -51,6 +51,7 @@ export default {
       tableData: [],
       seckill: seckill, //秒杀链接
       activeUrlGood:activeUrlGood,//进入商品详情
+      scanCoupon:scanCoupon,
       goodsShow: false,//弹窗
       urlList: [],//弹框数组
       dialogTableVisible:false,
@@ -73,7 +74,13 @@ export default {
         if (data.Data.PromList) {
           this.tableData = data.Data.PromList;
           this.tableData.forEach(D => {
-            D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
+            if(D.Type == '1'){
+              D.codeUrl = this.seckill + "?SID=" + D.SID + "&Flag=true";
+            }else if(D.Type == '8'){
+              D.codeUrl = this.scanCoupon + "?SID=" + D.SID + "&FlagScan=true";
+            }else if(D.Type == '5'){
+              D.codeUrl = this.seckill + "?SID=" + D.SID + "&Group=true"
+            }
           });
         }
       } catch (error) {
@@ -81,11 +88,6 @@ export default {
       }
     },
     copyUrl(row) {
-      //  let query={ SID:""}
-      //   this.data.forEach(D => {
-      //     query.SID = D.SID;
-      //     D.codeUrl = this.phoneUrlGood+"?query="+encodeURIComponent(JSON.stringify(query))
-      //   });
       let query={ SID:"",
       seckill: "true"}
       row.ItemList.forEach(D => {

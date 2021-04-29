@@ -12,8 +12,8 @@
                     <el-select v-model="PromWhere" @change="changeProm" :disabled="disableProm" placeholder="请选择">
                          <el-option label="请选择参与类型" value=""></el-option>
                          <el-option label="用户关注" value="0"></el-option>
-                         <!-- <el-option label="用户申请卡" value="1"></el-option>
-                         <el-option label="用户绑定卡" value="2"></el-option> -->
+                         <el-option label="申请/绑定卡" value="1"></el-option>
+                         <!-- <el-option label="绑定实体卡" value="2"></el-option> -->
                          <el-option label="用户评价" value="3"></el-option>
                     </el-select>
                </el-form-item>

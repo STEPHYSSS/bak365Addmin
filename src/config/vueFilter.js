@@ -138,7 +138,7 @@ Vue.filter('setImgPrex', (val) => {
 Vue.filter('SetImage',(val) => { 
      if (val) {
           if(window.location.hostname == "localhost" ){
-               return 'http://192.168.0.19:8001/'+ val;
+               return 'http://192.168.0.5:8001/'+ val;
                // return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
           }else{
                return 'http://'+window.location.hostname+'/WebApp/'+ val;
@@ -150,7 +150,7 @@ Vue.filter('SetImage',(val) => {
 Vue.filter('filterImg',(val) => {     
      if (val) {
           if(window.location.hostname == "localhost" ){
-               return 'http://wx8d4708e1e9895e87.manage.bak365.cn/WebApp'+ val;
+               return 'http://wx8d4708e1e9895e87.manage.bak365.cn/webApp/'+ val;
           }else{
                return 'http://'+window.location.hostname+'/WebApp/'+ val;
           }
@@ -163,9 +163,7 @@ Vue.filter('PromType',(val)=>{
           if(val==='0'){
                return '用户关注'
           }else if(val==='1'){
-               return '用户申请卡'
-          }else if(val==='2'){
-               return '用户绑定卡'
+               return '申请/绑定卡'
           }else if(val==='3'){
                return '用户评价'
           }

@@ -164,8 +164,8 @@ export const DirectType = [
   { value: '2', label: '销售订单 '}, 
   { value: '3', label: '电子券订单'}, 
   { value: '4', label: '积分订单'}, 
-  { value: '5', label: '全部微卡用户'}, 
-  { value: '6', label: '全部会员'}, 
+  // { value: '5', label: '全部微卡用户'}, 
+  // { value: '6', label: '全部会员'}, 
   // { value: '2', label: '积分'},
   // { value: '3', label: '卡充值'}
 ]
@@ -202,4 +202,15 @@ export const commonOrder=[
 export const AddRebateState=[
   { label: '未申请', value: '0' },
   { label: '申请返佣', value: '1' }
+]
+export const ReplyKind=[
+  {value:"1",label:"关键词自动回复"},
+  {value:"2",label:"关注后自动回复"},
+  {value:"3",label:"消息托管"},
+  {value:"4",label:"小尾巴"}
+]
+export const NewsKind=[
+  {value:"1",label:"文本"},
+  {value:"2",label:"图文"},
+  {value:"3",label:"图片"}
 ]

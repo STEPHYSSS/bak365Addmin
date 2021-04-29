@@ -78,7 +78,7 @@ export default {
         },
         {
           Name: "门店列表",
-          url: url + "pages/myAddress/myAddress?flag="+encodeURIComponent('shopAuto')
+          url: url + "pages/myAddress/myAddress?flag=shopAuto"
         },
         // {
         //   Name: "积分商城",
@@ -111,6 +111,9 @@ export default {
         {
           Name: "申请团长",
           url: url + "pages/vip/applyLeader"
+        },{
+          Name:'优惠券列表',
+          url:url+"pages/vip/myCoupon/myCoupon"
         },
         {
           Name: "付款码",

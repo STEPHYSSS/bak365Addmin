@@ -8,17 +8,17 @@
                     <el-input type="textarea" :disabled="true" v-model="formInfo.GiveInfo" :rows="2"></el-input>
                     <el-button type="primary" style="margin-left: 10px" size="medium" @click="clickTicket" >添加</el-button>
                </el-form-item>
-               <el-form-item label="赠送积分" v-show="chooseType!='0'">
-                    <el-input v-model="formInfo.GiveScore"></el-input>
+               <el-form-item label="赠送积分">
+                    <el-input v-model="formInfo.GiveScore" :min="1" oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"></el-input>
                </el-form-item>
-               <el-form-item label="赠送充值" v-show="chooseType!='0'&&chooseType!='3'">
+               <!-- <el-form-item label="赠送充值" v-show="chooseType!='0'&&chooseType!='3'">
                     <el-input v-model="formInfo.GiveMoney"></el-input>
-               </el-form-item>
+               </el-form-item> -->
                <el-form-item label="发放总量">
-                    <el-input v-model="formInfo.GiveCnt"></el-input>
+                    <el-input v-model="formInfo.GiveCnt"  oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"></el-input>
                </el-form-item>
                <el-form-item label="每人最多参与">
-                    <el-input v-model="formInfo.LimitCnt"></el-input>&nbsp;次
+                    <el-input v-model="formInfo.LimitCnt"  oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"></el-input>&nbsp;次
                </el-form-item>
           </el-form>
           <satisfyTicket :info="info" :showTicket="showTicket" @changeDig="changeDig" @sureGood="sureGood(arguments)"></satisfyTicket>

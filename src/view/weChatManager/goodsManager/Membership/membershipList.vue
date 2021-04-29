@@ -1,8 +1,8 @@
 <template>
   <div class="orderNotify">
     <el-row class="marginBottom">
-      <el-col :span="24">
-        <span>卡 号：</span>
+      <el-col :span="6">
+        <span>卡&nbsp;&nbsp;&nbsp;&nbsp;号：</span>
         <el-input
           placeholder="请输入卡号"
           v-model="CardNo"
@@ -15,21 +15,26 @@
             icon="el-icon-search"
             @click="searchN"
           ></el-button> </el-input
-        >&nbsp;&nbsp;
-        <span>手机号：</span>
-        <el-input
-          placeholder="请输入手机号"
-          v-model="Mobile"
-          clearable
-          @clear="clearI"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="searchN"
-          ></el-button>
-        </el-input>
+      ></el-col>
+     <el-col :span="6">
+          <span>关注门店：</span>
+          <el-select
+            v-model="SubscribeShopSID"
+            filterable
+            placeholder="请选择"
+            clearable
+            @change="changeState"
+          >
+            <el-option
+              v-for="item in storeList"
+              :key="item.SID"
+              :label="item.Name"
+              :value="item.SID"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+      <el-col :span="6">
         <span>卡来源：</span>
         <el-select v-model="BindType" @change="changeCard" placeholder="请选择">
           <el-option
@@ -40,6 +45,8 @@
           >
           </el-option>
         </el-select>
+      </el-col>
+      <el-col :span="6">
         <span>卡状态：</span>
         <el-select
           v-model="CardState"
@@ -56,82 +63,99 @@
         </el-select>
       </el-col>
     </el-row>
+      <el-row class="marginBottom">
+         <el-col :span="6">
+        <span>手机号：</span>
+        <el-input
+          placeholder="请输入手机号"
+          v-model="Mobile"
+          clearable
+          @clear="clearI"
+          class="input-with-select"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchN"
+          ></el-button>
+        </el-input>
+      </el-col>
+        
+        <el-col :span="6">
+          <span>绑定门店：</span>
+          <el-select
+            v-model="BindShopSID"
+            filterable
+            placeholder="请选择"
+            clearable
+            @change="changeState"
+          >
+            <el-option
+              v-for="item in storeList"
+              :key="item.SID"
+              :label="item.Name"
+              :value="item.SID"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="头像" width="80px" align="center">
         <template slot-scope="scope">
-          <img :src="scope.row.Headimgurl ? scope.row.Headimgurl : defaultImg" class="imgWidth"/>
+          <img :src="scope.row.Headimgurl ? scope.row.Headimgurl : defaultImg" class="imgWidth" />
         </template>
       </el-table-column>
-      <el-table-column
-        prop="NickName"
-        label="用户名"
-        align="center"
-      ></el-table-column>
-      <el-table-column label="性别" width="80px" align="center">
-        <template slot-scope="scope">{{ scope.row.Sex | Sex }}</template>
+      <el-table-column label="会员信息" align="left" >
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.NickName"
+            >用户名：{{ scoped.row.NickName }}</span
+          ><br/>
+          <span>性别：{{ scoped.row.Sex | Sex }}</span
+          ><br />
+          <span v-if="scoped.row.Mobile">手机号：{{ scoped.row.Mobile }}</span>
+        </template>
+      </el-table-column>     
+      <el-table-column prop="Source" label="会员来源" align="center" width="90px">
+        <template slot-scope="scope">{{scope.row.Source | SourceTips}}</template>
       </el-table-column>
-      <el-table-column
-        prop="CardNo"
-        label="卡号"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="BindType"
-        label="卡来源"
-        align="center"
-        width="100px"
-      >
-        <template slot-scope="scope">{{
-          scope.row.BindType | BindTypeTips
-        }}</template>
+       <el-table-column label="会员信息" align="left" width="160">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.CardNo">卡号：{{scoped.row.CardNo}}</span><span v-else>卡号：暂无</span><br/>
+          <span>卡来源：{{scoped.row.BindType | BindTypeTips}}</span><br/>
+          <span>卡状态：{{scoped.row.CardState | CardStateTips}}</span>
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="CardState"
-        label="卡状态"
-        align="center"
-        width="100px"
-      >
-        <template slot-scope="scope">{{
-          scope.row.CardState | CardStateTips
-        }}</template>
-      </el-table-column>
-      <el-table-column
-        prop="Source"
-        label="会员来源"
-        align="center"
-        width="100px"
-      >
-        <template slot-scope="scope">{{
-          scope.row.Source | SourceTips
-        }}</template>
-      </el-table-column>
-      <el-table-column
-        prop="Mobile"
-        label="手机号"
-        align="center"
-      ></el-table-column>
-      <el-table-column prop="Subscribe" label="是否关注" align="center">
+      <el-table-column prop="Subscribe" label="是否关注" align="center" width="90">
         <template slot-scope="scope">
           {{ scope.row.Subscribe | Subscribe }}
         </template>
       </el-table-column>
-      <el-table-column
-        prop="AddTime"
-        label="添加时间"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="UpTime"
-        label="更新时间"
-        align="center"
-      ></el-table-column>
+      <el-table-column prop="SubscribeShopSID" label="关注门店" align="left" width="250" >
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.SubscribeShopSID">{{filterFun(scoped.row.SubscribeShopSID)}}</span><br/>
+          <span v-if="scoped.row.SubscribeShopSID">{{filterFun2(scoped.row.SubscribeShopSID)}}</span><br/>
+          <span v-if="scoped.row.SubscribeShopSID">{{filterFun3(scoped.row.SubscribeShopSID)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="BindShopSID" label="绑定门店" align="left" width="250">
+        <template slot-scope="scoped">
+          <span v-if="scoped.row.BindShopSID">{{filterFun(scoped.row.BindShopSID)}}</span><br/>
+          <span v-if="scoped.row.BindShopSID">{{filterFun2(scoped.row.BindShopSID)}}</span><br/>
+          <span v-if="scoped.row.BindShopSID">{{filterFun3(scoped.row.BindShopSID)}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="AddTime" label="关注时间" align="center" width="160"></el-table-column>
+      <el-table-column prop="UpTime" label="更新时间" align="center" width="160"></el-table-column>
 
       <el-table-column label="操作" align="center">
-        <template slot-scope="scope" v-if="scope.row.CardNo!=''">
+        <template slot-scope="scope" v-if="scope.row.CardNo != ''">
           <el-button type="text" @click="Unbund(scope.row, scope.$index)"
-            >解绑</el-button>
+            >解绑</el-button
+          >
           <el-button type="text" @click="reNewCode(scope.row, scope.$index)"
-            >修改卡密码</el-button>
+            >修改卡密码</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -141,23 +165,23 @@
       <el-form
         :model="ruleForm"
         ref="ruleForm"
-        style="margin-top:10px"
+        style="margin-top: 10px"
         :inline="true"
       >
         <div>
           <el-form-item label="卡号">
-            <el-input v-model="ruleForm.CardNo" style="width:150px"></el-input>
+            <el-input v-model="ruleForm.CardNo" style="width: 150px"></el-input>
           </el-form-item>
           <el-form-item label="新密码">
             <el-input
               v-model="ruleForm.CardPass"
-              style="width:150px"
+              style="width: 150px"
             ></el-input>
           </el-form-item>
           <el-form-item label="确认密码">
             <el-input
               v-model="ruleForm.VerifyCardPass"
-              style="width:150px"
+              style="width: 150px"
             ></el-input>
           </el-form-item>
         </div>
@@ -194,7 +218,7 @@ export default {
       ruleForm: {
         CardNo: "", //卡号
         CardPass: "", //新密码
-        VerifyCardPass: "" //确认密码
+        VerifyCardPass: "", //确认密码
       },
       dialogFormVisible: false,
 
@@ -205,47 +229,51 @@ export default {
       pageSize: 0,
       CardNo: "", //卡号查询
       Mobile: "", //ID 查询
+      SubscribeShopSID: "", //关注门店查询
+      BindShopSID: "", //绑定门店查询
       BindTypeList: [
         {
           value: "",
-          label: "全部"
+          label: "全部",
         },
         {
           value: "Net",
-          label: "微卡"
+          label: "微卡",
         },
         {
           value: "Manage",
-          label: "实体卡"
-        }
+          label: "实体卡",
+        },
       ],
       BindType: "",
       CardStateList: [
         {
           value: "",
-          label: "全部"
+          label: "全部",
         },
         {
           value: "0",
-          label: "已领用"
+          label: "已领用",
         },
         {
           value: "2",
-          label: "正常"
+          label: "正常",
         },
         {
           value: "3",
-          label: "挂失"
+          label: "挂失",
         },
         {
           value: "4",
-          label: "作废"
-        }
+          label: "作废",
+        },
       ],
-      CardState: ""
+      CardState: "",
+      storeList: [], //门店列表
     };
   },
   created() {
+    this.getStoreList();
     this.GetOrderTemplate();
     // if(this.ruleForm.CardNo==""||item.CardNo==""){
     //   this.judge=false;
@@ -256,17 +284,17 @@ export default {
   methods: {
     //修改密码
     async sureCode() {
-      if (this.ruleForm.CardPass == ""||this.ruleForm.VerifyCardPass=="") {
+      if (this.ruleForm.CardPass == "" || this.ruleForm.VerifyCardPass == "") {
         return this.$message.error("密码不能为空");
       }
- 
+
       try {
         let { Data } = await getLists(
           {
             Action: "SetCardPass",
             CardNo: this.ruleForm.CardNo, //卡号
             CardPass: this.ruleForm.CardPass, //新密码
-            VerifyCardPass: this.ruleForm.VerifyCardPass //确认密码
+            VerifyCardPass: this.ruleForm.VerifyCardPass, //确认密码
           },
           "MMemberOpera"
         );
@@ -280,32 +308,35 @@ export default {
         this.dialogFormVisible = false;
       }
     },
-    Unbund(row){//解绑
-      this.$confirm('是否解绑?', '提示', {
-              confirmButtonText: '是',
-              cancelButtonText: '否',
-              type: 'warning'
-        }).then(() => {
-              this.UnbundFun(row);
-        }).catch(() => {
-              this.$message({
-              type: 'info',
-              message: '已取消解绑'
-              });          
+    Unbund(row) {
+      //解绑
+      this.$confirm("是否解绑?", "提示", {
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
+      })
+        .then(() => {
+          this.UnbundFun(row);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消解绑",
+          });
         });
     },
-    async UnbundFun(row){
+    async UnbundFun(row) {
       try {
-          let Data = await getLists(
-            { Action: "UnBindCard", OpenID: row.OpenID },
-            "MMemberOpera"
-          );
-            this.$message.success("解绑成功");
-            this.GetOrderTemplate();
-          } catch (e) {
-            this.$message.error(e);
-        }
-    },    
+        let Data = await getLists(
+          { Action: "UnBindCard", OpenID: row.OpenID },
+          "MMemberOpera"
+        );
+        this.$message.success("解绑成功");
+        this.GetOrderTemplate();
+      } catch (e) {
+        this.$message.error(e);
+      }
+    },
 
     reNewCode(row) {
       this.ruleForm.CardPass = "";
@@ -323,7 +354,9 @@ export default {
             CardNo: this.CardNo,
             Mobile: this.Mobile,
             BindType: this.BindType,
-            CardState: this.CardState
+            CardState: this.CardState,
+            SubscribeShopSID:this.SubscribeShopSID,
+            BindShopSID:this.BindShopSID
           },
           "MMemberOpera"
         );
@@ -333,6 +366,40 @@ export default {
       } catch (error) {
         this.$message.error(error);
       }
+    },
+    async getStoreList() {
+      try {
+        let { Data } = await getLists({ Action: "GetShopList" }, "MShopOpera");
+        this.storeList = Data.ShopInfoList;
+      } catch (e) {
+        this.$message.error(e);
+      }
+    },
+    filterFun(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `名称：${item.Name}`;
+        }
+      }
+      return obj;
+    },
+    filterFun2(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `地址：${item.Address}`;
+        }
+      }
+      return obj;
+    },filterFun3(SID){
+      let obj = ""
+       for (const item of this.storeList) {
+        if (SID == item.SID) {
+         obj = `电话：${item.Tel}`;
+        }
+      }
+      return obj;
     },
     changeCard() {
       this.GetOrderTemplate();
@@ -349,13 +416,16 @@ export default {
       this.OpenID = "";
       this.GetOrderTemplate();
     },
+    changeState() {
+      this.GetOrderTemplate();
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
       this.GetOrderTemplate(val);
-    }
+    },
   },
   filters: {
     Sex(val) {
@@ -401,9 +471,11 @@ export default {
         return "挂失";
       } else if (val == "4") {
         return "作废";
+      }else{
+        return '无'
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scope>

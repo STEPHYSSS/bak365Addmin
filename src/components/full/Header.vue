@@ -2,15 +2,8 @@
   <navbar class="navBar">
     <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" @click="mobileSidebarToggle">&#9776;
     </button>
-    <!--    class="valueCity"-->
     <div class="navbar-brand">
-      <el-select v-model="valueCity" placeholder="请选择地区" class="navbar-brandBtn">
-        <!-- <el-option
-          v-for="item in optionsCity"
-          :key="item.AreaName"
-          :label="item.AreaName"
-          :value="item.AreaNo">
-        </el-option> -->
+      <el-select v-model="valueCity" @change="chooseArea" placeholder="请选择地区" class="navbar-brandBtn">
         <el-option
           v-for="item in optionsCity"
           :key="item.Name"
@@ -82,7 +75,7 @@
           <div style="text-overflow: ellipsis;overflow: hidden;">{{ item.value }}</div>
           <!--          <span style="font-size:12px;color:#b4b4b4">{{ item.address }}</span>-->
         </template>
-      </el-autocomplete>
+      <!-- </el-autocomplete> -->
 
       <!--      <li class="nav-item d-md-down-none">-->
       <!--        <a class="nav-link" ><Icon type="android-notifications" size="20"></Icon><span class="badge badge-pill badge-danger">5</span></a>-->
@@ -136,13 +129,11 @@ export default {
     ...mapGetters(['AreaNo', 'AreaList', 'AppNo', 'userName'])
   },
   created(){
+    this.valueCity = localStorage.getItem("chooseArea")
     this.getAreaList();
   },
   mounted() {
     this.restaurants = navSearch;
-
-    // this.optionsCity = this.AreaList
-    // this.valueCity = this.AreaNo.AreaNo
   },
   methods: {
     Logouts(e) {
@@ -151,6 +142,10 @@ export default {
       }).catch(err => {
         this.$message.error(err);
       });
+    },
+    chooseArea(val){
+      localStorage.setItem("chooseArea",val)
+      this.$router.push({path:'/weChat/manager/Statistics'})
     },
     VersionInfo(){
 
@@ -191,7 +186,6 @@ export default {
       }
     },
     handleSelect(item) {
-      console.log(item);
       this.$router.push(item.url)
     },
     async getAreaList() {
@@ -199,7 +193,7 @@ export default {
       try {
         let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
         this.optionsCity = Data.AreaList;
-        // console.log(this.optionsCity)
+        localStorage.setItem('AllAreaList',JSON.stringify(Data.AreaList));
       } catch (e) {
         this.$message.error(e);
       }

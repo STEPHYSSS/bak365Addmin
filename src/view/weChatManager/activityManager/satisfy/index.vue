@@ -37,6 +37,7 @@
       </el-table-column>
       <el-table-column width="300" label="操作" align="center">
         <template slot-scope="scoped">         
+          <el-button type="text" @click="Statistics(scoped.row)">统计</el-button>
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
           <!-- <el-button type="text" @click="changeEnable(scoped.row,'Audit')">审核</el-button> -->
@@ -103,6 +104,12 @@ export default {
     // },
      addSatisfy(){//新增
         this.$router.push({path:'/weChat/manager/activity/satisfyAddEdit'})
+     },
+     Statistics(row){//统计
+        this.$router.push({
+          path: "/weChat/manager/activity/publicGetMeet",
+          query: { SID: row.SID },
+        });
      },
      editRowGoods(row){//编辑
       this.$router.push({ path: "/weChat/manager/activity/satisfyAddEdit",

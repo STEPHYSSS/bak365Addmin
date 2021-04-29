@@ -73,6 +73,7 @@
             <el-input
               v-model="scope.row.number"
               maxlength="2"
+              style="width:200px"
               oninput="value=value.replace(/[^\d]/g, '')"
             ></el-input>
           </template>

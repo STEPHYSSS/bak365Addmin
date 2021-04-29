@@ -35,6 +35,7 @@
           <el-button type="text" @click="countGoods(scoped.row)">统计</el-button>         
           <el-button type="text" @click="editRowGoods(scoped.row)">编辑</el-button>          
           <el-button type="text" @click="delRow(scoped.row,scoped.$index)">删除</el-button>
+          <el-button type="text" @click="delBg(scoped.row,scoped.$index)">删除背景</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
         </template>
       </el-table-column>      
@@ -74,7 +75,7 @@ export default {
   filters:{
     tips(val){
       if(val == '0'){
-        return '用户关注'
+        return '邀请关注'
       }else if(val == '3'){
         return '邀请充值'
       }else if(val == '4'){
@@ -152,7 +153,10 @@ export default {
       countGoods(row){//统计
         this.$router.push({          
           path: "/weChat/manager/activity/Act_Statistics",
-          query: { PromotionSID: row.SID },
+          query: { 
+            PromotionSID: row.SID ,
+            PromType : row.PromWhere.split(',')[0]
+          }
         });
       },
       async changeEnable(row, val) {
@@ -193,6 +197,25 @@ export default {
           this.currentPage = val;
           // this.getList(val);
      },
+    delBg(row){//删除团长背景（营销推广）   删除渠道背景（邀请关注邀请充值）
+      this.SetAccessQrCode(row)
+    },    
+    async SetAccessQrCode(row) {//删除渠道背景（邀请关注邀请充值）
+      this.loading = true;
+      try {
+        let data = await getLists(
+          {
+            Action: "SetAccessQrCode",
+            PromotionSID: row.PromWhere.split(',')[0] =='4'?'':row.SID
+          },
+          "MPromotionOpera"
+        );
+        this.loading = false;
+      } catch (e) {
+        this.$message.error(e);
+        this.loading = false;
+      }
+    },
   },
 };
 </script>

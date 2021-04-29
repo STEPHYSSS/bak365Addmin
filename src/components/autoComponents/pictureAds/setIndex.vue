@@ -173,22 +173,23 @@ export default {
           title: "轮播海报",
           url:
             "https://img.yzcdn.cn/public_files/2018/10/16/b0278c2049020fa553715ff6f7693e35.png"
-        },
-        {
-          title: "大图横向滑动",
-          url:
-            "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
-        },
-        {
-          title: "小图横向滑动",
-          url:
-            "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
-        },
-        {
-          title: "导航横向滑动",
-          url:
-            "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
         }
+        // ,
+        // {
+        //   title: "大图横向滑动",
+        //   url:
+        //     "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
+        // },
+        // {
+        //   title: "小图横向滑动",
+        //   url:
+        //     "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
+        // },
+        // {
+        //   title: "导航横向滑动",
+        //   url:
+        //     "https://img.yzcdn.cn/public_files/2018/10/16/84f845b6bb88de38ba20ad4d1d367de0.png"
+        // }
         // {
         //   title: "绘制热区",
         //   url:

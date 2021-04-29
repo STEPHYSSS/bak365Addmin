@@ -23,4 +23,4 @@ export const seckill = HeardUrl + 'pages/shoppingMall/seckill/index' //秒杀首
 export const autoHome = HeardUrl //自定义首页
 export const autoLinkIndex = HeardUrl + 'pages/shoppingMall/autoLinkIndex/autoLinkIndex' //自定义页面
 export const scanCoupon = HeardUrl + 'pages/scanCoupons/scanCoupons' //扫码领券
-export const ShopList = HeardUrl + 'pages/myAddress/myAddress' //扫码领券
+export const ShopList = HeardUrl + 'pages/vip/weiFull' //充值二维码

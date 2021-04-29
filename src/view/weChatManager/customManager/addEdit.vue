@@ -2,6 +2,9 @@
   <div class="customStyle">
     <!-- 自定义详情编辑，新增 -->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+      <el-form-item label="门店区域:" v-if="IsShow">
+        <storeAreaList @changeType="changeType" :setArea="setArea"></storeAreaList>
+      </el-form-item>
       <el-form-item label="模块名称:" prop="name">
         <el-input v-model="ruleForm.name" style="width:300px"></el-input>
       </el-form-item>
@@ -136,6 +139,7 @@ import richTextFun from "@/components/autoComponents/richText/setIndex";
 import goodGroup from "@/components/autoComponents/goodsGroup/";
 import goodGroupFun from "@/components/autoComponents/goodsGroup/setIndex";
 import draggable from "vuedraggable";
+import storeAreaList from "@/components/selector/storeArea";//门店区域
 export default {
   inject:['reload'],
   name: "HelloWorld",
@@ -181,7 +185,7 @@ export default {
     goodGroup,
     goodGroupFun,
     draggable,
-
+    storeAreaList
   },
   data() {
     return {
@@ -258,13 +262,19 @@ export default {
       loadingBtn: false,
       drag: false,
       modeSID: "",
-      key: 0
+      key: 0,
+      setArea: "",//门店区域
+      IsShow:false,//是否展示门店区域下拉选
+      IsShopArea:""
     };
   },
 
   mounted() {
+    this.IsShopArea = localStorage.getItem("IsShopArea")
+    if(this.IsShopArea=='1'){
+      this.IsShow = true
+    }
     this.modeSID = this.$route.query.SID || "";
-
     if (this.modeSID) {
       this.getInfo();
     }
@@ -275,7 +285,10 @@ export default {
       // console.log(evt)
       // console.log(evt.draggedContext.element.props)
     },
-
+    changeType(val) {//门店区域
+      // this.ruleForm.AreaSID = val;
+      this.setArea = val;
+    },
     findModeKay(arr,key){
       for (var value of arr){
          if(key === value.key) return value;
@@ -302,7 +315,8 @@ export default {
         this.ruleForm.name = Data.Decorate.Name;
         this.ruleForm.SID = Data.Decorate.SID;
         this.ruleForm.IsDefault = Data.Decorate.IsDefault;
-       this.currentModeArr.forEach(D => {
+        this.setArea = Data.Decorate.AreaSID;
+        this.currentModeArr.forEach(D => {
            if (D.props && D.props.contentRich) {
             // 解密富文本框
             // D.props.contentRich = $.base64.atob(D.props.contentRich, "utf8");            
@@ -315,7 +329,7 @@ export default {
       } catch (e) {
         this.$message.error(e);
       }
-    },
+    },    
     submitForm(formName) {
       //保存按钮
       let errorTip = false;
@@ -352,7 +366,10 @@ export default {
         // console.log(D.contentRich)
         // this.findModeKay(arr,kay).props = D;
       };
-
+      if(this.IsShopArea=='1' && this.setArea == ""){
+        this.$message.error("请选择门店区域")
+        return;
+      }
       if (arr.length === 0) {
         this.$message("请选择组件");
         return;
@@ -369,7 +386,8 @@ export default {
                 Name: this.ruleForm.name,
                 SID: this.ruleForm.SID,
                 IsDefault: this.ruleForm.IsDefault,
-                Type:'0'
+                Type:'0',
+                AreaSID:this.setArea
               },
               "MShopOpera"
             );

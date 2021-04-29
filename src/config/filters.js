@@ -78,3 +78,18 @@ export const IsRebateTip = (val) => {
           return '已返佣'
      }
 }
+
+export const filterArea = val => {
+     let AreaList = JSON.parse(localStorage.getItem("AllAreaList"));
+     if (AreaList) {
+       for (const item of AreaList) {
+         if (val == item.SID) {
+           var name = item.Name;
+         }
+       }
+       return name;
+     } else {
+       return;
+     }
+   };
+   

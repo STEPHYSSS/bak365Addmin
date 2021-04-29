@@ -418,7 +418,8 @@
       :before-close="beforeClose"
       :visible.sync="showCheckTicket"
     >
-      <div class="addScroll">
+      <div class="addScroll" style="max-height: 377px;
+    overflow-y: scroll;">
         <el-checkbox
           v-if="!currentTicket"
           :indeterminate="isIndeterminate"
@@ -900,12 +901,6 @@ export default {
       this.ruleForm.SpecList.forEach((item,index)=>{
         item.Sort = index
       })
-      // this.$refs.tasteList.forEach((D, index) => {
-      //   this.$refs.tasteList[index].value = this.ruleForm.SpecList[index]
-      //     .TastName
-      //     ? this.ruleForm.SpecList[index].TastName
-      //     : [];
-      // });
 
       this.$refs.ruleForm.clearValidate();
     },
@@ -989,14 +984,13 @@ export default {
             if(this.assistRuleForm.BuyTimeBool === false){
               obj.Dates = "";
             }
-            // itar+tab
-            if (
-              this.checkClick.length === this.checkList.length ||
-              this.checkAll
-            ) {
-              // 门店全选
-              obj.ShopInfo = "";
-            }
+            // if (
+            //   this.checkClick.length === this.checkList.length ||
+            //   this.checkAll
+            // ) {
+            //   // 门店全选
+            //   obj.ShopInfo = "";
+            // }
 
             if (obj.SpecType !== "1") {
               let sortArr = [];
@@ -1024,27 +1018,8 @@ export default {
                   D.Img.indexOf(process.env.Prefix) !== -1
                     ? D.Img.replace(process.env.Prefix, "")
                     : D.Img;
-
-                // if (D.TastName && typeof D.TastName !== "string") {
-                //   // 变成json
-                //   D.TastName = D.TastName.join(",");
-                // }
               });
             }
-
-            // if (obj.DeliveryType.length === 0) {
-            //   this.$message.info("请选择配送方式");
-            //   return;
-            // }
-            // if (obj.PayType.length === 0) {
-            //   this.$message.info("请选择支付方式");
-            //   return;
-            // }
-
-            // obj.TastName =
-            //   typeof obj.TastName !== "string" && obj.TastName
-            //     ? obj.TastName.join(",")
-            //     : obj.TastName;
             obj.CateSID =
               typeof obj.CateSID !== "string" && obj.CateSID
                 ? obj.CateSID.join(",")
@@ -1131,7 +1106,8 @@ export default {
             this.$message.success("操作成功");          
             // this.$router.push("/weChat/manager/goodSetting");
             this.$router.push({
-              path: "/weChat/manager/goodSetting"
+              path: "/weChat/manager/goodSetting",
+              Page:1
             });
           } catch (e) {
             this.$message.error(e)

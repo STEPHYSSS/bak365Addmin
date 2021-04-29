@@ -7,8 +7,12 @@
       @click="addGood"
       class="marginBottom"
       :disabled="loading"
-      >新建自定义首页模块</el-button
-    >
+      >新建自定义首页模块</el-button>
+      <span style="margin-left:20px;display:inline-block">门店区域：</span>
+          <el-select v-model="searchAreaSID" filterable placeholder="请选择" clearable @change="changeState">
+            <el-option v-for="item in AllAreaList" :key="item.SID" :label="item.Name" :value="item.SID">
+            </el-option>
+          </el-select>
     <el-table :data="tableData" style="width: 100%" v-loading="loading">
       <el-table-column
         prop="Name"
@@ -19,6 +23,11 @@
         <template slot-scope="scope">
           <span v-if="scope.row.IsDefault === '0'">否</span>
           <span v-else style="color:#2d8cf0">是</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="区域" align="center">
+        <template slot-scope="scoped">
+          {{filterFun(scoped.row.AreaSID)}}
         </template>
       </el-table-column>
       <el-table-column prop="AddTime" label="添加时间" align="center"></el-table-column>
@@ -75,18 +84,25 @@ export default {
       show: false,
       autoHome: autoHome,
       currentIndexCode: "", 
+      AllAreaList:[],
+      searchAreaSID:""
     };
   },
   components: { Del ,QRCode},
   mounted() {
     this.getList();
+    let AreaSID = localStorage.getItem("AllAreaList")
+    this.AllAreaList = JSON.parse(AreaSID)
   },
   methods: {
+    changeState() {//搜索
+      this.getList();
+    },
     async getList() {
       this.loading = true;
       try {
         let { Data } = await getLists(
-          { Action: "GetDecorateList", Type: "0" },
+          { Action: "GetDecorateList", Type: "0" ,AreaSID:this.searchAreaSID},
           "MShopOpera"
         );
         this.tableData = Data.DecorateList;
@@ -121,6 +137,15 @@ export default {
       this.current_index = index;
       this.current_SID = row.SID;
     },
+    filterFun(SID){
+      let obj = ""
+       for (const item of this.AllAreaList) {
+        if (SID == item.SID) {
+         obj = `${item.Name}`;
+        }
+      }
+      return obj;
+    },
     delFunction(bool) {
       this.show = bool;
     },
@@ -148,7 +173,7 @@ export default {
         .then(() => {
           try {
             let { Data } = getLists(
-              { Action: "SetDefault", SID: row.SID, IsDefault: val, Type: "0" },
+              { Action: "SetDefault", SID: row.SID, IsDefault: val, Type: "0" ,AreaSID:row.AreaSID},
               "MShopOpera"
             );
             setTimeout(() => {

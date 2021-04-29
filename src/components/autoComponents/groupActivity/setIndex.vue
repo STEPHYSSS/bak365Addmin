@@ -218,7 +218,7 @@ export default {
         imgScale: "100",
         pageSpace: 0,
         goodSpace: 0,
-        showContent: ["1", "2", "3", "4", "5"],
+        showContent: ["1", "3", "4", "5"],
         contain: "cover",
         fontWeight: "normal",
         textCenter: "left",

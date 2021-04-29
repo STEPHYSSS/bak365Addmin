@@ -18,6 +18,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
+          <el-button type="text" @click="Statistics(scoped.row)">统计</el-button>
           <el-button type="text" @click="editCondition(scoped.row)"
             >编辑</el-button
           >
@@ -69,6 +70,12 @@ export default {
      },
      addCondition() {
         this.$router.push({ path: "/weChat/manager/activity/entCouponAddEdit" });
+     },
+     Statistics(row){//统计
+        this.$router.push({
+          path: "/weChat/manager/activity/publicGetMeet",
+          query: { SID: row.SID },
+        });
      },
      editCondition(row) {
       this.$router.push({

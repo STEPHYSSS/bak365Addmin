@@ -125,7 +125,7 @@ export default {
       fileListUp: [],
       btnLoading: false,
       checkedType: true,
-      setArea:{}
+      setArea:""
     };
   },
   created() {
@@ -153,7 +153,7 @@ export default {
           "MShopOpera"
         );
         this.form = Data.ShopInfo;
-        this.setArea = this.form;
+        this.setArea = Data.ShopInfo.AreaSID  ;
         // if (this.form.Type) {
         //   this.checkedType = this.form.Type.indexOf("2") > -1 ? true : false;
         // }

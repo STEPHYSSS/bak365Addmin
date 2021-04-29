@@ -56,17 +56,26 @@
           <span style="margin:0 10px">运费规则{{index+1}}：</span>
           <div class="province_fa">
             <div class="inputWitdh">
-              <el-input v-model="item.StartingKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里以内
-              <el-input v-model="item.StartingPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元， 每超出
-              <el-input v-model="item.BeyondKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里，加收
-              <el-input v-model="item.BeyondPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
-              运费上限
-              <el-input v-model="item.UpPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元， 超出
-              <el-input v-model="item.NodeliveryKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里不配送<br/>
-              订单满 <el-input v-model="item.OrderSatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
-              <el-input v-model="item.OrderKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里内免运费，
-              订单满 <el-input v-model="item.SatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元免运费
-             
+              <p>优先级1： 
+                超出<el-input v-model="item.NodeliveryKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里不配送，
+                订单金额未满 <el-input v-model="item.OrderNoMeetMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元不配送；
+              </p>
+              <p>优先级2：
+                订单满 <el-input v-model="item.SatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元免运费；
+              </p>
+              <p>优先级3：
+                <el-input v-model="item.StartingKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里以内
+                <el-input v-model="item.StartingPrice" controls-position="right" :min="0" 
+             oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
+              每超出 <el-input v-model="item.BeyondKM" controls-position="right" :min="0" oninput="if(this.value=='00'){this.value='0';}else{this.value=this.value.replace(/[^0-9]/g,'')}"></el-input> 公里，
+              加收 <el-input v-model="item.BeyondPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
+              运费上限 <el-input v-model="item.UpPrice" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元；<br/>
+              </p>
+              <p>优先级4：
+                订单满 <el-input v-model="item.OrderSatisfyMoney" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元，
+              立减 <el-input v-model="item.OrderMinusFreight" controls-position="right" :min="0" oninput="value=value.replace(/[^\d.]/g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.').replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3').replace(/^\./g, '')"></el-input> 元运费；
+              </p>
+              <p>备注：以优先级最高1依次行匹配核算</p>
             </div>
             <el-button
               style="margin-left:40px"
@@ -270,6 +279,8 @@ export default {
           SatisfyMoney:"",
           OrderSatisfyMoney:"",
           OrderKM:"",
+          OrderNoMeetMoney:"",
+          OrderMinusFreight:"",
           Defaults: false
         });
       }
@@ -362,6 +373,9 @@ export default {
   width: 80px;
   padding-bottom: 10px;
 
+}
+.inputWitdh p{
+  margin-left:20px;
 }
 .province_style {
   .textarea-style {

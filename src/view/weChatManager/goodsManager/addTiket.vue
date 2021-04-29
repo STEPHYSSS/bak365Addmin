@@ -385,7 +385,10 @@ export default {
         }
       });
     },
-    cancelFun(){}
+    cancelFun() {
+      // 取消
+      this.$router.push("/weChat/manager/goodSetting");
+    },
   },
   components: {
     goodType,

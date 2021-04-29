@@ -10,6 +10,14 @@
     center
     append-to-body
   >
+  <el-row style="margin-bottom:10px" v-if="!isGroup">
+    <el-col :span="10">
+        名称：<el-input v-model="Name" clearable @clear="clearName" placeholder="请输入商品名称" class="widthW"></el-input>
+      </el-col>
+      <el-col :span="4">
+        <el-button  @click="searchName">查询</el-button>
+      </el-col>
+  </el-row>
     <el-table
       ref="multipleTable"
       :data="dataTree"
@@ -29,18 +37,23 @@
       </el-table-column>
       <el-table-column label="名称">
         <template slot-scope="scope">
-          <!-- <router-link
-            tag="a"
-            target="_blank"
-            :to="{path:isGroup?'/weChat/manager/goodSetting':'/weChat/manager/goodEdit',query: {SID:scope.row.SID}}"
-          >{{scope.row.Name}}</router-link> -->
           <a>{{scope.row.Name}}</a>
         </template>
       </el-table-column>
       <el-table-column v-if="!isGroup" prop="AddTime" label="创建时间" width="170"></el-table-column>
       <el-table-column v-else prop="UpTime" label="创建时间" width="170"></el-table-column>
     </el-table>
-
+    <div class="block" v-if="TotalList">
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="changePage"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :total="TotalList">
+      </el-pagination>  
+    </div>    
     <span slot="footer">
       <el-button type="primary" @click="sureGood">确 定</el-button>
     </span>
@@ -60,7 +73,12 @@ export default {
       dataTree: [],
       dialogVisible: false,
       itemVal: [],
-      defaultItemVal: []
+      defaultItemVal: [],
+      TotalList:0,//分页总数
+      currentPage: 0,
+      pageSize:0,
+      Name:'',
+      ProdNo:''
     };
   },
   components: {},
@@ -71,8 +89,12 @@ export default {
       try {
         // 获取商品列表
         let action = this.isGroup ? "GetCateList" : "GetProdInfoList";
-        let { Data } = await getLists({ Action: action }, "MProdOpera");
+        let { Data } = await getLists({ Action: action ,Page: this.currentPage - 1,
+          Name:this.Name,
+          ProdNo:this.ProdNo,}, "MProdOpera");
         this.dataTree = this.isGroup ? Data.ProdCateList : Data.Prod_InfoList;
+        this.TotalList = Data.DataCount;
+        this.pageSize = Data.PageSize;
         if (!this.isGroup) {
           // if (this.defaultData) {
           //   this.defaultItemVal = this.dataTree.filter(
@@ -91,6 +113,19 @@ export default {
       } catch (e) {
         this.$message.error(e);
       }
+    },
+    clearName(){
+      this.getList();
+    },
+    searchName(){
+      this.getList();
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    changePage(val) {
+      this.currentPage = val;
+      this.getList(val);
     },
     handleSelectionChange(arr) {
       this.itemVal = arr;
@@ -133,4 +168,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.widthW{
+    width: 170px;
+  }
 </style>

@@ -19,34 +19,24 @@ export default {
   },
   props:{
     setArea:{
-      type: Object,
-      default: true
+      type: String,
+      default:""
     }
   },
   components: {},
   created() {
-    if (this.list.length === 0) {
-      this.getAreaList();
-    }
+    let AreaList = localStorage.getItem("AllAreaList");    
+    this.list = JSON.parse(AreaList);
   },
   methods: {
-    async getAreaList() {
-      // 门店区域
-      try {
-        let { Data } = await getLists({ Action: "GetAreaList" }, "MShopOpera");        
-        this.list = Data.AreaList;
-      } catch (e) {
-        this.$message.error(e);
-      }
-    },
     changeType(val) {
       this.$emit("changeType", val);
     }
   },
   watch:{
-    "setArea.AreaSID"(){
-      this.value = this.setArea.AreaSID
-    }
+   setArea(){
+     this.value = this.setArea
+   }
   }
 };
 </script>

@@ -109,7 +109,7 @@
       </el-tab-pane>
       <!-- 推广基础设置开始  提现比例（推广订单金额 * 提现比例 =实际返佣金额） 有效期  提现备注-->
       <el-tab-pane label="分销设置" name="2">
-        <el-form ref="form2" :model="form2" :rules="rules" label-width="200px">
+        <el-form ref="form2" :model="form2" :rules="rules" label-width="100px">
           <el-form-item label="提现日期">
             每月
             <el-input
@@ -138,6 +138,9 @@
               >推广订单金额 * 提现比例 =实际返佣金额</span
             >
           </el-form-item>
+          <el-form-item label="支付完成">
+            <el-input v-model="OrderFinishDay" oninput="value=value.replace(/[^\d]/g, '').replace(/^0{1,}/g,'')"></el-input> 天后可申请提现
+          </el-form-item>
           <el-form-item label="分销推广">
             <el-radio v-model="IsOpenSpread" label="1">开启</el-radio>
             <el-radio v-model="IsOpenSpread" label="0">关闭</el-radio>
@@ -159,17 +162,36 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
+      <el-tab-pane label="区域设置" name="5">
+        <el-form ref="form3" :model="form3" :rules="rules" label-width="100px">
+          <el-form-item label="标题">
+            <el-input v-model="form3.AreaTitle"></el-input>
+          </el-form-item>
+          <el-form-item label="背景">
+            <imgLoad :limit="1" :fileListUp="fileListUp" @upLoadImgs="upLoadImg" folder="AreaImg"></imgLoad>
+            <span style="color:red">（建议：尺寸为600*948）</span>
+          </el-form-item>
+          <el-form-item label="首页多区域">
+            <el-radio v-model="IsShopArea" label="1">开启</el-radio>
+            <el-radio v-model="IsShopArea" label="0">关闭</el-radio>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="small" @click="submitSystem" style="margin-bottom: 20px" :loading="btnLoading" >提交</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import { getLists } from "@/api/vipCard";
-import { getTimeMy } from "@/config/publicFunction";
+import { getTimeMy,GetBaseImgUrl } from "@/config/publicFunction";
 import { optionsRetreat } from "@/config/utils";
-
+import imgLoad from '@/components/download/imgLoad'
 export default {
   name: "systemSetIndex",
+  components: {imgLoad},
   data() {
     return {
       activeName: "1",
@@ -198,11 +220,18 @@ export default {
       form2: {
         DrawingsStartDate: "",
         DrawingsEndDate: "",
-        Ratio:''
+        Ratio:'',        
         // DrawingsType: "1", //提现方式
         // RatioWay: "1", //返佣核算方式
         // ValidDay: "", //有效期
       }, //分销设置
+      OrderFinishDay:"15",
+      form3:{
+        AreaTitle: "",
+        AreaImg:""
+      },     
+      fileListUp: [], // 默认图片
+      IsShopArea :'0'//多区域 默认关闭
     };
   },
   created() {
@@ -229,28 +258,43 @@ export default {
               ? this.form.BenePayMode.split(",")
               : [];
           }
-        } else {
+        } else if(this.activeName == '2'){
           let { Data } = await getLists(
             { Action: "GetBase", Type: 2 },
             "MShopOpera"
           );
           if(Data.ShopBase.SetInfo){
             this.form2 = Data.ShopBase.SetInfo
-            this.IsOpenSpread =  this.form2.IsOpenSpread;           
+            this.IsOpenSpread =  this.form2.IsOpenSpread;
+            this.OrderFinishDay = this.form2.OrderFinishDay?this.form2.OrderFinishDay:"15";
             this.DrawingsDate.push(
               this.form2.DrawingsStartDate,
               this.form2.DrawingsEndDate
             );
           }
-          // this.form2 = Data.ShopBase.SetInfo;
-          // this.IsOpenSpread = this.form2.IsOpenSpread;
-          // this.DrawingsDate.push(
-          //   this.form2.DrawingsStartDate,
-          //   this.form2.DrawingsEndDate
-          // );
+        }else if(this.activeName == '5'){
+          let { Data } = await getLists(
+            { Action: "GetBase", Type: 5 },
+            "MShopOpera"
+          );
+          if(Data.ShopBase.SetInfo){
+            this.form3= Data.ShopBase.SetInfo
+            this.IsShopArea =  this.form3.IsShopArea||"0";
+            if (this.form3.AreaImg) {
+              this.fileListUp = [{url: GetBaseImgUrl() + this.form3.AreaImg}]
+            }
+          }
         }
       } catch (e) {
         this.$message.error(e);
+      }
+    },
+    upLoadImg(arr) {
+      this.fileListUp = arr
+      if (arr.length > 0) {
+        this.form3.AreaImg = arr[0].url
+      } else {
+        this.form3.AreaImg = ''
       }
     },
     async submitSystem() {
@@ -288,13 +332,23 @@ export default {
           };
         } else if (this.activeName == "2") {
           this.form2.IsOpenSpread = this.IsOpenSpread;
+          this.form2.OrderFinishDay = this.OrderFinishDay;
           obj = {
             Action: "SetBase",
             SetInfo: JSON.stringify(this.form2),
             Type: this.activeName,
           };
+        }else if (this.activeName == "5"){
+          this.form3.IsShopArea = this.IsShopArea;
+          localStorage.setItem("IsShopArea",this.form3.IsShopArea)
+          this.form3.AreaImg = this.form3.AreaImg.replace("..",'')
+          obj = {
+            Action: "SetBase",
+            SetInfo: JSON.stringify(this.form3),
+            Type: this.activeName,
+          };
         }
-        await getLists(obj, "MShopOpera");
+        await getLists(obj, "MShopOpera");        
         this.$message.success("操作成功");
         this.btnLoading = false;
       } catch (error) {

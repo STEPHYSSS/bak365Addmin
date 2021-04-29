@@ -15,6 +15,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scoped">
+          <el-button type="text" @click="Statistics(scoped.row)">统计</el-button>
           <el-button type="text" @click="editCondition(scoped.row)">编辑</el-button>
           <el-button type="text" @click="delCondition(scoped.row)">删除</el-button>
           <el-button type="text" @click="changeEnable(scoped.row,'Start')">{{scoped.row.Start|startTips}}</el-button>
@@ -90,7 +91,6 @@ export default {
         let data = await getLists(obj, "MPromotionOpera");
         let PromotionList = data.Data.PromotionList
         PromotionList.forEach((D) => { D.codeUrl = this.scanCoupon + "?SID=" + D.SID + "&FlagScan=true";
-          console.log(D.codeUrl)
         });
         this.dataTable = PromotionList;
         this.loading = false;
@@ -114,6 +114,12 @@ export default {
      },
      addCondition() {
         this.$router.push({ path: "/weChat/manager/activity/scanCouponAddEdit" });
+     },
+     Statistics(row){//统计
+        this.$router.push({
+          path: "/weChat/manager/activity/publicGetMeet",
+          query: { SID: row.SID }
+        });
      },
      editCondition(row) {
       this.$router.push({

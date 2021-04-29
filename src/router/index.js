@@ -54,6 +54,8 @@ const activityGoods = r => require.ensure([], () => r(require('../view/weChatMan
 const activityGoodsAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/addEdit')), 'activityGoodsAdd')
 const groupGoods = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupIndex')), 'groupGoods')
 const groupActivityAdd = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities')), 'groupActivityAdd')
+// 统计页面（扫码领券，进店送礼，满足赠送）
+const publicGetMeet = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/publicGetMeet')), 'publicGetMeet')
 // index2
 const groupActivityAdd2 = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/groupActivities/index2')), 'groupActivityAdd2')
 const entStoreCoupon = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/entStoreCoupon/entStoreCouponList')), 'entStoreCoupon') //进店送券
@@ -71,6 +73,8 @@ const satisfyAddEdit = r => require.ensure([], () => r(require('../view/weChatMa
 const Act_SuctionPowder = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet')), 'Act_SuctionPowder') //全民吸粉
 const Act_addEdit = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet/addEdit')), 'Act_addEdit') //全民吸粉新增编辑
 const Act_Statistics = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/Act_SuctionPowderSet/Act_Statistics')), 'Act_Statistics') //全民吸粉统计与详情
+const AddvertisementAlert = r => require.ensure([], () => r(require('../view/weChatManager/activityManager/addver')), 'AddvertisementAlert')//广告列表
+const AddverSet=r=>require.ensure([],()=>r(require('../view/weChatManager/activityManager/addAddvertising')),"AddverSet")//广告编辑
     // 自定义页面管理
 const customPage = r => require.ensure([], () => r(require('../view/weChatManager/customManager/homeIndex')), 'customPage') //自定义首页
 const customPageAdd = r => require.ensure([], () => r(require('../view/weChatManager/customManager/addEdit')), 'customPageAdd') //自定义首页编辑
@@ -105,6 +109,7 @@ const autoReply = r => require.ensure([], () => r(require('../view/weChatManager
 const msgHosting = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/msgHosting')), 'msgHosting') //小尾巴
 const tails = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/noticeSet/tails')), 'tails') //小尾巴
 const sign = r => require.ensure([], () => r(require('../view/weChatManager/goodsManager/systemSet/sign')), 'sign') //签到设置
+const census=r=>require.ensure([],()=>r(require('../view/weChatManager/goodsManager/systemSet/census')),'census')//签到统计
 //微卡设置
 const vipList = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/vipList')), 'vipList')
     // const menuBar = r => require.ensure([], () => r(require('../view/wechatCard/vipManager/menuBar')), 'menuBar')
@@ -221,12 +226,6 @@ export const asyncRouterMap = [{
                             label: '自定义菜单栏'
                         },
                         component: menuBar
-                    },{
-                        path: 'sign',
-                        meta: {
-                            label: '签到设置'
-                        },
-                        component: sign
                     }
                 ]
             },
@@ -340,7 +339,14 @@ export const asyncRouterMap = [{
                     }
                 },
                 redirect: '/weChat/manager/storeSet/index',
-                children: [{
+                children: [
+                    {
+                        path: 'storeAreaSet',
+                        meta: {
+                            label: '门店区域'
+                        },
+                        component: storeAreaSet
+                    },{
                         path: 'index',
                         meta: {
                             label: '门店列表',
@@ -354,13 +360,6 @@ export const asyncRouterMap = [{
                             label: '门店详情'
                         },
                         component: storeInfo
-                    },
-                    {
-                        path: 'storeAreaSet',
-                        meta: {
-                            label: '门店区域'
-                        },
-                        component: storeAreaSet
                     },
                 ]
 
@@ -595,6 +594,19 @@ export const asyncRouterMap = [{
                             label:'统计',
                         },
                         component:Act_Statistics
+                    },{//广告弹窗
+                        path: 'AddvertisementList',
+                        meta: {
+                            label: "广告弹窗"
+                        },
+                        component: AddvertisementAlert
+                    },{
+                        path:"addAddvertising",
+                        isHidden:true,
+                        meta:{
+                            label:"广告设置"
+                        },
+                        component:AddverSet
                     },{
                         path: 'ConditionsList',
                         meta: {
@@ -608,6 +620,13 @@ export const asyncRouterMap = [{
                             label: '参与条件设置'
                         },
                         component: ConditionsAddEdit
+                    },{
+                        path:'publicGetMeet',
+                        isHidden: true,
+                        meta:{
+                            label:'统计'
+                        },
+                        component:publicGetMeet
                     }
 
                 ]
@@ -789,6 +808,18 @@ export const asyncRouterMap = [{
                         label: '会员列表'
                     },
                     component: menmberShipList
+                },{
+                    path: 'sign',
+                    meta: {
+                        label: '签到设置'
+                    },
+                    component: sign
+                },{
+                    path:'census',
+                    meta:{
+                        label:'签到统计'
+                    },
+                    component:census
                 }]
             },
             { //客服管理 customerService

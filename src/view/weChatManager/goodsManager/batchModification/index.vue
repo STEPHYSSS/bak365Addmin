@@ -262,6 +262,20 @@ export default {
                     obj.FinHour = String(obj.FinHour)
                }
           }
+          if (this.assistForm.checkedPickDate) {
+              if (!obj.PickDate) {
+                this.$message.info("填写提货日期");
+                return;
+              }
+              obj.PickDate = obj.PickDate.join(",");
+            }
+            if (this.assistForm.checkedPickTime) {
+              if (!obj.PickTime) {
+                this.$message.info("填写提货时间");
+                return;
+              }
+              obj.PickTime = obj.PickTime.join(",");
+            }
           try {
                Object.assign(obj, { Action: "SetCateProd" });
                await getLists(obj, "MProdOpera");

@@ -260,7 +260,7 @@ export default {
             ProdNo:this.search.ProdNo,
             ProdType:this.search.ProdType,
             SpecType:this.search.SpecType,
-            Page: this.$route.query.page?this.$route.query.page:this.currentPage - 1
+            Page: this.currentPage - 1
           }, "MProdOpera")
         this.data = data.Data.Prod_InfoList;
         let setImg = this.currentGoods ? "Img" : "ImgList";
